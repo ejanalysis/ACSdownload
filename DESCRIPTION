@@ -1,0 +1,15 @@
+Package: ACSdownload
+Title: Obtain American Community Survey Summary File Data Tables from Census Bureau FTP Site
+Version: 0.1.0
+Authors@R: person("ejanalyst", "", email = "info@ejanalysis.com", role = c("aut", "cre"))
+Description: This R package helps you download and parse raw data from the 
+  Census Bureau American Community Survey 5-year Summary Files, 
+  providing demographic data at the block and tract levels of resolution.
+  You can obtain data from the entire USA all at once using this package, for one or more tables.
+  Typically the Census Bureau makes it easy to obtain data from one state at a time,
+  not every block group in the US. There are roughly 220,000 block groups in the US,
+  and around 74,000 tracts. Other data sources that may be relevant include Census geodatabases at  
+  http://www.census.gov/geo/maps-data/data/tiger-data.html and data at http://www.census.gov/geo/maps-data/data/gazetteer.html
+Depends: R (>= 3.1.3)
+License: None
+LazyData: true

@@ -6,3 +6,8 @@
 .Rproj.user/BC4C44B8/vcs_options
 
 *.Rproj
+.Rproj.user
+
+get.acs RUN 2014-05-12.R
+
+get.acs RUN 2014-12-04.R
