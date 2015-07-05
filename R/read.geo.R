@@ -1,19 +1,25 @@
-######################################
-#	R CODE TO OBTAIN AND WORK WITH CENSUS BUREAU'S AMERICAN COMMUNITY SURVEY (ACS) 5-YEAR SUMMARY FILE DATA
-#	2013-12-12
-######################################
-
-
-#################################
-#	READ AND CONCATENATE ALL STATE GEO FILES
-#	and extract just block group and tract geo's (not county since data files lack county)
-#################################
-
-## works on pc but mac throws error if trying to read NAME field. Due to encoding? specifying encoding didn't help.
-# Error in substring(x, first, last) : 
- # invalid multibyte string at '<f1>onc<69>to Chapter; Navajo Nation Reservation and Off-Reservation Trust Land, AZ--NM--UT
-
-read.geo <- function(states.abbreviated.mine) {
+#' @title Read and concatenate state geo files from Census ACS
+#'
+#' @description Reads and merges geo files that have been obtained from the US Census Bureau FTP site for American Community Survey (ACS) data.
+#' @details Currently works for ACS 2008-2012 5-year file format, other years not tested.
+#'   Extracts just block group (SUMLEVEL=150) and tract (SUMLEVEL=140) geo information (not county info., since data files used in this package lack county info.)
+#'   The NAME field works on pc but mac can hit an error if trying to read the NAME field. Due to encoding? specifying encoding didn't help.\cr
+#'   (name is very long and not essential)\cr
+#'   Error in substring(x, first, last) : \cr
+#'   invalid multibyte string at '<f1>onc<69>to Chapter; Navajo Nation Reservation and Off-Reservation Trust Land, AZ--NM--UT \cr
+#'   Format of files is here: \code{\link{ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf}}
+#' @param mystates Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.
+#' @param folder Optional path to where files are stored, defaults to getwd()
+#' @return Returns a large data.frame of selected geographic information on 
+#'   all block groups and tracts in the specified states/DC/PR, with just these fields:\cr
+#'   "STUSAB", "SUMLEVEL", "LOGRECNO", "STATE", "COUNTY", "TRACT", "BLKGRP", "GEOID"
+#' @examples 
+#'  \dontrun{
+#'   geo <- read.geo( c("dc", "de") )
+#'  }
+#' @seealso \code{\link{get.acs}}, \code{\link{download.geo}}
+#' @export
+read.geo <- function(mystates, folder=getwd()) {
 
 	##############
 	# concatenate geos over all states
@@ -136,7 +142,7 @@ read.geo <- function(states.abbreviated.mine) {
 	return(mywidths)
   }
 
-	gfiles.not.us <- geofile(states.abbreviated.mine)
+	gfiles.not.us <- geofile(mystates)
 	# REMOVE THE US NATIONWIDE GEO FILE IN CASE THE USER SPECIFIED IT (SINCE IT DOESN'T ACTUALLY HAVE BLOCK GROUPS AND TRACTS)
 	gfiles.not.us <- gfiles.not.us[gfiles.not.us!=geofile("us")]
 
@@ -146,7 +152,8 @@ read.geo <- function(states.abbreviated.mine) {
 	for (this.file in gfiles.not.us) {
 	    
 	    #cat(this.file)
-	    cat(states.abbreviated.mine[states.abbreviated.mine!='us'][i]); i <- i + 1
+	    cat(mystates[mystates!='us'][i]); i <- i + 1
+	    
 		############## THE FORMAT IS NOT CSV - IT IS FIXED FORMAT ***** widths taken from Census PDF technical documentation
 		#  ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf
 		# Negative-width fields are used to indicate columns to be skipped, e.g., -5 to skip 5 columns. 
@@ -158,7 +165,7 @@ read.geo <- function(states.abbreviated.mine) {
 		# It seems to be Latin1 encoding, but OSX had trouble reading NAME field despite specifying encoding
 			# also tried  fileEncoding="latin1"
 
-		this.data <- read.fwf(this.file, 
+		this.data <- read.fwf(file.path(folder, this.file), 
 			widths=getwidths(geofields), as.is=TRUE, header=FALSE, 
 			fileEncoding="ISO-8859-1", encoding="ISO-8859-1", strip.white=TRUE, 
 			nrows=295000,
@@ -175,11 +182,3 @@ read.geo <- function(states.abbreviated.mine) {
 	cat('\n')
 	return(bigtable.g)
 }
-# end of read.geo function
-
-# example
-# geo <- read.geo(c("dc", "de"))
-# saved example:
-# load("geo - US geo file cleaned.RData")
-
-

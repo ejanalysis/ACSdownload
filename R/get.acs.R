@@ -164,19 +164,28 @@
 #'   Can be '2010' for example. Not all years are tested.
 #' @param mystates Character vector, optional, 'all' by default which means all available states 
 #'   plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.
-#' @return By default, returns a list with datatables and information about them. ***
+#' @param summarylevel Default is "both" in which case tracts and block groups are returned, 
+#'   but if "tract" specified, just tracts are returned, 
+#'   and if summarylevel is anything else, just block groups are returned.
+#' @param new.geo Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously. 
+#' @param writefiles Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.
+#' @param save.files Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.
+#' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat(), and more files (csv) are saved in working directory.
+#' 
+#' @return By default, returns a list with datatables and information about them, with three elements in the list: \cr
+#'   bg, tracts, and info. The info element is a table of metadata such as long field names. 
 #' @seealso \pkg{acs} package which allows you to download and work with ACS data (using the API and your own key).
 #' @examples 
-#' \dontrun{
-#' out <- get.acs(mystates=c('dc','de')) # Just DC & DE, just the default table.
-#' head(out$info); head(out$bg)
-#' out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))  # just 2 tables for just Delaware
-#' head(out$info); head(out$bg)
-#' out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results') # uses all EJSCREEN defaults and the specified folders
-#' head(out$info); head(out$bg)
-#' out <- get.acs(tables=c('ejscreen', 'B16001')) # all tables needed for EJSCREEN, plus 'B16001', with variables specified in 'variables needed.csv', all states&DC &PR?
-#' head(out$info); head(out$bg)
-#' }
+#'  \dontrun{
+#'   out <- get.acs(mystates=c('dc','de')) # Just DC & DE, just the default table.
+#'   head(out$info); head(out$bg)
+#'   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))  # just 2 tables for just Delaware
+#'   head(out$info); head(out$bg)
+#'   out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results') # uses all EJSCREEN defaults and the specified folders
+#'   head(out$info); head(out$bg)
+#'   out <- get.acs(tables=c('ejscreen', 'B16001')) # all tables needed for EJSCREEN, plus 'B16001', with variables specified in 'variables needed.csv', all states&DC &PR?
+#'   head(out$info); head(out$bg)
+#'  }
 #' @export
 get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base.path, 'acsdata'), output.path=file.path(base.path, 'acsoutput'),
                     end.year='2012', mystates='all', summarylevel='both',
@@ -539,7 +548,7 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
   if (testing) { print('before rbind, this is the dot m version');print(str(table.info.best.m)); cat('\n\n') }
   table.info.best <- rbind(table.info.best, table.info.best.m)
   if (testing) { print('str of table.info.best now'); print(str(table.info.best));print(table.info.best);cat('\n\n') }
-  table.info.best <- table.info.best[  intersperse(1:length(table.info.best[,1])) , ]
+  table.info.best <- table.info.best[  analyze.stuff::intersperse(1:length(table.info.best[,1])) , ]
   
   # add the basic info columns up front to match full list of longnames
   rows.to.add <- data.frame(Table.ID=c('KEY', 'FIPS', 'STUSAB', 'GEOID'), Line.Number=0, Table.Title=0, table.var=0, longnames=c('KEY', 'FIPS', 'STUSAB', 'GEOID')) 

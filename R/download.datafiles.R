@@ -1,11 +1,24 @@
+#' @title Download American Community Survey 5-yr data files
+#' @description
+#'   Attempts to download data files (estimates and margins of error) for specified states and tables, 
+#'   from the US Census Bureau's FTP site for American Community Survey (ACS) 5-year summary file data.
+#' 
+#' @param tables Required character vector of table numbers, such as c("B01001", "B03002")
+#' @param end.year Character element, optional, "2012" by default. Defines last of five years of summary file dataset; default is 2008-2012.
+#' @param mystates Character vector, required. Defines states/DC/PR for which files should be downloaded.
+#' @return Effect is to download and save locally a number of data files.
+#' @seealso \code{\link{get.distances}} which allows you to get distances between all points.
+#' @export
 download.datafiles <- function(tables, end.year="2012", mystates) {
 
   # FUNCTION TO DOWNLOAD ZIP FILES WITH DATA (ESTIMATES AND MOE)
   
-	#	****  required "seqfilelistnums"  zipfile(), datafile()
-
+  stateinfo <- ejanalysis::get.state.info()
+  # or now could use data()
+  
 	seqfilelistnums <- which.seqfiles(tables)
-
+	zipfile.prefix    <- get.zipfile.prefix(end.year)
+	
     ##################################################################
     #   OBTAIN ZIP FILES AND DATA FILES FROM INSIDE ZIP FILES
     ##################################################################
@@ -30,7 +43,7 @@ download.datafiles <- function(tables, end.year="2012", mystates) {
 	enames <- ""
 	mnames <- ""
     for (st in mystates) {
-    	zipnames <- c(zipnames, zipfile(st, seqfilelistnums, zipfileprefix))
+    	zipnames <- c(zipnames, zipfile(st, seqfilelistnums, zipfile.prefix))
     	enames <- c(enames, datafile(st, seqfilelistnums))
     }
     mnames <- gsub("^e", "m", enames)
@@ -54,9 +67,9 @@ download.datafiles <- function(tables, end.year="2012", mystates) {
 
     	for (seqfilenum in seqfilelistnums) {
     		zipfile.fullpath <- file.path( url.to.find.zipfile(state.name), zipfile(state.abbrev, seqfilenum) ) 
-    		if (testing) { 
-    		  cat(zipfile.fullpath); cat(' \n')
-    		}
+    		#if (testing) { 
+    		#  cat(zipfile.fullpath); cat(' \n')
+    		#}
     		cat('Checking ', zipfile(state.abbrev, seqfilenum)); cat(' ... ')
 
         # The US estimates and MOE files inside the US zips are empty & size zero.

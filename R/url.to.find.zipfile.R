@@ -21,7 +21,7 @@
 #' @param url.prefix Optional character element that defaults to what is returned by \code{\link{get.url.prefix}(end.year)}
 #' @param end.year Optional end year for 5-year summary file, as character, defaulting to "2012" but ignored if url.prefix is specified
 #' @return Returns character vector that is URL(s) such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile"
-#' @seealso \code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}
+#' @seealso \code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}
 #' @export
 url.to.find.zipfile <- function(mystates, end.year='2012', url.prefix) {
   
