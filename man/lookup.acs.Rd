@@ -56,7 +56,8 @@ This data set provides a variety of health indicators for each US county.
 }
 \seealso{
 \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
-  Also see \code{\link{get.acs}} which uses this.
+  Also see \code{\link{get.lookup.acs}}.
+  Also see \code{\link{get.acs}}.
 }
 \keyword{datasets}
 

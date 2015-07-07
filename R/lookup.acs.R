@@ -38,7 +38,8 @@
 #'     \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
 #'   }
 #' @seealso \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust. 
-#'   Also see \code{\link{get.acs}} which uses this.
+#'   Also see \code{\link{get.lookup.acs}}. 
+#'   Also see \code{\link{get.acs}}.
 #' @examples 
 #'  \dontrun{
 #'  data(lookup.acs, package='ACSdownload')
