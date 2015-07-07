@@ -9,7 +9,11 @@
 #' @seealso \code{\link{get.acs}} and \code{\link{download.geo}} which uses this
 #' @export
 geofile <- function(mystates, end.year="2012") {
-  if (missing(mystates)) { mystates <- get.state.info(fields='ST')}
+  if (missing(mystates)) { 
+    #mystates <- ejanalysis::get.state.info(fields='ST')
+    data(lookup.states, package='proxistat', envir=environment())
+    mystates <- lookup.states$ST
+  }
   datafile.prefix <- get.datafile.prefix(end.year=end.year)
   geofile.prefix =	paste("g", datafile.prefix, sep="")
   geofile.states = 	tolower(mystates)

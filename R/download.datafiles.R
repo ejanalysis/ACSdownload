@@ -9,12 +9,13 @@
 #' @return Effect is to download and save locally a number of data files.
 #' @seealso \code{\link{get.distances}} which allows you to get distances between all points.
 #' @export
-download.datafiles <- function(tables, end.year="2012", mystates) {
+download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()) {
 
   # FUNCTION TO DOWNLOAD ZIP FILES WITH DATA (ESTIMATES AND MOE)
   
-  stateinfo <- ejanalysis::get.state.info()
-  # or now could use data()
+  #stateinfo <- ejanalysis::get.state.info()
+  # or could use 
+  data(lookup.states, package='proxistat', envir = environment()); stateinfo <- lookup.states
   
 	seqfilelistnums <- which.seqfiles(tables)
 	zipfile.prefix    <- get.zipfile.prefix(end.year)
@@ -74,27 +75,30 @@ download.datafiles <- function(tables, end.year="2012", mystates) {
 
         # The US estimates and MOE files inside the US zips are empty & size zero.
         # Just in case any zip files are size zero here, delete them to avoid confusion.
-    		if (file.exists(zipfile(state.abbrev, seqfilenum))) {
-          if (file.info(zipfile(state.abbrev, seqfilenum))$size==0) {
+    		if (file.exists(file.path(folder, zipfile(state.abbrev, seqfilenum)))) {
+          if (file.info(file.path(folder, zipfile(state.abbrev, seqfilenum)))$size==0) {
     		    cat('Warning: File size zero (deleting file now) for '); cat(zipfile(state.abbrev, seqfilenum));cat('\n')
-            file.remove(zipfile(state.abbrev, seqfilenum))
+            file.remove(file.path(folder, zipfile(state.abbrev, seqfilenum)))
     		  }
     		}
     		# DOWNLOAD ZIP IF  zip file is missing AND missing (estimates and/or moe file).
     		# If have zip, or est+moe that was in zip, then don't need to download zip again.
-    		if ( (!file.exists(zipfile(state.abbrev, seqfilenum))) & 
-    		       (!file.exists( datafile(state.abbrev, seqfilenum)) | 
-    		          !file.exists( mfile <- gsub("^e", "m", datafile(state.abbrev, seqfilenum)) ))) {
+    		if ( (!file.exists( file.path(folder, zipfile(state.abbrev, seqfilenum)))) & 
+    		       (!file.exists( file.path(folder, datafile(state.abbrev, seqfilenum))) | 
+    		          !file.exists( mfile <- gsub("^e", "m", file.path(folder, datafile(state.abbrev, seqfilenum))) ))) {
     		  
     		  # IF PROBLEM DOWNLOADING, provide a warning message & retry a few times.
     		  # Note: if (file.exists(zipfile.fullpath) seems to fail at trying to check an FTP site.
     		  ok <- FALSE; attempt <- 1
     		  while (!ok) {
-    		    x <- try(download.file(zipfile.fullpath, zipfile(state.abbrev, seqfilenum), quiet=TRUE) ,silent=TRUE )
+    		    x <- try(download.file(
+    		      zipfile.fullpath, 
+    		      file.path(folder, zipfile(state.abbrev, seqfilenum)), 
+    		      quiet=TRUE), silent=TRUE )
     		    
     		    ok <- TRUE; attempt <- attempt + 1
     		    if (class(x)=="try-error") {
-    		      ok<-FALSE; cat('Attempt #', attempt, " because unable to download data file "); cat(zipfile(state.abbrev, seqfilenum)); cat(" on attempt ",attempt-1," ... \n")
+    		      ok<-FALSE; cat('Attempt #', attempt, " because unable to download data file "); cat(file.path(folder, zipfile(state.abbrev, seqfilenum))); cat(" on attempt ",attempt-1," ... \n")
     		    } else {cat('Downloaded. \n')}
     		    # Some zip downloads give warnings that zip file size is
     		    # WRONG AND THEY ARE CORRUPT. Not clear how to check for and fix that.
@@ -102,8 +106,8 @@ download.datafiles <- function(tables, end.year="2012", mystates) {
             # might need to pause here to allow download to start so file size is not zero when checked below???
             
     		    # Also it is the US estimates and MOE files inside the US zips that are empty & size zero.
-    		    if (file.info(zipfile(state.abbrev, seqfilenum))$size==0) {
-    		      ok<-FALSE; cat('Warning: File size zero for ');cat(zipfile(state.abbrev, seqfilenum));cat('\n')
+    		    if (file.info(file.path(folder, zipfile(state.abbrev, seqfilenum)))$size==0) {
+    		      ok<-FALSE; cat('Warning: File size zero for '); cat(file.path(folder, zipfile(state.abbrev, seqfilenum))); cat('\n')
     		    }
     		    if (attempt > 5) {
     		      cat('\n*** Failed to obtain file after repeated attempts. May need to download manually. ***\n========================================\n')

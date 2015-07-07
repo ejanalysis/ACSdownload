@@ -12,11 +12,11 @@
 #'  \itemize{
 #'    \item \code{\link{url.to.find.zipfile}}
 #'    \item \code{\link{geofile}}
-#'    \item \code{\link{get.stateinfo}}
+#'    \item \code{data(lookup.states, package='proxistat')}
 #'  }
 #' 
 #' @param mystates vector of character 2-letter State abbreviations specifying which are needed
-#' @param end.year end.year of 5-year summary file such as '2012' (default)
+#' @param end.year Specifies end year of 5-year summary file such as '2012' (default)
 #' @param folder folder to use for saving files - default is current working directory
 #' @return Side effect is downloading the file.
 #' @seealso \code{\link{get.acs}} which uses this, and \code{\link{get.read.geo}}
@@ -29,15 +29,21 @@
 download.geo <- function(mystates, end.year="2012", folder=getwd()) {
   
   # ****  get names of states and geo files that correspond to state abbreviations parameter
-  if (is.null(stateabbs) | is.null(statenames)) {
-    stateinfo	<- get.stateinfo()
+  if (!exists('stateabbs') | !exists('statenames') ) {
+    
+    #stateinfo	<- ejanalysis::get.state.info()
+    # or else 
+    data(lookup.states, package='proxistat', envir=environment()); stateinfo <- lookup.states
+    
     statenames	<- stateinfo$ftpname
     stateabbs	<- tolower(stateinfo$ST) # stateabbs may be used later also
   }
   
+  if (missing(mystates)) {mystates <- clean.mystates(stateabbs) }
   mystates <- tolower(mystates)
   
-  geofilenames 	<- geofile(mystates, datafile.prefix)
+  #datafile.prefix 	<- get.datafile.prefix(end.year=end.year)
+  geofilenames 	<- geofile(mystates, end.year=end.year)
   
   statenames.mine <- statenames[match(mystates, stateabbs)]
   # cat(statenames.mine); cat('\n')
@@ -52,9 +58,9 @@ download.geo <- function(mystates, end.year="2012", folder=getwd()) {
       # so avoid downloading the us geo file, which actually has counties etc., not tracts/blocks - A 50+ MB file not needed.
       missing.file <- !file.exists( file.path(folder, geofilenames[statenum]) )
       if (!missing.file) {
-        if (file.info( geofilenames[statenum]  )$size==0) {
-          ok<-FALSE; cat('Warning: File size zero for ');cat(geofilenames[statenum]);cat(' ... removing empty file\n')
-          file.remove(  geofilenames[statenum]  )
+        if (file.info( file.path(folder, geofilenames[statenum] ) )$size==0) {
+          ok <- FALSE; cat('Warning: File size zero for '); cat(geofilenames[statenum]); cat(' ... removing empty file\n')
+          file.remove( file.path(folder, geofilenames[statenum] ) )
         }
       }
       if (missing.file) { 
@@ -63,14 +69,17 @@ download.geo <- function(mystates, end.year="2012", folder=getwd()) {
         ok <- FALSE; attempt <- 1
         while (!ok) {
           cat(paste(rep(' ',21),collapse=''), 'Trying to download '); cat(geofilenames[statenum] ); cat('\n')
-          x <- try(download.file(full.geofilenames[statenum], file.path(folder, geofilenames[statenum]), quiet=TRUE)  )
+          x <- try( download.file( 
+            full.geofilenames[statenum], 
+            file.path(folder, geofilenames[statenum]), quiet=TRUE
+          )  )
           ok <- TRUE; attempt <- attempt + 1
           if (class(x)=="try-error") {
-            ok<-FALSE; paste(rep(' ',21),collapse=''); cat("Warning: Unable to download geo file"); cat(geofilenames[statenum]); cat("\n")
+            ok <- FALSE; paste(rep(' ',21), collapse=''); cat("Warning: Unable to download geo file"); cat(geofilenames[statenum]); cat("\n")
           }
-          if (file.info( geofilenames[statenum]  )$size==0) {
-            ok<-FALSE; cat(paste(rep(' ',21),collapse=''), 'Warning: File size zero for ');cat(geofilenames[statenum]);cat('\n')
-            file.remove(  geofilenames[statenum]  )
+          if (file.info( file.path(folder, geofilenames[statenum] ) )$size==0) {
+            ok <- FALSE; cat(paste(rep(' ',21), collapse=''), 'Warning: File size zero for '); cat(geofilenames[statenum]);cat('\n')
+            file.remove( file.path(folder, geofilenames[statenum] ) )
           }
           if (attempt > 5) {
             cat('\n', paste(rep(' ',21),collapse=''),'*** Failed to obtain geo file after repeated attempts. May need to download manually. ***\n')

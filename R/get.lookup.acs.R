@@ -42,26 +42,29 @@
 #'  }
 #' @export
 get.lookup.acs <- function(end.year="2012", folder=getwd()) {
-
-	my.url.prefix.lookup.table <- get.url.prefix.lookup.table(end.year)  # paste("ftp://ftp.census.gov/acs", end.year, "_5yr/summaryfile/", sep="") # but lacking last /
-	my.lookup.file.name <- get.lookup.file.name(end.year) # "Sequence_Number_and_Table_Number_Lookup.txt"
-	
-	# Use the working directory to download the file.
-	if ( !exists("lookup.acs") ) {
-		if (!file.exists(file.path(folder, my.lookup.file.name)) ) {
-			cat("  Downloading lookup table with table and variable names\n")
-			try(download.file( paste( my.url.prefix.lookup.table, my.lookup.file.name, sep=""), file.path(folder, my.lookup.file.name) ))
-			if (!file.exists(file.path(folder, my.lookup.file.name)) ) {stop('Failed to download lookup table of variable names by table')}
-			# could add error checking here to verify it was downloaded correctly
-		}
-		cat("  Reading lookup table with table and variable names\n")	
-		# [File ID,]Table ID,Sequence Number,  Line Number,Start Position,  Total Cells in Table,  Total Cells in Sequence,  Table Title,Subject Area
-		my.lookup <- read.csv(file.path(folder, my.lookup.file.name), stringsAsFactors=FALSE, colClasses=c(
-		"character", "character", "character", "numeric", "numeric", "character", "numeric", "character", "character"))
-		my.lookup$File.ID <- NULL	
-		
-		# could add error checking here to verify it was read from disk correctly ***
-		
-		return(my.lookup)
-	} else {return(lookup.acs)}
+  
+  my.url.prefix.lookup.table <- get.url.prefix.lookup.table(end.year)  # paste("ftp://ftp.census.gov/acs", end.year, "_5yr/summaryfile/", sep="") # but lacking last /
+  my.lookup.file.name <- get.lookup.file.name(end.year) # "Sequence_Number_and_Table_Number_Lookup.txt"
+  
+  # Use the working directory to download the file.
+  if ( !exists("lookup.acs") ) {
+    if (!file.exists(file.path(folder, my.lookup.file.name)) | file.size(file.path(folder, my.lookup.file.name))==0 ) {
+      cat("  Downloading lookup table with table and variable names from", paste( my.url.prefix.lookup.table, my.lookup.file.name, sep=""),"\n")
+      try(download.file( 
+        paste( my.url.prefix.lookup.table, my.lookup.file.name, sep=""), 
+        file.path(folder, my.lookup.file.name) 
+      ))
+      if (!file.exists(file.path(folder, my.lookup.file.name)) | file.size(file.path(folder, my.lookup.file.name))==0) {stop('Failed to download lookup table of variable names by table')}
+      # could add error checking here to verify it was downloaded correctly
+    }
+    cat("  Reading lookup table with table and variable names\n")	
+    # [File ID,]Table ID,Sequence Number,  Line Number,Start Position,  Total Cells in Table,  Total Cells in Sequence,  Table Title,Subject Area
+    my.lookup <- read.csv(file.path(folder, my.lookup.file.name), stringsAsFactors=FALSE, colClasses=c(
+      "character", "character", "character", "numeric", "numeric", "character", "numeric", "character", "character"))
+    my.lookup$File.ID <- NULL	
+    
+    # could add error checking here to verify it was read from disk correctly ***
+    
+    return(my.lookup)
+  } else {return(lookup.acs)}
 }

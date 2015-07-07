@@ -10,7 +10,7 @@ get.url.prefix.lookup.table(end.year = "2012")
 \item{end.year}{Optional end year for 5-year summary file, as character, defaulting to "2012"}
 }
 \value{
-Returns character element that is first part of URL such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile"
+Returns character element that is first part of URL such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile/"
 }
 \description{
 Returns first part of URL(s) of folders (on Census Bureau FTP site) with zip file(s) based on end year.

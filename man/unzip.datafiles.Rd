@@ -4,7 +4,8 @@
 \alias{unzip.datafiles}
 \title{Unzip ACS datafile per state, downloading missing ones first}
 \usage{
-unzip.datafiles(tables, mystates, folder = getwd())
+unzip.datafiles(tables, mystates, folder = getwd(), end.year = "2012",
+  testing = FALSE, attempts = 5)
 }
 \arguments{
 \item{tables}{Character vector of table numbers needed such as 'B01001'}
@@ -12,9 +13,15 @@ unzip.datafiles(tables, mystates, folder = getwd())
 \item{mystates}{Character vector of 2-character state abbreviations. Default is all states.}
 
 \item{folder}{Default is current working directory.}
+
+\item{end.year}{Default is "2012" -- specifies last year of 5-year summary file.}
+
+\item{testing}{Default is FALSE. If TRUE, prints filenames but does not unzip them.}
+
+\item{attempts}{Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.}
 }
 \value{
-Side effect is unzipping file on disk
+Side effect is unzipping file on disk (unless testing=TRUE)
 }
 \description{
 Unzip ACS datafile for each specified US State, extracting specified table(s), downloading missing zip files first.

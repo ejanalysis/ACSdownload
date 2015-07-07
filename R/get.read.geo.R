@@ -20,6 +20,7 @@
 #' @param mystates Character vector of 2-character state abbreviations, required.
 #' @param new.geo Logical value, optional, FALSE by default. If FALSE, if geo exists in memory don't download and parse again.
 #' @param folder Defaults to current working directory.
+#' @param end.year Defaults to "2012" to specify last year of 5-year summary file.
 #' @return Returns a data.frame of all states geo info. \cr
 #'   # FOR ACS 2008-2012, tract and block group counts: \cr
 #'   table(geo$SUMLEVEL) \cr
@@ -40,7 +41,7 @@
 #'  By removing these characters, the new GEOID in the ACS Summary File exactly matches the field GEOID in the TIGER/Line Shapefiles.
 #' @seealso \code{\link{get.acs}} which uses this, and \code{\link{download.geo}}
 #' @export
-get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd()) {
+get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd(), end.year='2012') {
   
   if (!new.geo) { # IF DO NOT WANT TO REDO WORK TO GET GEO DATA
     if (exists('geo')) {
@@ -61,7 +62,7 @@ get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd()) {
       }
     }
   }
-
+  
   if (new.geo) {  # IF WANT NEW GEO, do download & parse new geo.
     # if user choice is to create a new geo dataset, (default), do that here (downloading if needed, then parsing):
     
@@ -84,7 +85,7 @@ get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd()) {
     gc()
     
     # CLEAN UP THE geo DATA
-
+    
     cat(as.character(Sys.time()), ' '); cat("Started cleaning up geo files \n")
     # Cut white space (OR drop GEOID entirely), (but already used trim.whitespace so redundant)
     geo$GEOID <- gsub(" *$", "", geo$GEOID)
@@ -129,7 +130,7 @@ get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd()) {
     # unless first run on a few places and then expanded to more states? *** problem if sees small geo and doesn't make bigger one!
     cat(as.character(Sys.time()), ' '); cat("Started saving geo files on disk \n")
     # can save on disk in case a copy is needed later
-    save(geo, file="geo.RData")
+    save(geo, file=file.path(folder, "geo.RData"))
     cat(as.character(Sys.time()), ' '); cat("Finished saving geo.RData file on disk \n")
     #  }
   }

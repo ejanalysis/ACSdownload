@@ -4,12 +4,21 @@
 \alias{set.needed}
 \title{Specify which ACS Variables are Needed}
 \usage{
-set.needed(tables, lookup.acs)
+set.needed(tables, lookup.acs, askneeded = FALSE, folder = getwd())
 }
 \arguments{
 \item{tables}{Character vector, required. Specifies which ACS tables.}
 
 \item{lookup.acs}{Data.frame, optional. Defines which variables are in which tables. Output of \code{\link{get.lookup.acs}}}
+
+\item{askneeded}{Optional logical, default is TRUE, specifies whether to pause and
+ask user about variables needed in interactive session.
+If FALSE, just looks for file called "variables needed.csv" that should specify which variables to keep from each table.
+The format of that file should be the same as is found in the file "variables needed template.csv" created by this function.
+If the "variables needed.csv" file is not found, it looks for and uses the file called "variables needed template.csv"
+which is written by this function and specifies all of the variables from each table.}
+
+\item{folder}{Optional path, default is getwd(), specifying where to save the csv files that define needed variables.}
 }
 \value{
 Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.

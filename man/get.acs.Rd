@@ -7,8 +7,9 @@
 get.acs(tables = "B01001", base.path = getwd(),
   data.path = file.path(base.path, "acsdata"),
   output.path = file.path(base.path, "acsoutput"), end.year = "2012",
-  mystates = "all", summarylevel = "both", new.geo = TRUE,
-  writefiles = FALSE, save.files = FALSE, testing = FALSE)
+  mystates = "all", summarylevel = "both", askneeded = FALSE,
+  new.geo = TRUE, writefiles = FALSE, save.files = FALSE,
+  testing = FALSE)
 }
 \arguments{
 \item{tables}{Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
@@ -35,6 +36,13 @@ plus DC and PR but not VI etc. Defines which States to include in downloads of d
 but if "tract" specified, just tracts are returned,
 and if summarylevel is anything else, just block groups are returned.}
 
+\item{askneeded}{Optional logical, default is TRUE, specifies whether to pause and
+ask user about which variables are needed in an interactive session.
+If FALSE, it just looks (in \code{folder}) for file called "variables needed.csv" that should specify which variables to keep from each table.
+The format of that file should be the same as is found in the file "variables needed template.csv" created by this function.
+If the "variables needed.csv" file is not found, it looks for and uses the file called "variables needed template.csv"
+which is written by this function and specifies all of the variables from each table.}
+
 \item{new.geo}{Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously.}
 
 \item{writefiles}{Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.}
@@ -45,7 +53,17 @@ and if summarylevel is anything else, just block groups are returned.}
 }
 \value{
 By default, returns a list with datatables and information about them, with three elements in the list: \cr
-  bg, tracts, and info. The info element is a table of metadata such as long field names.
+  bg, tracts, and info. The info element is a table of metadata such as short and long field names: \cr\cr
+  'data.frame':	xxxx obs. of  9 variables:  \cr
+ $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...  \cr
+ $ line           : num  1 2 3 4 5 6 7 8 9 10 ...  \cr
+ $ shortname      : chr  "B01001.001" "B01001.002" "B01001.003" "B01001.004" ...  \cr
+ $ longname       : chr  "Total:" "Male:" "Under 5 years" "5 to 9 years" ...  \cr
+ $ table.title    : chr  "SEX BY AGE" "SEX BY AGE" "SEX BY AGE" "SEX BY AGE" ...  \cr
+ $ universe       : chr  "Universe:  Total population" "Universe:  Total population" "Universe:  Total population" "Universe:  Total population" ...  \cr
+ $ subject        : chr  "Age-Sex" "Age-Sex" "Age-Sex" "Age-Sex" ...  \cr
+ $ longname2      : chr  "Total" "Male" "Under5years" "5to9years" ...  \cr
+ $ longname.unique: chr  "Total:|SEX BY AGE" "Male:|SEX BY AGE" "Under 5 years|SEX BY AGE" "5 to 9 years|SEX BY AGE" ...  \cr
 }
 \description{
 This function will download and parse 1 or more tables of data from the American Community Survey's

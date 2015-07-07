@@ -1,12 +1,10 @@
-######################################
-#	R CODE TO OBTAIN AND WORK WITH CENSUS BUREAU'S AMERICAN COMMUNITY SURVEY (ACS) 5-YEAR SUMMARY FILE DATA
-#	2013-12-12
-######################################
-
-#################################
-#	FUNCTION TO CONCATENATE ALL THE TABLES (FROM VARIOUS SEQUENCE FILES) INTO ONE FINAL TABLE
-#################################
-
+#' @title Concatenate several ACS data tables into one big table
+#'
+#' @description Concatenate several ACS data tables into one big table
+#' @param my.list.of.tables Required list of data tables from prior steps in \code{\link{get.acs}}
+#' @return Returns one big data.frame with all columns of all input tables
+#' @seealso \code{\link{get.acs}}
+#' @export
 merge.tables <- function(my.list.of.tables) {
 
 	# fields already removed:

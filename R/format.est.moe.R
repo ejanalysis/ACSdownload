@@ -1,12 +1,11 @@
-######################################
-#	R CODE TO OBTAIN AND WORK WITH CENSUS BUREAU'S AMERICAN COMMUNITY SURVEY (ACS) 5-YEAR SUMMARY FILE DATA
-#	2013-12-12
-######################################
-
-#################################
-#	FUNCTION TO REORDER COLUMNS AS KEYCOLS, THEN EST, MOE, EST, MOE, ETC.
-#################################
-
+#' @title Reorder cols of estimates and MOE table
+#' @description
+#'  Start with a table that has all the estimates columns together, followed by all the MOEs columns, 
+#'  and create a new column sort order so that estimates will be interspersed with (next to) their MOE values, as FactFinder format provides.
+#' @param my.list.of.tables Required list of tables from earlier steps in \code{\link{get.acs}}
+#' @return List of tables like input but with columns sorted in a new order.
+#' @seealso \code{\link{get.acs}} and \code{\link[analyze.stuff]{intersperse}}
+#' @export
 format.est.moe <- function(my.list.of.tables) {
 
 	for (i in 1:length(my.list.of.tables)) {

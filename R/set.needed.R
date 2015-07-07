@@ -4,11 +4,18 @@
 #'   User can specify this in a file in the working directory, modifying "variables needed template.csv" 
 #'   that this function can create based on tables parameter, to create user-defined "variables needed.csv" 
 #' @param tables Character vector, required. Specifies which ACS tables.
+#' @param folder Optional path, default is getwd(), specifying where to save the csv files that define needed variables.
 #' @param lookup.acs Data.frame, optional. Defines which variables are in which tables. Output of \code{\link{get.lookup.acs}}
+#' @param askneeded Optional logical, default is TRUE, specifies whether to pause and 
+#'   ask user about variables needed in interactive session. 
+#'   If FALSE, just looks for file called "variables needed.csv" that should specify which variables to keep from each table. 
+#'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function. 
+#'   If the "variables needed.csv" file is not found, it looks for and uses the file called "variables needed template.csv" 
+#'   which is written by this function and specifies all of the variables from each table.
 #' @return Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.
 #' @seealso \code{\link{get.acs}} which uses this
 #' @export
-set.needed <- function(tables, lookup.acs) {
+set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd()) {
   
   if (missing(lookup.acs)) {
     lookup.acs <- get.lookup.acs()
@@ -91,32 +98,36 @@ set.needed <- function(tables, lookup.acs) {
   needed$varname2 <- gsub("\"", "", needed$varname2)
   
   #  save the template for user to start from
-  write.csv(needed, "variables needed template.csv", row.names=FALSE)
+  write.csv(needed, file.path(folder, "variables needed template.csv"), row.names=FALSE)
   cat('  Finished writing template file to working directory on disk: variables needed template.csv\n')
   ##############################################################################
   os <- analyze.stuff::get.os()
   
   # windows user could do this interactively, but Mac OSX requires installation of xwindows for the edit() functionality.
   if (os=="win") {  
-    inp <- 0
-    print("You may now edit the input file specifying which variables are needed, or read the input file if already saved on disk.")
-    inp <- readline("Press n to edit now onscreen interactively --and to use all fields then just close edit window-- or press y if ready to import an already-saved input file from disk called 'variables needed.csv'")
+    inp <- 'n'
+    if (askneeded) {
+      print("You may now edit the input file specifying which variables are needed, or read the input file if already saved on disk.")
+      inp <- readline("Press n to edit now onscreen interactively --and to use all fields then just close edit window-- 
+                    or press y if ready to import an already-saved input file from disk called 'variables needed.csv'")
+      
+      # NOTE: THIS WON'T STOP AND WAIT FOR INPUT IF CODE IS COPIED AND PASTED INTO R CONSOLE.	
+      # & the while() was an attempt to keep it here while rest of pasted text is read.
+    }
     
-    # NOTE: THIS WON'T STOP AND WAIT FOR INPUT IF CODE IS COPIED AND PASTED INTO R CONSOLE.	
-    # & the while() was an attempt to keep it here while rest of pasted text is read.
-    
-    if (tolower(substr(inp,1,1))=="n") {
+    if (askneeded & tolower(substr(inp,1,1))=="n") {
       needed <- edit(needed) 
       # SAVE THESE windows SELECTIONS IN CASE WANT TO REUSE THEM BY IMPORTING HERE LATER
-      write.csv(needed, "variables needed.csv", row.names=FALSE)
-      cat('  Finished writing updated  variables needed.csv\n')
+      write.csv(needed, file.path(folder, "variables needed.csv"), row.names=FALSE)
+      cat('  Finished writing updated file: variables needed.csv\n')
     } else {
-      cat("  Reading input file of variable selections, variables needed.csv (or template for all variables if variables needed.csv was not found)\n")    
+      cat("  Reading input file of variable selections, variables needed.csv 
+          (or template for all variables if variables needed.csv was not found)\n")    
       if (file.exists("variables needed.csv")) {
-        needed <- read.csv(file="variables needed.csv", as.is=TRUE)
+        needed <- read.csv(file=file.path(folder, "variables needed.csv"), as.is=TRUE)
         cat('  Finished reading  variables needed.csv\n')
       } else { 
-        needed <-  read.csv(file="variables needed template.csv", as.is=TRUE) 
+        needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE) 
         cat('  Finished reading  variables needed template.csv\n')
       }
     }
@@ -127,21 +138,25 @@ set.needed <- function(tables, lookup.acs) {
     #try to pause here to allow user to edit the template and save it as "variables needed.csv"
     # SHOULD GIVE OPTION TO JUST GET ALL VARIABLES AS DEFAULT
     x <- 0
-    # NOTE: THIS WON'T STOP AND WAIT FOR INPUT IF CODE IS COPIED AND PASTED INTO R CONSOLE.	      
-    x <- readline("Just import full tables? (y for full, n to specify variables and/or custom names for variables):")
+    if (askneeded) {
+      # NOTE: THIS WON'T STOP AND WAIT FOR INPUT IF CODE IS COPIED AND PASTED INTO R CONSOLE.	      
+      x <- readline("Just import full tables? (y for full, n to specify variables and/or custom names for variables):")
+    } else {
+      x <- 'y'
+    }
     xx <- 0
     if (tolower(substr(x,1,1))=="n") {
       xx <- readline("Prepare input file 'variables needed.csv' in working directory, using 'variables needed template.csv' as a template. Press y when file is ready.")
       cat("  Reading input file of variable selections, variables needed.csv (or template for all variables if variables needed.csv was not found)\n")
       if (file.exists("variables needed.csv")) {
-        needed <- read.csv(file="variables needed.csv", as.is=TRUE)
+        needed <- read.csv(file=file.path(folder, "variables needed.csv"), as.is=TRUE)
         cat('  Finished reading  variables needed.csv\n')
       } else { 
-        needed <-  read.csv(file="variables needed template.csv", as.is=TRUE) 
+        needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE) 
         cat('  Finished reading  variables needed template.csv\n')
       }
     } else {
-      needed <-  read.csv(file="variables needed template.csv", as.is=TRUE) 
+      needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE) 
       cat('  Using file called variables needed template.csv ... Finished reading  variables needed template.csv\n')          
     }
     

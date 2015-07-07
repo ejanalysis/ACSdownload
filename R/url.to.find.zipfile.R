@@ -26,7 +26,7 @@
 url.to.find.zipfile <- function(mystates, end.year='2012', url.prefix) {
   
   if (missing(mystates)) {
-    # default is to get all states # which I believe includes USA and PR and DC
+    # default is to get all states # which includes DC, AND "AS" "GU" "MP" "PR" "UM" "VI" "US"
     require(proxistat)
     data(lookup.states, envir = environment())
     mystates <- lookup.states$ST

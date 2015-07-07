@@ -9,7 +9,7 @@ download.geo(mystates, end.year = "2012", folder = getwd())
 \arguments{
 \item{mystates}{vector of character 2-letter State abbreviations specifying which are needed}
 
-\item{end.year}{end.year of 5-year summary file such as '2012' (default)}
+\item{end.year}{Specifies end year of 5-year summary file such as '2012' (default)}
 
 \item{folder}{folder to use for saving files - default is current working directory}
 }
@@ -28,7 +28,7 @@ Downloads to the current working directory unless another folder is specified.
  \itemize{
    \item \code{\link{url.to.find.zipfile}}
    \item \code{\link{geofile}}
-   \item \code{\link{get.stateinfo}}
+   \item \code{data(lookup.states, package='proxistat')}
  }
 }
 \examples{

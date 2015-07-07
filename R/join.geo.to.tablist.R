@@ -1,17 +1,18 @@
-######################################
-#	R CODE TO OBTAIN AND WORK WITH CENSUS BUREAU'S AMERICAN COMMUNITY SURVEY (ACS) 5-YEAR SUMMARY FILE DATA
-#	2013-12-12
-######################################
+#' @title Join US ACS data and US geo files on FIPS
+#' @description Read the processed csv files of estimates and MOE (margin of error) for American Community Survey (ACS) 
+#'   5-year summary file data obtained from US Census FTP site, and join with geographic information from geo file. 
+#' @param mygeo Required geo file. See \code{\link{get.acs}} and \code{\link{get.read.geo}}
+#' @param my.list.of.tables List of data tables resulting from prior steps in \code{\link{get.acs}}
+#' @param folder Default is current working directory.
+#' @param save.csv FALSE by default. Specifies whether to save each data table as csv format file.
+#' @param testing Default is FALSE. If TRUE, prints more information.
+#' @param sumlevel Default is "both", specifies if "tracts" or "blockgroups" or "both" should be used.
+#' @return Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.
+#' @seealso \code{\link{get.acs}} and \code{\link{get.read.geo}}
+#' @export
+join.geo.to.tablist <- function(mygeo, my.list.of.tables, save.csv=FALSE, sumlevel='both', folder=getwd(), testing=FALSE) {
 
-##################################################################
-#  3. MERGE/JOIN GEO TO DATA FILES
-##################################################################
-
-join.geo.to.tablist <- function(mygeo, my.list.of.tables, save.csv=FALSE, sumlevel='both') {
-
-#################################
 #	FUNCTION TO join (merge) US data and US geo files on FIPS
-#################################
 
 # Do geo join for one seqfile at a time, or actually one table at a time.
 # That is somewhat inefficient because geo merge has to be done repeatedly instead of once.
@@ -46,7 +47,7 @@ join.geo.to.tablist <- function(mygeo, my.list.of.tables, save.csv=FALSE, sumlev
 		rm(bigtable)
 		if (save.csv) {
 			this.tab <- names(my.list.of.tables)[i]
-			write.csv(my.list.of.tables[[i]], file=paste("ACS", datafile.prefix, "-", this.tab, ".csv", sep=""), row.names=FALSE)
+			write.csv(my.list.of.tables[[i]], file=file.path(folder, paste("ACS", datafile.prefix, "-", this.tab, ".csv", sep="")), row.names=FALSE)
 			# save(bigtable, file=paste("ACS", datafile.prefix, "-", this.tab, ".RData", sep=""))
 		}
 	}

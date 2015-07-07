@@ -4,7 +4,7 @@
 \alias{download.datafiles}
 \title{Download American Community Survey 5-yr data files}
 \usage{
-download.datafiles(tables, end.year = "2012", mystates)
+download.datafiles(tables, end.year = "2012", mystates, folder = getwd())
 }
 \arguments{
 \item{tables}{Required character vector of table numbers, such as c("B01001", "B03002")}
