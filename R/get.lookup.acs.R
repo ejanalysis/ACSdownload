@@ -35,7 +35,7 @@
 #'   [1] "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position"\cr
 #'   [6] "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"\cr
 #' @seealso \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust. 
-#'   Also see \code{\link{get.acs}} which uses this.
+#'   Also see \code{data(lookup.acs)}. Also see \code{\link{get.acs}} which uses this.
 #' @examples 
 #'  \dontrun{
 #'  lookup.acs <- get.lookup.acs()

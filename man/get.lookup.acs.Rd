@@ -53,6 +53,6 @@ Note that lookup may already be in memory from prior work and is not downloaded 
 }
 \seealso{
 \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
-  Also see \code{\link{get.acs}} which uses this.
+  Also see \code{data(lookup.acs)}. Also see \code{\link{get.acs}} which uses this.
 }
 
