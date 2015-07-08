@@ -16,6 +16,7 @@ This R package helps you download and parse raw data from the
   \url{http://www.census.gov/geo/maps-data/data/tiger-data.html} and data at
   \url{http://www.census.gov/geo/maps-data/data/gazetteer.html}
   \cr\cr
+  The key function is \code{\link{get.acs}}
 }
 \author{
 info@ejanalysis.com <info@ejanalysis.com>
@@ -25,6 +26,7 @@ info@ejanalysis.com <info@ejanalysis.com>
 \url{http://www.ejanalysis.com}\cr
 }
 \seealso{
-\pkg{acs} package for downloading more modest amounts of ACS data and working with it.
+\pkg{acs} package which lets one obtain more limited amounts of ACS data
+  but provides better tools for working with the data once obtained.
 }
 

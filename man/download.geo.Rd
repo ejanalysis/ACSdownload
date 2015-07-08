@@ -4,7 +4,8 @@
 \alias{download.geo}
 \title{Download GEO txt file(s) with geo information for ACS}
 \usage{
-download.geo(mystates, end.year = "2012", folder = getwd())
+download.geo(mystates, end.year = "2012", folder = getwd(),
+  testing = FALSE)
 }
 \arguments{
 \item{mystates}{vector of character 2-letter State abbreviations specifying which are needed}
@@ -12,6 +13,8 @@ download.geo(mystates, end.year = "2012", folder = getwd())
 \item{end.year}{Specifies end year of 5-year summary file such as '2012' (default)}
 
 \item{folder}{folder to use for saving files - default is current working directory}
+
+\item{testing}{Default to FALSE. If TRUE, provides info on progress of download.}
 }
 \value{
 Side effect is downloading the file.

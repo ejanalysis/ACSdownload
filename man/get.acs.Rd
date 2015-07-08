@@ -49,7 +49,7 @@ which is written by this function and specifies all of the variables from each t
 
 \item{save.files}{Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.}
 
-\item{testing}{Default is FALSE, but if TRUE more information is shown on progress, using cat(), and more files (csv) are saved in working directory.}
+\item{testing}{Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.}
 }
 \value{
 By default, returns a list with datatables and information about them, with three elements in the list: \cr
