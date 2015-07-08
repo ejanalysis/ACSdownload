@@ -16,7 +16,7 @@ unzip.datafiles(tables, mystates, folder = getwd(), end.year = "2012",
 
 \item{end.year}{Default is "2012" -- specifies last year of 5-year summary file.}
 
-\item{testing}{Default is FALSE. If TRUE, prints filenames but does not unzip them.}
+\item{testing}{Default is FALSE. If TRUE, prints more info.}
 
 \item{attempts}{Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.}
 }

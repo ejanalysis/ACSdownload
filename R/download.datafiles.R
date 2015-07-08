@@ -7,10 +7,11 @@
 #' @param end.year Character element, optional, "2012" by default. Defines last of five years of summary file dataset; default is 2008-2012.
 #' @param mystates Character vector, required. Defines states/DC/PR for which files should be downloaded.
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
+#' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
 #' @return Effect is to download and save locally a number of data files.
 #' @seealso \code{\link{get.distances}} which allows you to get distances between all points.
 #' @export
-download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd(), testing=FALSE) {
+download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd(), testing=FALSE, attempts=5) {
 
   # FUNCTION TO DOWNLOAD ZIP FILES WITH DATA (ESTIMATES AND MOE)
 
@@ -110,7 +111,7 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
     		    if (file.info(file.path(folder, zipfile(state.abbrev, seqfilenum)))$size==0) {
     		      ok<-FALSE; cat('Warning: File size zero for '); cat(file.path(folder, zipfile(state.abbrev, seqfilenum))); cat('\n')
     		    }
-    		    if (attempt > 5) {
+    		    if (attempt > attempts) {
     		      cat('\n*** Failed to obtain file after repeated attempts. May need to download manually. ***\n========================================\n')
     		      break
     		    }

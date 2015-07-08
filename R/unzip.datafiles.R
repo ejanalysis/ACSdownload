@@ -6,7 +6,7 @@
 #' @param mystates Character vector of 2-character state abbreviations. Default is all states.
 #' @param folder Default is current working directory.
 #' @param end.year Default is "2012" -- specifies last year of 5-year summary file.
-#' @param testing Default is FALSE. If TRUE, prints filenames but does not unzip them.
+#' @param testing Default is FALSE. If TRUE, prints more info.
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
 #' @return Side effect is unzipping file on disk (unless testing=TRUE)
 #' @seealso \code{\link{get.acs}}
@@ -38,12 +38,14 @@ unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012',
       mfile <- gsub("^e", "m", efile)
       if (testing) {
         zipfile.prefix <- get.zipfile.prefix(end.year)
-        print(zipfile(state.abbrev, seqfilenum, zipfile.prefix))
+        print( file.path(folder, zipfile(state.abbrev, seqfilenum)) )
+        #print(                   zipfile(state.abbrev, seqfilenum, zipfile.prefix))
+        #print(   c( efile, mfile))
         print(cbind(efile, mfile))
       }
-      if (!testing) {
 
-        if (!file.exists(file.path(folder, efile)) || !file.exists(file.path(folder, mfile))) {
+
+        if (!file.exists(file.path(folder, efile)) | !file.exists(file.path(folder, mfile))) {
           ok <- FALSE; attempt <- 1
           while (!ok) {
 
@@ -55,13 +57,13 @@ unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012',
 
             ok <- TRUE; attempt <- attempt + 1
             # Could check if efile and mfile now exist & retry zip download if not
-            if (!file.exists(file.path(folder, efile)) || !file.exists(file.path(folder, mfile))) {
+            if (!file.exists(file.path(folder, efile)) | !file.exists(file.path(folder, mfile))) {
               ok <- FALSE
             } else {
 
               # CHECK IF PROBLEM WITH FILE SIZE ZERO
               # Actually it is the US estimates and MOE files inside the US zips that are empty & size zero.
-              if (file.info(file.path(folder, efile))$size==0 || file.info(file.path(folder, mfile))$size==0) {
+              if (file.info(file.path(folder, efile))$size==0 | file.info(file.path(folder, mfile))$size==0) {
                 cat('Problem: File size zero for '); cat(efile); cat(' or '); cat(mfile); cat('\n')
                 ok <- FALSE
               }
@@ -81,7 +83,7 @@ unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012',
           }
 
         }
-      }
+
     }
   }
 

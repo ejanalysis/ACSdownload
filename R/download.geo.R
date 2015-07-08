@@ -19,6 +19,7 @@
 #' @param end.year Specifies end year of 5-year summary file such as '2012' (default)
 #' @param folder folder to use for saving files - default is current working directory
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
+#' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
 #' @return Side effect is downloading the file.
 #' @seealso \code{\link{get.acs}} which uses this, and \code{\link{get.read.geo}}
 #' @examples
@@ -27,7 +28,7 @@
 #'    download.geo( c("pr", "dc") )
 #'  }
 #' @export
-download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALSE) {
+download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALSE, attempts=5) {
 
   # ****  get names of states and geo files that correspond to state abbreviations parameter
   if (!exists('stateabbs') | !exists('statenames') ) {
@@ -74,14 +75,16 @@ download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALS
           x <- try( download.file(
             full.geofilenames[statenum],
             file.path(folder, geofilenames[statenum]), quiet=!testing
-          )  )
+          ), silent=!testing  )
 
-          # on windows:
+          # on windows in RStudio there is a bug/issue as of 7/2015 in using download.file():
           #Error in download.file(full.geofilenames[statenum], file.path(folder,  :
           #cannot open URL 'ftp://ftp.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset/Delaware/Tracts_Block_Groups_Only/g20125de.txt'
           #In addition: Warning message:
           #  In download.file(full.geofilenames[statenum], file.path(folder,  :
           #     InternetOpenUrl failed: 'The FTP session was terminated'
+          # Fixed issue by changing RStudio options:
+          # http://stackoverflow.com/questions/22721819/download-file-fails-in-rstudio
 
           ok <- TRUE; attempt <- attempt + 1
           if (class(x)=="try-error") {
@@ -91,7 +94,7 @@ download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALS
             ok <- FALSE; cat(paste(rep(' ',21), collapse=''), 'Warning: File size zero for '); cat(geofilenames[statenum]);cat('\n')
             file.remove( file.path(folder, geofilenames[statenum] ) )
           }
-          if (attempt > 5) {
+          if (attempt > attempts) {
             cat('\n', paste(rep(' ',21),collapse=''),'*** Failed to obtain geo file after repeated attempts. May need to download manually. ***\n')
             break
           }

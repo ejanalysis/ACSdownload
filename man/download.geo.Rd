@@ -5,7 +5,7 @@
 \title{Download GEO txt file(s) with geo information for ACS}
 \usage{
 download.geo(mystates, end.year = "2012", folder = getwd(),
-  testing = FALSE)
+  testing = FALSE, attempts = 5)
 }
 \arguments{
 \item{mystates}{vector of character 2-letter State abbreviations specifying which are needed}
@@ -15,6 +15,8 @@ download.geo(mystates, end.year = "2012", folder = getwd(),
 \item{folder}{folder to use for saving files - default is current working directory}
 
 \item{testing}{Default to FALSE. If TRUE, provides info on progress of download.}
+
+\item{attempts}{Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.}
 }
 \value{
 Side effect is downloading the file.
