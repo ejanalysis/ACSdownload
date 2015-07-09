@@ -5,16 +5,22 @@
 #'   5-year Summary File FTP site, for all Census tracts and/or block groups in specified State(s).
 #'   Estimates and margins of error are obtained, as well as long and short names for the variables,
 #'   which can be specified if only parts of a table are needed.
-#'
+#' 
 #' @details
 #'   The United States Census Bureau provides detailed demographic data by US Census tract and block group
-#'   in the 5-year summary file via their FTP site. For those interested in block group or tract data,
+#'   in the American Community Survey (ACS) 5-year summary file via their FTP site. For those interested in block group or tract data,
 #'   Census Bureau tools tend to focus on obtaining data one state at a time rather than for the entire US at once.
-#'   This code lets a user specify (tables and) variables needed. The code will look up what sequence files
-#'   contain those tables. Then using a table of variables for those selected tables, a user can specify variables
+#'   The \code{get.acs} function lets a user specify (tables and) variables needed. The code will look up what sequence files
+#'   contain those tables. Using a table of variables for those selected tables, a user can specify variables
 #'   or tables to drop by putting x or anything other than "Y" in the column specifying needed variables.
 #'   \cr\cr
-#'
+#'   For ACS documentation, see for example:\cr\cr
+#' \url{http://www.census.gov/programs-surveys/acs.html} \cr
+#' or\cr
+#' \url{http://www.census.gov/acs/www/Downloads/data_documentation/SumFileTemp/2012-5-Year/Sequence_Number_and_Table_Number_Lookup.xls}\cr
+#' linked from\cr
+#' \url{http://www.census.gov/programs-surveys/acs/data/summary-file.html}\cr
+#' \cr\cr
 #' #####################################	ADDITIONAL NOTES ######################################\cr
 #' 	NOTES ON NON-NUMERIC FIELDS IN ESTIMATE AND MOE FILES:\cr
 #' \cr
@@ -52,82 +58,77 @@
 #' ? Jam Values for Medians\cr
 #' The following is a listing of the jam values for medians. For example, if there is an estimate of "2499"
 #' for table B10010, then it does not indicate a #dollar amount. It means that the median is somewhere
-#' below 2,500 and thus isn't calculated.\cr
+#' below 2,500 and thus isn't calculated. \cr
 #' \cr
-#'
-#' "Jam Value","Actual Meaning","Use for Medians"
-#' "0","1 or less","Age, Duration of Marriage"
-#' "9","9.0 or more","Rooms"
-#' "10","10.0 or less","Gross Rent as Percentage of Income, Owner Costs as Percentage of Income"
-#' "50","50.0 or more","Gross Rent as Percentage of Income, Owner Costs as Percentage of Income"
-#' "99","100 or less","Rent, Gross Rent, Selected Monthly Owner Costs, Monthly Housing Costs"
-#' "101","101 or more","Duration of Marriage"
-#' "116","115 or more","Age"
-#' "199","200 or less","Tax"
-#' "1001","1,000 or more","Selected Monthly Owner Costs"
-#' "1939","1939 or earlier","Year Built"
-#' "1969","1969 or earlier","Year Moved In"
-#' "2001","2,000 or more","Rent, Gross Rent"
-#' "2005","2005 or later","Year Built, Year Moved In"
-#' "2499","2,500 or less","Income, Earnings"
-#' "4001","4,000 or more","Selected Monthly Owner Costs, Monthly Housing Costs"
-#' "9999","10,000 or less","Value"
-#' "10001","10,000 or more","Tax"
-#' "200001","200,000 or more","Income"
-#' "250001","250,000 or more","Income, Earnings"
-#' "1000001","1,000,000 or more","Value"
-#'  ###############################################
-#'
-#' For documentation, see for example:
-#' \url{http://www.census.gov/acs/www/Downloads/data_documentation/SumFileTemp/2012-5-Year/Sequence_Number_and_Table_Number_Lookup.xls}
-#' linked from
-#' \url{http://www.census.gov/acs/www/data_documentation/summary_file/}
-#'
-#'    in older 2005-2009 and 2005-2010 also these were the sequence numbers, but they change over time:
-#' seqnum <- "0010" has ageunder5m = B01001.003 etc.
-#' seqnum <- "0013" has hisp = B03002.012 etc.
-#' seqnum <- "0040" has age25up = B15002.001 etc.
-#' seqnum <- "0042" has lingisospanish = B16002.004 etc.
-#' seqnum <- "0046" has povknownratio = C17002.001 etc.
-#' NOTE:  seq file 98 was used for year built in ACS 2005-2009 but in ACS 2006-2010 that is in seq file 97
-#' #############
-#'
-#'#####################################################################################
-#'	NOTES on where to obtain ACS data - sources for downloads of summary file data
-#'#####################################################################################
-#'
-#' FOR ACS SUMMARY FILE DOCUMENTATION, SEE
-#' \url{http://www.census.gov/acs/www/data_documentation/summary_file/}
-#'
-#' 	As of 12/2012, ACS block group/tract summary file ESTIMATES on FTP site is provided as either
-#'
-#'  LARGER THAN NECESSARY:
-#'
-#'	*** all states and all tables in one huge tar.gz file (plus a zip of all geography codes),
-#'	\url{ftp://ftp.census.gov/acs2011_5yr/summaryfile//2007-2011_ACSSF_All_In_2_Giant_Files(Experienced-Users-Only)}
-#'	\url{ftp://ftp.census.gov/acs2011_5yr/summaryfile//2007-2011_ACSSF_All_In_2_Giant_Files(Experienced-Users-Only)/2011_ACS_Geography_Files.zip}
-#'	2011_ACS_Geography_Files.zip		#
-#'	Tracts_Block_Groups_Only.tar.gz		# (THIS HAS ALL THE SEQUENCE FILES FOR EACH STATE IN ONE HUGE ZIP FOLDER)
-#'
-#' or
-#'
-#'  MORE FOCUSED DOWNLOADS:
-#'
-#'	*** one zip file per sequence file PER STATE:    (plus csv of geography codes)
-#'
-#'	\url{http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/}
-#'         20115dc0002000.zip (Which has the e file and m file for this sequence file in this state)
-#'         g20115dc.csv  (which lets you link FIPS to data)
+#'  \cr
+#' "Jam Value","Actual Meaning","Use for Medians" \cr
+#' "0","1 or less","Age, Duration of Marriage" \cr
+#' "9","9.0 or more","Rooms" \cr
+#' "10","10.0 or less","Gross Rent as Percentage of Income, Owner Costs as Percentage of Income" \cr
+#' "50","50.0 or more","Gross Rent as Percentage of Income, Owner Costs as Percentage of Income" \cr
+#' "99","100 or less","Rent, Gross Rent, Selected Monthly Owner Costs, Monthly Housing Costs" \cr
+#' "101","101 or more","Duration of Marriage" \cr
+#' "116","115 or more","Age" \cr
+#' "199","200 or less","Tax" \cr
+#' "1001","1,000 or more","Selected Monthly Owner Costs" \cr
+#' "1939","1939 or earlier","Year Built" \cr
+#' "1969","1969 or earlier","Year Moved In" \cr
+#' "2001","2,000 or more","Rent, Gross Rent" \cr
+#' "2005","2005 or later","Year Built, Year Moved In" \cr
+#' "2499","2,500 or less","Income, Earnings" \cr
+#' "4001","4,000 or more","Selected Monthly Owner Costs, Monthly Housing Costs" \cr
+#' "9999","10,000 or less","Value" \cr
+#' "10001","10,000 or more","Tax" \cr
+#' "200001","200,000 or more","Income" \cr
+#' "250001","250,000 or more","Income, Earnings" \cr
+#' "1000001","1,000,000 or more","Value" \cr
+#'  ############################################### \cr
+#'  \cr
+#'    in older 2005-2009 and 2005-2010 also these were the sequence numbers, but they change over time: \cr
+#' seqnum <- "0010" has ageunder5m = B01001.003 etc. \cr
+#' seqnum <- "0013" has hisp = B03002.012 etc. \cr
+#' seqnum <- "0040" has age25up = B15002.001 etc. \cr
+#' seqnum <- "0042" has lingisospanish = B16002.004 etc. \cr
+#' seqnum <- "0046" has povknownratio = C17002.001 etc. \cr
+#' NOTE:  seq file 98 was used for year built in ACS 2005-2009 but in ACS 2006-2010 that is in seq file 97 \cr
+#' ############# \cr
+#'  \cr
+#' #####################################################################################  \cr
+#'	NOTES on where to obtain ACS data - sources for downloads of summary file data  \cr
+#' ##################################################################################### \cr
+#'  \cr \cr
+#' FOR ACS SUMMARY FILE DOCUMENTATION, SEE \cr
+#' \url{http://www.census.gov/acs/www/data_documentation/summary_file/} \cr
+#' \cr
+#' 	As of 12/2012, ACS block group/tract summary file ESTIMATES on FTP site is provided as either \cr
+#' \cr
+#'  LARGER THAN NECESSARY: \cr
+#' \cr
+#'	*** all states and all tables in one huge tar.gz file (plus a zip of all geography codes), \cr
+#'	\url{ftp://ftp.census.gov/acs2011_5yr/summaryfile//2007-2011_ACSSF_All_In_2_Giant_Files(Experienced-Users-Only)} \cr
+#'	\url{ftp://ftp.census.gov/acs2011_5yr/summaryfile//2007-2011_ACSSF_All_In_2_Giant_Files(Experienced-Users-Only)/2011_ACS_Geography_Files.zip} \cr
+#'	2011_ACS_Geography_Files.zip		# \cr
+#'	Tracts_Block_Groups_Only.tar.gz		# (THIS HAS ALL THE SEQUENCE FILES FOR EACH STATE IN ONE HUGE ZIP FOLDER) \cr
+#' \cr
+#' or \cr
+#' \cr
+#'  MORE FOCUSED DOWNLOADS: \cr
+#' \cr
+#'	*** one zip file per sequence file PER STATE:    (plus csv of geography codes) \cr
+#' \cr
+#'	\url{http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/} \cr
+#'         20115dc0002000.zip (Which has the e file and m file for this sequence file in this state) \cr
+#'         g20115dc.csv  (which lets you link FIPS to data) \cr
 #'	so this would mean 50+ * about 7 sequence files? = about 350 zip files?? each with 2 text files. Plus 50+ geo csv files.
 #'	so downloading about 400 files and expanding to about 750 files, and joining into one big file.
-#'
-#' OR
-#'
-#'  PREJOINED TO TIGER BLOCK GROUP BOUNDARIES SHAPEFILES/ GEODATABASES -
-#'	ONE PER STATE HAS SEVERAL TABLES BUT NOT B16001, B16002 (many languages but tracts only), B16004 (has block groups but fewer languages)
-#'	\url{http://www.census.gov/geo/maps-data/data/tiger-data.html}
-#'
-#'  BUT NOT one file per sequence file FOR ALL STATES AT ONCE.
+#' \cr
+#' OR \cr
+#' \cr
+#'  PREJOINED TO TIGER BLOCK GROUP BOUNDARIES SHAPEFILES/ GEODATABASES - \cr
+#'	ONE PER STATE HAS SEVERAL TABLES BUT NOT B16001, B16002 (many languages but tracts only), B16004 (has block groups but fewer languages) \cr
+#'	\url{http://www.census.gov/geo/maps-data/data/tiger-data.html} \cr
+#' \cr
+#'  BUT NOT one file per sequence file FOR ALL STATES AT ONCE. \cr
 #' \cr
 #' Estimates & margin of error (MOE), (ONCE UNZIPPED), and GEOgraphies (not zipped) are in 3 separate files. \cr
 #' \cr
@@ -138,13 +139,13 @@
 #' \cr
 #' Note the US file is not bg/tract level:  geo for whole US at once doesn't have tracts and BGs
 #' \url{ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/g20111us.csv}
-#' \cr
+#' \cr\cr
 #' OTHER SOURCES include \cr
 #' \itemize{
-#'   \item acs package for R - very useful for modest numbers of Census units rather than every block group in US
-#'   \item NHGIS.org - very useful for block group (or tract/county/state/US) datasets
-#'   \item DataFerrett - not all tracts in US at once
-#'   \item American Fact Finder (not block groups for ACS SF, and the tracts are not for the whole US at once)
+#'   \item \pkg{acs} package for R - very useful for modest numbers of Census units rather than every block group in US
+#'   \item \url{NHGIS.org} - very useful for block group (or tract/county/state/US) datasets
+#'   \item DataFerrett (\url{http://dataferrett.census.gov/AboutDatasets/ACS.html}) -- not all tracts in US at once
+#'   \item American Fact Finder (\url{http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/}) (not block groups for ACS SF, and the tracts are not for the whole US at once)
 #'   \item ESRI - commercial
 #'   \item Geolytics - commercial
 #'   \item etc.
