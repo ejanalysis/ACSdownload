@@ -51,7 +51,7 @@ get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd(), end.year='2012
     }
     if (!exists('geo')) {
       if (file.exists(file.path(folder, 'geo.RData'))) {
-        load('geo.RData')
+        load(file.path(folder, 'geo.RData'))
         cat('Loading geo.RData\n')
         # skip download & parse
       }

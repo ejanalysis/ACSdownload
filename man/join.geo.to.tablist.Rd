@@ -5,7 +5,7 @@
 \title{Join US ACS data and US geo files on FIPS}
 \usage{
 join.geo.to.tablist(mygeo, my.list.of.tables, save.csv = FALSE,
-  sumlevel = "both", folder = getwd(), testing = FALSE)
+  sumlevel = "both", folder = getwd(), testing = FALSE, end.year = "")
 }
 \arguments{
 \item{mygeo}{Required geo file. See \code{\link{get.acs}} and \code{\link{get.read.geo}}}
@@ -19,6 +19,8 @@ join.geo.to.tablist(mygeo, my.list.of.tables, save.csv = FALSE,
 \item{folder}{Default is current working directory.}
 
 \item{testing}{Default is FALSE. If TRUE, prints more information.}
+
+\item{end.year}{Default is "" -- used in naming file if save.csv=TRUE}
 }
 \value{
 Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.

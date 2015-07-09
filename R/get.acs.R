@@ -5,7 +5,7 @@
 #'   5-year Summary File FTP site, for all Census tracts and/or block groups in specified State(s).
 #'   Estimates and margins of error are obtained, as well as long and short names for the variables,
 #'   which can be specified if only parts of a table are needed.
-#' 
+#'
 #' @details
 #'   The United States Census Bureau provides detailed demographic data by US Census tract and block group
 #'   in the American Community Survey (ACS) 5-year summary file via their FTP site. For those interested in block group or tract data,
@@ -375,17 +375,17 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
   # There should be this many unique tables here: # length(alltab)
   #########################################################################################################
 
-  if (save.files) {
-    # ******* SAVE WORKSPACE JUST IN CASE, WHILE IN DEVELOPMENT ********************
-    save.image(file='ACS EARLY work in progress.RData')
-  }
+  #if (save.files & testing) {
+  #  # ******* SAVED WORKSPACE JUST IN CASE, IF TESTING DURING DEVELOPMENT
+  #  save.image(file='ACS EARLY work in progress.RData')
+  #}
 
   #########################################################################################################
 
   if (testing) {
     if (save.files) {
       #  USED TO SAVE THE FULL SET OF TABLES JUST IN CASE:
-      save(alltab, file="alltab no geo.RData");  cat(as.character(Sys.time()), ' '); cat('Finished saving RData \n')
+      save(alltab, file=file.path(output.path, "alltab no geo.RData"));  cat(as.character(Sys.time()), ' '); cat('Finished saving RData \n')
       gc()
     }
   }
@@ -405,7 +405,7 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
 
   cat(as.character(Sys.time()), ' '); cat("Started joining geo to data tables \n")
 
-  alltab <- join.geo.to.tablist(geo, alltab, folder=folder, save=writefiles, sumlevel=summarylevel)
+  alltab <- join.geo.to.tablist(geo, alltab, folder=output.path, save=writefiles, sumlevel=summarylevel, end.year=end.year)
 
   cat(as.character(Sys.time()), ' '); cat('Finished joining geo to data tables \n')
   cat(as.character(Sys.time()), ' '); cat('Checked block groups and tracts, retained ');cat(summarylevel); cat('\n')
@@ -414,7 +414,7 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
   if (testing) {
     if (save.files) {
       #  USED TO SAVE THE FULL SET OF TABLES JUST IN CASE:
-      save(alltab, file="alltab with geo.RData")
+      save(alltab, file=file.path(output.path, "alltab with geo.RData"))
       cat(as.character(Sys.time()), ' '); cat("Saved alltab with geo\n")
     }
   }
@@ -430,7 +430,7 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
     # lapply(alltab, FUN=names)
     if (save.files) {
       #  USED TO SAVE THE FULL SET OF TABLES JUST IN CASE:
-      save(alltab, file="alltab with geo est-moe.RData")
+      save(alltab, file=file.path(output.path, "alltab with geo est-moe.RData"))
       cat(as.character(Sys.time()), ' '); cat("Saved alltab with geo and est-moe \n")
     }
   }
@@ -448,7 +448,7 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
     ######################################
     #  DO SAVE THE FULL SET OF TABLES HERE, IN CASE -- block groups and tracts as well:
     ######################################
-    save(merged, file="merged tables.RData")
+    save(merged, file=file.path(output.path, "merged tables.RData"))
     cat(as.character(Sys.time()), ' '); cat("Saved merged tables \n")
   }
   #}
@@ -481,7 +481,7 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
   tracts$SUMLEVEL <- NULL
   #print(head(tracts))
 
-  if (save.files) {save.image(file='ACS all but table.info step done.RData')}
+  if (save.files) {save.image(file=file.path(output.path, 'ACS all but table.info step done.RData'))}
 
   ########################################################
   # GET TABLE TITLE, UNIVERSE, AND LONG VARIABLE NAMES
@@ -586,7 +586,7 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
     # use better order for columns
     table.info.best <- table.info.best[ , c('Table.Title', 'Table.ID', 'Line.Number', 'table.var', 'longnames', 'universe')]
     # print(table.info.best)
-    save(table.info.best, file=file.path(folder, 'table.info.best.RData'))
+    save(table.info.best, file=file.path(output.path, 'table.info.best.RData'))
 
     ###############
     # NOTE: IT IS EASIER TO WORK WITH get.table.info(tables) which has useful cols plus new cols for just selected tables
@@ -623,24 +623,29 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
 
   if (save.files) {
     # WOULD BE BETTER TO SPECIFY A DATA DIRECTORY BUT FOR NOW SAVE IN WORKING DIR:
-    save(bg, file=file.path(folder, "bg all tables.RData"))
-    save(tracts, file=file.path(folder,"tracts all tables.RData"))
+    save(bg, file=file.path(output.path, "bg all tables.RData"))
+    save(tracts, file=file.path(output.path,"tracts all tables.RData"))
     #save()
     cat(as.character(Sys.time()), ' '); cat('Saved block group file and tracts file as .RData \n')
   }
 
   if (testing) {
     if (writefiles) {
-      write.csv(bg, file=file.path(folder,"bg all tables.csv"), row.names=FALSE)
-      write.csv(tracts, file=file.path(folder,"tracts all tables.csv"), row.names=FALSE)
+      write.csv(bg, file=file.path(output.path,"bg all tables.csv"), row.names=FALSE)
+      write.csv(tracts, file=file.path(output.path,"tracts all tables.csv"), row.names=FALSE)
       cat(as.character(Sys.time()), ' '); cat('Saved block group file and tracts file as .csv ')
     }
   }
 
   if (writefiles) {
-    write.csv(table.info, row.names=FALSE, file=file.path(folder,'table.info.csv'))
-    write.csv(t(cbind(names(bg), longnames)), file=file.path(folder,'bg.longnames.csv'), row.names=FALSE)
-    cat(as.character(Sys.time()), ' '); cat('Saved longnames, full fieldnames as csv file. \n')
+    #
+    # NOTE THIS SAVES JUST ONE NAME PER DATA FIELD, NOT ONCE FOR ESTIMATES AND ONCE FOR MOE.
+    # AND DOES NOT HAVE FIELD NAMES FOR OTHER FIELDS "KEY"          "FIPS"         "STUSAB"       "GEOID"
+    # SO DOES NOT CORRESPOND TO names(bg)
+    #
+    write.csv(table.info, row.names=FALSE, file=file.path(output.path,'table.info.csv'))
+    write.csv(table.info.best, file=file.path(output.path,'bg.datafieldnames.csv'), row.names=FALSE)
+    cat(as.character(Sys.time()), ' '); cat('Saved longnames, etc fieldnames as csv file. \n')
   }
 
   ########################################################
