@@ -194,8 +194,13 @@
 #' @seealso \pkg{acs} package which allows you to download and work with ACS data (using the API and your own key).
 #' @examples
 #'  \dontrun{
-#'   out <- get.acs(mystates=c('dc','de')) # Just DC & DE, just the default table.
-#'   head(out$info); head(out$bg)
+#'   t( get.table.info2(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
+#'   out <- get.acs(mystates=c('dc','de')) # Data for just DC & DE, just the default table.
+#'   names(out$bg); cat('\n\n'); head(out$info)
+#'   # to see data on 2 places, 1 per column, with short and long field names
+#'   cbind( out$headers$longname, t(out$bg[1:2, ]) )
+#'   # to see 7 places, 1 per row, with short and long field name as header
+#'   head( rbind(out$headers$longname, out$bg) )[,1:7]
 #'   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))  # just 2 tables for just Delaware
 #'   head(out$info); head(out$bg)
 #'   out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results') # uses all EJSCREEN defaults and the specified folders
@@ -486,13 +491,47 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
   ########################################################
   # GET TABLE TITLE, UNIVERSE, AND LONG VARIABLE NAMES
   ########################################################
+  # instead of obsolete section
 
+  # This is Just one entry per variable in estimates table, not for MOE, not basic info cols like "FIPS"
   table.info <- get.table.info2(tables, end.year, table.info.only=FALSE)
+  # NOTE: THIS HAS ALL VARIABLES, NOT JUST needed, so we want to remove any not needed so it matches retained data fields.
+  table.info <- table.info[ table.info$shortname %in% names(bg), ]
+  rownames(table.info) <- table.info$shortname
 
-  table.info.best <- table.info  # instead of obsolete section below
+  # This is All the entries like MOE and basic info (FIPS) so it can serve as header rows to final output table
+  table.info.all <- table.info
 
-  # Can get longnames for all the variables from any of these tables, (not just selected vars in those tables)
-  # plus the table name and universe, and table.var= a variable name as TableID.000 format
+  # make the MOE versions of the estimates columns,
+  # then intersperse with estimates, to match full list of longnames
+  table.info.all.m <- get.table.info2(tables, end.year, table.info.only=FALSE, moe=TRUE)
+  rownames(table.info.all.m) <- table.info.all.m$shortname
+  #table.info.all.m <- table.info.all
+  #  table.info.all.m$shortname <- paste(table.info.all.m$shortname, '.m', sep='')
+  # now other field names will be "MOE for ..." instead of "..._MOE"
+  #  table.info.all.m$longname <- paste(table.info.all.m$longname, '_MOE', sep='')
+  #  table.info.all.m$longname2 <- paste(table.info.all.m$longname2, '_MOE', sep='')
+  #  table.info.all.m$longname.unique <- paste(table.info.all.m$longname.unique, '_MOE', sep='')
+
+  # append MOE names and then reorder these rows so that estimate and MOE are adjacent for each variable:
+  table.info.all <- rbind(table.info.all, table.info.all.m)
+  table.info.all <- table.info.all[  analyze.stuff::intersperse(1:length(table.info.all[ , 1])), ]
+
+  # Now add the basic info columns up front to match full list of longnames
+  #otherfields <- c('KEY', 'STUSAB', 'SUMLEVEL', 'GEOID', 'FIPS') # SUMLEVEL was dropped from bg and tracts
+  otherfields <- c(  "KEY", "FIPS", "STUSAB", "GEOID")
+  rows.to.add <- data.frame(table.ID=otherfields,
+                            line=0,
+                            shortname=otherfields,
+                            longname=otherfields,
+                            table.title=0,
+                            universe=0,
+                            subject=0,
+                            longname2=otherfields,
+                            longname.unique=otherfields,
+                            stringsAsFactors=FALSE)
+  table.info.all <- rbind(rows.to.add, table.info.all)
+  # MIGHT WANT TO TRANSPOSE IT HERE?
 
   ################################################################################################################
   ################################################################################################################
@@ -513,33 +552,25 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
     tables.universe <- table.info$Table.Title[1 + match(tables, table.info$Table.ID)]
     table.info.only <- data.frame(Table.ID=tables, Table.Title=tables.titles, universe=tables.universe, stringsAsFactors=FALSE)
     # print('table.info.only: '); print( table.info.only)
-
     ###############
     # GET LONG FIELD NAMES
     # corresponding to the current bg or tract dataset (merged set of all selected tables)
     ###############
-
     if (exists('bg') && length(bg)>0) {longnames <- names(bg)} else {longnames <- names(tracts)}
     valids<- !is.na(table.info$Line.Number)
-
     needed.table.var <- longnames # just all those that had been needed and were parsed to make bg or tracts, but may be subset of all vars in table.info
-
     cat('Fields obtained: '); print(longnames)
 
     for (i in 1:length(longnames)) {
-
       if (longnames[i] %in% table.info$table.var[valids]) {
         longnames[i] <- table.info$varname2[match(longnames[i], table.info$table.var)]
       }
-
       if (longnames[i] %in% paste(table.info$table.var[valids],'.m',sep='')) {
         longnames[i] <- paste(table.info$varname2[match(longnames[i], paste(table.info$table.var,'.m',sep=''))],'_MOE',sep='')
       }
-
       #  if (exists('bg'))     { if (length(bg)>0)     { label(bg[ , i])     <- longnames[i] } }
       #  if (exists('tracts')) { if (length(tracts)>0) { label(tracts[ , i]) <- longnames[i] } }
     }
-
     # ************
     # MAKE table.info.best which has
     # only valid fields/rows and has new columns for tables.universe
@@ -549,18 +580,14 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
     # Format of table.info:
     #   Table.ID Line.Number                 Table.Title  table.var   varname2 (a cleaned up version of Table.Title)
     #7    B01001          NA                  SEX BY AGE       <NA>   SEX BY AGE
-
     table.info.best <- table.info  # but this has too many variables if needed only a subset, so fix below
     # rename a column
     names(table.info.best) <- c('Table.ID', 'Line.Number', 'Table.Title', 'table.var', 'longnames')
     # remove rows that are just table title or universe
     table.info.best <- subset(table.info.best[!is.na(table.info.best$Line.Number) ,])
-
     # now fix problem where needed only subset of variables so table.info or table.info.best has all in ACS table but longnames is based on subset.
     table.info.best <- table.info.best[ table.info.best$table.var %in%  needed.table.var, ]
-
     if (testing) {print('before any');print('table.info.best');print(table.info.best);cat('\n\n\n');print('longnames: ');cat(longnames,'\n\n')}
-
     # make the MOE versions of the estimates columns, interspersed with estimates, to match full list of longnames
     table.info.best.m <- table.info.best
     table.info.best.m$table.var <- paste(table.info.best.m$table.var, '.m', sep='')
@@ -568,52 +595,45 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
     table.info.best <- rbind(table.info.best, table.info.best.m)
     if (testing) { print('str of table.info.best now'); print(str(table.info.best));print(table.info.best);cat('\n\n') }
     table.info.best <- table.info.best[  analyze.stuff::intersperse(1:length(table.info.best[,1])) , ]
-
     # add the basic info columns up front to match full list of longnames
     rows.to.add <- data.frame(Table.ID=c('KEY', 'FIPS', 'STUSAB', 'GEOID'), Line.Number=0, Table.Title=0, table.var=0, longnames=c('KEY', 'FIPS', 'STUSAB', 'GEOID'))
     if (testing) { print(rows.to.add); cat('\n\n') }
     table.info.best <- rbind(rows.to.add, table.info.best)
     if (testing) { print('after second rbind');cat('\n\n');print('table.info.best');print(table.info.best);cat('\n\n\n');print('longnames: ');cat(longnames,'\n')}
-
     # add actual longnames which have _MOE indication ********
     table.info.best$longnames <-  longnames    # now has the basic info cols, followed by estimates & MOE interspersed
-
     # make Table.Title column now be that (instead of fieldname), repeating the full table title for every row of the table (each variable in the table)
     table.info.best$Table.Title <- table.info.only$Table.Title[ match(table.info.best$Table.ID, table.info.only$Table.ID)]
     # add column specifying universe (out of which the estimate is a subset)
     table.info.best$universe <- table.info.only$universe[ match(table.info.best$Table.ID, table.info.only$Table.ID)]
-
     # use better order for columns
     table.info.best <- table.info.best[ , c('Table.Title', 'Table.ID', 'Line.Number', 'table.var', 'longnames', 'universe')]
     # print(table.info.best)
     save(table.info.best, file=file.path(output.path, 'table.info.best.RData'))
-
     ###############
     # NOTE: IT IS EASIER TO WORK WITH get.table.info(tables) which has useful cols plus new cols for just selected tables
     #   than with get.lookup.acs() which returns nonuseful info and for all tables in acs
 
     ###############
-    # USEFUL EXAMPLES OF GETTING TABLE VARIABLES INFORMATION:
+    # OBSOLETE / USEFUL EXAMPLES OF GETTING TABLE VARIABLES INFORMATION:
     ###############
-
+    #
     # To get those long names for the variables in ONE ACS table in memory:
     #mytable <- data.frame(C17002.001=1:10, C17002.002=1:10) # create example dataset
     #longnames <- merge(
     #  data.frame(var=names(mytable)),
     #  data.frame(longname=table.info$varname2, table.var=table.info$table.var),
     #  by.x="var", by.y="table.var", all.x=TRUE, all.y=FALSE)
-
+    #
     # To get from ALL ACS tables specifed in 'tables', just the long names, for ALL the variables in a given table, not just needed variables:
     #longnames	<- with(lookup.acs, varname2[(Table.ID %in% tables) & !is.na(Line.Number)])
-
+    #
     # To get from ALL ACS tables specifed in 'tables', just the specified variables in a given table, as cleaned variable names,
     # assuming "needed" is in memory as a global variable still.
     #longnames	<- with(needed, varname2[(table %in% tables) ])
     #print(names(tracts));print(names(bg))
     ###############
-
   }
-
   ################################################################################################################
   ################################################################################################################
 
@@ -623,15 +643,23 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
 
   if (save.files) {
     # WOULD BE BETTER TO SPECIFY A DATA DIRECTORY BUT FOR NOW SAVE IN WORKING DIR:
-    save(bg, file=file.path(output.path, "bg all tables.RData"))
+    save(bg,     file=file.path(output.path, "bg all tables.RData"))
     save(tracts, file=file.path(output.path,"tracts all tables.RData"))
+    # a waste of space to create headers and info here but nice to save with those names and usually not much memory for this
+    headers=table.info.all
+    save(headers, file=file.path('headers.RData'))
+    rm(headers)
+    info=table.info
+    save(info, file=file.path('info.RData'))
+    rm(info)
     #save()
     cat(as.character(Sys.time()), ' '); cat('Saved block group file and tracts file as .RData \n')
   }
 
   if (testing) {
+    # These are big so probably do not want them even if writefiles=TRUE since they can be saved as .RData and are returned by function get.acs() already
     if (writefiles) {
-      write.csv(bg, file=file.path(output.path,"bg all tables.csv"), row.names=FALSE)
+      write.csv(bg,     file=file.path(output.path,"bg all tables.csv"), row.names=FALSE)
       write.csv(tracts, file=file.path(output.path,"tracts all tables.csv"), row.names=FALSE)
       cat(as.character(Sys.time()), ' '); cat('Saved block group file and tracts file as .csv ')
     }
@@ -639,12 +667,12 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
 
   if (writefiles) {
     #
-    # NOTE THIS SAVES JUST ONE NAME PER DATA FIELD, NOT ONCE FOR ESTIMATES AND ONCE FOR MOE.
-    # AND DOES NOT HAVE FIELD NAMES FOR OTHER FIELDS "KEY"          "FIPS"         "STUSAB"       "GEOID"
-    # SO DOES NOT CORRESPOND TO names(bg)
+    # NOTE THIS WAS SAVING JUST ONE NAME PER DATA FIELD, NOT ONCE FOR ESTIMATES AND ONCE FOR MOE.
+    # AND  NOT  FIELD NAMES FOR OTHER FIELDS "KEY"          "FIPS"         "STUSAB"       "GEOID"
+    # SO DID NOT CORRESPOND TO names(bg)
     #
-    write.csv(table.info, row.names=FALSE, file=file.path(output.path,'table.info.csv'))
-    write.csv(table.info.best, file=file.path(output.path,'bg.datafieldnames.csv'), row.names=FALSE)
+    write.csv(table.info,     file=file.path(output.path, 'info.csv'), row.names=FALSE)
+    write.csv(table.info.all, file=file.path(output.path, 'headers.csv'), row.names=FALSE)
     cat(as.character(Sys.time()), ' '); cat('Saved longnames, etc fieldnames as csv file. \n')
   }
 
@@ -655,12 +683,12 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
 
   # Return block group or tracts file (or both) as list, along with table.info.best which has fieldnames etc.
   if (substr(summarylevel,1,5)=='tract') {
-    return(list(tracts=tracts, info=table.info.best))
+    return(list(tracts=tracts, headers=table.info.all, info=table.info))
   } else {
     if (summarylevel=='both') {
-      return(list(bg=bg, tracts=tracts, info=table.info.best))
+      return(list(bg=bg, tracts=tracts, headers=table.info.all, info=table.info))
     } else {
-      return(list(bg=bg, info=table.info.best))
+      return(list(bg=bg, headers=table.info.all, info=table.info))
     }
   }
 

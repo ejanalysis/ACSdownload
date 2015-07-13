@@ -218,8 +218,13 @@ OTHER SOURCES include \cr
 }
 \examples{
 \dontrun{
-  out <- get.acs(mystates=c('dc','de')) # Just DC & DE, just the default table.
-  head(out$info); head(out$bg)
+  t( get.table.info2(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
+  out <- get.acs(mystates=c('dc','de')) # Data for just DC & DE, just the default table.
+  names(out$bg); cat('\\n\\n'); head(out$info)
+  # to see data on 2 places, 1 per column, with short and long field names
+  cbind( out$headers$longname, t(out$bg[1:2, ]) )
+  # to see 7 places, 1 per row, with short and long field name as header
+  head( rbind(out$headers$longname, out$bg) )[,1:7]
   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))  # just 2 tables for just Delaware
   head(out$info); head(out$bg)
   out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results') # uses all EJSCREEN defaults and the specified folders

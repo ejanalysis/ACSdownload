@@ -4,7 +4,8 @@
 \alias{get.table.info2}
 \title{Get field names etc for ACS tables}
 \usage{
-get.table.info2(tables, end.year = "2012", table.info.only = TRUE)
+get.table.info2(tables, end.year = "2012", table.info.only = TRUE,
+  moe = FALSE)
 }
 \arguments{
 \item{tables}{Required vector of tables such as "B01001"}
@@ -12,6 +13,8 @@ get.table.info2(tables, end.year = "2012", table.info.only = TRUE)
 \item{end.year}{Last year of 5-year summary file such as '2012' (default)}
 
 \item{table.info.only}{TRUE by default. See \code{\link{get.field.info}}}
+
+\item{moe}{FALSE by default. If TRUE, returns MOE versions of field names and descriptions.}
 }
 \value{
 data.frame of information about each table and each variable in table.
