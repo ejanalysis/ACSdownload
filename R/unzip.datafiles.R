@@ -13,7 +13,7 @@
 #' @export
 unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012', testing=FALSE, attempts=5) {
 
-  myseqfiles <- which.seqfiles(tables)
+  myseqfiles <- which.seqfiles(tables, end.year=end.year)
 
   ####################
   # to create a single list with all the zip file names:
@@ -34,12 +34,12 @@ unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012',
 
     #state.name <- statenames[statenum]
     for (seqfilenum in myseqfiles) {
-      efile <- datafile(state.abbrev, seqfilenum)
+      efile <- datafile(state.abbrev, seqfilenum, end.year = end.year)
       mfile <- gsub("^e", "m", efile)
       if (testing) {
         zipfile.prefix <- get.zipfile.prefix(end.year)
-        print( file.path(folder, zipfile(state.abbrev, seqfilenum)) )
-        #print(                   zipfile(state.abbrev, seqfilenum, zipfile.prefix))
+        print( file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)) )
+        #print(                   zipfile(state.abbrev, seqfilenum, zipfile.prefix, end.year = end.year))
         #print(   c( efile, mfile))
         print(cbind(efile, mfile))
       }
@@ -50,7 +50,7 @@ unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012',
           while (!ok) {
 
             unzip(
-              zipfile = file.path(folder, zipfile(state.abbrev, seqfilenum)),
+              zipfile = file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)),
               files = c( efile, mfile),
               exdir = folder
             )
@@ -89,7 +89,7 @@ unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012',
 
   # NOTE: A seq file HAS ONLY 2 FILES- ESTIMATES AND MARGIN OF ERROR- EVEN IF IT HAS MULTIPLE TABLES
   # so this loop is actually not critical - could just say
-  #   unzip(zipfile(state.abbrev, seqfilenum))
+  #   unzip(zipfile(state.abbrev, seqfilenum, end.year = end.year))
   # inside the loop.
   # But this loop is useful since it checks if file exists and only unzips if the contents don't yet exist in the working directory.
   # So it avoids redoing the unzip if run twice, but fails to overwrite a corrupt version of zip contents if attempting to unzip again from redownloaded zip.
@@ -107,7 +107,7 @@ unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012',
   #
   etxtnames <- ""
   # ignore the US file when checking for missing files. It is size zero - no data.
-  for (seqfilenum in myseqfiles) { etxtnames <- c(etxtnames, datafile(mystates[tolower(mystates)!='us'], seqfilenum)) }
+  for (seqfilenum in myseqfiles) { etxtnames <- c(etxtnames, datafile(mystates[tolower(mystates)!='us'], seqfilenum, end.year = end.year)) }
   etxtnames <- etxtnames[-1]
   mtxtnames <- gsub("^e", "m", etxtnames)
   ####################
@@ -153,9 +153,10 @@ unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012',
 
   # delete zip files now that unzipped
 
-  for (this.f in paste(getwd(), "/", zipnames, sep="")) {
-    if (file.exists(this.f)) {
-      file.remove(this.f)
+#  for (this.f in paste(getwd(), "/", zipnames, sep="")) {
+  for (this.f in file.path(folder, zipnames)) {
+    if (file.exists(file.path(folder, this.f))) {
+      file.remove(file.path(folder, this.f))
     }
   }
 

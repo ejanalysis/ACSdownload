@@ -52,8 +52,13 @@ which is written by this function and specifies all of the variables from each t
 \item{testing}{Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.}
 }
 \value{
-By default, returns a list with datatables and information about them, with three elements in the list: \cr
-  bg, tracts, and info. The info element is a table of metadata such as short and long field names: \cr\cr
+By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
+  bg, tracts, headers, and info. The headers and info elements are data.frames providing metadata such as short and long field names.
+  The same column names are found in x$info and x$headers, but headers has more rows. The info table just provides information about each
+  data variable in the estimates tables. The headers table provides similar information but made to match the bg or tract format,
+  so the headers table has as many rows as bg or tracts has columns -- enough for the estimates and MOE fields, and the basic fields such as FIPS.
+  The info data.frame can look like this, for example:
+  \cr\cr
   'data.frame':	xxxx obs. of  9 variables:  \cr
  $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...  \cr
  $ line           : num  1 2 3 4 5 6 7 8 9 10 ...  \cr

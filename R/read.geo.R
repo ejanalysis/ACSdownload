@@ -10,30 +10,31 @@
 #'   Format of files is here: \code{\link{ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf}}
 #' @param mystates Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.
 #' @param folder Optional path to where files are stored, defaults to getwd()
-#' @return Returns a large data.frame of selected geographic information on 
+#' @param end.year End year of 5-year data, default is "2012"
+#' @return Returns a large data.frame of selected geographic information on
 #'   all block groups and tracts in the specified states/DC/PR, with just these fields:\cr
 #'   "STUSAB", "SUMLEVEL", "LOGRECNO", "STATE", "COUNTY", "TRACT", "BLKGRP", "GEOID"
-#' @examples 
+#' @examples
 #'  \dontrun{
 #'   geo <- read.geo( c("dc", "de") )
 #'  }
 #' @seealso \code{\link{get.acs}}, \code{\link{download.geo}}
 #' @export
-read.geo <- function(mystates, folder=getwd()) {
+read.geo <- function(mystates, folder=getwd(), end.year='2012') {
 
 	##############
 	# concatenate geos over all states
 	##############
-	
+
 	############## THE FORMAT IS NOT CSV - IT IS FIXED FORMAT ***** widths taken from PDF technical documentation
 	# for ACS 2008-2012, this is the format:
 	#  ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf
-	#	"FILEID", "STUSAB", "SUMLEVEL", "COMPONENT", "LOGRECNO", 
-	#	"US", "REGION", "DIVISION", "STATECE", "STATE", "COUNTY", "COUSUB", "PLACE", "TRACT", "BLKGRP", "CONCIT", 
-	#	"AIANHH", "AIANHHFP", "AIHHTLI", "AITSCE", "AITS", "ANRC", "CBSA", "CSA", "METDIV", "MACC", "MEMI", 
-	#	"NECTA", "CNECTA", "NECTADIV", "UA", "BLANK", "CDCURR", "SLDU", "SLDL", "BLANK", "BLANK", "ZCTA5", 
+	#	"FILEID", "STUSAB", "SUMLEVEL", "COMPONENT", "LOGRECNO",
+	#	"US", "REGION", "DIVISION", "STATECE", "STATE", "COUNTY", "COUSUB", "PLACE", "TRACT", "BLKGRP", "CONCIT",
+	#	"AIANHH", "AIANHHFP", "AIHHTLI", "AITSCE", "AITS", "ANRC", "CBSA", "CSA", "METDIV", "MACC", "MEMI",
+	#	"NECTA", "CNECTA", "NECTADIV", "UA", "BLANK", "CDCURR", "SLDU", "SLDL", "BLANK", "BLANK", "ZCTA5",
 	#	"SUBMCD", "SDELM", "SDSEC", "SDUNI", "UR", "PCI", "BLANK", "BLANK", "PUMA5", "BLANK", "GEOID", "NAME", "BTTR", "BTBG", "BLANK"
-	
+
 	x <- list(
 	c("FILEID", 6, 1),
 	c("STUSAB", 2, 7),
@@ -96,11 +97,11 @@ read.geo <- function(mystates, folder=getwd()) {
 	names(geoformat) <- c("varname", "size", "start")
 	geoformat$size <- as.numeric(geoformat$size)
 	geoformat$start <- as.numeric(geoformat$start)
-	
-	# just import these: 
+
+	# just import these:
 	#	(name is very long and not essential)
 	# 	LOGRECNO IS ESSENTIAL FOR JOIN TO DATA FILES OR TIGER SHAPEFILES
-	
+
 #	geofields <- c(
 #		"SUMLEVEL", "LOGRECNO", "STATE", "COUNTY", "TRACT", "BLKGRP", "GEOID", "NAME"
 #	)
@@ -110,7 +111,7 @@ read.geo <- function(mystates, folder=getwd()) {
 		"STUSAB", "SUMLEVEL", "LOGRECNO", "STATE", "COUNTY", "TRACT", "BLKGRP", "GEOID"
 	)
 
-	#  THESE COULD BE DROPPED ALSO AT LEAST AFTER THE KEY FIELD IS CREATED: 
+	#  THESE COULD BE DROPPED ALSO AT LEAST AFTER THE KEY FIELD IS CREATED:
 	#  LOGRECNO STATE COUNTY  TRACT BLKGRP
 
   getwidths <- function(geofields) {
@@ -142,43 +143,43 @@ read.geo <- function(mystates, folder=getwd()) {
 	return(mywidths)
   }
 
-	gfiles.not.us <- geofile(mystates)
+	gfiles.not.us <- geofile(mystates, end.year = end.year)
 	# REMOVE THE US NATIONWIDE GEO FILE IN CASE THE USER SPECIFIED IT (SINCE IT DOESN'T ACTUALLY HAVE BLOCK GROUPS AND TRACTS)
-	gfiles.not.us <- gfiles.not.us[gfiles.not.us!=geofile("us")]
+	gfiles.not.us <- gfiles.not.us[gfiles.not.us!=geofile("us", end.year = end.year)]
 
 	bigtable.g <- data.frame()
 	#cat('  Parsing geo files:\n')
 	i<-1
 	for (this.file in gfiles.not.us) {
-	    
+
 	    #cat(this.file)
 	    cat(mystates[mystates!='us'][i]); i <- i + 1
-	    
+
 		############## THE FORMAT IS NOT CSV - IT IS FIXED FORMAT ***** widths taken from Census PDF technical documentation
 		#  ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf
-		# Negative-width fields are used to indicate columns to be skipped, e.g., -5 to skip 5 columns. 
-		# These fields are not seen by read.table and so should not be included in a col.names or colClasses argument (nor in the header line, if present). 
-		# e.g., 	
-		# widths=c(-8,3,-14,2,3,-10,6,1, -1*(179-48), 40,1000,-6,-1,-44), as.is=TRUE, header=FALSE) 
+		# Negative-width fields are used to indicate columns to be skipped, e.g., -5 to skip 5 columns.
+		# These fields are not seen by read.table and so should not be included in a col.names or colClasses argument (nor in the header line, if present).
+		# e.g.,
+		# widths=c(-8,3,-14,2,3,-10,6,1, -1*(179-48), 40,1000,-6,-1,-44), as.is=TRUE, header=FALSE)
 
-		# NOTE: SPECIAL CHARACTERS IN THIS FILE ARE A PROBLEM FOR MAC OSX:	
+		# NOTE: SPECIAL CHARACTERS IN THIS FILE ARE A PROBLEM FOR MAC OSX:
 		# It seems to be Latin1 encoding, but OSX had trouble reading NAME field despite specifying encoding
 			# also tried  fileEncoding="latin1"
 
-		this.data <- read.fwf(file.path(folder, this.file), 
-			widths=getwidths(geofields), as.is=TRUE, header=FALSE, 
-			fileEncoding="ISO-8859-1", encoding="ISO-8859-1", strip.white=TRUE, 
+		this.data <- read.fwf(file.path(folder, this.file),
+			widths=getwidths(geofields), as.is=TRUE, header=FALSE,
+			fileEncoding="ISO-8859-1", encoding="ISO-8859-1", strip.white=TRUE,
 			nrows=295000,
 			comment.char = "", colClasses=rep("character",length(geofields)))
 
 		names(this.data) <- geofields  # only for imported fields
-	
+
 		# Drop all rows except for tract and block group, from this geo table. Block group is SUMLEVEL 150.
 		this.data <- this.data[this.data$SUMLEVEL=="140" | this.data$SUMLEVEL=="150" , ]
-	
+
 		# Append this state to the others imported so far
 		bigtable.g <- rbind(bigtable.g, this.data)
-	}	
+	}
 	cat('\n')
 	return(bigtable.g)
 }

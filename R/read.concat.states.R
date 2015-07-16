@@ -28,7 +28,7 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), en
   if (testing) { cat(as.character(Sys.time()), "Started concatenating states.\n")}
 
   # e.g. tables <- c("C17002", "B01001")
-  seqfilelistnums.mine <- which.seqfiles(tables)
+  seqfilelistnums.mine <- which.seqfiles(tables, end.year=end.year)
   #e.g. # seqfilelistnums.mine <- "0044"; mystates <- "dc"
   #e.g. # seqfilelistnums.mine <- c("0044"); mystates <- c("de", "dc")
   seqfilelistnums.mine <- analyze.stuff::lead.zeroes(seqfilelistnums.mine, 4)
@@ -37,10 +37,14 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), en
   gc()
 
   # These are the basic 6 columns that start every data file:
+
   keycols <- c("FILEID", "FILETYPE", "STUSAB", "CHARITER", "SEQUENCE", "LOGRECNO")
+
   count.keycols <- length(keycols)
   # ACSSF,2012m5,wy,000,0104,0000900, ...
+
   needed.keycols <- c("STUSAB", "LOGRECNO")
+
   # dropcols <- c("FILEID", "FILETYPE", "CHARITER")
   #colnums.needed.keycols <- which(keycols %in% needed.keycols)
   count.needed.keycols <- length(needed.keycols)
@@ -58,7 +62,7 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), en
     cat("\nNow working on sequence file ", this.seq, " ----\n")
     # e.g. # this.seq <- "0044"
 
-    efiles.not.us <- datafile(mystates.no.us, this.seq)
+    efiles.not.us <- datafile(mystates.no.us, this.seq, end.year = end.year)
     mfiles.not.us <- gsub("^e", "m", efiles.not.us)
     if (testing) { print(""); cat("\nProcessing sequence file: "); cat(this.seq); cat("\n"); cat("Looking for this type of file: \n"); print(head(cbind(efiles.not.us, mfiles.not.us))) }
 
@@ -234,7 +238,7 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), en
         # save each table as a data file
         datafile.prefix <- get.datafile.prefix(end.year = end.year)
         fname <- paste("ACS-", datafile.prefix, "-", this.tab, ".RData", sep="")
-        save( bigtable, file=file.path(folder,fname))
+        save( bigtable, file=file.path(folder, fname))
         cat(paste("  Saved as file (tracts / block groups but no geo info): ", fname, "\n"))
 
         #fname <- paste("ACS-", datafile.prefix, "-", this.tab, ".csv", sep="")

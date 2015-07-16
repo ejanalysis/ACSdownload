@@ -78,7 +78,7 @@ get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd(), end.year='2012
 
     cat(as.character(Sys.time()), ' '); cat("Started parsing geo files \n")
 
-    geo <- read.geo(mystates, folder=folder)
+    geo <- read.geo(mystates, folder=folder, end.year = end.year)
 
     cat(as.character(Sys.time()), ' '); cat("Finished parsing geo files \n")
     # or just for example

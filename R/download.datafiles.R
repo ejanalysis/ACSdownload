@@ -19,7 +19,7 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
   # or could use
   data(lookup.states, package='proxistat', envir = environment()); stateinfo <- lookup.states
 
-	seqfilelistnums <- which.seqfiles(tables)
+	seqfilelistnums <- which.seqfiles(tables, end.year=end.year)
 	zipfile.prefix    <- get.zipfile.prefix(end.year)
 
     ##################################################################
@@ -46,8 +46,8 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
 	enames <- ""
 	mnames <- ""
     for (st in mystates) {
-    	zipnames <- c(zipnames, zipfile(st, seqfilelistnums, zipfile.prefix))
-    	enames <- c(enames, datafile(st, seqfilelistnums))
+    	zipnames <- c(zipnames, zipfile(st, seqfilelistnums, zipfile.prefix, end.year = end.year))
+    	enames <- c(enames, datafile(st, seqfilelistnums, end.year = end.year))
     }
     mnames <- gsub("^e", "m", enames)
 	#drop the null first element
@@ -69,25 +69,25 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
 	#print(seqfilelistnums)
 
     	for (seqfilenum in seqfilelistnums) {
-    		zipfile.fullpath <- file.path( url.to.find.zipfile(state.name), zipfile(state.abbrev, seqfilenum) )
+    		zipfile.fullpath <- file.path( url.to.find.zipfile(state.name, end.year = end.year), zipfile(state.abbrev, seqfilenum, end.year = end.year) )
     		#if (testing) {
     		#  cat(zipfile.fullpath); cat(' \n')
     		#}
-    		cat('Checking ', zipfile(state.abbrev, seqfilenum)); cat(' ... ')
+    		cat('Checking ', zipfile(state.abbrev, seqfilenum, end.year = end.year)); cat(' ... ')
 
         # The US estimates and MOE files inside the US zips are empty & size zero.
         # Just in case any zip files are size zero here, delete them to avoid confusion.
-    		if (file.exists(file.path(folder, zipfile(state.abbrev, seqfilenum)))) {
-          if (file.info(file.path(folder, zipfile(state.abbrev, seqfilenum)))$size==0) {
-    		    cat('Warning: File size zero (deleting file now) for '); cat(zipfile(state.abbrev, seqfilenum));cat('\n')
-            file.remove(file.path(folder, zipfile(state.abbrev, seqfilenum)))
+    		if (file.exists(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)))) {
+          if (file.info(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)))$size==0) {
+    		    cat('Warning: File size zero (deleting file now) for '); cat(zipfile(state.abbrev, seqfilenum, end.year = end.year));cat('\n')
+            file.remove(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)))
     		  }
     		}
     		# DOWNLOAD ZIP IF  zip file is missing AND missing (estimates and/or moe file).
     		# If have zip, or est+moe that was in zip, then don't need to download zip again.
-    		if ( (!file.exists( file.path(folder, zipfile(state.abbrev, seqfilenum)))) &
-    		       (!file.exists( file.path(folder, datafile(state.abbrev, seqfilenum))) |
-    		          !file.exists( mfile <- gsub("^e", "m", file.path(folder, datafile(state.abbrev, seqfilenum))) ))) {
+    		if ( (!file.exists( file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)))) &
+    		       (!file.exists( file.path(folder, datafile(state.abbrev, seqfilenum, end.year = end.year))) |
+    		          !file.exists( mfile <- gsub("^e", "m", file.path(folder, datafile(state.abbrev, seqfilenum, end.year = end.year))) ))) {
 
     		  # IF PROBLEM DOWNLOADING, provide a warning message & retry a few times.
     		  # Note: if (file.exists(zipfile.fullpath) seems to fail at trying to check an FTP site.
@@ -95,7 +95,7 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
     		  while (!ok) {
     		    x <- try(download.file(
     		      zipfile.fullpath,
-    		      file.path(folder, zipfile(state.abbrev, seqfilenum)),
+    		      file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)),
     		      quiet=!testing), silent=!testing )
 
     		    ok <- TRUE; attempt <- attempt + 1
@@ -108,8 +108,8 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
             # might need to pause here to allow download to start so file size is not zero when checked below???
 
     		    # Also it is the US estimates and MOE files inside the US zips that are empty & size zero.
-    		    if (file.info(file.path(folder, zipfile(state.abbrev, seqfilenum)))$size==0) {
-    		      ok<-FALSE; cat('Warning: File size zero for '); cat(file.path(folder, zipfile(state.abbrev, seqfilenum))); cat('\n')
+    		    if (file.info(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)))$size==0) {
+    		      ok<-FALSE; cat('Warning: File size zero for '); cat(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year))); cat('\n')
     		    }
     		    if (attempt > attempts) {
     		      cat('\n*** Failed to obtain file after repeated attempts. May need to download manually. ***\n========================================\n')

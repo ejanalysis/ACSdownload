@@ -179,8 +179,13 @@
 #' @param save.files Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.
 #' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.
 #'
-#' @return By default, returns a list with datatables and information about them, with three elements in the list: \cr
-#'   bg, tracts, and info. The info element is a table of metadata such as short and long field names: \cr\cr
+#' @return By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
+#'   bg, tracts, headers, and info. The headers and info elements are data.frames providing metadata such as short and long field names.
+#'   The same column names are found in x$info and x$headers, but headers has more rows. The info table just provides information about each
+#'   data variable in the estimates tables. The headers table provides similar information but made to match the bg or tract format,
+#'   so the headers table has as many rows as bg or tracts has columns -- enough for the estimates and MOE fields, and the basic fields such as FIPS.
+#'   The info data.frame can look like this, for example:
+#'   \cr\cr
 #'   'data.frame':	xxxx obs. of  9 variables:  \cr
 #'  $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...  \cr
 #'  $ line           : num  1 2 3 4 5 6 7 8 9 10 ...  \cr
@@ -306,7 +311,7 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
   ######## MAY CHANGE THIS TO DATA?? but varies by year ** also see acs.lookup in acs package as an alternative
   lookup.acs <- get.lookup.acs(end.year)
 
-  seqfilelistnums <- which.seqfiles(tables=tables, lookup.acs=lookup.acs)
+  seqfilelistnums <- which.seqfiles(tables=tables, lookup.acs=lookup.acs, end.year=end.year)
   # convert these to four-character-long strings with correct # of leading zeroes (already done when reading lookup csv but ok to repeat):
   seqfilelistnums <- as.character(seqfilelistnums)
   seqfilelistnums <- analyze.stuff::lead.zeroes(seqfilelistnums, 4)
