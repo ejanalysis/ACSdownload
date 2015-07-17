@@ -168,7 +168,7 @@
 #' @param summarylevel Default is "both" in which case tracts and block groups are returned,
 #'   but if "tract" specified, just tracts are returned,
 #'   and if summarylevel is anything else, just block groups are returned.
-#' @param askneeded Optional logical, default is TRUE, specifies whether to pause and
+#' @param askneeded Optional logical, default is FALSE, specifies whether to pause and
 #'   ask user about which variables are needed in an interactive session.
 #'   If FALSE, it just looks (in \code{folder}) for file called "variables needed.csv" that should specify which variables to keep from each table.
 #'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function.
