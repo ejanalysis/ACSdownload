@@ -12,10 +12,13 @@
 #'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function.
 #'   If the "variables needed.csv" file is not found, it looks for and uses the file called "variables needed template.csv"
 #'   which is written by this function and specifies all of the variables from each table.
+#'   The column called "keep" should have an upper or lowercase letter Y to indicate that row (variable) should be kept. 
+#'     Blanks or other values (even the word "yes") indicate the variable is not needed from that data table and it will be dropped.
+#' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
 #' @return Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.
 #' @seealso \code{\link{get.acs}} which uses this
 #' @export
-set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd()) {
+set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd(), noEditOnMac=FALSE) {
 
   if (missing(lookup.acs)) {
     lookup.acs <- get.lookup.acs()
@@ -85,7 +88,7 @@ set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd()) {
   ########################################################
 
   ##############################################################################
-  # Windows can let user use edit() to
+  # Windows and possibly OSX can let user use edit() to
   # SPECIFY VARIABLES WE NEED VS. VARIABLES TO DROP FROM THOSE TABLES
   # by deleting the "Y" for rows they don't want to keep
   ##############################################################################
@@ -103,13 +106,19 @@ set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd()) {
   ##############################################################################
   os <- analyze.stuff::get.os()
 
-  # windows user could do this interactively, but Mac OSX requires installation of xwindows for the edit() functionality.
-  if (os=="win") {
+  # windows user could do this interactively, using edit(), 
+  # but Mac OSX RStudio seems to require installation of X11 / The X Window System (xquartz) for the edit() functionality.
+  # Mac OSX R.app however, seems to not need X11. But you have to use command-W when you are done editing (trying to close the window by clicking the red x seems to crash it.)
+  # see http://xquartz.macosforge.org and https://support.apple.com/en-us/HT201341 regarding X11 / XQuartz.
+  # and https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Editor-_0028internal-and-external_0029
+  
+  if (os!="mac" | noEditOnMac==FALSE) { 
+  # Used to do this only in windows but it generally works in OSX as well, so just try
     inp <- 'n'
     if (askneeded) {
       print("You may now edit the input file specifying which variables are needed, or read the input file if already saved on disk.")
       inp <- readline("Press n to edit now onscreen interactively --and to use all fields then just close edit window--
-                    or press y if ready to import an already-saved input file from disk called 'variables needed.csv'")
+                    or press y if ready to import an already-saved input file from disk called 'variables needed.csv' \n")
 
       # NOTE: THIS WON'T STOP AND WAIT FOR INPUT IF CODE IS COPIED AND PASTED INTO R CONSOLE.
       # & the while() was an attempt to keep it here while rest of pasted text is read.
@@ -134,19 +143,19 @@ set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd()) {
   }
 
   # on mac ask user to edit template and save as "variables needed.csv" which will be imported
-  if (os=="mac") {
+  if (os=="mac" & noEditOnMac) {
     #try to pause here to allow user to edit the template and save it as "variables needed.csv"
     # SHOULD GIVE OPTION TO JUST GET ALL VARIABLES AS DEFAULT
     x <- 0
     if (askneeded) {
       # NOTE: THIS WON'T STOP AND WAIT FOR INPUT IF CODE IS COPIED AND PASTED INTO R CONSOLE.
-      x <- readline("Just import full tables? (y for full, n to specify variables and/or custom names for variables):")
+      x <- readline("Just import full tables? (y for full, n to specify variables and/or custom names for variables):\n")
     } else {
       x <- 'y'
     }
     xx <- 0
     if (tolower(substr(x,1,1))=="n") {
-      xx <- readline("Prepare input file 'variables needed.csv' in working directory, using 'variables needed template.csv' as a template. Press y when file is ready.")
+      xx <- readline("Prepare input file 'variables needed.csv' in working directory, using 'variables needed template.csv' as a template. Press y when file is ready.\n")
       cat("  Reading input file of variable selections, variables needed.csv (or template for all variables if variables needed.csv was not found)\n")
       if (file.exists(file.path(folder, "variables needed.csv"))) {
         needed <- read.csv(file=file.path(folder, "variables needed.csv"), as.is=TRUE)
@@ -168,6 +177,8 @@ set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd()) {
   }
 
   # retain only the rows with variables we want to keep.
-  needed <- needed[needed$keep=="Y", ]
+  # remove row if keep col has NA which happens if user leaves it blank (e.g. deletes Y from template instead of replacing it with N)
+  needed <- needed[!is.na(needed$keep), ]
+  needed <- needed[tolower(needed$keep)=="y", ]
   return(needed)
 }

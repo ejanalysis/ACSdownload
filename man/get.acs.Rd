@@ -4,17 +4,22 @@
 \alias{get.acs}
 \title{Download Tables from American Community Survey (ACS) 5-year Summary File}
 \usage{
-get.acs(tables = "B01001", base.path = getwd(),
-  data.path = file.path(base.path, "acsdata"),
-  output.path = file.path(base.path, "acsoutput"), end.year = "2012",
-  mystates = "all", summarylevel = "both", askneeded = FALSE,
-  new.geo = TRUE, writefiles = FALSE, save.files = FALSE,
-  testing = FALSE)
+get.acs(tables = "B01001", mystates = "all", end.year = "2012",
+  base.path = getwd(), data.path = file.path(base.path, "acsdata"),
+  output.path = file.path(base.path, "acsoutput"), summarylevel = "both",
+  askneeded = FALSE, new.geo = TRUE, writefiles = FALSE,
+  save.files = FALSE, testing = FALSE, noEditOnMac = FALSE)
 }
 \arguments{
 \item{tables}{Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
 If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
 Those tables are "B01001", "B03002", "B15002", "B16002", "C17002", "B25034"}
+
+\item{mystates}{Character vector, optional, 'all' by default which means all available states
+plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.}
+
+\item{end.year}{Character, optional, '2012' by default. Defines a valid ending year of a 5-year summary file.
+Can be '2010' for example. Not all years are tested.}
 
 \item{base.path}{Character, optional, getwd() by default. Defines a base folder to start from, in case
 data.path and/or output.path are not specified, in which case a subfolder under base.path,
@@ -25,12 +30,6 @@ Defines folder (created if does not exist) where downloaded files will be stored
 
 \item{output.path}{Character, optional, file.path(base.path, 'acsoutput') by default.
 Defines folder (created if does not exist) where output files (results of this function) will be stored.}
-
-\item{end.year}{Character, optional, '2012' by default. Defines a valid ending year of a 5-year summary file.
-Can be '2010' for example. Not all years are tested.}
-
-\item{mystates}{Character vector, optional, 'all' by default which means all available states
-plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.}
 
 \item{summarylevel}{Default is "both" in which case tracts and block groups are returned,
 but if "tract" specified, just tracts are returned,
@@ -50,6 +49,8 @@ which is written by this function and specifies all of the variables from each t
 \item{save.files}{Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.}
 
 \item{testing}{Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.}
+
+\item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table, when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
 }
 \value{
 By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
@@ -226,6 +227,7 @@ OTHER SOURCES include \cr
   t( get.table.info2(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
   out <- get.acs(mystates=c('dc','de')) # Data for just DC & DE, just the default table.
   names(out$bg); cat('\\n\\n'); head(out$info)
+  cbind( longname=out$info$longname, total=colSums( out$bg[ , names(out$bg) \%in\% out$info$shortname ]))
   # to see data on 2 places, 1 per column, with short and long field names
   cbind( out$headers$longname, t(out$bg[1:2, ]) )
   # to see 7 places, 1 per row, with short and long field name as header

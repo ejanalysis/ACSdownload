@@ -4,7 +4,8 @@
 \alias{set.needed}
 \title{Specify which ACS Variables are Needed}
 \usage{
-set.needed(tables, lookup.acs, askneeded = FALSE, folder = getwd())
+set.needed(tables, lookup.acs, askneeded = FALSE, folder = getwd(),
+  noEditOnMac = FALSE)
 }
 \arguments{
 \item{tables}{Character vector, required. Specifies which ACS tables.}
@@ -16,9 +17,13 @@ ask user about variables needed in interactive session.
 If FALSE, just looks for file called "variables needed.csv" that should specify which variables to keep from each table.
 The format of that file should be the same as is found in the file "variables needed template.csv" created by this function.
 If the "variables needed.csv" file is not found, it looks for and uses the file called "variables needed template.csv"
-which is written by this function and specifies all of the variables from each table.}
+which is written by this function and specifies all of the variables from each table.
+The column called "keep" should have an upper or lowercase letter Y to indicate that row (variable) should be kept.
+  Blanks or other values (even the word "yes") indicate the variable is not needed from that data table and it will be dropped.}
 
 \item{folder}{Optional path, default is getwd(), specifying where to save the csv files that define needed variables.}
+
+\item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
 }
 \value{
 Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.

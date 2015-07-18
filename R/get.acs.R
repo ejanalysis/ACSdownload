@@ -178,6 +178,7 @@
 #' @param writefiles Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.
 #' @param save.files Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.
 #' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.
+#' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table, when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
 #'
 #' @return By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
 #'   bg, tracts, headers, and info. The headers and info elements are data.frames providing metadata such as short and long field names.
@@ -202,6 +203,7 @@
 #'   t( get.table.info2(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
 #'   out <- get.acs(mystates=c('dc','de')) # Data for just DC & DE, just the default table.
 #'   names(out$bg); cat('\n\n'); head(out$info)
+#'   cbind( longname=out$info$longname, total=colSums( out$bg[ , names(out$bg) %in% out$info$shortname ]))
 #'   # to see data on 2 places, 1 per column, with short and long field names
 #'   cbind( out$headers$longname, t(out$bg[1:2, ]) )
 #'   # to see 7 places, 1 per row, with short and long field name as header
@@ -214,9 +216,10 @@
 #'   head(out$info); head(out$bg)
 #'  }
 #' @export
-get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base.path, 'acsdata'), output.path=file.path(base.path, 'acsoutput'),
-                    end.year='2012', mystates='all', summarylevel='both', askneeded=FALSE,
-                    new.geo=TRUE, writefiles=FALSE, save.files=FALSE, testing=FALSE) {
+get.acs <- function(tables='B01001', mystates='all', end.year='2012', 
+                    base.path=getwd(), data.path=file.path(base.path, 'acsdata'), output.path=file.path(base.path, 'acsoutput'),
+                    summarylevel='both', askneeded=FALSE,
+                    new.geo=TRUE, writefiles=FALSE, save.files=FALSE, testing=FALSE, noEditOnMac=FALSE) {
 
   ejscreentables <- c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034")
 
@@ -331,7 +334,7 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
   # "needed" will be a dataframe that specifies which variables are needed, from among the specified tables
 
   cat(as.character(Sys.time()), ' '); cat("Started specifying which variables are needed from the specified ACS tables \n")
-  needed <- set.needed(tables=tables, lookup.acs=lookup.acs, askneeded=askneeded, folder=data.path) # requires "lookup.acs" be in memory, which was done a few lines ago, & a few other variables *****
+  needed <- set.needed(tables=tables, lookup.acs=lookup.acs, askneeded=askneeded, folder=data.path, noEditOnMac=noEditOnMac) # requires "lookup.acs" be in memory, which was done a few lines ago, & a few other variables *****
   # ensure leading zeroes on sequence file number
   needed$seq <- analyze.stuff::lead.zeroes(needed$seq, 4)
   cat(as.character(Sys.time()), ' '); cat("Finished specifying which variables are needed from the specified ACS tables \n")
@@ -415,7 +418,7 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
 
   cat(as.character(Sys.time()), ' '); cat("Started joining geo to data tables \n")
 
-  alltab <- join.geo.to.tablist(geo, alltab, folder=output.path, save=writefiles, sumlevel=summarylevel, end.year=end.year)
+  alltab <- join.geo.to.tablist(geo, alltab, folder=output.path, save.csv=writefiles, sumlevel=summarylevel, end.year=end.year)
 
   cat(as.character(Sys.time()), ' '); cat('Finished joining geo to data tables \n')
   cat(as.character(Sys.time()), ' '); cat('Checked block groups and tracts, retained ');cat(summarylevel); cat('\n')
@@ -510,6 +513,8 @@ get.acs <- function(tables='B01001', base.path=getwd(), data.path=file.path(base
   # make the MOE versions of the estimates columns,
   # then intersperse with estimates, to match full list of longnames
   table.info.all.m <- get.table.info2(tables, end.year, table.info.only=FALSE, moe=TRUE)
+  # NOTE: THIS HAS ALL VARIABLES, NOT JUST needed, so we want to remove any not needed so it matches retained data fields.
+  table.info.all.m <- table.info.all.m[ table.info.all.m$shortname %in% paste(names(bg),'.m',sep='') , ]
   rownames(table.info.all.m) <- table.info.all.m$shortname
   #table.info.all.m <- table.info.all
   #  table.info.all.m$shortname <- paste(table.info.all.m$shortname, '.m', sep='')
