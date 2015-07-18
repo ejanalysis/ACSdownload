@@ -5,7 +5,7 @@
 \title{Read and concatenate State files of ACS data}
 \usage{
 read.concat.states(tables, mystates, geo, needed, folder = getwd(),
-  end.year = "2012", save.files = TRUE, sumlevel = "both",
+  output.path, end.year = "2012", save.files = TRUE, sumlevel = "both",
   testing = FALSE)
 }
 \arguments{
@@ -18,6 +18,8 @@ read.concat.states(tables, mystates, geo, needed, folder = getwd(),
 \item{needed}{Required table specifying which variables to use from each table. See \code{\link{set.needed}} and \code{\link{get.acs}}}
 
 \item{folder}{Default is current working directory.}
+
+\item{output.path}{Default is whatever the parameter \code{folder} is set to. Results as .RData files are saved here if save.files=TRUE.}
 
 \item{end.year}{Default is "2012", specifies end year of 5-year summary file.}
 

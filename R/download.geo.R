@@ -52,6 +52,8 @@ download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALS
   full.geofilenames <- file.path(url.to.find.zipfile(statenames.mine, end.year=end.year), geofilenames)
   # Note download.file is not vectorized so use a loop:
   #  i.e., can't say download.file(full.geofilenames, geofilenames)
+  
+  cat('Attempting to download geographic data for each State, xx, from \n', file.path(url.to.find.zipfile('xx', end.year=end.year), geofile('xx', end.year=end.year)), '\n\n')
 
   for (statenum in 1:length(mystates)) {
     if (mystates[statenum] != "us") {
@@ -71,7 +73,7 @@ download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALS
         ok <- FALSE; attempt <- 1
         while (!ok) {
           cat(paste(rep(' ',21),collapse=''), 'Trying to download ')
-          cat(geofilenames[statenum], 'from', full.geofilenames[statenum]); cat('\n')
+          cat(geofilenames[statenum], '\n')
           x <- try( download.file(
             full.geofilenames[statenum],
             file.path(folder, geofilenames[statenum]), quiet=!testing
@@ -88,14 +90,14 @@ download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALS
 
           ok <- TRUE; attempt <- attempt + 1
           if (class(x)=="try-error") {
-            ok <- FALSE; paste(rep(' ',21), collapse=''); cat("Warning: Unable to download geo file"); cat(geofilenames[statenum]); cat("\n")
+            ok <- FALSE; cat(paste(rep(' ',21), collapse='')); cat("Warning: Unable so far to download geo file"); cat(geofilenames[statenum]); cat("\n")
           }
           if (file.info( file.path(folder, geofilenames[statenum] ) )$size==0) {
             ok <- FALSE; cat(paste(rep(' ',21), collapse=''), 'Warning: File size zero for '); cat(geofilenames[statenum]);cat('\n')
             file.remove( file.path(folder, geofilenames[statenum] ) )
           }
           if (attempt > attempts) {
-            cat('\n', paste(rep(' ',21),collapse=''),'*** Failed to obtain geo file after repeated attempts. May need to download manually. ***\n')
+            cat('\n', paste(rep(' ',21),collapse=''),'*** Failed to obtain geo file', geofilenames[statenum],'after repeated attempts. May need to download manually. ***\n')
             break
           }
         }
@@ -114,10 +116,12 @@ download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALS
   # Verify all GEO downloaded OK
 
   if ( any(!( file.exists(file.path(folder, geofilenames[geofilenames!=geofile("us")] )) )) ) {
-    cat('\n', paste(rep(' ',21),collapse=''), "WARNING: Some geo data files that should have been downloaded are missing:\n")
-    for (thisfile in geofilenames) {
+    cat('\n', paste(rep(' ',21),collapse=''), "*** WARNING: Some geo data files that should have been downloaded are missing:\n")
+    for (thisfile in geofilenames[geofilenames!=geofile("us")]) {
       if (!(file.exists(file.path(folder, thisfile)))) { cat(paste("Missing:  ", thisfile, "\n", sep=""))}
     }
     # stop("Stopped because of missing files.") # can just provide a warning
+  } else {
+    cat(as.character(Sys.time()), ' '); cat("All geo files successfully downloaded \n")
   }
 }

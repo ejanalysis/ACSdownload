@@ -3,6 +3,7 @@
 S3method(format,est.moe)
 S3method(merge,tables)
 export(clean.mystates)
+export(clean.sumlevel)
 export(datafile)
 export(download.datafiles)
 export(download.geo)

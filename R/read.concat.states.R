@@ -13,16 +13,16 @@
 #' @param geo Required table of geographic identifiers to merge with data here. See \code{\link{get.read.geo}}
 #' @param needed Required table specifying which variables to use from each table. See \code{\link{set.needed}} and \code{\link{get.acs}}
 #' @param end.year Default is "2012", specifies end year of 5-year summary file.
+#' @param output.path Default is whatever the parameter \code{folder} is set to. Results as .RData files are saved here if save.files=TRUE.
 #' @return Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.
 #' @seealso \code{\link{get.acs}}
 #' @export
-read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), end.year='2012', save.files=TRUE, sumlevel='both', testing=FALSE) {
-  # Need these:
-  # needed (the table of which variables/tables/seqfiles are needed)- tables specifies tables but needed specifies variables in those
-  # geo
+read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), output.path, end.year='2012', save.files=TRUE, sumlevel='both', testing=FALSE) {
+
+  if (missing(output.path)) {output.path <- folder}
+
   # lookup.acs (the table of all ACS variables/tables/seqfiles and which columns of seqfile and table have each)
   # stateabbs  (so the default will work, a vector of 2-letter state abbreviations for the US)
-
   if (!exists('lookup.acs')) {lookup.acs <- get.lookup.acs(end.year = end.year, folder=folder)}
 
   if (testing) { cat(as.character(Sys.time()), "Started concatenating states.\n")}
@@ -268,7 +268,11 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), en
       }	#end of testing
 
     } # end of loop over tables	in this seqfile
-    cat("--------------------------\n")
+    
+    if (length(mytables.in.this.seq) > 1 & this.tab!=mytables.in.this.seq[length(mytables.in.this.seq)]) {
+      # if there are 2+ seqfiles, then after each but the last one, print a divider line:
+      cat("--------------------------\n")
+    }
 
   } # end of loop over sequence files
   cat("----------------------------------------------------\n")

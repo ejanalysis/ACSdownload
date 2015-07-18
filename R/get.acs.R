@@ -165,20 +165,33 @@
 #'   Can be '2010' for example. Not all years are tested.
 #' @param mystates Character vector, optional, 'all' by default which means all available states
 #'   plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.
-#' @param summarylevel Default is "both" in which case tracts and block groups are returned,
-#'   but if "tract" specified, just tracts are returned,
-#'   and if summarylevel is anything else, just block groups are returned.
-#' @param askneeded Optional logical, default is FALSE, specifies whether to pause and
-#'   ask user about which variables are needed in an interactive session.
-#'   If FALSE, it just looks (in \code{folder}) for file called "variables needed.csv" that should specify which variables to keep from each table.
-#'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function.
-#'   If the "variables needed.csv" file is not found, it looks for and uses the file called "variables needed template.csv"
-#'   which is written by this function and specifies all of the variables from each table.
+#' @param sumlevel Default is "both" (case insensitive) in which case tracts and block groups are returned. 
+#'   Also c('tract', 'bg') or c(140,150) and similar patterns work. 
+#'   If "tract" or 140 or some other match, but not block groups, is specified (insensitive to case, tract can be plural or part of a word, etc.), 
+#'   just tracts are returned.
+#'   If "bg" or 150 or "blockgroups" or "block groups" or some other match (insensitive to case, singular or plural or part of a word) 
+#'   but no match on tracts is specified, just block groups are returned.
+#'   Non-matching elements are ignored (e.g., sumlevel=c('bg', 'tracs', 'block') will return block groups 
+#'   but neither tracts (because of the typo) nor blocks (not available in ACS), with no warning -- 
+#'   No warning is given if sumlevel is set to a list of elements where some are not recognized as matches to bg or tract, 
+#'   as long as one or more match bg, tracts, or both (or variants as already noted).
+#' @param askneeded Optional logical, default is FALSE (in which case all variables from each table will be returned unless otherwise specified -- see below).
+#'   This parameter specifies whether to pause and ask the user about which variables are needed in an interactive session in R. 
+#'   This gives the user a chance to prepare the file "variables needed.csv" (or just ensure it is ready), 
+#'   or to edit and save "variables needed.csv" within a window in the default editor used by R (the user is asked which of these is preferred). 
+#'   If askneeded=FALSE, the function just looks in \code{data.folder} for a file called "variables needed.csv" that, if used, 
+#'   must specify which variables to keep from each table.
+#'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function -- 
+#'   keeping the letter "Y" in the column named "keep" indicates the given variable is needed. 
+#'   A blank or "N" or other non-Y specifies the variable should be dropped and not returned by get.acs().
+#'   If the "variables needed.csv" file is not found, however, this function looks for and uses the file called "variables needed template.csv"
+#'   which is written by this function and specifies all of the variables from each table, so all variables will be retained and returned by get.acs().
 #' @param new.geo Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously.
 #' @param writefiles Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.
 #' @param save.files Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.
 #' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.
-#' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table, when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
+#' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table, 
+#'   when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
 #'
 #' @return By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
 #'   bg, tracts, headers, and info. The headers and info elements are data.frames providing metadata such as short and long field names.
@@ -203,22 +216,25 @@
 #'   t( get.table.info2(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
 #'   out <- get.acs(mystates=c('dc','de')) # Data for just DC & DE, just the default table.
 #'   names(out$bg); cat('\n\n'); head(out$info)
-#'   cbind( longname=out$info$longname, total=colSums( out$bg[ , names(out$bg) %in% out$info$shortname ]))
+#'   cbind(longname=out$info$longname, 
+#'         total=colSums(out$bg[ , names(out$bg) %in% out$info$shortname ]))
 #'   # to see data on 2 places, 1 per column, with short and long field names
 #'   cbind( out$headers$longname, t(out$bg[1:2, ]) )
 #'   # to see 7 places, 1 per row, with short and long field name as header
 #'   head( rbind(out$headers$longname, out$bg) )[,1:7]
 #'   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))  # just 2 tables for just Delaware
 #'   head(out$info); head(out$bg)
-#'   out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results') # uses all EJSCREEN defaults and the specified folders
+#'   # uses all EJSCREEN defaults and the specified folders:
+#'   out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results') 
 #'   head(out$info); head(out$bg)
-#'   out <- get.acs(tables=c('ejscreen', 'B16001')) # all tables needed for EJSCREEN, plus 'B16001', with variables specified in 'variables needed.csv', all states&DC &PR?
+#'   out <- get.acs(tables=c('ejscreen', 'B16001')) # all tables needed for EJSCREEN, 
+#'     plus 'B16001', with variables specified in 'variables needed.csv', all states&DC &PR?
 #'   head(out$info); head(out$bg)
 #'  }
 #' @export
 get.acs <- function(tables='B01001', mystates='all', end.year='2012', 
                     base.path=getwd(), data.path=file.path(base.path, 'acsdata'), output.path=file.path(base.path, 'acsoutput'),
-                    summarylevel='both', askneeded=FALSE,
+                    sumlevel='both', askneeded=FALSE,
                     new.geo=TRUE, writefiles=FALSE, save.files=FALSE, testing=FALSE, noEditOnMac=FALSE) {
 
   ejscreentables <- c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034")
@@ -227,17 +243,19 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
 
   # check if base.path seems to be a valid folder
   if (!file.exists(base.path)) {stop(paste('base.path', base.path, 'does not exist'))}
+  
+  cat('\n')
 
   if (!file.exists(output.path)) {
     diroutcome <- try( dir.create(output.path), silent = TRUE)
-    if (class(diroutcome) == 'try-error') { stop('output.path not found and could not be created')}
-    cat(paste('output.path', output.path, 'not found so it was created'))
+    if (class(diroutcome) == 'try-error') { stop('output.path not found and could not be created\n')}
+    cat(paste('output.path', output.path, 'not found so it was created\n'))
   }
 
   if (!file.exists(data.path)) {
     diroutcome <- try( dir.create(data.path), silent = TRUE)
-    if (class(diroutcome) == 'try-error') { stop('data.path not found and could not be created')}
-    cat(paste('data.path', data.path, 'not found so it was created'))
+    if (class(diroutcome) == 'try-error') { stop('data.path not found and could not be created\n')}
+    cat(paste('data.path', data.path, 'not found so it was created\n'))
   }
 
   if (testing) {
@@ -284,11 +302,11 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   #######################################################
 
   #require(proxistat)
-  data(lookup.states, envir = environment(), package='proxistat')
-  stateabbs	<- tolower(lookup.states[, 'ST'])
+  #data(lookup.states, envir = environment(), package='proxistat')
+  #stateabbs	<- tolower(lookup.states[, 'ST'])
   # or could use
   #   stateabbs <- tolower(c(state.abb, c("DC", "AS", "GU", "MP", "PR", "UM", "VI", "US")))
-  # but other functions in this pkg require lookup.states anyway, and not just abbs
+  # but other functions in this pkg now require lookup.states anyway, and not just abbs
   mystates <- clean.mystates(mystates=mystates, testing=testing)
 
   cat(as.character(Sys.time()), ' '); cat("Started scripts to download and parse ACS data\n")
@@ -355,7 +373,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
 
   download.datafiles(tables=tables, end.year=end.year, mystates=mystates, folder=data.path, testing=testing)
 
-  cat('\n', as.character(Sys.time()), ' '); cat("Finished downloading data files... \n")
+  cat(as.character(Sys.time()), ' '); cat("Finished downloading data files... \n")
   cat(as.character(Sys.time()), ' '); cat("Started unzipping data files... \n")
 
   unzip.datafiles(tables=tables, mystates=mystates, folder=data.path, end.year=end.year, testing=testing)
@@ -381,7 +399,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
 
   # NOTE - Inefficient to pass entire geo table here! Just need count of rows per state to help read in data tables from csv files...
   # Could recode to *** make this and read.concat.states() more efficient:
-  alltab <- read.concat.states(tables, mystates, geo=geo, save.files=save.files, folder=data.path, end.year=end.year, needed=needed, sumlevel=summarylevel, testing=testing)
+  alltab <- read.concat.states(tables, mystates, geo=geo, save.files=save.files, folder=data.path, output.path=output.path, end.year=end.year, needed=needed, sumlevel=sumlevel, testing=testing)
 
   cat(as.character(Sys.time()), ' '); cat("Finished reading data \n")
 
@@ -418,10 +436,10 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
 
   cat(as.character(Sys.time()), ' '); cat("Started joining geo to data tables \n")
 
-  alltab <- join.geo.to.tablist(geo, alltab, folder=output.path, save.csv=writefiles, sumlevel=summarylevel, end.year=end.year)
+  alltab <- join.geo.to.tablist(geo, alltab, folder=output.path, save.csv=writefiles, sumlevel=sumlevel, end.year=end.year)
 
   cat(as.character(Sys.time()), ' '); cat('Finished joining geo to data tables \n')
-  cat(as.character(Sys.time()), ' '); cat('Checked block groups and tracts, retained ');cat(summarylevel); cat('\n')
+  cat(as.character(Sys.time()), ' '); cat('Checked block groups and tracts, retained ');cat(sumlevel); cat('\n')
 
   gc()
   if (testing) {
@@ -455,17 +473,15 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   merged <- merge.tables(alltab)
 
   cat(as.character(Sys.time()), ' '); cat('Merged all tables into one big table \n')
-
-  #if (testing) {
-  if (save.files) {
-    ######################################
-    #  DO SAVE THE FULL SET OF TABLES HERE, IN CASE -- block groups and tracts as well:
-    ######################################
-    save(merged, file=file.path(output.path, "merged tables.RData"))
-    cat(as.character(Sys.time()), ' '); cat("Saved merged tables \n")
+  
+  if (testing) {
+    if (save.files) {
+      #  CAN SAVE THE FULL SET OF TABLES HERE, IN CASE -- block groups and tracts as well:
+      save(merged, file=file.path(output.path, "merged tables.RData"))
+      cat(as.character(Sys.time()), ' '); cat("Saved merged tables \n")
+    }
   }
-  #}
-
+  
   ######################################
   #  SPLIT into a BLOCK GROUPS dataset & a TRACTS dataset
   ######################################
@@ -494,7 +510,9 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   tracts$SUMLEVEL <- NULL
   #print(head(tracts))
 
-  if (save.files) {save.image(file=file.path(output.path, 'ACS all but table.info step done.RData'))}
+  if (testing) {
+    if (save.files) {save.image(file=file.path(output.path, 'ACS all but table.info step done.RData'))}
+  }
 
   ########################################################
   # GET TABLE TITLE, UNIVERSE, AND LONG VARIABLE NAMES
@@ -652,15 +670,14 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   #################################
 
   if (save.files) {
-    # WOULD BE BETTER TO SPECIFY A DATA DIRECTORY BUT FOR NOW SAVE IN WORKING DIR:
     save(bg,     file=file.path(output.path, "bg all tables.RData"))
     save(tracts, file=file.path(output.path,"tracts all tables.RData"))
     # a waste of space to create headers and info here but nice to save with those names and usually not much memory for this
     headers=table.info.all
-    save(headers, file=file.path('headers.RData'))
+    save(headers, file=file.path(output.path, 'headers.RData'))
     rm(headers)
     info=table.info
-    save(info, file=file.path('info.RData'))
+    save(info, file=file.path(output.path, 'info.RData'))
     rm(info)
     #save()
     cat(as.character(Sys.time()), ' '); cat('Saved block group file and tracts file as .RData \n')
@@ -692,12 +709,15 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   cat("################ DONE ############## \n\n")
 
   # Return block group or tracts file (or both) as list, along with table.info.best which has fieldnames etc.
-  if (substr(summarylevel,1,5)=='tract') {
+  sumlevel <- clean.sumlevel(sumlevel)
+
+  if (sumlevel=='tract') {
     return(list(tracts=tracts, headers=table.info.all, info=table.info))
   } else {
-    if (summarylevel=='both') {
+    if (sumlevel=='both') {
       return(list(bg=bg, tracts=tracts, headers=table.info.all, info=table.info))
     } else {
+      # can assume it is bg since check.sumlevel stops with error if not one of these three
       return(list(bg=bg, headers=table.info.all, info=table.info))
     }
   }

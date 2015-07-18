@@ -112,7 +112,7 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
     		      ok<-FALSE; cat('Warning: File size zero for '); cat(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year))); cat('\n')
     		    }
     		    if (attempt > attempts) {
-    		      cat('\n*** Failed to obtain file after repeated attempts. May need to download manually. ***\n========================================\n')
+    		      cat('\n*** Failed to obtain ', ,'file after repeated attempts. May need to download manually. ***\n========================================\n')
     		      break
     		    }
     		  }
@@ -125,27 +125,20 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
     # VERIFY ALL FILES WERE DOWNLOADED
     # BUT THIS DOESN'T CHECK IF ZIP FILE IS CORRUPT/VALID (other than checking for size 0 above)
     ##################
-
-#    zipsinfolder <- dir(pattern="zip")
-#    if ( any(!(zipnames %in% zipsinfolder)) ) {
-#    	cat("Some zip files missing (but data files from them may be here)\n")
-#
-#    }
-
-#	got.zip.or.txts <- ( file.exists(zipnames) | (file.exists(enames) & file.exists(mnames) ) )
-#	cat("\n\nMissing zip and one or more data files (estimates/ MOE) for ")
-# cat(zipnames[!got.zip.or.txts]); cat("\n")
-
+	
+	#zipsinfolder <- dir(pattern="zip", path=folder)
+	#if ( any(!(zipnames %in% zipsinfolder)) ) {
+	if ( any(!(( file.exists(file.path(folder, zipnames)) | (file.exists(enames) & file.exists(mnames) ) ))) ) {
+	  warning('*** WARNING: Some zip files missing and their corresponding estimates and MOE files contents also not found locally')
+	  #	got.zip.or.txts <- ( file.exists(file.path(folder, zipnames)) | (file.exists(file.path(folder, enames)) & file.exists(file.path(folder, mnames)) ) )
+	  #	cat("\n\nMissing zip and one or more data files (estimates/ MOE) for ")
+	  # cat(zipnames[!got.zip.or.txts]); cat("\n")
+	} else {
+	  cat(as.character(Sys.time()), ' '); cat("All data zipfiles, or their estimates or MOE contents file, were downloaded/ found locally \n")
+	}
     # note count of downloaded zip files should be
     # length(stateabbs) * length(seqfilelistnums)
     # e.g. 318
     #if (length(stateabbs) * length(seqfilelistnums) > length(dir(pattern="zip")) ) { print("please check count of zip files downloaded") }
-    #
-    #e.g.
-    #Warning messages:
-    #1: In download.file(zipfile.fullpath, zipfile(state.abbrev,  ... :
-    #  downloaded length 349760 != reported length 351410
-    #2: In download.file(zipfile.fullpath, zipfile(state.abbrev,  ... :
-    #  downloaded length 519472 != reported length 519485   ...
 
 }	# end of download.datafiles()

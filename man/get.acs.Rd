@@ -6,7 +6,7 @@
 \usage{
 get.acs(tables = "B01001", mystates = "all", end.year = "2012",
   base.path = getwd(), data.path = file.path(base.path, "acsdata"),
-  output.path = file.path(base.path, "acsoutput"), summarylevel = "both",
+  output.path = file.path(base.path, "acsoutput"), sumlevel = "both",
   askneeded = FALSE, new.geo = TRUE, writefiles = FALSE,
   save.files = FALSE, testing = FALSE, noEditOnMac = FALSE)
 }
@@ -31,16 +31,28 @@ Defines folder (created if does not exist) where downloaded files will be stored
 \item{output.path}{Character, optional, file.path(base.path, 'acsoutput') by default.
 Defines folder (created if does not exist) where output files (results of this function) will be stored.}
 
-\item{summarylevel}{Default is "both" in which case tracts and block groups are returned,
-but if "tract" specified, just tracts are returned,
-and if summarylevel is anything else, just block groups are returned.}
+\item{sumlevel}{Default is "both" (case insensitive) in which case tracts and block groups are returned.
+Also c('tract', 'bg') or c(140,150) and similar patterns work.
+If "tract" or 140 or some other match, but not block groups, is specified (insensitive to case, tract can be plural or part of a word, etc.),
+just tracts are returned.
+If "bg" or 150 or "blockgroups" or "block groups" or some other match (insensitive to case, singular or plural or part of a word)
+but no match on tracts is specified, just block groups are returned.
+Non-matching elements are ignored (e.g., sumlevel=c('bg', 'tracs', 'block') will return block groups
+but neither tracts (because of the typo) nor blocks (not available in ACS), with no warning --
+No warning is given if sumlevel is set to a list of elements where some are not recognized as matches to bg or tract,
+as long as one or more match bg, tracts, or both (or variants as already noted).}
 
-\item{askneeded}{Optional logical, default is FALSE, specifies whether to pause and
-ask user about which variables are needed in an interactive session.
-If FALSE, it just looks (in \code{folder}) for file called "variables needed.csv" that should specify which variables to keep from each table.
-The format of that file should be the same as is found in the file "variables needed template.csv" created by this function.
-If the "variables needed.csv" file is not found, it looks for and uses the file called "variables needed template.csv"
-which is written by this function and specifies all of the variables from each table.}
+\item{askneeded}{Optional logical, default is FALSE (in which case all variables from each table will be returned unless otherwise specified -- see below).
+This parameter specifies whether to pause and ask the user about which variables are needed in an interactive session in R.
+This gives the user a chance to prepare the file "variables needed.csv" (or just ensure it is ready),
+or to edit and save "variables needed.csv" within a window in the default editor used by R (the user is asked which of these is preferred).
+If askneeded=FALSE, the function just looks in \code{data.folder} for a file called "variables needed.csv" that, if used,
+must specify which variables to keep from each table.
+The format of that file should be the same as is found in the file "variables needed template.csv" created by this function --
+keeping the letter "Y" in the column named "keep" indicates the given variable is needed.
+A blank or "N" or other non-Y specifies the variable should be dropped and not returned by get.acs().
+If the "variables needed.csv" file is not found, however, this function looks for and uses the file called "variables needed template.csv"
+which is written by this function and specifies all of the variables from each table, so all variables will be retained and returned by get.acs().}
 
 \item{new.geo}{Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously.}
 
@@ -50,7 +62,8 @@ which is written by this function and specifies all of the variables from each t
 
 \item{testing}{Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.}
 
-\item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table, when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
+\item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
+  when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
 }
 \value{
 By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
@@ -227,16 +240,19 @@ OTHER SOURCES include \cr
   t( get.table.info2(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
   out <- get.acs(mystates=c('dc','de')) # Data for just DC & DE, just the default table.
   names(out$bg); cat('\\n\\n'); head(out$info)
-  cbind( longname=out$info$longname, total=colSums( out$bg[ , names(out$bg) \%in\% out$info$shortname ]))
+  cbind(longname=out$info$longname,
+        total=colSums(out$bg[ , names(out$bg) \%in\% out$info$shortname ]))
   # to see data on 2 places, 1 per column, with short and long field names
   cbind( out$headers$longname, t(out$bg[1:2, ]) )
   # to see 7 places, 1 per row, with short and long field name as header
   head( rbind(out$headers$longname, out$bg) )[,1:7]
   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))  # just 2 tables for just Delaware
   head(out$info); head(out$bg)
-  out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results') # uses all EJSCREEN defaults and the specified folders
+  # uses all EJSCREEN defaults and the specified folders:
+  out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results')
   head(out$info); head(out$bg)
-  out <- get.acs(tables=c('ejscreen', 'B16001')) # all tables needed for EJSCREEN, plus 'B16001', with variables specified in 'variables needed.csv', all states&DC &PR?
+  out <- get.acs(tables=c('ejscreen', 'B16001')) # all tables needed for EJSCREEN,
+    plus 'B16001', with variables specified in 'variables needed.csv', all states&DC &PR?
   head(out$info); head(out$bg)
  }
 }
