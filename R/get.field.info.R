@@ -1,6 +1,7 @@
 #' @title Get short and long field names etc for ACS tables
 #' @description
 #'  Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
+#' @details Uses \code{\link{get.lookup.acs}} but for 2012 version could just use \code{data(lookup.acs)}
 #' @param tables Required vector of tables such as "B01001"
 #' @param end.year Last year of 5-year summary file such as '2012' (default)
 #' @param table.info.only FALSE by default.
@@ -20,7 +21,7 @@
 #' @export
 get.field.info <- function(tables, end.year='2012', table.info.only=FALSE, moe=FALSE) {
 
-  # SHOULD REPLACE   get.table.info.R  with get.table.info2.R code which uses this get.field.info() once recode get.acs.R and related to use new one properly ***********
+  # replacing   get.table.info.R  with get.table.info2.R code which uses this get.field.info()
 
   # Error checking
   if (missing(tables)) {stop('Must specify tables as a vector of character string table IDs, such as B01001')}

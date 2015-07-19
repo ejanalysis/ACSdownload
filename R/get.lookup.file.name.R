@@ -5,9 +5,23 @@
 #'   sequence numbers (file numbers) and table numbers for data in the American Community Survey (ACS) 5-year summary file.
 #' @param end.year Not yet implemented, but will be optional end year for 5-year summary file, as character, defaulting to "2012"
 #' @return Returns character element that is name of file such as "Sequence_Number_and_Table_Number_Lookup.txt"
-#' @seealso \code{\link{get.acs}}
+#' @seealso \code{\link{get.acs}}, \code{\link{get.lookup.acs}}, \code{\link{get.url.prefix.lookup.table}}. Also see \code{data(lookup.acs)}. 
 #' @export
 get.lookup.file.name	<- function(end.year="2012") {
-  return("Sequence_Number_and_Table_Number_Lookup.txt")
-  #	Can modify later to handle other end years and/or 1/3/5 year files.
+  if (end.year < 2009) {stop('Years prior to 2009 are not valid. ACS 5-year file was not available until 2005-2009, end.year=2009.')}
+  if (end.year > 2009) {
+    return("Sequence_Number_and_Table_Number_Lookup.txt")
+  } else {
+    return("Sequence_Number_and_Table_Number_Lookup.xls")
+  }
+  
+  #	For other end years (and possibly 1 or 3 year files at some point? those lack block groups):
+  # 2009 ftp://ftp.census.gov//acs2009_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.xls ******
+  # 2010 ftp://ftp.census.gov//acs2010_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt
+  # 2011 ftp://ftp.census.gov//acs2011_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt
+  # 2012 ftp://ftp.census.gov//acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt
+  # 2013 ftp://ftp.census.gov//acs2013_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt
+  # 2014 expected December 2015
+  # 2015 expected December 2016
+  
 }

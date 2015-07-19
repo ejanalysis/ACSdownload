@@ -7,8 +7,9 @@
 get.acs(tables = "B01001", mystates = "all", end.year = "2012",
   base.path = getwd(), data.path = file.path(base.path, "acsdata"),
   output.path = file.path(base.path, "acsoutput"), sumlevel = "both",
-  askneeded = FALSE, new.geo = TRUE, writefiles = FALSE,
-  save.files = FALSE, testing = FALSE, noEditOnMac = FALSE)
+  askneeded = FALSE, new.geo = TRUE, write.files = FALSE,
+  save.files = FALSE, write.acspkg = FALSE, testing = FALSE,
+  noEditOnMac = FALSE)
 }
 \arguments{
 \item{tables}{Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
@@ -56,9 +57,12 @@ which is written by this function and specifies all of the variables from each t
 
 \item{new.geo}{Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously.}
 
-\item{writefiles}{Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.}
+\item{write.files}{Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.}
 
 \item{save.files}{Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.}
+
+\item{write.acspkg}{Default is FALSE. If TRUE, saves csv file of tracts and file of block groups, for each of the \code{tables},
+in a format that the Census Bureau American Fact Finder provides as downloadable tables. That format can be easily read in by the very useful \pkg{acs} package.}
 
 \item{testing}{Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.}
 

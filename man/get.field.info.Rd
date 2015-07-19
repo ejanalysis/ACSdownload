@@ -25,6 +25,9 @@ data.frame of information about each table and each variable in table: \cr
 \description{
 Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
 }
+\details{
+Uses \code{\link{get.lookup.acs}} but for 2012 version could just use \code{data(lookup.acs)}
+}
 \examples{
 \dontrun{
   finfo <- get.field.info(c('B17020A', 'B17020H'))

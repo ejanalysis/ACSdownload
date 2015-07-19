@@ -1,14 +1,14 @@
-#' @name lookup.acs
+#' @name lookup.acs2013
 #' @docType data
 #' @aliases Sequence_Number_and_Table_Number_Lookup
-#' @title Sequence_Number_and_Table_Number_Lookup.txt for 2008-2012 ACS dataset
+#' @title Sequence_Number_and_Table_Number_Lookup.txt for 2009-2013 ACS dataset
 #' @description This data set provides information about variables in tables forming the American Community Survey (ACS) 5-year summary file.
-#' @usage data('lookup.acs')
-#' @source For the 2008-2012 dataset, \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
+#' @usage data('lookup.acs2013')
+#' @source For the 2009-2013 dataset, \url{ftp://ftp.census.gov/acs2013_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
 #'   obtained July 2015. 
 #' @keywords datasets
 #' @format A data.frame with these fields: \cr
-#'    'data.frame':	24741 obs. of  8 variables:
+#'    'data.frame':	xxx obs. of  8 variables:
 #'   \itemize{
 #'     \item $ Table.ID               : chr  "B00001" "B00001" "B00001" "B00002" ...
 #'     \item $ Sequence.Number        : chr  "0001" "0001" "0001" "0001" ...
@@ -20,20 +20,14 @@
 #'     \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
 #'   }
 #'   \cr
-#'   For ACS 2008-2012: \cr
-#'   length(lookup.acs[,1]) \cr
-#'   [1] 24741\cr
-#'   names(lookup.acs)\cr
-#'   [1] "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position"\cr
-#'   [6] "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"\cr
 #' @seealso  \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust. 
 #'   Also see \code{\link{get.lookup.acs}} which downloads these files. 
 #'   Also see \code{\link{get.acs}}.
 #' @examples 
 #'  \dontrun{
-#'  data(lookup.acs, package='ACSdownload')
+#'  data(lookup.acs2013, package='ACSdownload')
 #'  # or 
-#'  lookup.acs <- ACSdownload::get.lookup.acs()
+#'  lookup.acs <- ACSdownload::get.lookup.acs(2013)
 #'  # or related info from
 #'  acs::acs.lookup()
 #'  }

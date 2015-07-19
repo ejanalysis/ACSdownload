@@ -8,22 +8,22 @@ get.lookup.acs(end.year = "2012", folder = getwd())
 }
 \arguments{
 \item{end.year}{Character, optional, '2012' by default, which specifies the 2008-2012 dataset.
-Defines which 5-year summary file to use, based on end-year.}
+Defines which 5-year summary file to use, based on end-year.
+Can be 2009 or later. Data for end.year='2014' is released December 2015, for example.}
 
 \item{folder}{Optional path to where to download file to, defaults to current working directory.}
 }
 \value{
-By default, returns lookup.acs if that was already in memory, but typically returns
-  a data.frame with these fields:
+By default, returns a data.frame with these fields:
   \itemize{
-    \item Table ID
-    \item Sequence Number
-    \item Line Number
-    \item Start Position
-    \item Total Cells in Table
-    \item Total Cells in Sequence
-    \item Table Title
-    \item Subject Area
+    \item $ Table.ID               : chr  "B00001" "B00001" "B00001" "B00002" ...
+    \item $ Sequence.Number        : chr  "0001" "0001" "0001" "0001" ...
+    \item $ Line.Number            : num  NA NA 1 NA NA 1 NA NA 1 2 ...
+    \item $ Start.Position         : num  7 NA NA 8 NA NA 7 NA NA NA ...
+    \item $ Total.Cells.in.Table   : chr  "1 CELL" "" "" "1 CELL" ...
+    \item $ Total.Cells.in.Sequence: num  NA NA NA 2 NA NA NA NA NA NA ...
+    \item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
+    \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
   }
   \cr
   For ACS 2008-2012: \cr
@@ -36,15 +36,14 @@ By default, returns lookup.acs if that was already in memory, but typically retu
 \description{
 Download and read lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
   namely which sequence files on the FTP site contain which tables and which variables.
+  NOTE: This is largely obsolete now that data(lookup.acs2013) and similar files for other years are in this package.
 }
 \details{
-Note that lookup may already be in memory from prior work and is not downloaded again if named lookup.acs.
-  Code was developed late 2013 through mid 2015.
-  \cr\cr
-  The source of this lookup table is, for example,
+The source of this lookup table is, for example,
   \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
   \cr\cr
-  Note: The \pkg{acs} package provides a more powerful version of this, called \code{\link[acs]{acs.lookup}}
+  Note: This is also available via data(lookup.acs) for at least the 2012 version, in this package. \cr
+  Note: The \pkg{acs} package provides a version of this that is more useful in some ways, called \code{\link[acs]{acs.lookup}}
 }
 \examples{
 \dontrun{
@@ -53,6 +52,7 @@ Note that lookup may already be in memory from prior work and is not downloaded 
 }
 \seealso{
 \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
-  Also see \code{data(lookup.acs)}. Also see \code{\link{get.acs}} which uses this.
+  Also see \code{data(lookup.acs2013)} and similar data for other years.
+  Also see \code{\link{get.acs}}, \code{\link{get.lookup.file.name}}, \code{\link{get.url.prefix.lookup.table}}
 }
 

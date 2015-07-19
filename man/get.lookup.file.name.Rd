@@ -18,6 +18,6 @@ Returns name of text file provided by US Census Bureau,
   sequence numbers (file numbers) and table numbers for data in the American Community Survey (ACS) 5-year summary file.
 }
 \seealso{
-\code{\link{get.acs}}
+\code{\link{get.acs}}, \code{\link{get.lookup.acs}}, \code{\link{get.url.prefix.lookup.table}}. Also see \code{data(lookup.acs)}.
 }
 

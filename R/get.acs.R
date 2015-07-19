@@ -150,7 +150,7 @@
 #'   \item Geolytics - commercial
 #'   \item etc.
 #' }
-#'
+#' 
 #' @param tables Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
 #'   If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
 #'   Those tables are "B01001", "B03002", "B15002", "B16002", "C17002", "B25034"
@@ -187,8 +187,10 @@
 #'   If the "variables needed.csv" file is not found, however, this function looks for and uses the file called "variables needed template.csv"
 #'   which is written by this function and specifies all of the variables from each table, so all variables will be retained and returned by get.acs().
 #' @param new.geo Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously.
-#' @param writefiles Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.
+#' @param write.files Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.
 #' @param save.files Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.
+#' @param write.acspkg Default is FALSE. If TRUE, saves csv file of tracts and file of block groups, for each of the \code{tables}, 
+#'   in a format that the Census Bureau American Fact Finder provides as downloadable tables. That format can be easily read in by the very useful \pkg{acs} package. 
 #' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.
 #' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table, 
 #'   when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
@@ -235,7 +237,8 @@
 get.acs <- function(tables='B01001', mystates='all', end.year='2012', 
                     base.path=getwd(), data.path=file.path(base.path, 'acsdata'), output.path=file.path(base.path, 'acsoutput'),
                     sumlevel='both', askneeded=FALSE,
-                    new.geo=TRUE, writefiles=FALSE, save.files=FALSE, testing=FALSE, noEditOnMac=FALSE) {
+                    new.geo=TRUE, write.files=FALSE, save.files=FALSE, write.acspkg=FALSE,
+                    testing=FALSE, noEditOnMac=FALSE) {
 
   ejscreentables <- c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034")
 
@@ -436,7 +439,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
 
   cat(as.character(Sys.time()), ' '); cat("Started joining geo to data tables \n")
 
-  alltab <- join.geo.to.tablist(geo, alltab, folder=output.path, save.csv=writefiles, sumlevel=sumlevel, end.year=end.year)
+  alltab <- join.geo.to.tablist(geo, alltab, folder=output.path, save.csv=write.files, sumlevel=sumlevel, end.year=end.year)
 
   cat(as.character(Sys.time()), ' '); cat('Finished joining geo to data tables \n')
   cat(as.character(Sys.time()), ' '); cat('Checked block groups and tracts, retained ');cat(sumlevel); cat('\n')
@@ -684,15 +687,15 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   }
 
   if (testing) {
-    # These are big so probably do not want them even if writefiles=TRUE since they can be saved as .RData and are returned by function get.acs() already
-    if (writefiles) {
+    # These are big so probably do not want them even if write.files=TRUE since they can be saved as .RData and are returned by function get.acs() already
+    if (write.files) {
       write.csv(bg,     file=file.path(output.path,"bg all tables.csv"), row.names=FALSE)
       write.csv(tracts, file=file.path(output.path,"tracts all tables.csv"), row.names=FALSE)
       cat(as.character(Sys.time()), ' '); cat('Saved block group file and tracts file as .csv ')
     }
   }
 
-  if (writefiles) {
+  if (write.files) {
     #
     # NOTE THIS WAS SAVING JUST ONE NAME PER DATA FIELD, NOT ONCE FOR ESTIMATES AND ONCE FOR MOE.
     # AND  NOT  FIELD NAMES FOR OTHER FIELDS "KEY"          "FIPS"         "STUSAB"       "GEOID"
@@ -707,7 +710,25 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   cat(as.character(Sys.time()), '\n')
 
   cat("################ DONE ############## \n\n")
-
+  
+  #  format for acs package here:
+print(names(alltab))
+print(str(alltab))
+  if (write.acspkg) {
+    cat(as.character(Sys.time()), ' '); cat('Started to save tables as files formatted for use in the acs package \n')
+    for (this.tab in names(alltab)) {
+      cat('      ', this.tab, '\n')
+      acs.this.tab <- format.for.acs.package( alltab[[this.tab]] )
+      #         head( format.for.acs.package( alltab[[2]]) )
+      filename.tracts <- paste("ACS_", substr(end.year, 3, 4), "_5YR_", this.tab, "_with_ann.csv", sep="")
+      filename.bg     <- paste("ACS_", substr(end.year, 3, 4), "_5YR_", this.tab, "_with_ann_BG.csv", sep="")
+      write.csv(acs.this.tab[ acs.this.tab$SUMLEVEL=="140"], row.names=FALSE, file=filename.tracts)
+      write.csv(acs.this.tab[ acs.this.tab$SUMLEVEL=="150"], row.names=FALSE, file=filename.bg)
+      cat(as.character(Sys.time()), ' '); cat('Saved tracts files formatted for use in the acs package \n')
+    }
+  }
+  
+  
   # Return block group or tracts file (or both) as list, along with table.info.best which has fieldnames etc.
   sumlevel <- clean.sumlevel(sumlevel)
 
@@ -721,8 +742,6 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
       return(list(bg=bg, headers=table.info.all, info=table.info))
     }
   }
-
-  # could format for acs package here
 
 }
 
