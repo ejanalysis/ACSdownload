@@ -4,9 +4,11 @@
 #' @details Uses \code{\link{get.lookup.acs}} but for 2012 version could just use \code{data(lookup.acs)}
 #' @param tables Required vector of tables such as "B01001"
 #' @param end.year Last year of 5-year summary file such as '2012' (default)
-#' @param table.info.only FALSE by default.
+#' @param table.info.only FALSE by default. If TRUE, only return info about the table(s), not variables in table(s).
 #' @param moe FALSE by default. Margin of error variables also included if TRUE,
 #'   but their names are identical to those of estimates fields other than being MOE instead of estimate.
+#' @param basic FALSE by default. If TRUE, a very limited subset of the info is returned
+#'   (just variable number and name). This parameter is ignored if table.info.only=TRUE
 #' @return data.frame of information about each table and each variable in table: \cr
 #'   Value returned is data.frame of info about each table and also each variable in the table\cr
 #'   e.g., longname2 which is version where no spaces or colons or escaped quotation marks etc. \cr
@@ -19,7 +21,7 @@
 #'   cbind( foundnames, substr(finfo$longname.unique[match(foundnames, finfo$shortname)], 1, 100))
 #' }
 #' @export
-get.field.info <- function(tables, end.year='2012', table.info.only=FALSE, moe=FALSE) {
+get.field.info <- function(tables, end.year='2012', table.info.only=FALSE, moe=FALSE, basic=FALSE) {
 
   # replacing   get.table.info.R  with get.table.info2.R code which uses this get.field.info()
 
@@ -97,8 +99,16 @@ get.field.info <- function(tables, end.year='2012', table.info.only=FALSE, moe=F
 
   # Could get just the names that correspond to variables we have or want, contained in myfields, for example
 
-  if (table.info.only) { return(table.info) } else {
-    if (moe) { return(field.info.m) } else {
+  if (table.info.only) {
+    if (basic) {warning('ignoring parameter "basic" because table.info.only=TRUE')}
+    return(table.info)
+    } else {
+
+    if (moe) {
+      if (basic) {field.info.m <- field.info.m[ , c('shortname', 'longname')]}
+      return(field.info.m)
+    } else {
+      if (basic) {field.info <- field.info[ , c('shortname', 'longname')]}
       return(field.info)
     }
   }

@@ -22,6 +22,9 @@ data.frame of information about each table and each variable in table.
 \description{
 Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
 }
+\details{
+Wrapper for \code{\link{get.field.info}}
+}
 \seealso{
 \code{\link{get.acs}}, \code{\link{get.table.info}}, \code{\link{get.table.info2}} and \code{\link{get.field.info}}
 }

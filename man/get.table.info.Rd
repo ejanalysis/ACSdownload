@@ -2,16 +2,23 @@
 % Please edit documentation in R/get.table.info.R
 \name{get.table.info}
 \alias{get.table.info}
-\title{Get field names etc for ACS tables - older version of get.table.info2}
+\title{Obsolete/ older version of get.table.info2}
 \usage{
-get.table.info(tables, end.year = "2012")
+get.table.info(tables, end.year = "2012", table.info.only = TRUE,
+  moe = FALSE)
 }
 \arguments{
 \item{tables}{Required vector of tables such as "B01001"}
 
 \item{end.year}{Last year of 5-year summary file such as '2012' (default)}
+
+\item{table.info.only}{TRUE by default. See \code{\link{get.field.info}}}
+
+\item{moe}{FALSE by default. If TRUE, returns MOE versions of field names and descriptions.}
 }
 \value{
+data.frame of information about each table and each variable in table.
+
 data.frame of information about each table and each variable in table: \cr
   Table.ID, Line.Number, Table.Title, table.var, varname2 \cr\cr
     # Value returned is data.frame of info about each table and also each variable in the table:\cr

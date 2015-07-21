@@ -567,7 +567,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   ################################################################################################################
   ################################################################################################################
 
-  # THIS SECTION BELOW MAY BE OBSOLETE IF NOW USING get.table.info2() instead of older get.table.info() !
+  # THIS SECTION IS OBSOLETE -- NOW USING get.table.info2() instead of older get.table.info() !
 
   ################################################################################################################
   ################################################################################################################
@@ -642,7 +642,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
     # print(table.info.best)
     save(table.info.best, file=file.path(output.path, 'table.info.best.RData'))
     ###############
-    # NOTE: IT IS EASIER TO WORK WITH get.table.info(tables) which has useful cols plus new cols for just selected tables
+    # NOTE: IT IS EASIER TO WORK WITH get.table.info2(tables) which has useful cols plus new cols for just selected tables
     #   than with get.lookup.acs() which returns nonuseful info and for all tables in acs
 
     ###############

@@ -1,6 +1,7 @@
 #' @title Get field names etc for ACS tables
 #' @description
 #'  Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
+#' @details Wrapper for \code{\link{get.field.info}}
 #' @param tables Required vector of tables such as "B01001"
 #' @param end.year Last year of 5-year summary file such as '2012' (default)
 #' @param table.info.only TRUE by default. See \code{\link{get.field.info}}

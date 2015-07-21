@@ -5,17 +5,20 @@
 \title{Get short and long field names etc for ACS tables}
 \usage{
 get.field.info(tables, end.year = "2012", table.info.only = FALSE,
-  moe = FALSE)
+  moe = FALSE, basic = FALSE)
 }
 \arguments{
 \item{tables}{Required vector of tables such as "B01001"}
 
 \item{end.year}{Last year of 5-year summary file such as '2012' (default)}
 
-\item{table.info.only}{FALSE by default.}
+\item{table.info.only}{FALSE by default. If TRUE, only return info about the table(s), not variables in table(s).}
 
 \item{moe}{FALSE by default. Margin of error variables also included if TRUE,
 but their names are identical to those of estimates fields other than being MOE instead of estimate.}
+
+\item{basic}{FALSE by default. If TRUE, a very limited subset of the info is returned
+(just variable number and name). This parameter is ignored if table.info.only=TRUE}
 }
 \value{
 data.frame of information about each table and each variable in table: \cr
