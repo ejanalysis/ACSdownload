@@ -9,13 +9,16 @@
 #'   You can obtain data from the entire USA all at once using this package, for one or more tables.
 #'   Typically the Census Bureau makes it easy to obtain data from one state at a time,
 #'   not every block group in the US. There are roughly 220,000 block groups in the US,
-#'   and around 74,000 tracts. Other data sources that may be relevant include Census geodatabases at
+#'   and around 74,000 tracts.
+#'   Several options for obtaining Census ACS data are now listed here:
+#'   \url{http://www.census.gov/programs-surveys/acs/data.html}
+#'   Other data sources that may be relevant include Census geodatabases at
 #'   \url{http://www.census.gov/geo/maps-data/data/tiger-data.html} and data at
 #'   \url{http://www.census.gov/geo/maps-data/data/gazetteer.html}. Also see the help for \code{\link{get.acs}}
 #'   \cr\cr
 #'   The key function in this package is \code{\link{get.acs}}\cr\cr
-#'   For ACS documentation, see \url{http://www.census.gov/programs-surveys/acs.html} 
-#' 
+#'   For ACS documentation, see \url{http://www.census.gov/programs-surveys/acs.html}
+#'
 #' @seealso \pkg{acs} package (\url{http://cran.r-project.org/web/packages/acs/index.html}) which lets one obtain more limited amounts of ACS data
 #'   but provides better tools for working with the data once obtained.
 #' @author info@@ejanalysis.com <info@@ejanalysis.com>

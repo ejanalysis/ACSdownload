@@ -1,7 +1,12 @@
 ############################################################
 #LIST OF WAYS TO GET ACS, CENSUS, OR A COUNTY REPORT USING R
 ############################################################
+
+# Several options for obtaining Census ACS data are now listed here:
+#   http://www.census.gov/programs-surveys/acs/data.html
 #
+# Further notes are below.
+
 ##############################################
 #WAYS TO GET ACS DATA (SUMMARY FILE TABLES) FOR ANALYSIS IN R
 ##############################################
@@ -36,7 +41,7 @@
 #  CODE: ...R analysis\ACS - download and parse\CODE FOR acs package and API\CODE TO GET ACS DATA VIA API WITHOUT acs package.R
 #
 #gdb from contractor
-#  
+#
 #  # Non-public. Significant lag time from ACS release, and not clear which tables will be provided annually.
 #  For details, see see ...R analysis\ACS - download and parse\EDG VS GEOPLAT FOR ACS DATA 2012.txt
 #
@@ -46,26 +51,26 @@
 #via Census prejoined tables at block group resolution
 #  # THESE ARE ONE STATE AT A TIME - EACH STATE GDB MUST BE DOWNLOADED MANUALLY (can't be automated easily).
 #  # Only a few selected tables are provided: KEY TABLES AVAILABLE:
-#    #B01001  Sex By Age  
-#    #B03002  Hispanic Or Latino Origin By Race  
-#    #B15002  Sex By Educational Attainment For The Population 25 Years And Over  
+#    #B01001  Sex By Age
+#    #B03002  Hispanic Or Latino Origin By Race
+#    #B15002  Sex By Educational Attainment For The Population 25 Years And Over
 #    #B16002 IS NOT HERE   #[has B16004  Age By Language Spoken At Home By Ability To Speak English For The Population 5 Years And Over  ]
 #    #B17002 IS NOT HERE   #[has B17021  Poverty Status Of Individuals In The Past 12 Months By Living Arrangement  ]
-#    #B25034  Year Structure Built  
+#    #B25034  Year Structure Built
 #  # Lag-time: As of 1/2/2014, the 2012 5yr file is not yet here in gdb format.
-#  #  These geodatabases join the block group geography from the TIGER/Line Shapefiles 
-#  #to the 2007-2011 American Community Survey 5-year estimates for 70 tables. 
-#  # A limited set of TIGER/Line Shapefiles are available pre-joined with demographic data in geodatabase and shapefile format. 
-#  # We are working on an on-line tool that will allow you to access selected data from the 2010 Census and American Community Survey (ACS) 
-#  # for custom geographic areas (conforming to blocks for the 2010 Census and block groups or census tract boundaries for the ACS). 
-#  # We do not have plans to continue to create shapefiles and/or geodatabases pre-joined with demographic data as a regular product 
+#  #  These geodatabases join the block group geography from the TIGER/Line Shapefiles
+#  #to the 2007-2011 American Community Survey 5-year estimates for 70 tables.
+#  # A limited set of TIGER/Line Shapefiles are available pre-joined with demographic data in geodatabase and shapefile format.
+#  # We are working on an on-line tool that will allow you to access selected data from the 2010 Census and American Community Survey (ACS)
+#  # for custom geographic areas (conforming to blocks for the 2010 Census and block groups or census tract boundaries for the ACS).
+#  # We do not have plans to continue to create shapefiles and/or geodatabases pre-joined with demographic data as a regular product
 #  # because of the large volume of data available and the many varying needs of customers.
 #  http://www.census.gov/geo/maps-data/data/tiger-data.html
 #
 #via DATA FERRETT - CANNOT GET ALL BLOCK GROUPS AT ONCE, BUT CAN GET ALL US TRACTS AT ONCE.
 #  # Data Ferrett won't support download of all block groups in the USA at once, even for a single table:
-#  # "We're sorry, the system only supports downloading 74100 geographies from this dataset. 
-#  # You have selected 220333 geographies. 
+#  # "We're sorry, the system only supports downloading 74100 geographies from this dataset.
+#  # You have selected 220333 geographies.
 #  # You will need to go back and reduce the number of geographies."
 #
 #via acs package by reading downloads of AFF data (which can be tract level, but not all tracts nationwide at once):
@@ -83,7 +88,7 @@
 #  #  Note:
 #  #  The sum of all cities or towns in the USA is less than 50,000 geographies.
 #  #  For downloads larger than 50,000 geographies or 500,000 rows, please use the ftp site.
-#  #  To download a table for only one geography or population group at a time, such as the Data Profiles, you can calculate the total number of rows in that table by multiplying the number of geographies or population groups by the number of rows in the table.  
+#  #  To download a table for only one geography or population group at a time, such as the Data Profiles, you can calculate the total number of rows in that table by multiplying the number of geographies or population groups by the number of rows in the table.
 #  #  For example, a table that has ten rows and ten geographies is equivalent to 100 total rows.
 #  https://ask.census.gov/faq.php?id=5000&faqId=1653
 #
@@ -91,7 +96,7 @@
 ##	OTHER
 ############################################
 #
-#A useful summary page: 
+#A useful summary page:
 #  Tallies, lists of geo names, etc.
 #  http://www.census.gov/geo/maps-data/
 #
