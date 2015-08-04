@@ -6,19 +6,24 @@
 #' @param tables Character vector, required. Specifies which ACS tables.
 #' @param folder Optional path, default is getwd(), specifying where to save the csv files that define needed variables.
 #' @param lookup.acs Data.frame, optional. Defines which variables are in which tables. Output of \code{\link{get.lookup.acs}}
-#' @param askneeded Optional logical, default is TRUE, specifies whether to pause and
-#'   ask user about variables needed in interactive session.
-#'   If FALSE, just looks for file called "variables needed.csv" that should specify which variables to keep from each table.
+#' @param varsfile Optional name of file that can be used to specify which variables are needed from specified tables.
+#'   If varsfile is specified, parameter vars is ignored, and the function just looks in folder for file called filename, e.g., "variables needed.csv"
+#'   that should specify which variables to keep from each table.
+#'   If not found in folder, then all variables from each table are used (same as if vars="all" and varsfile not specified).
 #'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function.
-#'   If the "variables needed.csv" file is not found, it looks for and uses the file called "variables needed template.csv"
+#'   If the filename (e.g., "variables needed.csv" file) is not found, it looks for and uses the file called "variables needed template.csv"
 #'   which is written by this function and specifies all of the variables from each table.
-#'   The column called "keep" should have an upper or lowercase letter Y to indicate that row (variable) should be kept. 
+#'   The column called "keep" should have an upper or lowercase letter Y to indicate that row (variable) should be kept.
 #'     Blanks or other values (even the word "yes") indicate the variable is not needed from that data table and it will be dropped.
-#' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
+#' @param vars Optional logical, default is "all" (unless varsfile specified).
+#'   Specifies what variables to use from specified tables, and how to determine that.
+#'   If varsfile is provided, vars is ignored (see parameter varsfile).
+#'   If vars="ask", function will ask user about variables needed and allow specification in an interactive session.
+#' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
 #' @return Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.
 #' @seealso \code{\link{get.acs}} which uses this
 #' @export
-set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd(), noEditOnMac=FALSE) {
+set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(), noEditOnMac=FALSE) {
 
   if (missing(lookup.acs)) {
     lookup.acs <- get.lookup.acs()
@@ -100,22 +105,52 @@ set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd(), noEd
   needed$varname2 <- gsub("[ :,()']", "", needed$varname)
   needed$varname2 <- gsub("\"", "", needed$varname2)
 
-  #  save the template for user to start from
+
+  ##############################################################################
+  #  save the template for user to start from (maybe don't need to if varsfile found nor if vars!="ask")
+  # *** line 175 or so uses this file to read back in but could change that to just use needed from memory
   write.csv(needed, file.path(folder, "variables needed template.csv"), row.names=FALSE)
   cat('  Finished writing template file to working directory on disk: variables needed template.csv\n')
   ##############################################################################
+
+  if (vars=='all') {
+    # default, unless varsfile specified and found
+    #needed <- needed
+  }
+
+  if (!missing(varsfile)) {
+    if (file.exists(file.path(folder, varsfile))) {
+      needed <- read.csv(file=file.path(folder, varsfile), as.is=TRUE)
+      cat('  Finished reading', varsfile, '\n')
+
+      # SHOULD ADD ERROR CHECKING HERE ON FORMAT OF FILE USER PROVIDED ***
+
+    } else {
+      needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
+      warning(' Cannot find specified varsfile, so using all variables by reading  variables needed template.csv\n')
+    }
+  }
+
+  if (missing(varsfile) & vars!='ask' & vars!='all') {
+    needed <- needed[needed$table.var %in% vars, ]
+    # ERROR CHECKING TO SEE IF AT LEAST ONE OF USERS vars WAS FOUND AMONG needed$table.var
+    if (nrow(needed)==0) {
+      stop('specified vars not found in these tables in that format -- must be formatted such as "B01001.001" ')
+    }
+  }
+
   os <- analyze.stuff::get.os()
 
-  # windows user could do this interactively, using edit(), 
+  # windows user could do this interactively, using edit(),
   # but Mac OSX RStudio seems to require installation of X11 / The X Window System (xquartz) for the edit() functionality.
   # Mac OSX R.app however, seems to not need X11. But you have to use command-W when you are done editing (trying to close the window by clicking the red x seems to crash it.)
   # see http://xquartz.macosforge.org and https://support.apple.com/en-us/HT201341 regarding X11 / XQuartz.
   # and https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Editor-_0028internal-and-external_0029
-  
-  if (os!="mac" | noEditOnMac==FALSE) { 
-  # Used to do this only in windows but it generally works in OSX as well, so just try
+
+  if (os!="mac" | noEditOnMac==FALSE) {
+    # Used to do this only in windows but it generally works in OSX as well, so just try
     inp <- 'n'
-    if (askneeded) {
+    if (vars=='ask' & missing(varsfile)) {
       print("You may now edit the input file specifying which variables are needed, or read the input file if already saved on disk.")
       inp <- readline("Press n to edit now onscreen interactively --and to use all fields then just close edit window--
                     or press y if ready to import an already-saved input file from disk called 'variables needed.csv' \n")
@@ -124,12 +159,14 @@ set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd(), noEd
       # & the while() was an attempt to keep it here while rest of pasted text is read.
     }
 
-    if (askneeded & tolower(substr(inp,1,1))=="n") {
+    if (vars=='ask' & missing(varsfile) & tolower(substr(inp,1,1))=="n") {
       needed <- edit(needed)
+      # USER WANTS TO EDIT THE TABLE THAT SPECIFIES WHICH VARIABLES TO KEEP.
       # SAVE THESE windows SELECTIONS IN CASE WANT TO REUSE THEM BY IMPORTING HERE LATER
       write.csv(needed, file.path(folder, "variables needed.csv"), row.names=FALSE)
       cat('  Finished writing updated file: variables needed.csv\n')
     } else {
+      # USER WANTS TO SPECIFY VARIABLES TO KEEP BY READING FILE CALLED 'variables needed.csv' # ***
       cat("  Reading input file of variable selections, variables needed.csv
           (or template for all variables if variables needed.csv was not found)\n")
       if (file.exists(file.path(folder, "variables needed.csv"))) {
@@ -143,11 +180,11 @@ set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd(), noEd
   }
 
   # on mac ask user to edit template and save as "variables needed.csv" which will be imported
-  if (os=="mac" & noEditOnMac) {
+  if (vars=='ask' & missing(varsfile) & os=="mac" & noEditOnMac) {
     #try to pause here to allow user to edit the template and save it as "variables needed.csv"
     # SHOULD GIVE OPTION TO JUST GET ALL VARIABLES AS DEFAULT
     x <- 0
-    if (askneeded) {
+    if (vars) {
       # NOTE: THIS WON'T STOP AND WAIT FOR INPUT IF CODE IS COPIED AND PASTED INTO R CONSOLE.
       x <- readline("Just import full tables? (y for full, n to specify variables and/or custom names for variables):\n")
     } else {
@@ -155,26 +192,28 @@ set.needed <- function(tables, lookup.acs, askneeded=FALSE, folder=getwd(), noEd
     }
     xx <- 0
     if (tolower(substr(x,1,1))=="n") {
-      xx <- readline("Prepare input file 'variables needed.csv' in working directory, using 'variables needed template.csv' as a template. Press y when file is ready.\n")
-      cat("  Reading input file of variable selections, variables needed.csv (or template for all variables if variables needed.csv was not found)\n")
-      if (file.exists(file.path(folder, "variables needed.csv"))) {
-        needed <- read.csv(file=file.path(folder, "variables needed.csv"), as.is=TRUE)
-        cat('  Finished reading  variables needed.csv\n')
+      # SPECIFYING VARIABLES IN A FILE
+      xx <- readline(paste("Prepare input file 'variables needed.csv' in ", folder, ", using 'variables needed template.csv' as a template. Press y when file is ready.\n"))
+      cat("  Reading input file of variable selections, such as variables needed.csv (or template for all variables if file not found)\n" )
+      #if (file.exists(file.path(folder, "variables needed.csv"))) {
+      if (file.exists(file.path(folder, 'variables needed.csv'))) {
+        needed <- read.csv(file=file.path(folder, 'variables needed.csv'), as.is=TRUE)
+        cat('  Finished reading', 'variables needed.csv', '\n')
       } else {
         needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
         cat('  Finished reading  variables needed template.csv\n')
       }
+
     } else {
       needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
       cat('  Using file called variables needed template.csv ... Finished reading  variables needed template.csv\n')
     }
-
-
     #      	if (tolower(substr(xx,1,1))=="y") {
     #    	  	# just use existing full version of needed, which is also saved as template, and don't need to save it as another csv. don't overwrite older subset selections.
     #     	    # needed <- needed;     write.csv(needed, "variables needed.csv", row.names=FALSE)
     #    	}
   }
+
 
   # retain only the rows with variables we want to keep.
   # remove row if keep col has NA which happens if user leaves it blank (e.g. deletes Y from template instead of replacing it with N)

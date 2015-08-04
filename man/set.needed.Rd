@@ -4,7 +4,7 @@
 \alias{set.needed}
 \title{Specify which ACS Variables are Needed}
 \usage{
-set.needed(tables, lookup.acs, askneeded = FALSE, folder = getwd(),
+set.needed(tables, lookup.acs, vars = "all", varsfile, folder = getwd(),
   noEditOnMac = FALSE)
 }
 \arguments{
@@ -12,18 +12,24 @@ set.needed(tables, lookup.acs, askneeded = FALSE, folder = getwd(),
 
 \item{lookup.acs}{Data.frame, optional. Defines which variables are in which tables. Output of \code{\link{get.lookup.acs}}}
 
-\item{askneeded}{Optional logical, default is TRUE, specifies whether to pause and
-ask user about variables needed in interactive session.
-If FALSE, just looks for file called "variables needed.csv" that should specify which variables to keep from each table.
+\item{vars}{Optional logical, default is "all" (unless varsfile specified).
+Specifies what variables to use from specified tables, and how to determine that.
+If varsfile is provided, vars is ignored (see parameter varsfile).
+If vars="ask", function will ask user about variables needed and allow specification in an interactive session.}
+
+\item{varsfile}{Optional name of file that can be used to specify which variables are needed from specified tables.
+If varsfile is specified, parameter vars is ignored, and the function just looks in folder for file called filename, e.g., "variables needed.csv"
+that should specify which variables to keep from each table.
+If not found in folder, then all variables from each table are used (same as if vars="all" and varsfile not specified).
 The format of that file should be the same as is found in the file "variables needed template.csv" created by this function.
-If the "variables needed.csv" file is not found, it looks for and uses the file called "variables needed template.csv"
+If the filename (e.g., "variables needed.csv" file) is not found, it looks for and uses the file called "variables needed template.csv"
 which is written by this function and specifies all of the variables from each table.
 The column called "keep" should have an upper or lowercase letter Y to indicate that row (variable) should be kept.
   Blanks or other values (even the word "yes") indicate the variable is not needed from that data table and it will be dropped.}
 
 \item{folder}{Optional path, default is getwd(), specifying where to save the csv files that define needed variables.}
 
-\item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
+\item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
 }
 \value{
 Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.

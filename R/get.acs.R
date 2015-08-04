@@ -150,7 +150,7 @@
 #'   \item Geolytics - commercial
 #'   \item etc.
 #' }
-#' 
+#'
 #' @param tables Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
 #'   If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
 #'   Those tables are "B01001", "B03002", "B15002", "B16002", "C17002", "B25034"
@@ -165,35 +165,38 @@
 #'   Can be '2010' for example. Not all years are tested.
 #' @param mystates Character vector, optional, 'all' by default which means all available states
 #'   plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.
-#' @param sumlevel Default is "both" (case insensitive) in which case tracts and block groups are returned. 
-#'   Also c('tract', 'bg') or c(140,150) and similar patterns work. 
-#'   If "tract" or 140 or some other match, but not block groups, is specified (insensitive to case, tract can be plural or part of a word, etc.), 
+#' @param sumlevel Default is "both" (case insensitive) in which case tracts and block groups are returned.
+#'   Also c('tract', 'bg') or c(140,150) and similar patterns work.
+#'   If "tract" or 140 or some other match, but not block groups, is specified (insensitive to case, tract can be plural or part of a word, etc.),
 #'   just tracts are returned.
-#'   If "bg" or 150 or "blockgroups" or "block groups" or some other match (insensitive to case, singular or plural or part of a word) 
+#'   If "bg" or 150 or "blockgroups" or "block groups" or some other match (insensitive to case, singular or plural or part of a word)
 #'   but no match on tracts is specified, just block groups are returned.
-#'   Non-matching elements are ignored (e.g., sumlevel=c('bg', 'tracs', 'block') will return block groups 
-#'   but neither tracts (because of the typo) nor blocks (not available in ACS), with no warning -- 
-#'   No warning is given if sumlevel is set to a list of elements where some are not recognized as matches to bg or tract, 
+#'   Non-matching elements are ignored (e.g., sumlevel=c('bg', 'tracs', 'block') will return block groups
+#'   but neither tracts (because of the typo) nor blocks (not available in ACS), with no warning --
+#'   No warning is given if sumlevel is set to a list of elements where some are not recognized as matches to bg or tract,
 #'   as long as one or more match bg, tracts, or both (or variants as already noted).
-#' @param askneeded Optional logical, default is FALSE (in which case all variables from each table will be returned unless otherwise specified -- see below).
-#'   This parameter specifies whether to pause and ask the user about which variables are needed in an interactive session in R. 
-#'   This gives the user a chance to prepare the file "variables needed.csv" (or just ensure it is ready), 
-#'   or to edit and save "variables needed.csv" within a window in the default editor used by R (the user is asked which of these is preferred). 
-#'   If askneeded=FALSE, the function just looks in \code{data.folder} for a file called "variables needed.csv" that, if used, 
+#' @param vars Optional logical, default is FALSE (in which case all variables from each table will be returned unless otherwise specified -- see below).
+#'   This parameter specifies whether to pause and ask the user about which variables are needed in an interactive session in R.
+#'   This gives the user a chance to prepare the file "variables needed.csv" (or just ensure it is ready),
+#'   or to edit and save "variables needed.csv" within a window in the default editor used by R (the user is asked which of these is preferred).
+#'   If vars=FALSE, the function just looks in \code{data.folder} for a file called "variables needed.csv" that, if used,
 #'   must specify which variables to keep from each table.
-#'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function -- 
-#'   keeping the letter "Y" in the column named "keep" indicates the given variable is needed. 
+#'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function --
+#'   keeping the letter "Y" in the column named "keep" indicates the given variable is needed.
 #'   A blank or "N" or other non-Y specifies the variable should be dropped and not returned by get.acs().
 #'   If the "variables needed.csv" file is not found, however, this function looks for and uses the file called "variables needed template.csv"
 #'   which is written by this function and specifies all of the variables from each table, so all variables will be retained and returned by get.acs().
+#' @param varsfile See help for \code{\link{set.needed}} for details. Optional name of file that can be used to specify which variables are needed from specified tables.
+#'   If varsfile is specified, parameter vars is ignored, and the function just looks in folder for file called filename, e.g., "variables needed.csv"
+#'   that should specify which variables to keep from each table.
 #' @param new.geo Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously.
 #' @param write.files Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.
 #' @param save.files Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.
-#' @param write.acspkg Default is FALSE. If TRUE, saves csv file of tracts and file of block groups, for each of the \code{tables}, 
-#'   in a format that the Census Bureau American Fact Finder provides as downloadable tables. That format can be easily read in by the very useful \pkg{acs} package. 
+#' @param write.acspkg Default is FALSE. If TRUE, saves csv file of tracts and file of block groups, for each of the \code{tables},
+#'   in a format that the Census Bureau American Fact Finder provides as downloadable tables. That format can be easily read in by the very useful \pkg{acs} package.
 #' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.
-#' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table, 
-#'   when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
+#' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
+#'   when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
 #'
 #' @return By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
 #'   bg, tracts, headers, and info. The headers and info elements are data.frames providing metadata such as short and long field names.
@@ -218,7 +221,7 @@
 #'   t( get.table.info2(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
 #'   out <- get.acs(mystates=c('dc','de')) # Data for just DC & DE, just the default table.
 #'   names(out$bg); cat('\n\n'); head(out$info)
-#'   cbind(longname=out$info$longname, 
+#'   cbind(longname=out$info$longname,
 #'         total=colSums(out$bg[ , names(out$bg) %in% out$info$shortname ]))
 #'   # to see data on 2 places, 1 per column, with short and long field names
 #'   cbind( out$headers$longname, t(out$bg[1:2, ]) )
@@ -227,16 +230,16 @@
 #'   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))  # just 2 tables for just Delaware
 #'   head(out$info); head(out$bg)
 #'   # uses all EJSCREEN defaults and the specified folders:
-#'   out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results') 
+#'   out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results')
 #'   head(out$info); head(out$bg)
-#'   out <- get.acs(tables=c('ejscreen', 'B16001')) # all tables needed for EJSCREEN, 
+#'   out <- get.acs(tables=c('ejscreen', 'B16001')) # all tables needed for EJSCREEN,
 #'     plus 'B16001', with variables specified in 'variables needed.csv', all states&DC &PR?
 #'   head(out$info); head(out$bg)
 #'  }
 #' @export
-get.acs <- function(tables='B01001', mystates='all', end.year='2012', 
+get.acs <- function(tables='B01001', mystates='all', end.year='2012',
                     base.path=getwd(), data.path=file.path(base.path, 'acsdata'), output.path=file.path(base.path, 'acsoutput'),
-                    sumlevel='both', askneeded=FALSE,
+                    sumlevel='both', vars='all', varsfile,
                     new.geo=TRUE, write.files=FALSE, save.files=FALSE, write.acspkg=FALSE,
                     testing=FALSE, noEditOnMac=FALSE) {
 
@@ -246,7 +249,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
 
   # check if base.path seems to be a valid folder
   if (!file.exists(base.path)) {stop(paste('base.path', base.path, 'does not exist'))}
-  
+
   cat('\n')
 
   if (!file.exists(output.path)) {
@@ -355,7 +358,10 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   # "needed" will be a dataframe that specifies which variables are needed, from among the specified tables
 
   cat(as.character(Sys.time()), ' '); cat("Started specifying which variables are needed from the specified ACS tables \n")
-  needed <- set.needed(tables=tables, lookup.acs=lookup.acs, askneeded=askneeded, folder=data.path, noEditOnMac=noEditOnMac) # requires "lookup.acs" be in memory, which was done a few lines ago, & a few other variables *****
+
+  needed <- set.needed(tables=tables, lookup.acs=lookup.acs, vars=vars, folder=data.path, noEditOnMac=noEditOnMac, ...)
+  # the ... is to specify varsfile if necessary
+
   # ensure leading zeroes on sequence file number
   needed$seq <- analyze.stuff::lead.zeroes(needed$seq, 4)
   cat(as.character(Sys.time()), ' '); cat("Finished specifying which variables are needed from the specified ACS tables \n")
@@ -476,7 +482,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   merged <- merge.tables(alltab)
 
   cat(as.character(Sys.time()), ' '); cat('Merged all tables into one big table \n')
-  
+
   if (testing) {
     if (save.files) {
       #  CAN SAVE THE FULL SET OF TABLES HERE, IN CASE -- block groups and tracts as well:
@@ -484,7 +490,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
       cat(as.character(Sys.time()), ' '); cat("Saved merged tables \n")
     }
   }
-  
+
   ######################################
   #  SPLIT into a BLOCK GROUPS dataset & a TRACTS dataset
   ######################################
@@ -710,7 +716,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   cat(as.character(Sys.time()), '\n')
 
   cat("################ DONE ############## \n\n")
-  
+
   #  format for acs package here:
 print(names(alltab))
 print(str(alltab))
@@ -727,8 +733,8 @@ print(str(alltab))
       cat(as.character(Sys.time()), ' '); cat('Saved tracts files formatted for use in the acs package \n')
     }
   }
-  
-  
+
+
   # Return block group or tracts file (or both) as list, along with table.info.best which has fieldnames etc.
   sumlevel <- clean.sumlevel(sumlevel)
 

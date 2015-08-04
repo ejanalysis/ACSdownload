@@ -7,7 +7,7 @@
 get.acs(tables = "B01001", mystates = "all", end.year = "2012",
   base.path = getwd(), data.path = file.path(base.path, "acsdata"),
   output.path = file.path(base.path, "acsoutput"), sumlevel = "both",
-  askneeded = FALSE, new.geo = TRUE, write.files = FALSE,
+  vars = "all", varsfile, new.geo = TRUE, write.files = FALSE,
   save.files = FALSE, write.acspkg = FALSE, testing = FALSE,
   noEditOnMac = FALSE)
 }
@@ -43,17 +43,21 @@ but neither tracts (because of the typo) nor blocks (not available in ACS), with
 No warning is given if sumlevel is set to a list of elements where some are not recognized as matches to bg or tract,
 as long as one or more match bg, tracts, or both (or variants as already noted).}
 
-\item{askneeded}{Optional logical, default is FALSE (in which case all variables from each table will be returned unless otherwise specified -- see below).
+\item{vars}{Optional logical, default is FALSE (in which case all variables from each table will be returned unless otherwise specified -- see below).
 This parameter specifies whether to pause and ask the user about which variables are needed in an interactive session in R.
 This gives the user a chance to prepare the file "variables needed.csv" (or just ensure it is ready),
 or to edit and save "variables needed.csv" within a window in the default editor used by R (the user is asked which of these is preferred).
-If askneeded=FALSE, the function just looks in \code{data.folder} for a file called "variables needed.csv" that, if used,
+If vars=FALSE, the function just looks in \code{data.folder} for a file called "variables needed.csv" that, if used,
 must specify which variables to keep from each table.
 The format of that file should be the same as is found in the file "variables needed template.csv" created by this function --
 keeping the letter "Y" in the column named "keep" indicates the given variable is needed.
 A blank or "N" or other non-Y specifies the variable should be dropped and not returned by get.acs().
 If the "variables needed.csv" file is not found, however, this function looks for and uses the file called "variables needed template.csv"
 which is written by this function and specifies all of the variables from each table, so all variables will be retained and returned by get.acs().}
+
+\item{varsfile}{See help for \code{\link{set.needed}} for details. Optional name of file that can be used to specify which variables are needed from specified tables.
+If varsfile is specified, parameter vars is ignored, and the function just looks in folder for file called filename, e.g., "variables needed.csv"
+that should specify which variables to keep from each table.}
 
 \item{new.geo}{Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously.}
 
@@ -67,7 +71,7 @@ in a format that the Census Bureau American Fact Finder provides as downloadable
 \item{testing}{Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.}
 
 \item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
-  when on Mac OSX, even if askneeded=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
+  when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
 }
 \value{
 By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
