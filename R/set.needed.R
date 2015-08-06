@@ -20,13 +20,14 @@
 #'   If varsfile is provided, vars is ignored (see parameter varsfile).
 #'   If vars="ask", function will ask user about variables needed and allow specification in an interactive session.
 #' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
+#' @param end.year Optional, defaults to '2012' -- specifies last year of 5-year summary file that is being used.
 #' @return Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.
 #' @seealso \code{\link{get.acs}} which uses this
 #' @export
-set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(), noEditOnMac=FALSE) {
+set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(), noEditOnMac=FALSE, end.year='2012') {
 
   if (missing(lookup.acs)) {
-    lookup.acs <- get.lookup.acs()
+    lookup.acs <- get.lookup.acs(end.year = end.year)
   }
 
   needed <- data.frame(

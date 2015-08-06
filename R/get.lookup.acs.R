@@ -1,20 +1,18 @@
-#' @title Download File with Information about ACS 5-Year Summary File Tables
+#' @title Get Information about ACS 5-Year Summary File Tables
 #'
 #' @description
-#'   Download and read lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
+#'   Get lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
 #'   namely which sequence files on the FTP site contain which tables and which variables.
-#'   NOTE: This is largely obsolete now that data(lookup.acs2013) and similar files for other years are in this package.
-#' @details  
-#'   The source of this lookup table is, for example, 
+#'   NOTE: This uses lazy loading from data(lookup.acs2013) and similarly for other years.
+#' @details
+#'   The source of this lookup table was, for example,
 #'   \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
 #'   \cr\cr
-#'   Note: This is also available via data(lookup.acs) for at least the 2012 version, in this package. \cr
-#'   Note: The \pkg{acs} package provides a version of this that is more useful in some ways, called \code{\link[acs]{acs.lookup}}
-#' 
 #' @param end.year Character, optional, '2012' by default, which specifies the 2008-2012 dataset.
-#'   Defines which 5-year summary file to use, based on end-year. 
+#'   Defines which 5-year summary file to use, based on end-year.
 #'   Can be 2009 or later. Data for end.year='2014' is released December 2015, for example.
-#' @param folder Optional path to where to download file to, defaults to current working directory.
+#'   Note: Function stops with error if given end.year is not yet added to this package.
+#' @param folder Ignored (leftover from when this was like download.lookup.acs)
 #' @return By default, returns a data.frame with these fields:
 #'   \itemize{
 #'     \item $ Table.ID               : chr  "B00001" "B00001" "B00001" "B00002" ...
@@ -33,88 +31,41 @@
 #'   names(my.lookup)\cr
 #'   [1] "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position"\cr
 #'   [6] "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"\cr
-#' @seealso \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust. 
-#'   Also see \code{data(lookup.acs2013)} and similar data for other years. 
+#' @seealso \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
+#'   Also see \code{\link{download.lookup.acs}} to download the file from the Census FTP site.
+#'   Also see \code{data(lookup.acs2013)} and similar data for other years.
 #'   Also see \code{\link{get.acs}}, \code{\link{get.lookup.file.name}}, \code{\link{get.url.prefix.lookup.table}}
-#' @examples 
+#' @examples
 #'  \dontrun{
 #'  lookup.acs <- get.lookup.acs()
 #'  }
 #' @export
 get.lookup.acs <- function(end.year="2012", folder=getwd()) {
-  
-  my.url.prefix.lookup.table <- get.url.prefix.lookup.table(end.year)  # paste("ftp://ftp.census.gov/acs", end.year, "_5yr/summaryfile/", sep="") # but lacking last /
-  
+
   # "Sequence_Number_and_Table_Number_Lookup.txt" for end.year=2010 through 2013, but 2009 had only .xls not .txt
   if (end.year < 2009) {stop('Years prior to 2009 are not valid. ACS 5-year file was not available until 2005-2009, end.year=2009.')}
   if (end.year==2009)  {warning('2005-2009 dataset used an xls file for this information, not fully tested here.')}
   if (end.year > 2013) {warning('end.year of 2014 or later may not be available yet -- 2010-2014 dataset is expected in December 2015.')}
-  
-  my.lookup.file.name <- get.lookup.file.name(end.year) 
-  my.lookup.file.name.dated <- paste(end.year, my.lookup.file.name, sep = '')
-  print(my.lookup.file.name.dated)
-  # Use the working directory to download the file.
-  
-  if (!file.exists(file.path(folder, my.lookup.file.name.dated)) | file.size(file.path(folder, my.lookup.file.name.dated))==0 ) {
-    cat("  Downloading lookup table with table and variable names from", paste( my.url.prefix.lookup.table, my.lookup.file.name, sep=""),"\n")
-    try(download.file( 
-      paste( my.url.prefix.lookup.table, my.lookup.file.name, sep=""), 
-      file.path(folder, my.lookup.file.name.dated) 
-    ))
-    if (!file.exists(file.path(folder, my.lookup.file.name.dated)) | file.size(file.path(folder, my.lookup.file.name.dated))==0) {stop('Failed to download lookup table of variable names by table')}
-    # could add error checking here to verify it was downloaded correctly
-  }
-  cat("  Reading lookup table with table and variable names\n")	
-  
-  if (end.year==2009) {
-    # The 2009 table was provided as xls not txt. Other years have a txt file with this info.
-    # colnames are the same but read_excel imports it differently than read.csv does
-    #2012:  [File ID,]Table ID, Sequence Number,  Line Number, Start Position,  Total Cells in Table, Total Cells in Sequence,  Table Title, Subject Area
-    #2009:  File ID,	Table ID,	Sequence Number,	Line Number, Start Position,	Total Cells in Table,	Total Cells in Sequence,	Table Title, Subject Area
-    my.lookup <- readxl::read_excel(
-      file.path(folder, my.lookup.file.name.dated), 
-      col_types=c("text", "text", "text",  "numeric", "numeric",  "text",  "numeric",  "text", "text")
-    )
-    # replace spaces with periods in colnames, which read.csv does automatically but read_excel does not:
-    names(my.lookup) <- gsub(' ', '.', names(my.lookup))
-    # remove the last row, which gets imported as <NA> and NA values
-    my.lookup <- my.lookup[!is.na(my.lookup$Table.ID), ]
-    # The 2009 file has NA values instead of blanks in some columns
-    my.lookup$Subject.Area[is.na(my.lookup$Subject.Area)] <- ''
-    my.lookup$Total.Cells.in.Table[is.na(my.lookup$Total.Cells.in.Table)] <- ''
-    
-  } else {
-    if (end.year==2011) {
-      # 2011 format was different:
-      #"fileid","Table ID","seq",   "Line Number Decimal M Lines", "position", "cells",   "total","Long Table Title","subject_area"
-      #"ACSSF","B00001","0001",   ".", "7","1 CELL",    ".", "UNWEIGHTED SAMPLE COUNT OF THE POPULATION", "Unweighted Count"
-      my.lookup <- read.csv(
-        file.path(folder, my.lookup.file.name.dated), stringsAsFactors=FALSE, 
-        colClasses=c("character", "character", "character",       "character", "character",  "character",     "character",  "character", "character"))
-      names(my.lookup) <- c('File ID', 'Table ID', 'Sequence Number',	    'Line Number', 'Start Position', 'Total Cells in Table',     'Total Cells in Sequence', 'Table Title', 'Subject Area')
-      names(my.lookup) <- gsub(' ', '.', names(my.lookup))
-      
-      my.lookup$Line.Number[my.lookup$Line.Number=='.'] <- NA
-      my.lookup$Line.Number <- as.numeric(my.lookup$Line.Number)
-      my.lookup$Total.Cells.in.Sequence[my.lookup$Total.Cells.in.Sequence=='.'] <- NA
-      my.lookup$Total.Cells.in.Sequence <- as.numeric(my.lookup$Total.Cells.in.Sequence)
-      my.lookup$Start.Position[my.lookup$Start.Position=='.'] <- NA
-      my.lookup$Start.Position <- as.numeric(my.lookup$Start.Position)
-      
-    } else {
-      #e.g., 2012:  [File ID,]Table ID, Sequence Number,  Line Number, Start Position,  Total Cells in Table, Total Cells in Sequence,  Table Title, Subject Area
-      my.lookup <- read.csv(
-        file.path(folder, my.lookup.file.name.dated), stringsAsFactors=FALSE, 
-        colClasses=c("character", "character", "character",  "numeric", "numeric",  "character",  "numeric",  "character", "character"))
-    }
-  }
-  my.lookup$File.ID <- NULL	
-  
-  # add leading zeroes so seqnum always has 4 characters (e.g., '0001' or '0105')
-  my.lookup$Sequence.Number <- analyze.stuff::lead.zeroes(floor(as.numeric(my.lookup$Sequence.Number)), 4)
-  
-  # could add error checking here to verify it was read from disk correctly ***
-  
+
+  # just get these via lazy loading as with data()
+  my.lookup <- switch(EXPR = paste('yr', end.year,sep=''),
+                      yr2009 = lookup.acs2009,
+                      yr2010 = lookup.acs2010,
+                      yr2011 = lookup.acs2011,
+                      yr2012 = lookup.acs2012,
+                      yr2013 = lookup.acs2013,
+                      yr2014 = lookup.acs2014,
+                      yr2015 = lookup.acs2015,
+                      yr2016 = lookup.acs2016,
+                      yr2017 = lookup.acs2017,
+                      yr2018 = lookup.acs2018,
+                      yr2019 = lookup.acs2019,
+                      yr2020 = lookup.acs2020)
+  # NOTE THAT WILL CRASH IF THE GIVEN YEAR OF DATA IS NOT YET AVAILABLE FROM CENSUS AND ADDED TO THIS PACKAGE.
+
+  # old data source was this (and that is how these were obtained and cleaned up):
+  # my.lookup <- download.lookup.acs(end.year=end.year, folder=folder)
+
   return(my.lookup)
 }
 

@@ -22,7 +22,8 @@ Returns a large data.frame of selected geographic information on
 Reads and merges geo files that have been obtained from the US Census Bureau FTP site for American Community Survey (ACS) data.
 }
 \details{
-Currently works for ACS 2008-2012 5-year file format, other years not tested.
+Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
+  Currently works for ACS 2008-2012 5-year file format, other years not tested.
   Extracts just block group (SUMLEVEL=150) and tract (SUMLEVEL=140) geo information (not county info., since data files used in this package lack county info.)
   The NAME field works on pc but mac can hit an error if trying to read the NAME field. Due to encoding? specifying encoding didn't help.\cr
   (name is very long and not essential)\cr

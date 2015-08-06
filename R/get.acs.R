@@ -197,7 +197,6 @@
 #' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.
 #' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
 #'   when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
-#' @param ... Additional parameters that can be passed to \code{\link{set.needed}}, for example.
 #'
 #' @return By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
 #'   bg, tracts, headers, and info. The headers and info elements are data.frames providing metadata such as short and long field names.
@@ -242,7 +241,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
                     base.path=getwd(), data.path=file.path(base.path, 'acsdata'), output.path=file.path(base.path, 'acsoutput'),
                     sumlevel='both', vars='all', varsfile,
                     new.geo=TRUE, write.files=FALSE, save.files=FALSE, write.acspkg=FALSE,
-                    testing=FALSE, noEditOnMac=FALSE, ...) {
+                    testing=FALSE, noEditOnMac=FALSE) {
 
   ejscreentables <- c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034")
 
@@ -337,7 +336,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   # Get lookup table of sequence files, table IDs, variable names & positions in the sequence file.
 
   ######## MAY CHANGE THIS TO DATA?? but varies by year ** also see acs.lookup in acs package as an alternative
-  lookup.acs <- get.lookup.acs(end.year)
+  lookup.acs <- get.lookup.acs(end.year, folder=data.path)
 
   seqfilelistnums <- which.seqfiles(tables=tables, lookup.acs=lookup.acs, end.year=end.year)
   # convert these to four-character-long strings with correct # of leading zeroes (already done when reading lookup csv but ok to repeat):
@@ -360,8 +359,14 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
 
   cat(as.character(Sys.time()), ' '); cat("Started specifying which variables are needed from the specified ACS tables \n")
 
-  needed <- set.needed(tables=tables, lookup.acs=lookup.acs, vars=vars, folder=data.path, noEditOnMac=noEditOnMac, ...)
-  # the ... is to specify varsfile if necessary
+  needed <- set.needed(tables=tables, lookup.acs=lookup.acs, vars=vars, folder=data.path, noEditOnMac=noEditOnMac, end.year=end.year, varsfile=varsfile)
+  #   if (exists('varsfile')) {
+  #     needed <- set.needed(tables=tables, lookup.acs=lookup.acs, vars=vars, folder=data.path, noEditOnMac=noEditOnMac, end.year=end.year, varsfile=varsfile)
+  #     # wanted to use  ...  to specify varsfile if necessary but then other params for get.acs that are not in set.needed would get sent there and cause an error
+  #   } else {
+  #     needed <- set.needed(tables=tables, lookup.acs=lookup.acs, vars=vars, folder=data.path, noEditOnMac=noEditOnMac, end.year=end.year)
+  #   }
+
 
   # ensure leading zeroes on sequence file number
   needed$seq <- analyze.stuff::lead.zeroes(needed$seq, 4)
@@ -719,8 +724,8 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   cat("################ DONE ############## \n\n")
 
   #  format for acs package here:
-print(names(alltab))
-print(str(alltab))
+  #print(names(alltab))
+  #print(str(alltab))
   if (write.acspkg) {
     cat(as.character(Sys.time()), ' '); cat('Started to save tables as files formatted for use in the acs package \n')
     for (this.tab in names(alltab)) {

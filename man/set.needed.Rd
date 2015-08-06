@@ -5,7 +5,7 @@
 \title{Specify which ACS Variables are Needed}
 \usage{
 set.needed(tables, lookup.acs, vars = "all", varsfile, folder = getwd(),
-  noEditOnMac = FALSE)
+  noEditOnMac = FALSE, end.year = "2012")
 }
 \arguments{
 \item{tables}{Character vector, required. Specifies which ACS tables.}
@@ -30,6 +30,8 @@ The column called "keep" should have an upper or lowercase letter Y to indicate 
 \item{folder}{Optional path, default is getwd(), specifying where to save the csv files that define needed variables.}
 
 \item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
+
+\item{end.year}{Optional, defaults to '2012' -- specifies last year of 5-year summary file that is being used.}
 }
 \value{
 Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.

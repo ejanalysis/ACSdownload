@@ -1,7 +1,9 @@
 #' @title Read and concatenate state geo files from Census ACS
 #'
 #' @description Reads and merges geo files that have been obtained from the US Census Bureau FTP site for American Community Survey (ACS) data.
-#' @details Currently works for ACS 2008-2012 5-year file format, other years not tested.
+#' @details
+#'   Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
+#'   Currently works for ACS 2008-2012 5-year file format, other years not tested.
 #'   Extracts just block group (SUMLEVEL=150) and tract (SUMLEVEL=140) geo information (not county info., since data files used in this package lack county info.)
 #'   The NAME field works on pc but mac can hit an error if trying to read the NAME field. Due to encoding? specifying encoding didn't help.\cr
 #'   (name is very long and not essential)\cr
@@ -153,7 +155,7 @@ read.geo <- function(mystates, folder=getwd(), end.year='2012') {
 	for (this.file in gfiles.not.us) {
 
 	    #cat(this.file)
-	    cat(mystates[mystates!='us'][i]); i <- i + 1
+	    cat(mystates[mystates!='us'][i], ' '); i <- i + 1
 
 		############## THE FORMAT IS NOT CSV - IT IS FIXED FORMAT ***** widths taken from Census PDF technical documentation
 		#  ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf
@@ -172,10 +174,14 @@ read.geo <- function(mystates, folder=getwd(), end.year='2012') {
 			nrows=295000,
 			comment.char = "", colClasses=rep("character",length(geofields)))
 
+		if (length(this.data[,1])==0) {stop(paste('Problem reading file', this.file))}
+
 		names(this.data) <- geofields  # only for imported fields
 
 		# Drop all rows except for tract and block group, from this geo table. Block group is SUMLEVEL 150.
 		this.data <- this.data[this.data$SUMLEVEL=="140" | this.data$SUMLEVEL=="150" , ]
+
+		if (length(this.data[,1])==0) {stop(paste('Problem reading file', this.file))}
 
 		# Append this state to the others imported so far
 		bigtable.g <- rbind(bigtable.g, this.data)
