@@ -197,6 +197,7 @@
 #' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.
 #' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
 #'   when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
+#' @param ... Additional parameters that can be passed to \code{\link{set.needed}}, for example.
 #'
 #' @return By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
 #'   bg, tracts, headers, and info. The headers and info elements are data.frames providing metadata such as short and long field names.
@@ -241,7 +242,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
                     base.path=getwd(), data.path=file.path(base.path, 'acsdata'), output.path=file.path(base.path, 'acsoutput'),
                     sumlevel='both', vars='all', varsfile,
                     new.geo=TRUE, write.files=FALSE, save.files=FALSE, write.acspkg=FALSE,
-                    testing=FALSE, noEditOnMac=FALSE) {
+                    testing=FALSE, noEditOnMac=FALSE, ...) {
 
   ejscreentables <- c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034")
 

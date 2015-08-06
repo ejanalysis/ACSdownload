@@ -9,7 +9,7 @@ get.acs(tables = "B01001", mystates = "all", end.year = "2012",
   output.path = file.path(base.path, "acsoutput"), sumlevel = "both",
   vars = "all", varsfile, new.geo = TRUE, write.files = FALSE,
   save.files = FALSE, write.acspkg = FALSE, testing = FALSE,
-  noEditOnMac = FALSE)
+  noEditOnMac = FALSE, ...)
 }
 \arguments{
 \item{tables}{Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
@@ -71,7 +71,9 @@ in a format that the Census Bureau American Fact Finder provides as downloadable
 \item{testing}{Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.}
 
 \item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
-  when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
+when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
+
+\item{...}{Additional parameters that can be passed to \code{\link{set.needed}}, for example.}
 }
 \value{
 By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
