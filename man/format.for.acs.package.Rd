@@ -2,15 +2,27 @@
 % Please edit documentation in R/format.for.acs.package.R
 \name{format.for.acs.package}
 \alias{format.for.acs.package}
-\title{FUNCTION TO CREATE FILE FOR IMPORT TO acs PACKAGE
-	USING SAME FORMAT FOR CSV AS THE AMERICAN FACT FINDER PROVIDES FOR TRACTS DOWNLOADS
- format is ESTIMATE, MOE, ESTIMATE, MOE... and KEY COLS ARE GEOID, FIPS, AND NAME,
-	but also keeps  SUMLEVEL
-	and drops STUSAB}
+\title{Reformat ACS Data from \code{\link{get.acs}} for the acs Package}
 \usage{
 \method{format}{for.acs.package}(this.tab, end.year = "2012")
 }
+\arguments{
+\item{this.tab}{Required list of tables from earlier steps in \code{\link{get.acs}}}
+
+\item{end.year}{Optional, character, default is '2012'}
+}
+\value{
+Data.frame for use in \pkg{acs} package.
+}
 \description{
+Work in progress ***** \cr\cr
+ FUNCTION TO CREATE FILE FOR IMPORT TO acs PACKAGE
+ USING SAME FORMAT FOR CSV AS THE AMERICAN FACT FINDER PROVIDES FOR TRACTS DOWNLOADS
+ format is ESTIMATE, MOE, ESTIMATE, MOE... and KEY COLS ARE GEOID, FIPS, AND NAME,
+	but also keeps  SUMLEVEL
+	and drops STUSAB
+}
+\details{
 Downloading C17002 from American Fact Finder results in a zip file with csv as follows:\cr
 ACS_12_5YR_C17002_with_ann.csv  is the data file with estimates and MOE values\cr
 First row is header with field names. Other rows are tract data. \cr
@@ -37,5 +49,8 @@ JUST TRACTS were available from Fact Finder up to 2008-2012 ACS, so that is what
 Actually starting with 2009-2013 ACS, block groups will be available via AFF, but only by specifying one (or each) county in a State.\cr
  ###############################################################################\cr
  \cr
+}
+\seealso{
+\code{\link{get.acs}}
 }
 

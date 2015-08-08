@@ -14,18 +14,14 @@
 #'   \url{http://www.census.gov/programs-surveys/acs/data.html}
 #'   Other data sources that may be relevant include Census geodatabases at
 #'   \url{http://www.census.gov/geo/maps-data/data/tiger-data.html} and data at
-#'   \url{http://www.census.gov/geo/maps-data/data/gazetteer.html}. Also see the help for \code{\link{get.acs}}
-#'   \cr\cr
-#'   The key function in this package is \code{\link{get.acs}}\cr\cr
+#'   \url{http://www.census.gov/geo/maps-data/data/gazetteer.html}. Also see the help for \code{\link{get.acs}} \cr\cr
+#'   The key function in this package is \code{\link{get.acs}} \cr\cr
 #'   For ACS documentation, see \url{http://www.census.gov/programs-surveys/acs.html}
-#'
-#' @seealso \pkg{acs} package (\url{http://cran.r-project.org/web/packages/acs/index.html}) which lets one obtain more limited amounts of ACS data
+#' @seealso \pkg{acs} package (\url{http://cran.r-project.org/web/packages/acs/index.html})
+#'   which lets one obtain more limited amounts of ACS data
 #'   but provides better tools for working with the data once obtained.
 #' @author info@@ejanalysis.com <info@@ejanalysis.com>
-#'
 #' @references
-#'
-#' \url{http://ejanalysis.github.io}\cr
-#' \url{http://www.ejanalysis.com}\cr
-#'
+#'  \url{http://ejanalysis.github.io} \cr
+#'  \url{http://www.ejanalysis.com} \cr
 NULL
