@@ -5,7 +5,7 @@
 #' @description This data set provides information about variables in tables forming the American Community Survey (ACS) 5-year summary file.
 #' @usage data('lookup.acs2009')
 #' @source For the 2005-2009 dataset, \url{ftp://ftp.census.gov/acs2009_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.xls}
-#'   obtained July 2015. 
+#'   obtained July 2015.
 #' @keywords datasets
 #' @format A data.frame with these fields: \cr
 #'    'data.frame':	xxx obs. of  8 variables:
@@ -19,14 +19,13 @@
 #'     \item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
 #'     \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
 #'   }
-#'   \cr
-#' @seealso  \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust. 
-#'   Also see \code{\link{get.lookup.acs}} which downloads these files. 
+#' @seealso  \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
+#'   Also see \code{\link{get.lookup.acs}} which downloads these files.
 #'   Also see \code{\link{get.acs}}.
-#' @examples 
+#' @examples
 #'  \dontrun{
 #'  data(lookup.acs2009, package='ACSdownload')
-#'  # or 
+#'  # or
 #'  lookup.acs <- ACSdownload::get.lookup.acs(2009)
 #'  # or related info from
 #'  acs::acs.lookup()

@@ -7,7 +7,6 @@
 #' @details
 #'   The source of this lookup table is, for example,
 #'   \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
-#'   \cr\cr
 #' @param end.year Character, optional, '2012' by default, which specifies the 2008-2012 dataset.
 #'   Defines which 5-year summary file to use, based on end-year.
 #'   Can be 2009 or later. Data for end.year='2014' is released December 2015, for example.
@@ -23,7 +22,6 @@
 #'     \item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
 #'     \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
 #'   }
-#'   \cr
 #'   For ACS 2008-2012: \cr
 #'   length(my.lookup[,1]) \cr
 #'   [1] 24741\cr

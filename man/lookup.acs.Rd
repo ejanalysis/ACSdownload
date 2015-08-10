@@ -17,7 +17,6 @@
     \item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
     \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
   }
-  \cr
   For ACS 2008-2012: \cr
   length(lookup.acs[,1]) \cr
   [1] 24741\cr

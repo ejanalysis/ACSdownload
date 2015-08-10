@@ -23,7 +23,8 @@ Returns a data.frame of all states geo info. \cr
   # FOR ACS 2008-2012, tract and block group counts: \cr
   table(geo$SUMLEVEL) \cr
     140    150  \cr
-  74001 220333  \cr \cr
+  74001 220333  \cr
+
  Remaining fields in geo: \cr
  "STUSAB"   "SUMLEVEL" "GEOID"    "FIPS"     "KEY" \cr
  NOTE: do not really need GEOID or KEY. \cr
@@ -45,11 +46,9 @@ Returns a data.frame of all states merged geo info and saves geo.RData to workin
 Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
 Read and compile geo data for entire USA with PR DC, \cr
 	This takes some time for the entire USA:  \cr
-\cr
 2 minutes 48 seconds on \cr
 MacBook Pro 16 GB RAM, SSD, 2.7 GHz Intel Core i7\cr
 R version: R 3.0.2 GUI 1.62 Snow Leopard build (6558)\cr
-\cr
 8 minutes 20 seconds on \cr
 R version 3.0.1 \cr
 Dell Latitude E6400, x86 Family 6 Model 23 Stepping 6 GenuineIntel ~2260 Mhz, \cr

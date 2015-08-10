@@ -32,7 +32,7 @@ Columns 1,2,3 are geo information. Columns 4+ are data (estimate,moe,estimate,mo
 First 2 rows example:\cr
  GEO.id,GEO.id2,GEO.display-label,HD01_VD01,HD02_VD01,HD01_VD02,HD02_VD02,HD01_VD03,HD02_VD03,HD01_VD04,HD02_VD04,HD01_VD05,HD02_VD05,HD01_VD06,HD02_VD06,HD01_VD07,HD02_VD07,HD01_VD08,HD02_VD08\cr
  0800000US110015000050000000501,110015000050000000501,"Census Tract 5.01, Washington city, Washington city, District of Columbia, District of Columbia",3113,296,232,164,50,47,77,84,82,90,199,122,19,29,2454,312\cr
- \cr
+
 ACS_12_5YR_C17002_metadata.csv  has the long and short variable names. \cr
 There is no header row. A header of field names would be these 2: "short.name", "long.name"\cr
 Each row here corresponds to one column of the data/moe fields (after the geo fields) in the main data file.\cr
@@ -44,11 +44,10 @@ First few rows example:\cr
  HD02_VD01,Margin of Error; Total:\cr
  HD01_VD02,Estimate; Total: - Under .50\cr
  HD02_VD02,Margin of Error; Total: - Under .50\cr
- \cr
+
 JUST TRACTS were available from Fact Finder up to 2008-2012 ACS, so that is what acs package would typically import until recently.\cr
 Actually starting with 2009-2013 ACS, block groups will be available via AFF, but only by specifying one (or each) county in a State.\cr
  ###############################################################################\cr
- \cr
 }
 \seealso{
 \code{\link{get.acs}}

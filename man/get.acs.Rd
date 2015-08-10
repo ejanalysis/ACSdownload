@@ -79,8 +79,9 @@ By default, returns a list of ACS data tables and information about them, with t
   The same column names are found in x$info and x$headers, but headers has more rows. The info table just provides information about each
   data variable in the estimates tables. The headers table provides similar information but made to match the bg or tract format,
   so the headers table has as many rows as bg or tracts has columns -- enough for the estimates and MOE fields, and the basic fields such as FIPS.
-  The info data.frame can look like this, for example:
-  \cr\cr
+  The info data.frame can look like this, for example: \cr
+
+
   'data.frame':	xxxx obs. of  9 variables:  \cr
  $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...  \cr
  $ line           : num  1 2 3 4 5 6 7 8 9 10 ...  \cr
@@ -104,55 +105,49 @@ The United States Census Bureau provides detailed demographic data by US Census 
   Census Bureau tools tend to focus on obtaining data one state at a time rather than for the entire US at once.
   The \code{get.acs} function lets a user specify (tables and) variables needed. The code will look up what sequence files
   contain those tables. Using a table of variables for those selected tables, a user can specify variables
-  or tables to drop by putting x or anything other than "Y" in the column specifying needed variables.
-  \cr\cr
+  or tables to drop by putting x or anything other than "Y" in the column specifying needed variables. \cr\cr
   For ACS documentation, see for example:\cr\cr
 \url{http://www.census.gov/programs-surveys/acs.html} \cr
 or\cr
 \url{http://www.census.gov/acs/www/Downloads/data_documentation/SumFileTemp/2012-5-Year/Sequence_Number_and_Table_Number_Lookup.xls}\cr
 linked from\cr
-\url{http://www.census.gov/programs-surveys/acs/data/summary-file.html}\cr
-\cr\cr
+\url{http://www.census.gov/programs-surveys/acs/data/summary-file.html} \cr \cr
 #####################################	ADDITIONAL NOTES ######################################\cr
-	NOTES ON NON-NUMERIC FIELDS IN ESTIMATE AND MOE FILES:\cr
-\cr
-FROM 2008-2012 ACS 5-Year Summary File Technical Documentation:\cr
-\cr
+	NOTES ON NON-NUMERIC FIELDS IN ESTIMATE AND MOE FILES:\cr \cr
+FROM 2008-2012 ACS 5-Year Summary File Technical Documentation:\cr \cr
 Some data values represent unique situations where either the information to be conveyed is
 an explanation for the absence of data, represented by a #symbol in the data display, such as "(X)",
 or the information to be conveyed is an open-ended distribution, such as 115 or greater, represented by 115+.
 The following special data values can appear in the ACS Summary File table as an explanation for the absence of data:\cr
-2008-2012 ACS 5-Year Summary File Technical Documentation\cr
-\cr
+2008-2012 ACS 5-Year Summary File Technical Documentation\cr \cr
 ? Missing Value = ??    **********\cr
 A missing string indicates that the estimate is unavailable. (This appears in the estimates and margins or error
 files as two commas adjacent to each #other without anything between them, or if the last cell in a data file is
 filtered then you get a comma followed immediately by a carriage return or #EOF.)
 A missing value indicates when an estimate is missing because of filtering for geographic restrictions,
 coefficients of variations (CV), or was #removed due to the Disclosure Review Board?s (DRB) requirements.
-For more detail on filtering, please see Appendix C.5.\cr
-\cr
+For more detail on filtering, please see Appendix C.5.\cr \cr
+
 ? Dot = ?.?		********\cr
 A dot indicates when the estimate has no sample observations or too few sample observations.
 In the margin of error files, this value could also indicate #that the margin of error is unavailable for
-a median estimate that has been replaced with a jam value.\cr
-\cr
+a median estimate that has been replaced with a jam value.\cr \cr
+
 ? Zero = ?0?\cr
 A ?0? entry in the margin of error column indicates that the estimate is controlled.
 A statistical test for sampling variability is not appropriate.
-This #is similar to the ?*****? symbol used in American FactFinder.\cr
-\cr
+This #is similar to the ?*****? symbol used in American FactFinder.\cr \cr
+
 ? Negative 1 = ?-1?\cr
 This indicates that an estimate does not contain a Margin of Error.
 Tables B00001, B00002, and tables starting with B98 and B99 do not have margin of #error (MOE)
-associated with them. The MOE calculations are set to -1 for these tables.\cr
-\cr
+associated with them. The MOE calculations are set to -1 for these tables.\cr\cr
+
 ? Jam Values for Medians\cr
 The following is a listing of the jam values for medians. For example, if there is an estimate of "2499"
 for table B10010, then it does not indicate a #dollar amount. It means that the median is somewhere
-below 2,500 and thus isn't calculated. \cr
-\cr
- \cr
+below 2,500 and thus isn't calculated. \cr\cr
+
 "Jam Value","Actual Meaning","Use for Medians" \cr
 "0","1 or less","Age, Duration of Marriage" \cr
 "9","9.0 or more","Rooms" \cr
@@ -174,8 +169,8 @@ below 2,500 and thus isn't calculated. \cr
 "200001","200,000 or more","Income" \cr
 "250001","250,000 or more","Income, Earnings" \cr
 "1000001","1,000,000 or more","Value" \cr
- ############################################### \cr
- \cr
+ ############################################### \cr \cr
+
    in older 2005-2009 and 2005-2010 also these were the sequence numbers, but they change over time: \cr
 seqnum <- "0010" has ageunder5m = B01001.003 etc. \cr
 seqnum <- "0013" has hisp = B03002.012 etc. \cr
@@ -183,55 +178,51 @@ seqnum <- "0040" has age25up = B15002.001 etc. \cr
 seqnum <- "0042" has lingisospanish = B16002.004 etc. \cr
 seqnum <- "0046" has povknownratio = C17002.001 etc. \cr
 NOTE:  seq file 98 was used for year built in ACS 2005-2009 but in ACS 2006-2010 that is in seq file 97 \cr
-############# \cr
- \cr
+############# \cr \cr
+
 #####################################################################################  \cr
 	NOTES on where to obtain ACS data - sources for downloads of summary file data  \cr
-##################################################################################### \cr
- \cr \cr
+##################################################################################### \cr\cr \cr
+
 FOR ACS SUMMARY FILE DOCUMENTATION, SEE \cr
-\url{http://www.census.gov/acs/www/data_documentation/summary_file/} \cr
-\cr
-	As of 12/2012, ACS block group/tract summary file ESTIMATES on FTP site is provided as either \cr
-\cr
- LARGER THAN NECESSARY: \cr
-\cr
+\url{http://www.census.gov/acs/www/data_documentation/summary_file/} \cr \cr
+
+	As of 12/2012, ACS block group/tract summary file ESTIMATES on FTP site is provided as either \cr\cr
+
+ LARGER THAN NECESSARY: \cr\cr
+
 	*** all states and all tables in one huge tar.gz file (plus a zip of all geography codes), \cr
 	\url{ftp://ftp.census.gov/acs2011_5yr/summaryfile//2007-2011_ACSSF_All_In_2_Giant_Files(Experienced-Users-Only)} \cr
 	\url{ftp://ftp.census.gov/acs2011_5yr/summaryfile//2007-2011_ACSSF_All_In_2_Giant_Files(Experienced-Users-Only)/2011_ACS_Geography_Files.zip} \cr
 	2011_ACS_Geography_Files.zip		# \cr
-	Tracts_Block_Groups_Only.tar.gz		# (THIS HAS ALL THE SEQUENCE FILES FOR EACH STATE IN ONE HUGE ZIP FOLDER) \cr
-\cr
-or \cr
-\cr
- MORE FOCUSED DOWNLOADS: \cr
-\cr
-	*** one zip file per sequence file PER STATE:    (plus csv of geography codes) \cr
-\cr
+	Tracts_Block_Groups_Only.tar.gz		# (THIS HAS ALL THE SEQUENCE FILES FOR EACH STATE IN ONE HUGE ZIP FOLDER) \cr\cr
+
+or \cr\cr
+
+ MORE FOCUSED DOWNLOADS: \cr\cr
+
+	*** one zip file per sequence file PER STATE:    (plus csv of geography codes) \cr \cr
+
 	\url{http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/} \cr
         20115dc0002000.zip (Which has the e file and m file for this sequence file in this state) \cr
         g20115dc.csv  (which lets you link FIPS to data) \cr
 	so this would mean 50+ * about 7 sequence files? = about 350 zip files?? each with 2 text files. Plus 50+ geo csv files.
-	so downloading about 400 files and expanding to about 750 files, and joining into one big file.
-\cr
-OR \cr
-\cr
+	so downloading about 400 files and expanding to about 750 files, and joining into one big file.\cr
+
+OR \cr\cr
+
  PREJOINED TO TIGER BLOCK GROUP BOUNDARIES SHAPEFILES/ GEODATABASES - \cr
 	ONE PER STATE HAS SEVERAL TABLES BUT NOT B16001, B16002 (many languages but tracts only), B16004 (has block groups but fewer languages) \cr
 	\url{http://www.census.gov/geo/maps-data/data/tiger-data.html} \cr
-\cr
  BUT NOT one file per sequence file FOR ALL STATES AT ONCE. \cr
-\cr
-Estimates & margin of error (MOE), (ONCE UNZIPPED), and GEOgraphies (not zipped) are in 3 separate files. \cr
-\cr
+Estimates & margin of error (MOE), (ONCE UNZIPPED), and GEOgraphies (not zipped) are in 3 separate files. \cr \cr
+
 also, data for entire US for one seq file at a time, but not tract/bg -- just county and larger? -- is here, e.g.:
-\url{ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/20111us0001000.zip}
-\cr
+\url{ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/20111us0001000.zip} \cr
 GEO files:\cr
-\cr
 Note the US file is not bg/tract level:  geo for whole US at once doesn't have tracts and BGs
-\url{ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/g20111us.csv}
-\cr\cr
+\url{ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/g20111us.csv} \cr\cr
+
 OTHER SOURCES include \cr
 \itemize{
   \item \pkg{acs} package for R - very useful for modest numbers of Census units rather than every block group in US

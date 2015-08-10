@@ -9,7 +9,7 @@
 #' @return data.frame of information about each table and each variable in table: \cr
 #'   Table.ID, Line.Number, Table.Title, table.var, varname2 \cr\cr
 #'     # Value returned is data.frame of info about each table and also each variable in the table:\cr
-#'  \cr
+#'
 #'         Table.ID Line.Number                                                 Table.Title  table.var                                           varname2\cr
 #'   7       B01001          NA                                                  SEX BY AGE       <NA>                                           SEXBYAGE\cr
 #'   8       B01001          NA                                 Universe:  Total population       <NA>                            UniverseTotalpopulation\cr

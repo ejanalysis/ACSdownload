@@ -16,8 +16,7 @@
     \item $ Total.Cells.in.Sequence: num  NA NA NA 2 NA NA NA NA NA NA ...
     \item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
     \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
-  }
-  \cr}
+  }}
 \source{
 For the 2009-2013 dataset, \url{ftp://ftp.census.gov/acs2013_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
   obtained July 2015.
