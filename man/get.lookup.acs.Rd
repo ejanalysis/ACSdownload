@@ -16,6 +16,7 @@ Note: Function stops with error if given end.year is not yet added to this packa
 }
 \value{
 By default, returns a data.frame with these fields:
+  \code{
   \itemize{
     \item $ Table.ID               : chr  "B00001" "B00001" "B00001" "B00002" ...
     \item $ Sequence.Number        : chr  "0001" "0001" "0001" "0001" ...
@@ -26,12 +27,15 @@ By default, returns a data.frame with these fields:
     \item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
     \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
   }
+  }
   For ACS 2008-2012: \cr
+  \code{
   length(my.lookup[,1]) \cr
   [1] 24741\cr
   names(my.lookup)\cr
   [1] "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position"\cr
   [6] "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"\cr
+  }
 }
 \description{
 Get lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
@@ -48,7 +52,8 @@ The source of this lookup table was, for example,
  }
 }
 \seealso{
-\code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
+\code{\link{get.table.info}} and \code{\link{get.field.info}}. \cr
+  Also see \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
   Also see \code{\link{download.lookup.acs}} to download the file from the Census FTP site.
   Also see \code{data(lookup.acs2013)} and similar data for other years.
   Also see \code{\link{get.acs}}, \code{\link{get.lookup.file.name}}, \code{\link{get.url.prefix.lookup.table}}

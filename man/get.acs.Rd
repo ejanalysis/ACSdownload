@@ -81,7 +81,7 @@ By default, returns a list of ACS data tables and information about them, with t
   so the headers table has as many rows as bg or tracts has columns -- enough for the estimates and MOE fields, and the basic fields such as FIPS.
   The info data.frame can look like this, for example: \cr
 
-
+ \code{
   'data.frame':	xxxx obs. of  9 variables:  \cr
  $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...  \cr
  $ line           : num  1 2 3 4 5 6 7 8 9 10 ...  \cr
@@ -92,6 +92,7 @@ By default, returns a list of ACS data tables and information about them, with t
  $ subject        : chr  "Age-Sex" "Age-Sex" "Age-Sex" "Age-Sex" ...  \cr
  $ longname2      : chr  "Total" "Male" "Under5years" "5to9years" ...  \cr
  $ longname.unique: chr  "Total:|SEX BY AGE" "Male:|SEX BY AGE" "Under 5 years|SEX BY AGE" "5 to 9 years|SEX BY AGE" ...  \cr
+ }
 }
 \description{
 This function will download and parse 1 or more tables of data from the American Community Survey's
@@ -226,7 +227,7 @@ Note the US file is not bg/tract level:  geo for whole US at once doesn't have t
 OTHER SOURCES include \cr
 \itemize{
   \item \pkg{acs} package for R - very useful for modest numbers of Census units rather than every block group in US
-  \item \url{NHGIS.org} - very useful for block group (or tract/county/state/US) datasets
+  \item \url{http://www.NHGIS.org} - very useful for block group (or tract/county/state/US) datasets
   \item DataFerrett (\url{http://dataferrett.census.gov/AboutDatasets/ACS.html}) -- not all tracts in US at once
   \item American Fact Finder (\url{http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/}) (not block groups for ACS SF, and the tracts are not for the whole US at once)
   \item ESRI - commercial
@@ -236,7 +237,7 @@ OTHER SOURCES include \cr
 }
 \examples{
 \dontrun{
-  t( get.table.info2(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
+  t( get.table.info(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
   out <- get.acs(mystates=c('dc','de')) # Data for just DC & DE, just the default table.
   names(out$bg); cat('\\n\\n'); head(out$info)
   cbind(longname=out$info$longname,

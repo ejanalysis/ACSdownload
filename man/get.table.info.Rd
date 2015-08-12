@@ -2,7 +2,7 @@
 % Please edit documentation in R/get.table.info.R
 \name{get.table.info}
 \alias{get.table.info}
-\title{Obsolete/ older version of get.table.info2}
+\title{Get field names etc for ACS tables}
 \usage{
 get.table.info(tables, end.year = "2012", table.info.only = TRUE,
   moe = FALSE)
@@ -17,8 +17,6 @@ get.table.info(tables, end.year = "2012", table.info.only = TRUE,
 \item{moe}{FALSE by default. If TRUE, returns MOE versions of field names and descriptions.}
 }
 \value{
-data.frame of information about each table and each variable in table.
-
 data.frame of information about each table and each variable in table: \cr
   Table.ID, Line.Number, Table.Title, table.var, varname2 \cr\cr
     # Value returned is data.frame of info about each table and also each variable in the table:\cr
@@ -32,7 +30,10 @@ data.frame of information about each table and each variable in table: \cr
 \description{
 Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
 }
+\details{
+Wrapper for \code{\link{get.table.info2}} which is a wrapper for \code{\link{get.field.info}}
+}
 \seealso{
-\code{\link{get.acs}}, \code{\link{get.table.info}}, \code{\link{get.table.info2}} and \code{\link{get.field.info}}
+\code{\link{get.acs}}, \code{\link{get.table.info}}, and \code{\link{get.field.info}}
 }
 

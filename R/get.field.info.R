@@ -12,7 +12,7 @@
 #' @return data.frame of information about each table and each variable in table: \cr
 #'   Value returned is data.frame of info about each table and also each variable in the table\cr
 #'   e.g., longname2 which is version where no spaces or colons or escaped quotation marks etc. \cr
-#' @seealso \code{\link{get.acs}}, \code{\link{get.table.info}}, \code{\link{get.table.info2}} and \code{\link{get.field.info}}
+#' @seealso \code{\link{get.acs}}, \code{\link{get.table.info}}, and \code{\link{get.field.info}}
 #' @examples
 #' \dontrun{
 #'   finfo <- get.field.info(c('B17020A', 'B17020H'))
@@ -22,8 +22,6 @@
 #' }
 #' @export
 get.field.info <- function(tables, end.year='2012', table.info.only=FALSE, moe=FALSE, basic=FALSE) {
-
-  # replacing   get.table.info.R  with get.table.info2.R code which uses this get.field.info()
 
   # Error checking
   if (missing(tables)) {stop('Must specify tables as a vector of character string table IDs, such as B01001')}

@@ -40,6 +40,6 @@ Uses \code{\link{get.lookup.acs}} but for 2012 version could just use \code{data
 }
 }
 \seealso{
-\code{\link{get.acs}}, \code{\link{get.table.info}}, \code{\link{get.table.info2}} and \code{\link{get.field.info}}
+\code{\link{get.acs}}, \code{\link{get.table.info}}, and \code{\link{get.field.info}}
 }
 

@@ -17,7 +17,15 @@ get.table.info2(tables, end.year = "2012", table.info.only = TRUE,
 \item{moe}{FALSE by default. If TRUE, returns MOE versions of field names and descriptions.}
 }
 \value{
-data.frame of information about each table and each variable in table.
+data.frame of information about each table and each variable in table: \cr
+  Table.ID, Line.Number, Table.Title, table.var, varname2 \cr\cr
+    # Value returned is data.frame of info about each table and also each variable in the table:\cr
+
+        Table.ID Line.Number                                                 Table.Title  table.var                                           varname2\cr
+  7       B01001          NA                                                  SEX BY AGE       <NA>                                           SEXBYAGE\cr
+  8       B01001          NA                                 Universe:  Total population       <NA>                            UniverseTotalpopulation\cr
+  9       B01001           1                                                      Total: B01001.001                                              Total\cr
+  10      B01001           2                                                       Male: B01001.002                                               Male\cr
 }
 \description{
 Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
@@ -26,6 +34,6 @@ Get info on tables from US Census Bureau for American Community Survey 5-year su
 Wrapper for \code{\link{get.field.info}}
 }
 \seealso{
-\code{\link{get.acs}}, \code{\link{get.table.info}}, \code{\link{get.table.info2}} and \code{\link{get.field.info}}
+\code{\link{get.acs}}, \code{\link{get.table.info}}, and \code{\link{get.field.info}}
 }
 

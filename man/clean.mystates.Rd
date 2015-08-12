@@ -12,20 +12,25 @@ clean.mystates(mystates, testing = FALSE)
 \item{testing}{Logical value, optional, FALSE by default. LIMITS STATES TO DC AND DE if TRUE.}
 }
 \value{
-Returns character vector of 2-character State abbreviations. Default is 50 States plus DC and PR and US total.
+Returns character vector of 2-character State abbreviations. Does not remove duplicates.
+  If mystates is not specified or is 'all' or has any NULL values, returns 50 States plus DC and PR and US (for totals).
+  If mystates is specified, returns those defaults that match any of mystates.
+  If mystates includes DC, PR, or US, those are returned, but "AS" "GU" "MP" "UM" "VI" are removed.
 }
 \description{
 Utility function used by \code{\link{get.acs}}
 }
 \details{
-Not in FTP ACS Summary files: \cr
+Not in FTP ACS Summary files and not returned by this function: \cr
  #53         60 AS              American Samoa               <NA>\cr
  #54         66 GU                        Guam               <NA>\cr
  #55         69 MP    Northern Mariana Islands               <NA>\cr
  #57         74 UM U.S. Minor Outlying Islands               <NA>\cr
  #58         78 VI         U.S. Virgin Islands               <NA>\cr
+ Note: The function stops if any of mystates is not found in the full list that includes these,
+ but it returns only those excluding these five above, so an invalid state like 'ZQ' causes an error but an invalid state like 'VI' is silently removed without any error.
 }
 \seealso{
-\code{\link{get.acs}} which uses this, and \code{data(lookup.states, package=proxistat)} using \pkg{proxistat} package
+\code{\link{get.acs}} which uses this, and \code{\link[ejanalysis]{get.state.info}} (from \pkg{ejanalysis} package) based on \code{\link[proxistat]{lookup.states}} or \code{data(lookup.states, package=proxistat)} using \pkg{proxistat} package
 }
 

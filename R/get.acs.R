@@ -133,7 +133,7 @@
 #' OTHER SOURCES include \cr
 #' \itemize{
 #'   \item \pkg{acs} package for R - very useful for modest numbers of Census units rather than every block group in US
-#'   \item \url{NHGIS.org} - very useful for block group (or tract/county/state/US) datasets
+#'   \item \url{http://www.NHGIS.org} - very useful for block group (or tract/county/state/US) datasets
 #'   \item DataFerrett (\url{http://dataferrett.census.gov/AboutDatasets/ACS.html}) -- not all tracts in US at once
 #'   \item American Fact Finder (\url{http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/}) (not block groups for ACS SF, and the tracts are not for the whole US at once)
 #'   \item ESRI - commercial
@@ -194,7 +194,7 @@
 #'   so the headers table has as many rows as bg or tracts has columns -- enough for the estimates and MOE fields, and the basic fields such as FIPS.
 #'   The info data.frame can look like this, for example: \cr
 #'
-#'
+#'  \code{
 #'   'data.frame':	xxxx obs. of  9 variables:  \cr
 #'  $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...  \cr
 #'  $ line           : num  1 2 3 4 5 6 7 8 9 10 ...  \cr
@@ -205,10 +205,11 @@
 #'  $ subject        : chr  "Age-Sex" "Age-Sex" "Age-Sex" "Age-Sex" ...  \cr
 #'  $ longname2      : chr  "Total" "Male" "Under5years" "5to9years" ...  \cr
 #'  $ longname.unique: chr  "Total:|SEX BY AGE" "Male:|SEX BY AGE" "Under 5 years|SEX BY AGE" "5 to 9 years|SEX BY AGE" ...  \cr
+#'  }
 #' @seealso \pkg{acs} package which allows you to download and work with ACS data (using the API and your own key).
 #' @examples
 #'  \dontrun{
-#'   t( get.table.info2(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
+#'   t( get.table.info(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
 #'   out <- get.acs(mystates=c('dc','de')) # Data for just DC & DE, just the default table.
 #'   names(out$bg); cat('\n\n'); head(out$info)
 #'   cbind(longname=out$info$longname,
@@ -525,7 +526,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   # instead of obsolete section
 
   # This is Just one entry per variable in estimates table, not for MOE, not basic info cols like "FIPS"
-  table.info <- get.table.info2(tables, end.year, table.info.only=FALSE)
+  table.info <- get.table.info(tables, end.year, table.info.only=FALSE)
   # NOTE: THIS HAS ALL VARIABLES, NOT JUST needed, so we want to remove any not needed so it matches retained data fields.
   table.info <- table.info[ table.info$shortname %in% names(bg), ]
   rownames(table.info) <- table.info$shortname
@@ -535,7 +536,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
 
   # make the MOE versions of the estimates columns,
   # then intersperse with estimates, to match full list of longnames
-  table.info.all.m <- get.table.info2(tables, end.year, table.info.only=FALSE, moe=TRUE)
+  table.info.all.m <- get.table.info(tables, end.year, table.info.only=FALSE, moe=TRUE)
   # NOTE: THIS HAS ALL VARIABLES, NOT JUST needed, so we want to remove any not needed so it matches retained data fields.
   table.info.all.m <- table.info.all.m[ table.info.all.m$shortname %in% paste(names(bg),'.m',sep='') , ]
   rownames(table.info.all.m) <- table.info.all.m$shortname
@@ -569,7 +570,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   ################################################################################################################
   ################################################################################################################
 
-  # THIS SECTION IS OBSOLETE -- NOW USING get.table.info2() instead of older get.table.info() !
+  # THIS SECTION IS OBSOLETE -- NOW USING get.table.info()
 
   ################################################################################################################
   ################################################################################################################
@@ -644,7 +645,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
     # print(table.info.best)
     save(table.info.best, file=file.path(output.path, 'table.info.best.RData'))
     ###############
-    # NOTE: IT IS EASIER TO WORK WITH get.table.info2(tables) which has useful cols plus new cols for just selected tables
+    # NOTE: IT IS EASIER TO WORK WITH get.table.info(tables) which has useful cols plus new cols for just selected tables
     #   than with get.lookup.acs() which returns nonuseful info and for all tables in acs
 
     ###############

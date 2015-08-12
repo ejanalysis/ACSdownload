@@ -52,7 +52,7 @@ download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALS
   full.geofilenames <- file.path(url.to.find.zipfile(statenames.mine, end.year=end.year), geofilenames)
   # Note download.file is not vectorized so use a loop:
   #  i.e., can't say download.file(full.geofilenames, geofilenames)
-  
+
   cat('Attempting to download geographic data for each State, xx, from \n', file.path(url.to.find.zipfile('xx', end.year=end.year), geofile('xx', end.year=end.year)), '\n\n')
 
   for (statenum in 1:length(mystates)) {
@@ -73,7 +73,7 @@ download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALS
         ok <- FALSE; attempt <- 1
         while (!ok) {
           cat(paste(rep(' ',21),collapse=''), 'Trying to download ')
-          cat(geofilenames[statenum], '\n')
+          cat(mystates[statenum], ' ')
           x <- try( download.file(
             full.geofilenames[statenum],
             file.path(folder, geofilenames[statenum]), quiet=!testing
@@ -97,10 +97,11 @@ download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALS
             file.remove( file.path(folder, geofilenames[statenum] ) )
           }
           if (attempt > attempts) {
-            cat('\n', paste(rep(' ',21),collapse=''),'*** Failed to obtain geo file', geofilenames[statenum],'after repeated attempts. May need to download manually. ***\n')
+            cat('\n', paste(rep(' ',21),collapse=''),'*** Failed to obtain geo file', geofilenames[statenum],'after repeated attempts. Start again or download manually. ***\n')
             break
           }
         }
+        cat('\n')
 
         # file.exists() doesn't seem to work for checking an ftp site. This fails (says FALSE):  but can instead use try(download.file( ... as done in other code here
         # file.exists('ftp://ftp.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset/Delaware/Tracts_Block_Groups_Only/g20125de.txt')
@@ -108,7 +109,6 @@ download.geo <- function(mystates, end.year="2012", folder=getwd(), testing=FALS
         #download.file('ftp://ftp.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset/Delaware/Tracts_Block_Groups_Only/g20125de.txt','test.txt')
         #				if (file.exists(full.geofilenames[statenum])) {
         #				} else { cat("WARNING: Can't find "); cat(full.geofilenames[statenum]);cat("\n") }
-
       } # missing.file initially
     }
   }
