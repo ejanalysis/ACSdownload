@@ -13,3 +13,5 @@ get.acs RUN 2014-05-12.R
 get.acs RUN 2014-12-04.R
 
 .Rhistory
+
+*.tex
