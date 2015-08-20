@@ -1,21 +1,29 @@
 #' @title Read and Parse NHGIS.org ACS Data Files and Codebooks
 #' @description Read downloaded and unzipped csv and txt files obtained from NHGIS.org,
 #'   with US Census Bureau data from the American Community Survey (ACS).
+#' @details This is designed to read and parse csv and txt files
+#'   obtained from NHGIS.org and already unzipped in a local folder.
+#'   Obtaining NHGIS.org data requires an account at
+#'   \url{https://data2.nhgis.org/main}, \url{https://www.nhgis.org}
+#'   Data can be downloaded by selecting, for example, \cr
+#'   tracts and block groups, all in US, acs2007-2011, and specifying the desired ACS Table(s). \cr
+#'   Research using NHGIS data should cite it as: \cr
+#'   Minnesota Population Center. National Historical Geographic Information System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
 #' @param base.path Optional base path, default is getwd()
 #' @param data.dir Optional path where data files are stored and output could be saved. Default is nhgiscode folder under base.path
 #' @param code.dir Optional path where extra code is. Not used.
 #' @param silent Optional, FALSE by default, whether to print info about progress, filenames found, etc.
 #' @param savefiles Optional, FALSE by default, whether to save .RData and maybe csv files of output returned.
 #' @return Returns a list of data tables.
-#' @seealso \code{\link{read.nhgis}}, \code{\link{get.acs}}, \code{\link{get.datafile.prefix}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
+#' @seealso \code{\link{nhgisread}}, \code{\link{get.acs}}, \code{\link{get.datafile.prefix}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
 #' @export
-nhgisimport <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'), data.dir=file.path(base.path, 'nhgisdata'), silent=FALSE, savefiles=FALSE) {
+nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'), data.dir=file.path(base.path, 'nhgisdata'), silent=FALSE, savefiles=FALSE) {
 
   warning('work in progress - not fully tested')
 
   # to do:
   # could fix 2 cases below that crash.
-  # could add allfields df as an output of read.nhgis()
+  # could add allfields df as an output of nhgisread()
 
   filename.for.save <- 'nhgisout'  # "20125 ACS EJSCREEN all scales 6 tables nhgis"
 
@@ -30,9 +38,10 @@ nhgisimport <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgisc
   #setwd(base.path)
 
   #	GET FILES I WANT AND PARSE & SAVE THEM IN MY FORMAT:
-  filesfound <- find.nhgis.files( folder=data.path, silent=silent)  # or specified folder
-  filesfound$datafiles
-  filesfound$codebooks
+  filesfound <- nhgisfind( folder=data.path, silent=silent)  # or specified folder
+  # filesfound$datafiles has estimate and also MOE files right now,
+  # or can be combo E/MOE files,
+  # filesfound$codebooks are in separate files.
 
   resfound <- vector(length=length(validresolutions.filename))
   for (i in 1:length(validresolutions.filename)) {
@@ -41,39 +50,42 @@ nhgisimport <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgisc
   res  <- validresolutions[resfound]
   resf <- validresolutions.filename[resfound]
   fipsvar <- fipsvar[resfound]
-  #cat(res, resf)
+  #cat("res: ", res, ' /  resf: ', resf, '\n')
 
   ####################################################
-  # To see list of field names where every entry is NA:   names(bg$data)[na.check(bg$data)$na.count==length(bg$data[,1])]
+  # To see list of field names where every entry is NA:   names(bg$data)[analyze.stuff::na.check2(bg$data)$na.count==length(bg$data[,1])]
   # Define a function that finds which columns have only NA values for every row
-  na.cols.y <- function(df) { na.check(df)$na==length(df[,1]) }
-  na.cols   <- function(df) { names(df)[na.check(df)$na==length(df[,1])] }
+  na.cols.y <- function(df) { colSums(is.na(as.data.frame(df))) == length(NROW(as.data.frame(df))) }
+  na.cols   <- function(df) { colnames(df)[na.cols.y(df)] }
 
+  out <- list()
 
   for (i in 1:length(res)) {
-    # read files
-    out[[i]] <- read.nhgis( grep(resf[i], filesfound$datafiles, value=TRUE ),	folder=data.path)
+
+    # read Estimate and MOE data files (and it finds the codebooks too) for this resolution (e.g., county resolution)
+    out[[i]] <- nhgisread( grep(resf[i], filesfound$datafiles, value=TRUE ),	folder=data.path)
 
     # Drop the useless fields (i.e., where every entry is NA)
     # Filter field names to keep only the ones for fields we kept
-    out[[i]][ , 'data'] <- out[[i]][ , 'data'][ , my.cols <- !na.cols.y(out[[i]][ , 'data']) ]
-    my.cols <- names(out[[i]][ , 'data'])
-    out[[i]][ , 'contextfields'] <- out[[i]][ , 'contextfields']$new[out[[i]][ , 'contextfields']$new %in% my.cols]
-    out[[i]][ , 'data'] <- out[[i]][ , 'data'][ , c(out[[i]][ , 'contextfields']$new, intersperse(names(out[[i]][ , 'data'][ , out[[i]][ , 'fields']$new])))]
-    out[[i]][ , 'fields'] <- out[[i]][ , 'fields'][ intersperse(rownames(out[[i]][ , 'fields'])), ]
+    out[[i]]$data <- out[[i]]$data[ , my.cols <- !na.cols.y(out[[i]]$data) ]
+    my.cols <- names(out[[i]]$data)
+    out[[i]][ 'contextfields'] <- out[[i]][ 'contextfields']$new[out[[i]][ 'contextfields']$new %in% my.cols]
+# stopped work here debugging
+    out[[i]]$data <- out[[i]]$data[ , c(out[[i]][ 'contextfields']$new, analyze.stuff::intersperse(names(out[[i]]$data[ , out[[i]][ 'fields']$new])))]
+    out[[i]][ 'fields'] <- out[[i]][ 'fields'][ analyze.stuff::intersperse(rownames(out[[i]][ 'fields'])), ]
 
     # ADD FIPS CODES TO AT LEAST bg IF NOT tracts, counties, states
     #bg$data$FIPS <-              with(bg$data,      paste(lead.zeroes(STATEA,2), lead.zeroes(COUNTYA,3), lead.zeroes(TRACTA,6), BLKGRPA, sep=""))
 
     if (res[i]!='us') {
-      out[[i]][ , 'data'] <- data.frame(out[[i]][ , 'data'], nhgisfips(out[[i]][ , 'data']), stringsAsFactors = FALSE)
-      out[[i]][ , 'fields'] <- rbind(out[[i]][ , 'fields'], rep(fipsvar[i], 4))
-      # should be same as names(nhgisfips(out[[i]][ , 'data']))
+      out[[i]]$data <- data.frame(out[[i]]$data, nhgisfips(out[[i]]$data), stringsAsFactors = FALSE)
+      out[[i]][ 'fields'] <- rbind(out[[i]][ 'fields'], rep(fipsvar[i], 4))
+      # should be same as names(nhgisfips(out[[i]]$data))
     }
 
     # put MOE on every fieldname that needs it
-    is.moe <- grepl('\\.m$', out[[i]][ , 'fields']$new)
-    out[[i]][ , 'fields']$long[is.moe] <- paste(out[[i]][ , 'fields']$long[is.moe], '_MOE', sep='')
+    is.moe <- grepl('\\.m$', out[[i]][ 'fields']$new)
+    out[[i]][ 'fields']$long[is.moe] <- paste(out[[i]][ 'fields']$long[is.moe], '_MOE', sep='')
 
 
     if (savefiles) {
@@ -87,11 +99,11 @@ nhgisimport <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgisc
 
   # OLD/ OBSOLETE NONGENERIC CODE:
 
-  #   us 		  <- read.nhgis( grep("nation", filesfound$datafiles, value=TRUE ),	folder=data.path)
-  #   states	<- read.nhgis( grep("state", filesfound$datafiles, value=TRUE ), 	folder=data.path)
-  #   counties<- read.nhgis( grep("county", filesfound$datafiles, value=TRUE ), 	folder=data.path)
-  #   tracts 	<- read.nhgis( grep("tract", filesfound$datafiles, value=TRUE ), 	folder=data.path)  # took <15 seconds
-  #   bg 		  <- read.nhgis( grep("blck_grp", filesfound$datafiles, value=TRUE ), folder=data.path) # took maybe 2 minutes?
+  #   us 		  <- nhgisread( grep("nation", filesfound$datafiles, value=TRUE ),	folder=data.path)
+  #   states	<- nhgisread( grep("state", filesfound$datafiles, value=TRUE ), 	folder=data.path)
+  #   counties<- nhgisread( grep("county", filesfound$datafiles, value=TRUE ), 	folder=data.path)
+  #   tracts 	<- nhgisread( grep("tract", filesfound$datafiles, value=TRUE ), 	folder=data.path)  # took <15 seconds
+  #   bg 		  <- nhgisread( grep("blck_grp", filesfound$datafiles, value=TRUE ), folder=data.path) # took maybe 2 minutes?
 
   # Drop the useless fields (i.e., where every entry is NA)
   # Filter field names to keep only the ones for fields we kept
@@ -113,19 +125,18 @@ nhgisimport <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgisc
   #   bg.cols <-        names(bg$data)
   #   bg$contextfields <- bg$contextfields[bg$contextfields$new %in% bg.cols, ]
 
-  # reformat so that estimate and MOE are next to each other
-
   #NOTES:
   # SETTINGS
   # e.g., "nhgis0006_ds191_20125_2012_blck_grp_codebook.txt"
   # old dir: code.dir <- "ACS - download and parse/CODE FOR ACS VIA NHGIS"
   # old data.dir	<- "ACS - download and parse/ACS DATA/NHGIS ORG as source/20125 ACS USA EJSCREEN all scales- nhgis0006_csv"
   # or data.dir <- "ACS - download and parse/ACS DOWNLOADED/NHGIS ORG as source/20115 ACS USA EJSCREEN all scales- nhgis0003_csv"
-  # source(file.path(code.path, "find.nhgis.files.R"))
-  # source(file.path(code.path, "read.codebook.R"))
-  # source(file.path(code.path, "read.nhgis.R"))
+  # source(file.path(code.path, "nhgisfind.R"))
+  # source(file.path(code.path, "nhgisreadcodebook.R"))
+  # source(file.path(code.path, "nhgisread.R"))
 
-  # but want to keep the context fields:
+  # reformat so that estimate and MOE are next to each other
+  # but want to keep the context fields together:
 
   #   us$data     <-        us$data[ , c(us$contextfields$new,      intersperse(names(us$data[ , us$fields$new])))]
   #   states$data <-    states$data[ , c(states$contextfields$new,  intersperse(names(states$data[ , states$fields$new])))]
@@ -234,32 +245,32 @@ if (1==0) {
   ############################################################################################################
 
   ################################
-  #  EXAMPLES OF USAGE OF read.codebook and read.nhgis and find.nhgis.files
+  #  EXAMPLES OF USAGE OF nhgisreadcodebook and nhgisread and nhgisfind
   ################################
 
   # Get functions if not already in memory
   code.path <- getwd() # or specified folder
-  source(file.path(code.path, "find.nhgis.files.R"))
-  source(file.path(code.path, "read.codebook.R"))
-  source(file.path(code.path, "read.nhgis.R"))
+  source(file.path(code.path, "nhgisfind.R"))
+  source(file.path(code.path, "nhgisreadcodebook.R"))
+  source(file.path(code.path, "nhgisread.R"))
 
   # get vector of filenames for estimates, moe, and codebook files found in folder
-  filesfound <- find.nhgis.files( folder=getwd() )  # or specified folder
+  filesfound <- nhgisfind( folder=getwd() )  # or specified folder
   filesfound$datafiles
   filesfound$codebooks
 
   # get old, new/short, & long field names, and table names, from the first codebook found
-  x <- read.codebook( find.nhgis.files()$codebooks[1] )
+  x <- nhgisreadcodebook( nhgisfind()$codebooks[1] )
   x$fields
   x$tables
 
   # to read 1 datafile from current working directory, guessing at codebook names & MOE file,
   datafile 		<- "nhgis0003_ds184_20115_2011_county_E.csv"
-  acs <- read.nhgis(datafile)
+  acs <- nhgisread(datafile)
 
   # Save csv for Excel with 2 header rows -- short and long field names:
   datafile 		<- "nhgis0003_ds184_20115_2011_county_E.csv"
-  acs <- read.nhgis(datafile)
+  acs <- nhgisread(datafile)
   allnames.long <- c(acs$contextfields$long, acs$fields$long)
   # row 1 has long names, then blank line so table below it has a single header row of short names.
   write.table( rbind( allnames.long, rep("", length(allnames.long)), names(acs$data), acs$data),
@@ -269,7 +280,7 @@ if (1==0) {
 
   # View table names, field names, etc.:
   datafile 		<- "nhgis0003_ds184_20115_2011_county_E.csv"
-  acs <- read.nhgis(datafile)
+  acs <- nhgisread(datafile)
   summary(acs)
   acs$dataset; acs$geolevel; acs$years
   acs$fields
@@ -320,13 +331,13 @@ if (1==0) {
   # Specify both datafile and codebook file names manually, in current working directory
   datafile 		<- "nhgis0003_ds184_20115_2011_nation_E.csv"
   codebookfile	<- "nhgis0003_ds184_20115_2011_nation_E_codebook.txt"
-  acs <- read.nhgis(datafile, codebookfile)
+  acs <- nhgisread(datafile, codebookfile)
   t(acs$data)
 
   # To specify datafile and folder but not codebook file name, MUST say folder=
   datafile 		<- "nhgis0003_ds184_20115_2011_nation_E.csv"
   myfolder <- getwd()
-  acs <- read.nhgis(datafile, folder=myfolder)
+  acs <- nhgisread(datafile, folder=myfolder)
 
 
 
@@ -343,16 +354,16 @@ if (1==0) {
   test.codebook	<- "nhgis0003_ds184_20115_2011_state_E_codebook.txt"
 
   # all OK
-  acs <- read.nhgis(test.file, folder=file.path(test.folder, "nothing missing and EM in 2 files"))
+  acs <- nhgisread(test.file, folder=file.path(test.folder, "nothing missing and EM in 2 files"))
 
 
   # NOTE: US totals are different since they exclude PR, but all others have PR and are consistent with each other:
   # Check if national totals are the same across all geographic resolutions (for each estimate field)
-  us 		<- read.nhgis("nhgis0003_ds184_20115_2011_nation_E.csv",	folder=data.path)
-  states	<- read.nhgis("nhgis0003_ds184_20115_2011_state_E.csv", 	folder=data.path)
-  counties<- read.nhgis("nhgis0003_ds184_20115_2011_county_E.csv", 	folder=data.path)
-  tracts 	<- read.nhgis("nhgis0003_ds184_20115_2011_tract_E.csv", 	folder=data.path)
-  bg 		<- read.nhgis("nhgis0003_ds184_20115_2011_blck_grp_E.csv", 	folder=data.path)
+  us 		<- nhgisread("nhgis0003_ds184_20115_2011_nation_E.csv",	folder=data.path)
+  states	<- nhgisread("nhgis0003_ds184_20115_2011_state_E.csv", 	folder=data.path)
+  counties<- nhgisread("nhgis0003_ds184_20115_2011_county_E.csv", 	folder=data.path)
+  tracts 	<- nhgisread("nhgis0003_ds184_20115_2011_tract_E.csv", 	folder=data.path)
+  bg 		<- nhgisread("nhgis0003_ds184_20115_2011_blck_grp_E.csv", 	folder=data.path)
   ecols <- names(us$data)[grepl("[[:alnum:]]{6}\\.[[:alnum:]]{3}$", names(us$data))]
   compare.sums <- cbind(
     us=colSums(us$data[ , ecols]),
@@ -373,26 +384,26 @@ if (1==0) {
 
 
   # bad names
-  acs <- read.nhgis(test.file, folder="bad folder name")
-  acs <- read.nhgis("bad file name")
-  acs <- read.nhgis("bad file name", folder="bad folder name")
+  acs <- nhgisread(test.file, folder="bad folder name")
+  acs <- nhgisread("bad file name")
+  acs <- nhgisread("bad file name", folder="bad folder name")
 
   # missing file
 
-  acs <- read.nhgis(test.file, folder=file.path(test.folder, "no E codebook and EM in 2 files"))
-  acs <- read.nhgis(test.file, folder=file.path(test.folder, "no M codebook and EM in 2 files"))
-  acs <- read.nhgis(test.file, folder=file.path(test.folder, "no datafile"))
+  acs <- nhgisread(test.file, folder=file.path(test.folder, "no E codebook and EM in 2 files"))
+  acs <- nhgisread(test.file, folder=file.path(test.folder, "no M codebook and EM in 2 files"))
+  acs <- nhgisread(test.file, folder=file.path(test.folder, "no datafile"))
 
   #	****** THIS CASE IS NOT TREATED WELL: IT GETS CODEBOOK FOR MOE BUT SHOULDN'T SINCE DATA FOR MOE IS MISSING
-  acs <- read.nhgis(test.file, folder=file.path(test.folder, "no moe"))
+  acs <- nhgisread(test.file, folder=file.path(test.folder, "no moe"))
 
-  acs <- read.nhgis(test.file1, folder=file.path(test.folder, "no codebook and EM in 1 file"))
+  acs <- nhgisread(test.file1, folder=file.path(test.folder, "no codebook and EM in 1 file"))
 
   #	****** THIS CASE IS NOT TREATED WELL: IT GETS CODEBOOK FOR MOE BUT SHOULDN'T SINCE DATA FOR MOE IS MISSING
-  acs <- read.nhgis(test.file1, folder=file.path(test.folder, "nothing missing and EM in 1 file"))
+  acs <- nhgisread(test.file1, folder=file.path(test.folder, "nothing missing and EM in 1 file"))
 
   # if ask for MOE
-  acs <- read.nhgis(test.fileM, folder=file.path(test.folder, "nothing missing and EM in 2 files"))
+  acs <- nhgisread(test.fileM, folder=file.path(test.folder, "nothing missing and EM in 2 files"))
 
   ############################################################################################################
 }

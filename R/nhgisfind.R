@@ -12,10 +12,11 @@
 #'   Minnesota Population Center. National Historical Geographic Information System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
 #' @param folder Optional path to look in. Default is getwd().
 #' @param silent Optional, default is FALSE. Prints filenames if TRUE.
-#' @return A named list with datafiles= a vector of one or more filenames, and
+#' @return A named list with datafiles= a vector of one or more filenames (estimates and also MOE files) and
 #'   codebooks= a vector of one or more filenames. The function also prints the information unless silent=TRUE.
+#' @seealso \code{\link{nhgis}}, \code{\link{nhgisread}}
 #' @export
-find.nhgis.files <- function(folder=getwd(), silent=FALSE) {
+nhgisfind <- function(folder=getwd(), silent=FALSE) {
 
   datafiles 		<- list.files(path=folder, pattern="^nhgis.*csv$")
   codebookfiles <- list.files(path=folder, pattern="^nhgis.*codebook\\.txt$")
