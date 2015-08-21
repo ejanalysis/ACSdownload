@@ -14,8 +14,38 @@
 #' @param code.dir Optional path where extra code is. Not used.
 #' @param silent Optional, FALSE by default, whether to print info about progress, filenames found, etc.
 #' @param savefiles Optional, FALSE by default, whether to save .RData and maybe csv files of output returned.
-#' @return Returns a list of data tables.
-#' @seealso \code{\link{nhgisread}}, \code{\link{get.acs}}, \code{\link{get.datafile.prefix}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
+#' @return Returns a named list, one element per summary level found (names are, e.g., 'us', 'states', etc.).
+#'   Each summary level has a list of the following: data, contextfields, fields, tables, geolevel, years, dataset \cr
+#'   For example: \cr
+#'   \code{
+#'   summary(x[['us']]) \cr
+#'                 Length Class      Mode \cr
+#'   data          279    data.frame list \cr
+#'   contextfields   3    data.frame list \cr
+#'   fields          4    data.frame list \cr
+#'   tables          4    data.frame list \cr
+#'   geolevel        1    -none-     character \cr
+#'   years           1    -none-     character \cr
+#'   dataset         1    -none-     character \cr
+#'   }
+#' @seealso \code{\link{nhgisread}} used by this function. Also, for other ways to obtain ACS data see \code{\link{get.acs}}
+#' @examples
+#' \donotrun{
+#' x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')
+#' # Which geolevels were found (and what years)?
+#' summary(x)
+#' t(cbind(sapply(x, function(y) y[c('geolevel', 'years')])))
+#' summary(x[['counties']])
+#' # Which Census Bureau tables were found?
+#' x[['states']]$tables
+#' # See the data for one State
+#' t(x[['states']]$data[1, ])
+#' # How many counties are in each State?
+#' dat <- x[['counties']]$data
+#' cbind(sort(table(dat$STATE)))
+#' # How many counties have population > 1 million, for each State?
+#' cbind(sort(table(dat$STATE[dat$B01001.001 > 1E6])))
+#' }
 #' @export
 nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'), data.dir=file.path(base.path, 'nhgisdata'), silent=FALSE, savefiles=FALSE) {
 
@@ -67,32 +97,48 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
 
     # Drop the useless fields (i.e., where every entry is NA)
     # Filter field names to keep only the ones for fields we kept
-    out[[i]]$data <- out[[i]]$data[ , my.cols <- !na.cols.y(out[[i]]$data) ]
+    out[[i]]$data <- out[[i]]$data[ , my.cols <- !na.cols.y(out[[i]]$data) , drop=FALSE]
     my.cols <- names(out[[i]]$data)
-    out[[i]][ 'contextfields'] <- out[[i]][ 'contextfields']$new[out[[i]][ 'contextfields']$new %in% my.cols]
-# stopped work here debugging
-    out[[i]]$data <- out[[i]]$data[ , c(out[[i]][ 'contextfields']$new, analyze.stuff::intersperse(names(out[[i]]$data[ , out[[i]][ 'fields']$new])))]
-    out[[i]][ 'fields'] <- out[[i]][ 'fields'][ analyze.stuff::intersperse(rownames(out[[i]][ 'fields'])), ]
+
+    # THIS WAS ORIG DIFFERENT FOR US VS OTHER RES? or was that an error?:
+    #if (NROW(out[[i]]$contextfields)==1) {
+    #  out[[i]]$contextfields <- out[[i]]$contextfields[out[[i]]$contextfields$new %in% my.cols, drop=FALSE]
+    #} else {
+      out[[i]]$contextfields <- out[[i]]$contextfields[out[[i]]$contextfields$new %in% my.cols, , drop=FALSE]
+    #}
+
+    # reorder the columns in data.frame called data
+    out[[i]]$data <- out[[i]]$data[ , c(
+      out[[i]]$contextfields$new,
+      analyze.stuff::intersperse(names(out[[i]]$data[ , out[[i]]$fields$new, drop=FALSE]))
+      ), drop=FALSE]
+    out[[i]]$fields <- out[[i]]$fields[ analyze.stuff::intersperse(rownames(out[[i]]$fields)), ]
 
     # ADD FIPS CODES TO AT LEAST bg IF NOT tracts, counties, states
     #bg$data$FIPS <-              with(bg$data,      paste(lead.zeroes(STATEA,2), lead.zeroes(COUNTYA,3), lead.zeroes(TRACTA,6), BLKGRPA, sep=""))
 
     if (res[i]!='us') {
+      # create FIPS column
       out[[i]]$data <- data.frame(out[[i]]$data, nhgisfips(out[[i]]$data), stringsAsFactors = FALSE)
-      out[[i]][ 'fields'] <- rbind(out[[i]][ 'fields'], rep(fipsvar[i], 4))
+      out[[i]]$fields <- rbind(out[[i]]$fields, rep(fipsvar[i], 4))
       # should be same as names(nhgisfips(out[[i]]$data))
+    } else {
+      out[[i]]$data$FIPS <- NA
     }
 
     # put MOE on every fieldname that needs it
-    is.moe <- grepl('\\.m$', out[[i]][ 'fields']$new)
-    out[[i]][ 'fields']$long[is.moe] <- paste(out[[i]][ 'fields']$long[is.moe], '_MOE', sep='')
+    is.moe <- grepl('\\.m$', out[[i]]$fields$new)
+    out[[i]]$fields$long[is.moe] <- paste(out[[i]]$fields$long[is.moe], '_MOE', sep='')
 
 
-    if (savefiles) {
-      save.image(file.path(data.path, paste(filename.for.save, ".RData", sep="")))
-      # add code to save more outputs here
-    }
+  }
 
+  # named list where names are e.g., 'us', 'states', etc.
+  names(out) <- res
+
+  if (savefiles) {
+    save.image(file.path(data.path, paste(filename.for.save, ".RData", sep="")))
+    # add code to save more outputs here
   }
 
   return(out)
@@ -115,7 +161,9 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
   #   bg$data <-              bg$data[ , bg.cols       <- !na.cols.y(bg$data) ]
 
   #   us.cols <-        names(us$data)
+  # #********is there an error in this line that was introduced when commenting it:??
   #   us$contextfields <-              us$contextfields$new[us$contextfields$new %in% us.cols]
+  # #***** us code here differs from...
   #   states.cols <-    names(states$data)
   #   states$contextfields <-          states$contextfields[states$contextfields$new %in% states.cols, ]
   #   counties.cols <-  names(counties$data)

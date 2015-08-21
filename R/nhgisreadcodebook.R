@@ -70,7 +70,7 @@ nhgisreadcodebook <- function(codebookfile, folder=getwd()) {
 		# return()
 	}
 
-	cat("Reading codebook file..."); cat("\n")
+	cat("\nReading codebook file..."); cat("\n")
 	cat(paste("Codebook: ", codebookfile)); cat("\n")
 
 	##########

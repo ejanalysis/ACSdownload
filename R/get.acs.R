@@ -133,7 +133,7 @@
 #' OTHER SOURCES include \cr
 #' \itemize{
 #'   \item \pkg{acs} package for R - very useful for modest numbers of Census units rather than every block group in US
-#'   \item \url{http://www.NHGIS.org} - very useful for block group (or tract/county/state/US) datasets
+#'   \item \url{http://www.NHGIS.org} - (and see \code{\link{nhgis}}) very useful for block group (or tract/county/state/US) datasets
 #'   \item DataFerrett (\url{http://dataferrett.census.gov/AboutDatasets/ACS.html}) -- not all tracts in US at once
 #'   \item American Fact Finder (\url{http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/}) (not block groups for ACS SF, and the tracts are not for the whole US at once)
 #'   \item ESRI - commercial
@@ -206,7 +206,8 @@
 #'  $ longname2      : chr  "Total" "Male" "Under5years" "5to9years" ...  \cr
 #'  $ longname.unique: chr  "Total:|SEX BY AGE" "Male:|SEX BY AGE" "Under 5 years|SEX BY AGE" "5 to 9 years|SEX BY AGE" ...  \cr
 #'  }
-#' @seealso \pkg{acs} package which allows you to download and work with ACS data (using the API and your own key).
+#' @seealso \pkg{\link[acs]{acs}} package, which allows you to download and work with ACS data (using the API and your own key).
+#'    Also see \code{\link{nhgis}} which parses any files manually downloaded from \url{NHGIS.org}
 #' @examples
 #'  \dontrun{
 #'   t( get.table.info(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
