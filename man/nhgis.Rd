@@ -52,6 +52,8 @@ This is designed to read and parse csv and txt files
 \examples{
 \\donotrun{
 x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')
+# save state data as csv
+write.csv(x$states$data, file='statedata.csv', row.names = FALSE)
 # Which geolevels were found (and what years)?
 summary(x)
 t(cbind(sapply(x, function(y) y[c('geolevel', 'years')])))
