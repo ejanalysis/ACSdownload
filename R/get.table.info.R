@@ -19,7 +19,7 @@
 #' @export
 get.table.info  <- function(tables, end.year="2012", table.info.only=TRUE, moe=FALSE) {
 
-  return( get.table.info(tables = tables, end.year = end.year, table.info.only = table.info.only, moe = moe) )
+  return( get.table.info2(tables = tables, end.year = end.year, table.info.only = table.info.only, moe = moe) )
 
   if (1==0) {
     # old code archived:

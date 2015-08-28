@@ -249,7 +249,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
     if (class(diroutcome) == 'try-error') { stop('output.path not found and could not be created\n')}
     cat(paste('output.path', output.path, 'not found so it was created\n'))
   }
-
+  
   if (!file.exists(data.path)) {
     diroutcome <- try( dir.create(data.path), silent = TRUE)
     if (class(diroutcome) == 'try-error') { stop('data.path not found and could not be created\n')}

@@ -11,7 +11,8 @@
 #'   not every block group in the US. There are roughly 220,000 block groups in the US,
 #'   and around 74,000 tracts.
 #'   Several options for obtaining Census ACS data are now listed here:
-#'   \url{http://www.census.gov/programs-surveys/acs/data.html}
+#'   \url{http://www.census.gov/programs-surveys/acs/data.html} \cr
+#'   Limits on downloads via American Fact Finder (not all US tracts at once) are noted here: \url{https://ask.census.gov/faq.php?id=5000&faqId=1653} \cr
 #'   Other data sources that may be relevant include Census geodatabases at
 #'   \url{http://www.census.gov/geo/maps-data/data/tiger-data.html} and data at
 #'   \url{http://www.census.gov/geo/maps-data/data/gazetteer.html}. Also see the help for \code{\link{get.acs}} \cr\cr
