@@ -21,10 +21,12 @@
 #'   If vars="ask", function will ask user about variables needed and allow specification in an interactive session.
 #' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
 #' @param end.year Optional, defaults to '2012' -- specifies last year of 5-year summary file that is being used.
+#' @param silent Optional, defaults to TRUE. If FALSE, prints some indications of progress.
+#' @param writefile Optional, defaults to TRUE. If TRUE, saves template of needed variables as "variables needed template.csv" file to folder.
 #' @return Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.
 #' @seealso \code{\link{get.acs}} which uses this
 #' @export
-set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(), noEditOnMac=FALSE, end.year='2012') {
+set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(), noEditOnMac=FALSE, end.year='2012', silent=TRUE, writefile=TRUE) {
 
   if (missing(lookup.acs)) {
     lookup.acs <- get.lookup.acs(end.year = end.year)
@@ -109,9 +111,13 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
 
   ##############################################################################
   #  save the template for user to start from (maybe don't need to if varsfile found nor if vars!="ask")
-  # *** line 175 or so uses this file to read back in but could change that to just use needed from memory
-  write.csv(needed, file.path(folder, "variables needed template.csv"), row.names=FALSE)
-  cat('  Finished writing template file to working directory on disk: variables needed template.csv\n')
+  # *** line 189 or so uses this file to read back in but could change that to just use needed from memory
+  if (writefile) {
+    write.csv(needed, file.path(folder, "variables needed template.csv"), row.names=FALSE)
+    if (!silent) {
+      cat('  Finished writing template file to working directory on disk: variables needed template.csv\n')
+    }
+  }
   ##############################################################################
 
   if (vars=='all') {
@@ -122,13 +128,20 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
   if (!missing(varsfile)) {
     if (file.exists(file.path(folder, varsfile))) {
       needed <- read.csv(file=file.path(folder, varsfile), as.is=TRUE)
-      cat('  Finished reading', varsfile, '\n')
+      if (!silent) {
+        cat('  Finished reading', varsfile, '\n')
+      }
 
       # SHOULD ADD ERROR CHECKING HERE ON FORMAT OF FILE USER PROVIDED ***
 
     } else {
-      needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
-      warning(' Cannot find specified varsfile, so using all variables by reading  variables needed template.csv\n')
+      if (!file.exists(file.path(folder, "variables needed template.csv"))) {
+        # needed <- needed
+        warning(' Cannot find specified varsfile, so using all variables')
+      } else {
+        needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
+        warning(' Cannot find specified varsfile, so using all variables by reading  variables needed template.csv\n')
+      }
     }
   }
 
@@ -140,7 +153,7 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
     }
   }
 
-  os <- analyze.stuff::get.os()
+  os <- analyze.stuff::os()
 
   # windows user could do this interactively, using edit(),
   # but Mac OSX RStudio seems to require installation of X11 / The X Window System (xquartz) for the edit() functionality.
@@ -165,17 +178,29 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
       # USER WANTS TO EDIT THE TABLE THAT SPECIFIES WHICH VARIABLES TO KEEP.
       # SAVE THESE windows SELECTIONS IN CASE WANT TO REUSE THEM BY IMPORTING HERE LATER
       write.csv(needed, file.path(folder, "variables needed.csv"), row.names=FALSE)
-      cat('  Finished writing updated file: variables needed.csv\n')
+      if (!silent) {cat('  Finished writing updated file: variables needed.csv\n')}
     } else {
       # USER WANTS TO SPECIFY VARIABLES TO KEEP BY READING FILE CALLED 'variables needed.csv' # ***
-      cat("  Reading input file of variable selections, variables needed.csv
+      if (!silent) {
+        cat("  Reading input file of variable selections, variables needed.csv
           (or template for all variables if variables needed.csv was not found)\n")
+      }
       if (file.exists(file.path(folder, "variables needed.csv"))) {
         needed <- read.csv(file=file.path(folder, "variables needed.csv"), as.is=TRUE)
-        cat('  Finished reading  variables needed.csv\n')
+        if (!silent) {
+          cat('  Finished reading  variables needed.csv\n')
+        }
       } else {
-        needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
-        cat('  Finished reading  variables needed template.csv\n')
+        warning('File not found so using all variables')
+        # needed <- needed
+#         if (file.exists(file.path(folder, 'variables needed template.csv'))) {
+#           needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
+#           if (!silent) {
+#             cat('  Finished reading  variables needed template.csv\n')
+#           }
+#         } else {
+#           # needed <- needed
+#         }
       }
     }
   }
@@ -195,19 +220,27 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
     if (tolower(substr(x,1,1))=="n") {
       # SPECIFYING VARIABLES IN A FILE
       xx <- readline(paste("Prepare input file 'variables needed.csv' in ", folder, ", using 'variables needed template.csv' as a template. Press y when file is ready.\n"))
-      cat("  Reading input file of variable selections, such as variables needed.csv (or template for all variables if file not found)\n" )
+      if (!silent) {
+        cat("  Reading input file of variable selections, such as variables needed.csv (or template for all variables if file not found)\n" )
+      }
       #if (file.exists(file.path(folder, "variables needed.csv"))) {
       if (file.exists(file.path(folder, 'variables needed.csv'))) {
         needed <- read.csv(file=file.path(folder, 'variables needed.csv'), as.is=TRUE)
-        cat('  Finished reading', 'variables needed.csv', '\n')
+        if (!silent) {
+          cat('  Finished reading', 'variables needed.csv', '\n')
+        }
       } else {
         needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
-        cat('  Finished reading  variables needed template.csv\n')
+        if (!silent) {
+          cat('  Finished reading  variables needed template.csv\n')
+        }
       }
 
     } else {
       needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
-      cat('  Using file called variables needed template.csv ... Finished reading  variables needed template.csv\n')
+      if (!silent) {
+        cat('  Using file called variables needed template.csv ... Finished reading  variables needed template.csv\n')
+      }
     }
     #      	if (tolower(substr(xx,1,1))=="y") {
     #    	  	# just use existing full version of needed, which is also saved as template, and don't need to save it as another csv. don't overwrite older subset selections.

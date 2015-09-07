@@ -42,6 +42,8 @@ Read downloaded and unzipped csv and txt files obtained from NHGIS.org,
 \details{
 This is designed to read and parse csv and txt files
   obtained from NHGIS.org and already unzipped in a local folder.
+  It only reads one set of files at a time, meaning the data and codebook files all have to be for the same set of ACS tables (a single NHGIS query)
+  (but can be a separate data & codebook file pair for each spatial resolution like county, state, etc.)
   Obtaining NHGIS.org data requires an account at
   \url{https://data2.nhgis.org/main}, \url{https://www.nhgis.org}
   Data can be downloaded by selecting, for example, \cr

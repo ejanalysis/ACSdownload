@@ -2,7 +2,9 @@
 #' @description Read downloaded and unzipped csv and txt files obtained from NHGIS.org,
 #'   with US Census Bureau data from the American Community Survey (ACS).
 #' @details This is designed to read and parse csv and txt files
-#'   obtained from NHGIS.org and already unzipped in a local folder.
+#'   obtained from NHGIS.org and already unzipped in a local folder. 
+#'   It only reads one set of files at a time, meaning the data and codebook files all have to be for the same set of ACS tables (a single NHGIS query) 
+#'   (but can be a separate data & codebook file pair for each spatial resolution like county, state, etc.)
 #'   Obtaining NHGIS.org data requires an account at
 #'   \url{https://data2.nhgis.org/main}, \url{https://www.nhgis.org}
 #'   Data can be downloaded by selecting, for example, \cr
@@ -54,6 +56,7 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
   warning('work in progress - not fully tested')
 
   # to do:
+  # I don't think this works for more than one table at a time (it can read all resolutions like state, county, etc files for one table, but not 2+ tables at once)
   # could fix 2 cases below that crash.
   # could add allfields df as an output of nhgisread()
 
@@ -64,13 +67,13 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
   validresolutions <- c('us', 'states', 'counties', 'tracts', 'bg')
   fipsvar <- c('FIPS', 'FIPS.ST', 'FIPS.COUNTY', 'FIPS.TRACT', 'FIPS.BG')
 
-  data.path <- data.dir
-  code.path <- code.dir
+  #data.path <- data.dir
+  #code.path <- code.dir
   # ********************  avoid setwd()
   #setwd(base.path)
 
   #	GET FILES I WANT AND PARSE & SAVE THEM IN MY FORMAT:
-  filesfound <- nhgisfind( folder=data.path, silent=silent)  # or specified folder
+  filesfound <- nhgisfind( folder=data.dir, silent=silent)  # or specified folder
   # filesfound$datafiles has estimate and also MOE files right now,
   # or can be combo E/MOE files,
   # filesfound$codebooks are in separate files.
@@ -88,14 +91,15 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
   # To see list of field names where every entry is NA:   names(bg$data)[analyze.stuff::na.check2(bg$data)$na.count==length(bg$data[,1])]
   # Define a function that finds which columns have only NA values for every row
   na.cols.y <- function(df) { colSums(is.na(as.data.frame(df))) == length(NROW(as.data.frame(df))) }
-  na.cols   <- function(df) { colnames(df)[na.cols.y(df)] }
+  #na.cols   <- function(df) { colnames(df)[na.cols.y(df)] }
 
   out <- list()
+  # out will be a list of tables, one per resolution like state or county
 
   for (i in 1:length(res)) {
 
     # read Estimate and MOE data files (and it finds the codebooks too) for this resolution (e.g., county resolution)
-    out[[i]] <- nhgisread( grep(resf[i], filesfound$datafiles, value=TRUE ),	folder=data.path)
+    out[[i]] <- nhgisread( grep(resf[i], filesfound$datafiles, value=TRUE ),	folder=data.dir)
 
     # Drop the useless fields (i.e., where every entry is NA)
     # Filter field names to keep only the ones for fields we kept
@@ -131,15 +135,13 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
     # put MOE on every fieldname that needs it
     is.moe <- grepl('\\.m$', out[[i]]$fields$new)
     out[[i]]$fields$long[is.moe] <- paste(out[[i]]$fields$long[is.moe], '_MOE', sep='')
-
-
   }
 
   # named list where names are e.g., 'us', 'states', etc.
   names(out) <- res
 
   if (savefiles) {
-    save.image(file.path(data.path, paste(filename.for.save, ".RData", sep="")))
+    save.image(file.path(data.dir, paste(filename.for.save, ".RData", sep="")))
     # add code to save more outputs here
   }
 
@@ -147,11 +149,11 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
 
   # OLD/ OBSOLETE NONGENERIC CODE:
 
-  #   us 		  <- nhgisread( grep("nation", filesfound$datafiles, value=TRUE ),	folder=data.path)
-  #   states	<- nhgisread( grep("state", filesfound$datafiles, value=TRUE ), 	folder=data.path)
-  #   counties<- nhgisread( grep("county", filesfound$datafiles, value=TRUE ), 	folder=data.path)
-  #   tracts 	<- nhgisread( grep("tract", filesfound$datafiles, value=TRUE ), 	folder=data.path)  # took <15 seconds
-  #   bg 		  <- nhgisread( grep("blck_grp", filesfound$datafiles, value=TRUE ), folder=data.path) # took maybe 2 minutes?
+  #   us 		  <- nhgisread( grep("nation", filesfound$datafiles, value=TRUE ),	folder=data.dir)
+  #   states	<- nhgisread( grep("state", filesfound$datafiles, value=TRUE ), 	folder=data.dir)
+  #   counties<- nhgisread( grep("county", filesfound$datafiles, value=TRUE ), 	folder=data.dir)
+  #   tracts 	<- nhgisread( grep("tract", filesfound$datafiles, value=TRUE ), 	folder=data.dir)  # took <15 seconds
+  #   bg 		  <- nhgisread( grep("blck_grp", filesfound$datafiles, value=TRUE ), folder=data.dir) # took maybe 2 minutes?
 
   # Drop the useless fields (i.e., where every entry is NA)
   # Filter field names to keep only the ones for fields we kept
@@ -249,10 +251,10 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
   ########################
   # if (savefiles) {
   # save results:
-  #setwd(data.path)
+  #setwd(data.dir)
 
   # first save workspace
-  # save.image(file.path(data.path, paste(filename.for.save, ".RData", sep="")))
+  # save.image(file.path(data.dir, paste(filename.for.save, ".RData", sep="")))
 
   # make generic:
   #
@@ -295,7 +297,7 @@ if (1==0) {
   ############################################################################################################
 
   ################################
-  #  EXAMPLES OF USAGE OF nhgisreadcodebook and nhgisread and nhgisfind
+  #  old EXAMPLES OF USAGE OF nhgisreadcodebook and nhgisread and nhgisfind
   ################################
 
   # Get functions if not already in memory
@@ -409,11 +411,11 @@ if (1==0) {
 
   # NOTE: US totals are different since they exclude PR, but all others have PR and are consistent with each other:
   # Check if national totals are the same across all geographic resolutions (for each estimate field)
-  us 		<- nhgisread("nhgis0003_ds184_20115_2011_nation_E.csv",	folder=data.path)
-  states	<- nhgisread("nhgis0003_ds184_20115_2011_state_E.csv", 	folder=data.path)
-  counties<- nhgisread("nhgis0003_ds184_20115_2011_county_E.csv", 	folder=data.path)
-  tracts 	<- nhgisread("nhgis0003_ds184_20115_2011_tract_E.csv", 	folder=data.path)
-  bg 		<- nhgisread("nhgis0003_ds184_20115_2011_blck_grp_E.csv", 	folder=data.path)
+  us 		<- nhgisread("nhgis0003_ds184_20115_2011_nation_E.csv",	folder=data.dir)
+  states	<- nhgisread("nhgis0003_ds184_20115_2011_state_E.csv", 	folder=data.dir)
+  counties<- nhgisread("nhgis0003_ds184_20115_2011_county_E.csv", 	folder=data.dir)
+  tracts 	<- nhgisread("nhgis0003_ds184_20115_2011_tract_E.csv", 	folder=data.dir)
+  bg 		<- nhgisread("nhgis0003_ds184_20115_2011_blck_grp_E.csv", 	folder=data.dir)
   ecols <- names(us$data)[grepl("[[:alnum:]]{6}\\.[[:alnum:]]{3}$", names(us$data))]
   compare.sums <- cbind(
     us=colSums(us$data[ , ecols]),
