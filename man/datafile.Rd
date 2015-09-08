@@ -7,9 +7,9 @@
 datafile(state.abbrev, seqfilenum, end.year = "2012")
 }
 \arguments{
-\item{state.abbrev}{Required vector of 2-character state abbreviation(s)}
+\item{state.abbrev}{Required vector of one or more 2-character state abbreviations like "DC"}
 
-\item{seqfilenum}{Required single sequence file number used by ACS 5-year summary file}
+\item{seqfilenum}{Required sequence file number(s) used by ACS 5-year summary file (can be a single value like "0022" or a vector)}
 
 \item{end.year}{Optional end year for 5-year summary file, as character, defaulting to "2012"}
 }

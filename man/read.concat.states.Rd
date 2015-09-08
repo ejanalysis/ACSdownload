@@ -6,26 +6,30 @@
 \usage{
 read.concat.states(tables, mystates, geo, needed, folder = getwd(),
   output.path, end.year = "2012", save.files = TRUE, sumlevel = "both",
-  testing = FALSE)
+  testing = FALSE, dt = TRUE)
 }
 \arguments{
-\item{tables}{Character vector of table numbers needed such as 'B01001'}
+\item{tables}{Optional character vector of table numbers needed such as 'B01001', but default is all tables from each sequence file found.}
 
-\item{mystates}{Character vector of 2-character state abbreviations. Default is all states.}
+\item{mystates}{Optional character vector of 2-character state abbreviations. Default is all states for which matching filenames are found in folder.}
 
-\item{geo}{Required table of geographic identifiers to merge with data here. See \code{\link{get.read.geo}}}
+\item{geo}{Optional table of geographic identifiers that elsewhere would be merged with data here.
+If provided, can uses it here to look up data file length, based on state abbrev's list. See \code{\link{get.read.geo}}
+If geo is not provided, the function still reads each file whatever its length.}
 
-\item{needed}{Required table specifying which variables to use from each table. See \code{\link{set.needed}} and \code{\link{get.acs}}}
+\item{needed}{Optional data.frame specifying which variables to keep from each table. Default is to keep all. See \code{\link{set.needed}} and \code{\link{get.acs}}}
 
-\item{folder}{Default is current working directory.}
+\item{folder}{Default is current working directory. Specifies where the csv files are to be found.}
 
 \item{output.path}{Default is whatever the parameter \code{folder} is set to. Results as .RData files are saved here if save.files=TRUE.}
 
 \item{end.year}{Default is "2012", specifies end year of 5-year summary file.}
 
-\item{sumlevel}{Default is "both", specifies if "tracts" or "blockgroups" or "both" should be returned.}
+\item{sumlevel}{Default is "both". Specifies if "tracts" or "blockgroups" or "both" should be returned.}
 
-\item{testing}{Default is FALSE. If TRUE, prints filenames but does not unzip them.}
+\item{testing}{Default is FALSE. If TRUE, prints filenames but does not unzip them, and prints more messages.}
+
+\item{dt}{Optional logical, TRUE by default, specifies whether data.table::fread should be used instead of read.csv}
 }
 \value{
 Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.
@@ -36,9 +40,8 @@ Read the unzipped csv files of estimates and MOE (margin of error) for American 
   These State-specific csv files are combined into a single national result for each Census data table.
 }
 \details{
-This is a slow function using rbind() -- It can takes several minutes for a national dataset of a few tables.
-  Also note some sequence files might have >1 table in the sequence file,
-  so must loop through tables not seqfiles to get start points right.
+This can use read.csv (takes about 1 minute total for one table, all states, est and moe).
+  It can use data.table::fread (default method), which is faster.
 }
 \seealso{
 \code{\link{get.acs}}
