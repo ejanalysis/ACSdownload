@@ -28,20 +28,20 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
   # stateabbs  (so the default will work, a vector of 2-letter state abbreviations for the US)
   
   # *** ACTUALLY, WE COULD JUST IGNORE OR INFER TABLE NUMBERS AND JUST READ ALL FILES FOUND AND HOPE THEY ARE FOR TABLES THAT MATCH WHAT IS IN needed
-  #
+  # There is a problem when needed has only the tables 
   # e.g. tables <- c("C17002", "B01001")
   if (missing(tables)) {
     # infer seqfiles
     seqfilelistnums.mine <- getseqnumsviafilenames(folder=folder)
+    # figure out which tables are in those sequence files
+    # *** but only do if missing tables since that might be more than what was specified in tables if passed here ***
+    tables <- unique(lookup.acs$Table.ID[lookup.acs$Sequence.Number %in% seqfilelistnums.mine ])
   } else {
     seqfilelistnums.mine <- which.seqfiles(tables, end.year=end.year)
     #e.g. # seqfilelistnums.mine <- "0044"; mystates <- "dc"
     #e.g. # seqfilelistnums.mine <- c("0044"); mystates <- c("de", "dc")
     seqfilelistnums.mine <- analyze.stuff::lead.zeroes(seqfilelistnums.mine, 4)
   }
-  
-  # figure out which tables are in those sequence files
-  tables <- unique(lookup.acs$Table.ID[lookup.acs$Sequence.Number %in% seqfilelistnums.mine ])
   
   if (missing(needed)) {
     needed <- suppressMessages(set.needed(tables, lookup.acs=lookup.acs, vars='all', folder=folder, end.year=end.year, silent=TRUE)) 
@@ -112,6 +112,7 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
     ##################  LOOP THROUGH THE (specified) tables IN THIS SEQ FILE (TO GET COLUMNS RIGHT) ######################
     # ( just the specified ones in the variable  "tables" passed to this function ) *****
     # BUT NOTE THAT tables AND needed MIGHT DISAGREE! so use lookup not needed to see if in this.seq
+    # Also, 
     
     mytables.in.this.seq <- gettablesviaseqnums(this.seq, end.year=end.year)
     if (!missing(tables)) { mytables.in.this.seq <- mytables.in.this.seq[mytables.in.this.seq %in% tables] }
@@ -128,6 +129,7 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
       
       datacolnums 	<- needed$colnum[needed$table==this.tab]
       needed.varnames	<- needed$table.var[needed$table==this.tab]  # e.g.,  B17020A.001
+      # NOTE: that might be an empty set, if no vars are needed from this table.
       #count.datacols <- length(datacolnums)
       
       # Now convert to units of which column in the sequence file, not within the individual table

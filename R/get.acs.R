@@ -210,8 +210,10 @@
 #'    Also see \code{\link{nhgis}} which parses any files manually downloaded from \url{NHGIS.org}
 #' @examples
 #'  \dontrun{
-#'   t( get.table.info(c('B01001', 'C17002', 'B03002')) ) # Basic info on ACS tables
-#'   out <- get.acs(mystates=c('dc','de')) # Data for just DC & DE, just the default table.
+#'   ##### Basic info on ACS tables
+#'   t( get.table.info(c('B01001', 'C17002', 'B03002')) ) 
+#'   ##### Data for just DC & DE, just the default table.
+#'   out <- get.acs(mystates=c('dc','de'))
 #'   names(out$bg); cat('\n\n'); head(out$info)
 #'   cbind(longname=out$info$longname,
 #'         total=colSums(out$bg[ , names(out$bg) %in% out$info$shortname ]))
@@ -219,14 +221,16 @@
 #'   cbind( out$headers$longname, t(out$bg[1:2, ]) )
 #'   # to see 7 places, 1 per row, with short and long field name as header
 #'   head( rbind(out$headers$longname, out$bg) )[,1:7]
-#'   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))  # just 2 tables for just Delaware
-#'   head(out$info); head(out$bg)
-#'   # uses all EJSCREEN defaults and the specified folders:
-#'   out <- get.acs(base.path='~', data.path='~/ACS/temp', output.path='~/ACS/results')
-#'   head(out$info); head(out$bg)
-#'   out <- get.acs(tables=c('ejscreen', 'B16001')) # all tables needed for EJSCREEN,
-#'     plus 'B16001', with variables specified in 'variables needed.csv', all states&DC &PR?
-#'   head(out$info); head(out$bg)
+#'   ##### just 2 tables for just Delaware
+#'   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))  
+#'   summary(out); head(out$info); head(out$bg)
+#'   ##### uses all EJSCREEN defaults and the specified folders:
+#'   out <- get.acs(base.path='~', data.path='~/ACStemp', output.path='~/ACSresults')
+#'   summary(out); head(out$info); head(out$bg)
+#'   ##### all tables needed for EJSCREEN, plus 'B16001', 
+#'     with variables specified in 'variables needed.csv', all states and DC and PR:
+#'   out <- get.acs(tables=c('ejscreen', 'B16001')) 
+#'   summary(out); head(out$info); head(out$bg)
 #'  }
 #' @export
 get.acs <- function(tables='B01001', mystates='all', end.year='2012',
