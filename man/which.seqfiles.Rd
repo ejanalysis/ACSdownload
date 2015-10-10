@@ -12,7 +12,9 @@ which.seqfiles(tables, lookup.acs, end.year = "2012")
 \item{lookup.acs}{data.frame, optional (if not provided then it is downloaded from Census).
 Specifies what variables are in which tables and which tables are in which sequence files on the FTP site.}
 
-\item{end.year}{Character element, optional, "2012" by default. Defines end year for 5-year dataset.}
+\item{end.year}{Character element, optional, "2012" by default. Defines end year for 5-year dataset.
+Valid years are 2009:2013 as of mid 2015, with more to be added over time.
+Ignored if lookup.acs is specified, however. If they imply different years, the function stops with an error message.}
 }
 \value{
 Returns a vector of one or more numbers stored as characters, each defining one sequence file, such as "0001".

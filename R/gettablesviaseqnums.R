@@ -8,9 +8,8 @@
 #' @seealso \code{\link{read.concat.states}} which uses this, and \code{\link{get.loookup.acs}} which is used by this
 #' @export
 gettablesviaseqnums <- function(x, end.year='2012') {
-  if (!exists('lookup.acs')) {
-    lookup.acs <- get.lookup.acs(end.year = end.year)
-    # or 
-  }
+  
+  lookup.acs <- get.lookup.acs(end.year = end.year)
+  
   unique(lookup.acs$Table.ID[as.numeric(lookup.acs$Sequence.Number) %in% as.numeric(x)])
 }

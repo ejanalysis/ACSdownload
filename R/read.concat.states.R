@@ -117,7 +117,6 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
     mytables.in.this.seq <- gettablesviaseqnums(this.seq, end.year=end.year)
     if (!missing(tables)) { mytables.in.this.seq <- mytables.in.this.seq[mytables.in.this.seq %in% tables] }
     
-    
     for (this.tab in mytables.in.this.seq) {
       
       cat("---- Now working on table ", this.tab, " ----\n")
