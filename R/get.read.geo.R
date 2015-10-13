@@ -21,6 +21,7 @@
 #' @param folder Defaults to current working directory.
 #' @param end.year Defaults to "2012" to specify last year of 5-year summary file.
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
+#' @param silent Default is FALSE.
 #' @return Returns a data.frame of all states geo info. \cr
 #'   # FOR ACS 2008-2012, tract and block group counts: \cr
 #'   table(geo$SUMLEVEL) \cr
@@ -42,23 +43,23 @@
 #'  By removing these characters, the new GEOID in the ACS Summary File exactly matches the field GEOID in the TIGER/Line Shapefiles.
 #' @seealso \code{\link{get.acs}} which uses this, and \code{\link{download.geo}}
 #' @export
-get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd(), end.year='2012', testing=FALSE) {
+get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd(), end.year='2012', testing=FALSE, silent=FALSE) {
 
   if (!new.geo) { # IF DO NOT WANT TO REDO WORK TO GET GEO DATA
     if (exists('geo')) {
-      cat('Using geo info from prior work, already in memory\n')
+      if (!silent) {cat('Using geo info from prior work, already in memory\n')}
       # skip download & parse
     }
     if (!exists('geo')) {
       if (file.exists(file.path(folder, 'geo.RData'))) {
         load(file.path(folder, 'geo.RData'))
-        cat('Loading geo.RData\n')
+        if (!silent) {cat('Loading geo.RData\n')}
         # skip download & parse
       }
       if (!file.exists(file.path(folder, 'geo.RData'))) {
         # Said !new.geo, but can't find old geo, so must do all parsing after all.
         # Repeating download.geo() is ok since checks for need to download, then do parsing
-        cat('  Cannot find geo in memory or disk, so redoing parsing (downloading first if necessary)\n')
+        if (!silent) {cat('  Cannot find geo in memory or disk, so redoing parsing (downloading first if necessary)\n')}
         new.geo <- TRUE
       }
     }
@@ -67,27 +68,27 @@ get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd(), end.year='2012
   if (new.geo) {  # IF WANT NEW GEO, do download & parse new geo.
     # if user choice is to create a new geo dataset, (default), do that here (downloading if needed, then parsing):
 
-    cat(as.character(Sys.time()), ' '); cat("Started to download geo files \n")
+    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Started to download geo files \n")}
     # note this won't re-download geofiles that have already been downloaded into the local data folder
     # don't need to specify   download.geo(..., data.path) since already did setwd(data.path)
 
-    download.geo(mystates, end.year=end.year, folder=folder, testing=testing)
+    download.geo(mystates, end.year=end.year, folder=folder, testing=testing, silent=silent)
 
     # e.g.,  download.geo( c("pr", "dc") )
-    cat(as.character(Sys.time()), ' '); cat("Finished downloading geo files \n")
+    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Finished downloading geo files \n")}
 
-    cat(as.character(Sys.time()), ' '); cat("Started parsing geo files \n")
+    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Started parsing geo files \n")}
 
-    geo <- read.geo(mystates, folder=folder, end.year = end.year)
+    geo <- read.geo(mystates, folder=folder, end.year = end.year, silent=silent)
 
-    cat(as.character(Sys.time()), ' '); cat("Finished parsing geo files \n")
+    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Finished parsing geo files \n")}
     # or just for example
     # stateabbs.mine <- c("de", "dc");  geo <- read.geo( stateabbs.mine)
     gc()
 
     # CLEAN UP THE geo DATA
 
-    cat(as.character(Sys.time()), ' '); cat("Started cleaning up geo files \n")
+    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Started cleaning up geo files \n")}
     # Cut white space (OR drop GEOID entirely), (but already used trim.whitespace so redundant)
     geo$GEOID <- gsub(" *$", "", geo$GEOID)
     #geo$GEOID <- NULL
@@ -123,16 +124,16 @@ get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd(), end.year='2012
 
     geo <- geo[ , names(geo)[!(names(geo) %in% c("LOGRECNO", "STATE", "COUNTY", "TRACT", "BLKGRP"))] ]
 
-    cat(as.character(Sys.time()), ' '); cat("Finished cleaning up geo files \n")
+    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Finished cleaning up geo files \n")}
 
     # if (save.files) {
     #  save this .RData file, so that restarting interrupted get.acs() will look for it and not recreate it once it is on disk.
     # Would save lots of time to avoid parsing geo files more than once - don't need to do that usually..?
     # unless first run on a few places and then expanded to more states? *** problem if sees small geo and doesn't make bigger one!
-    cat(as.character(Sys.time()), ' '); cat("Started saving geo files on disk \n")
+    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Started saving geo files on disk \n")}
     # can save on disk in case a copy is needed later
     save(geo, file=file.path(folder, "geo.RData"))
-    cat(as.character(Sys.time()), ' '); cat("Finished saving geo.RData file on disk \n")
+    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Finished saving geo.RData file on disk \n")}
     #  }
   }
   return(geo)

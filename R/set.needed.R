@@ -27,33 +27,33 @@
 #' @seealso \code{\link{get.acs}} which uses this
 #' @export
 set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(), noEditOnMac=FALSE, end.year='2012', silent=TRUE, writefile=TRUE) {
-
+  
   if (missing(lookup.acs)) {
     lookup.acs <- get.lookup.acs(end.year = end.year)
   }
-
+  
   needed <- data.frame(
     seq=lookup.acs$Sequence.Number,
     table=lookup.acs$Table.ID,
     varnum=substr(paste("00", lookup.acs$Line.Number, sep=""), nchar(lookup.acs$Line.Number), 99), stringsAsFactors=FALSE)
-
+  
   needed$table.var <- paste(needed$table, needed$varnum, sep=".")
   needed$varname <- lookup.acs$Table.Title
   needed$colnum <- lookup.acs$Line.Number
-
+  
   # limit the "needed" table to the needed tables (not entire sequence files necessarily)
   needed <- needed[ needed$table %in% tables, ]
-
+  
   # Fix "Total:" or other type of first row (e.g. Aggregate travel time to work (in minutes):)
   #  to also show the universe from one row above it in lookup table
   # needed$varname[needed$varname=="Total:"] <- gsub("Universe:  ", "", needed$varname[which(needed$varname=="Total:")-1])
   rows.to.fix <- (needed$colnum==1 & !is.na(needed$colnum))
   needed$varname[rows.to.fix] <- paste(needed$varname[rows.to.fix], needed$varname[which(rows.to.fix)-1] )
   #  Don't need to include TABLE NAME.
-
+  
   # NOW REMOVE SPECIAL NONVARIABLE ROWS
   needed <- needed[ !is.na(needed$colnum), ]
-
+  
   # head(needed)
   # but seq now has leading zeroes
   #  seq  table varnum  table.var          varname colnum
@@ -61,7 +61,7 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
   #4   2 B01001    002 B01001.002            Male:      2
   #5   2 B01001    003 B01001.003    Under 5 years      3
   #6   2 B01001    004 B01001.004     5 to 9 years      4
-
+  
   #	NOTE A SINGLE SEQUENCE FILE MAY HOLD >1 TABLE:
   #
   #table(needed$table, needed$seq)
@@ -75,7 +75,7 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
   #  also note B16004 is in seqfile 44
   #  B25034   0   0   0   0   0  10
   #  C17002   0   0   0   0   8   0
-
+  
   ########################################################
   # NOTE: The long names are available like this:   needed$varname[needed$table %in% tables]
   #
@@ -94,46 +94,46 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
   # or like this:   lookup.acs$Table.Title[lookup.acs$Table.ID %in% tables]
   # or more cols and rows:  lookup.acs[lookup.acs$Table.ID %in% tables, c("Table.ID", "Line.Number", "Table.Title")]
   ########################################################
-
+  
   ##############################################################################
   # Windows and possibly OSX can let user use edit() to
   # SPECIFY VARIABLES WE NEED VS. VARIABLES TO DROP FROM THOSE TABLES
   # by deleting the "Y" for rows they don't want to keep
   ##############################################################################
-
+  
   needed$keep <- "Y"	# default is Yes, keep every variable in the specified tables.
-
+  
   # also let them specify user-defined friendly variable names in the varname column
   # clean up field by removing spaces and colons and escaped quotation marks etc.
   needed$varname2 <- gsub("[ :,()']", "", needed$varname)
   needed$varname2 <- gsub("\"", "", needed$varname2)
-
-
+  
+  
   ##############################################################################
   #  save the template for user to start from (maybe don't need to if varsfile found nor if vars!="ask")
   # *** line 189 or so uses this file to read back in but could change that to just use needed from memory
   if (writefile) {
     write.csv(needed, file.path(folder, "variables needed template.csv"), row.names=FALSE)
     if (!silent) {
-      cat('  Finished writing template file to working directory on disk: variables needed template.csv\n')
+      cat(as.character(Sys.time()), ' '); cat('Finished writing template file to working directory on disk: variables needed template.csv\n')
     }
   }
   ##############################################################################
-
+  
   if (vars=='all') {
     # default, unless varsfile specified and found
     #needed <- needed
   }
-
+  
   if (!missing(varsfile)) {
     if (file.exists(file.path(folder, varsfile))) {
       needed <- read.csv(file=file.path(folder, varsfile), as.is=TRUE)
       if (!silent) {
-        cat('  Finished reading', varsfile, '\n')
+        cat(as.character(Sys.time()), ' '); cat('Finished reading', varsfile, '\n')
       }
-
+      
       # SHOULD ADD ERROR CHECKING HERE ON FORMAT OF FILE USER PROVIDED ***
-
+      
     } else {
       if (!file.exists(file.path(folder, "variables needed template.csv"))) {
         # needed <- needed
@@ -144,7 +144,7 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
       }
     }
   }
-
+  
   if (missing(varsfile) & vars!='ask' & vars!='all') {
     needed <- needed[needed$table.var %in% vars, ]
     # ERROR CHECKING TO SEE IF AT LEAST ONE OF USERS vars WAS FOUND AMONG needed$table.var
@@ -152,15 +152,15 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
       stop('specified vars not found in these tables in that format -- must be formatted such as "B01001.001" ')
     }
   }
-
+  
   os <- analyze.stuff::os()
-
+  
   # windows user could do this interactively, using edit(),
   # but Mac OSX RStudio seems to require installation of X11 / The X Window System (xquartz) for the edit() functionality.
   # Mac OSX R.app however, seems to not need X11. But you have to use command-W when you are done editing (trying to close the window by clicking the red x seems to crash it.)
   # see http://xquartz.macosforge.org and https://support.apple.com/en-us/HT201341 regarding X11 / XQuartz.
   # and https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Editor-_0028internal-and-external_0029
-
+  
   if (os!="mac" | noEditOnMac==FALSE) {
     # Used to do this only in windows but it generally works in OSX as well, so just try
     inp <- 'n'
@@ -168,43 +168,48 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
       print("You may now edit the input file specifying which variables are needed, or read the input file if already saved on disk.")
       inp <- readline("Press n to edit now onscreen interactively --and to use all fields then just close edit window--
                     or press y if ready to import an already-saved input file from disk called 'variables needed.csv' \n")
-
+      
       # NOTE: THIS WON'T STOP AND WAIT FOR INPUT IF CODE IS COPIED AND PASTED INTO R CONSOLE.
       # & the while() was an attempt to keep it here while rest of pasted text is read.
     }
-
+    
     if (vars=='ask' & missing(varsfile) & tolower(substr(inp,1,1))=="n") {
       needed <- edit(needed)
       # USER WANTS TO EDIT THE TABLE THAT SPECIFIES WHICH VARIABLES TO KEEP.
       # SAVE THESE windows SELECTIONS IN CASE WANT TO REUSE THEM BY IMPORTING HERE LATER
       write.csv(needed, file.path(folder, "variables needed.csv"), row.names=FALSE)
-      if (!silent) {cat('  Finished writing updated file: variables needed.csv\n')}
+      if (!silent) {
+        cat(as.character(Sys.time()), ' '); cat('Finished writing updated file: variables needed.csv\n')
+      }
     } else {
       # USER WANTS TO SPECIFY VARIABLES TO KEEP BY READING FILE CALLED 'variables needed.csv' # ***
       if (!silent) {
-        cat("  Reading input file of variable selections, variables needed.csv
+        cat(as.character(Sys.time()), ' '); cat("Reading input file of variable selections, variables needed.csv
           (or template for all variables if variables needed.csv was not found)\n")
       }
       if (file.exists(file.path(folder, "variables needed.csv"))) {
         needed <- read.csv(file=file.path(folder, "variables needed.csv"), as.is=TRUE)
         if (!silent) {
-          cat('  Finished reading  variables needed.csv\n')
+          cat(as.character(Sys.time()), ' '); cat('Finished reading  variables needed.csv\n')
         }
       } else {
-        warning('File not found so using all variables')
+        if (!silent) { 
+          cat(as.character(Sys.time()), ' ')
+          cat('File specifying ACS variables in given tables was not found so using all variables \n') 
+          }
         # needed <- needed
-#         if (file.exists(file.path(folder, 'variables needed template.csv'))) {
-#           needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
-#           if (!silent) {
-#             cat('  Finished reading  variables needed template.csv\n')
-#           }
-#         } else {
-#           # needed <- needed
-#         }
+        #         if (file.exists(file.path(folder, 'variables needed template.csv'))) {
+        #           needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
+        #           if (!silent) {
+        #             cat('Finished reading  variables needed template.csv\n')
+        #           }
+        #         } else {
+        #           # needed <- needed
+        #         }
       }
     }
   }
-
+  
   # on mac ask user to edit template and save as "variables needed.csv" which will be imported
   if (vars=='ask' & missing(varsfile) & os=="mac" & noEditOnMac) {
     #try to pause here to allow user to edit the template and save it as "variables needed.csv"
@@ -221,24 +226,28 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
       # SPECIFYING VARIABLES IN A FILE
       xx <- readline(paste("Prepare input file 'variables needed.csv' in ", folder, ", using 'variables needed template.csv' as a template. Press y when file is ready.\n"))
       if (!silent) {
+        cat(as.character(Sys.time()), ' ')
         cat("  Reading input file of variable selections, such as variables needed.csv (or template for all variables if file not found)\n" )
       }
       #if (file.exists(file.path(folder, "variables needed.csv"))) {
       if (file.exists(file.path(folder, 'variables needed.csv'))) {
         needed <- read.csv(file=file.path(folder, 'variables needed.csv'), as.is=TRUE)
         if (!silent) {
+          cat(as.character(Sys.time()), ' ')
           cat('  Finished reading', 'variables needed.csv', '\n')
         }
       } else {
         needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
         if (!silent) {
+          cat(as.character(Sys.time()), ' ') 
           cat('  Finished reading  variables needed template.csv\n')
         }
       }
-
+      
     } else {
       needed <-  read.csv(file=file.path(folder, "variables needed template.csv"), as.is=TRUE)
       if (!silent) {
+        cat(as.character(Sys.time()), ' ')
         cat('  Using file called variables needed template.csv ... Finished reading  variables needed template.csv\n')
       }
     }
@@ -247,8 +256,8 @@ set.needed <- function(tables, lookup.acs, vars='all', varsfile, folder=getwd(),
     #     	    # needed <- needed;     write.csv(needed, "variables needed.csv", row.names=FALSE)
     #    	}
   }
-
-
+  
+  
   # retain only the rows with variables we want to keep.
   # remove row if keep col has NA which happens if user leaves it blank (e.g. deletes Y from template instead of replacing it with N)
   needed <- needed[!is.na(needed$keep), ]

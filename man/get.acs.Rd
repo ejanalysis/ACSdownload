@@ -9,7 +9,8 @@ get.acs(tables = "B01001", mystates = "all", end.year = "2012",
   output.path = file.path(base.path, "acsoutput"), sumlevel = "both",
   vars = "all", varsfile, new.geo = TRUE, write.files = FALSE,
   save.files = FALSE, write.acspkg = FALSE, testing = FALSE,
-  noEditOnMac = FALSE)
+  noEditOnMac = FALSE, silent = FALSE, save.log = TRUE,
+  filename.log = "log")
 }
 \arguments{
 \item{tables}{Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
@@ -68,10 +69,16 @@ that should specify which variables to keep from each table.}
 \item{write.acspkg}{Default is FALSE. If TRUE, saves csv file of tracts and file of block groups, for each of the \code{tables},
 in a format that the Census Bureau American Fact Finder provides as downloadable tables. That format can be easily read in by the very useful \pkg{acs} package.}
 
-\item{testing}{Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.}
+\item{testing}{Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory. But see silent parameter.}
 
 \item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
-  when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
+when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
+
+\item{silent}{Optional logical, default is FALSE. Should progress updates be shown (sent to standard out, like the screen).}
+
+\item{save.log}{Optional logical, default is TRUE. Should log file be saved in output.path folder}
+
+\item{filename.log}{Optional name (without extension) for a log file, which gets date and time and .txt extension appended to it. Default is "log"}
 }
 \value{
 By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
@@ -242,6 +249,7 @@ OTHER SOURCES include \cr
   ##### Data for just DC & DE, just the default table.
   out <- get.acs(mystates=c('dc','de'))
   names(out$bg); cat('\\n\\n'); head(out$info)
+  head(  t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe, subj=out$headers$subject,  out$bg[1:2,]) ), 15)
   cbind(longname=out$info$longname,
         total=colSums(out$bg[ , names(out$bg) \%in\% out$info$shortname ]))
   # to see data on 2 places, 1 per column, with short and long field names

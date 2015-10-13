@@ -4,7 +4,7 @@
 \alias{download.lookup.acs}
 \title{Download File with Information about ACS 5-Year Summary File Tables}
 \usage{
-download.lookup.acs(end.year = "2012", folder = getwd())
+download.lookup.acs(end.year = "2012", folder = getwd(), silent = FALSE)
 }
 \arguments{
 \item{end.year}{Character, optional, '2012' by default, which specifies the 2008-2012 dataset.
@@ -12,6 +12,8 @@ Defines which 5-year summary file to use, based on end-year.
 Can be 2009 or later. Data for end.year='2014' is released December 2015, for example.}
 
 \item{folder}{Optional path to where to download file to, defaults to current working directory.}
+
+\item{silent}{Optional, default is FALSE. Whether to send progress info to standard output (like the screen)}
 }
 \value{
 By default, returns a data.frame with these fields:

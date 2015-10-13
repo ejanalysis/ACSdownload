@@ -7,11 +7,12 @@
 #' @param end.year Character element, optional, "2012" by default. Defines last of five years of summary file dataset; default is 2008-2012.
 #' @param mystates Character vector, required. Defines states/DC/PR for which files should be downloaded.
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
+#' @param silent Optional, default is FALSE. Whether progress info should be sent to standard output (like the screen).
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
 #' @return Effect is to download and save locally a number of data files.
 #' @seealso \code{\link{get.distances}} which allows you to get distances between all points.
 #' @export
-download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd(), testing=FALSE, attempts=5) {
+download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd(), testing=FALSE, attempts=5, silent=FALSE) {
 
   # FUNCTION TO DOWNLOAD ZIP FILES WITH DATA (ESTIMATES AND MOE)
 
@@ -74,15 +75,17 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
       #  cat(zipfile.fullpath); cat(' \n')
       #}
       if (seqfilenum==seqfilelistnums[1]) {
-        cat('Checking zipfiles such as ', zipfile(state.abbrev, seqfilenum, end.year = end.year)); cat(' ... \n')
+        #cat('Checking zipfiles such as ', zipfile(state.abbrev, seqfilenum, end.year = end.year)); cat(' ... \n')
+        if (!silent) {cat(as.character(Sys.time()), ' '); cat('Checking zipfiles:  ')}
       }
-      cat(zipfile(state.abbrev, seqfilenum, end.year = end.year), ' ')
+      #if (!silent) {cat(zipfile(state.abbrev, seqfilenum, end.year = end.year), ' ')}
+      if (!silent) {cat(state.abbrev, ' ')}
 
       # The US estimates and MOE files inside the US zips are empty & size zero.
       # Just in case any zip files are size zero here, delete them to avoid confusion.
       if (file.exists(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)))) {
         if (file.info(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)))$size==0) {
-          cat('Warning: File size zero (deleting file now) for '); cat(zipfile(state.abbrev, seqfilenum, end.year = end.year));cat('\n')
+          if (!silent) {cat('\n Warning: File size zero (deleting file now) for '); cat(zipfile(state.abbrev, seqfilenum, end.year = end.year));cat('\n')}
           file.remove(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)))
         }
       }
@@ -103,28 +106,31 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
 
           ok <- TRUE; attempt <- attempt + 1
           if (class(x)=="try-error") {
-            ok<-FALSE; cat('Attempt #', attempt, " because unable to download data file "); cat(file.path(folder, zipfile(state.abbrev, seqfilenum))); cat(" on attempt ",attempt-1," ... \n")
-          } else {cat('Downloaded. \n')}
-          # Some zip downloads give warnings that zip file size is
+            ok <- FALSE
+            if (!silent) {cat('Attempt #', attempt, " because unable to download data file "); cat(file.path(folder, zipfile(state.abbrev, seqfilenum))); cat(" on attempt ",attempt-1," ... \n")}
+          } else {if (!silent) {cat('Downloaded. \n')}}
+          
+          # *** Some zip downloads give warnings that zip file size is
           # WRONG AND THEY ARE CORRUPT. Not clear how to check for and fix that.
 
           # might need to pause here to allow download to start so file size is not zero when checked below???
 
           # Also it is the US estimates and MOE files inside the US zips that are empty & size zero.
           if (file.info(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)))$size==0) {
-            ok<-FALSE; cat('Warning: File size zero for '); cat(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year))); cat('\n')
+            ok<-FALSE
+            if (!silent) {cat('Warning: File size zero for '); cat(file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year))); cat('\n')}
           }
           if (attempt > attempts) {
-            cat('\n*** Failed to obtain ', file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)),'file after repeated attempts. May need to download manually. ***\n========================================\n')
+            if (!silent) {cat('\n*** Failed to obtain ', file.path(folder, zipfile(state.abbrev, seqfilenum, end.year = end.year)),'file after repeated attempts. May need to download manually. ***\n========================================\n')}
             break
           }
         }
       } # end of if
 
     } # end of for loop over sequence files
-    cat(' \n')
+    if (!silent) {cat(' \n')}
   } # end of for loop over states
-  cat(' \n')
+  if (!silent) {cat(' \n')}
 
   ##################
   # VERIFY ALL FILES WERE DOWNLOADED
@@ -139,7 +145,7 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
     #	cat("\n\nMissing zip and one or more data files (estimates/ MOE) for ")
     # cat(zipnames[!got.zip.or.txts]); cat("\n")
   } else {
-    cat(as.character(Sys.time()), ' '); cat("All data zipfiles, or their estimates or MOE contents file, were downloaded/ found locally \n")
+    if (!silent) {cat(as.character(Sys.time()), ' '); cat("All data zipfiles, or their estimates or MOE contents file, were downloaded/ found locally \n")}
   }
   # note count of downloaded zip files should be
   # length(stateabbs) * length(seqfilelistnums)

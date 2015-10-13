@@ -5,7 +5,7 @@
 \title{Get short and long field names etc for ACS tables}
 \usage{
 get.field.info(tables, end.year = "2012", table.info.only = FALSE,
-  moe = FALSE, basic = FALSE)
+  moe = FALSE, basic = FALSE, silent = FALSE)
 }
 \arguments{
 \item{tables}{Required vector of tables such as "B01001"}
@@ -19,6 +19,8 @@ but their names are identical to those of estimates fields other than being MOE 
 
 \item{basic}{FALSE by default. If TRUE, a very limited subset of the info is returned
 (just variable number and name). This parameter is ignored if table.info.only=TRUE}
+
+\item{silent}{Optional logical, FALSE by default. Whether to send progress info to standard output (like the screen)}
 }
 \value{
 data.frame of information about each table and each variable in table: \cr

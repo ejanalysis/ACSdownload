@@ -6,7 +6,7 @@
 \usage{
 read.concat.states(tables, mystates, geo, needed, folder = getwd(),
   output.path, end.year = "2012", save.files = TRUE, sumlevel = "both",
-  testing = FALSE, dt = TRUE)
+  testing = FALSE, dt = TRUE, silent = FALSE)
 }
 \arguments{
 \item{tables}{Optional character vector of table numbers needed such as 'B01001', but default is all tables from each sequence file found.}
@@ -30,6 +30,8 @@ If geo is not provided, the function still reads each file whatever its length.}
 \item{testing}{Default is FALSE. If TRUE, prints filenames but does not unzip them, and prints more messages.}
 
 \item{dt}{Optional logical, TRUE by default, specifies whether data.table::fread should be used instead of read.csv}
+
+\item{silent}{Default is FALSE. Whether to send progress info to standard output.}
 }
 \value{
 Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.

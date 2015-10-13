@@ -5,7 +5,7 @@
 \title{Unzip ACS datafile per state, downloading missing ones first}
 \usage{
 unzip.datafiles(tables, mystates, folder = getwd(), end.year = "2012",
-  testing = FALSE, attempts = 5)
+  testing = FALSE, attempts = 5, silent = FALSE)
 }
 \arguments{
 \item{tables}{Character vector of table numbers needed such as 'B01001'}
@@ -19,6 +19,8 @@ unzip.datafiles(tables, mystates, folder = getwd(), end.year = "2012",
 \item{testing}{Default is FALSE. If TRUE, prints more info.}
 
 \item{attempts}{Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.}
+
+\item{silent}{Default is FALSE. Whether to send progress info to standard output.}
 }
 \value{
 Side effect is unzipping file on disk (unless testing=TRUE)

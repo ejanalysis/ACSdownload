@@ -10,6 +10,7 @@
 #' @param mystates Optional character vector of 2-character state abbreviations. Default is all states for which matching filenames are found in folder.
 #' @param end.year Default is "2012", specifies end year of 5-year summary file.
 #' @param testing Default is FALSE. If TRUE, prints filenames but does not unzip them, and prints more messages.
+#' @param silent Default is FALSE. Whether to send progress info to standard output. 
 #' @param sumlevel Default is "both". Specifies if "tracts" or "blockgroups" or "both" should be returned.
 #' @param output.path Default is whatever the parameter \code{folder} is set to. Results as .RData files are saved here if save.files=TRUE.
 #' @param geo Optional table of geographic identifiers that elsewhere would be merged with data here. 
@@ -19,7 +20,7 @@
 #' @return Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.
 #' @seealso \code{\link{get.acs}}
 #' @export
-read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), output.path, end.year='2012', save.files=TRUE, sumlevel='both', testing=FALSE, dt=TRUE) {
+read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), output.path, end.year='2012', save.files=TRUE, sumlevel='both', testing=FALSE, dt=TRUE, silent=FALSE) {
   
   if (missing(output.path)) {output.path <- folder}
   
@@ -89,7 +90,7 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
   
   for (this.seq in seqfilelistnums.mine) {
     
-    cat("\nNow working on sequence file ", this.seq, " ----\n")
+    if (!silent) {cat("\nNow working on sequence file ", this.seq, " ----\n")}
     # e.g. # this.seq <- "0044"
     
     # note datafile() is now vectorized over states and sequence file numbers 
@@ -119,7 +120,7 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
     
     for (this.tab in mytables.in.this.seq) {
       
-      cat("---- Now working on table ", this.tab, " ----\n")
+      if (!silent) {cat("---- Now working on table ", this.tab, " ----\n")}
       # e.g.  this.tab <- "B16001"
       
       # Will drop the un-needed columns of data from the data files
@@ -165,7 +166,7 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
       #) ###################### LOOP THROUGH STATES (FOR THIS TABLE) (IN THIS SEQUENCE FILE) ######################
       # FOR ESTIMATES FILES NOT MOE
       
-      cat(as.character(Sys.time()), "Estimates files -- Appending States:  \n")
+      if (!silent) {cat(as.character(Sys.time()), "Estimates files       -- Appending States  \n")}
       state.num <-0
       
       if (dt) {
@@ -215,19 +216,19 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
           # Append this state table to the running compilation concatenating all states specified, for this table in the sequence file
           # Note rbind is slow for data frames
           #	if (testing) {
-          cat(toupper(this.ST), "")
+          if (!silent) {cat(toupper(this.ST), "")}
           #	}
           bigtable.e <- rbind( bigtable.e, this.data)
           rm(this.data)
         }
         # end of compiling all states for this one table in this one sequence file / data estimates
-        cat('\n')
+        if (!silent) {cat('\n')}
       }
       
       #) ###################### LOOP THROUGH STATES (FOR THIS TABLE) (IN THIS SEQUENCE FILE) ######################
       # FOR MARGIN OF ERROR FILES
       
-      cat(as.character(Sys.time()), "Margin of Error files -- Appending States:  \n")
+      if (!silent) {cat(as.character(Sys.time()), "Margin of Error files -- Appending States  \n")}
       state.num <-0
       
       if (dt) {
@@ -270,12 +271,12 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
           # and you can read all and rbind them all at once without a loop, like this:
           # bigtable.m <- rbindlist(lapply(fileNames, fread))
           
-          cat(toupper(this.ST), "")
+          if (!silent) {cat(toupper(this.ST), "")}
           bigtable.m <- rbind( bigtable.m, this.data)
           rm(this.data)
         }
         # end of compiling all states for this one table in this one sequence file / MOE files
-        cat('\n')
+        if (!silent) {cat('\n')}
         
       }
       
@@ -318,37 +319,38 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
       # (Those are not actually essential overall  & could be cut from estimates file also)
       bigtable.m <- bigtable.m[ , (c("KEY", names(bigtable.m)[datacolnums.here])) ]
       
-      if (testing) {cat("\n  Now merging estimates and MOE information...")}
+      if (!silent) {cat(as.character(Sys.time()), "Started merging estimates and MOE information \n")}
       
       # NOTE plyr::join is much faster than merge (& data.table merge is faster also) according to
       # http://stackoverflow.com/questions/1299871/how-to-join-data-frames-in-r-inner-outer-left-right/1300618#1300618
+      #
+      #       if ( all(bigtable.e$KEY==bigtable.m$KEY) ) {
+      #         bigtable <- data.frame( KEY=bigtable.e$KEY,
+      #                                 bigtable.e[ , names(bigtable.e)!="KEY"],
+      #                                 bigtable.m[ , names(bigtable.m)!="KEY"], stringsAsFactors=FALSE)
+      #       } else {
+      bigtable <- merge(bigtable.e, bigtable.m, by="KEY")
+      if (!all(NROW(bigtable)==NROW(bigtable.m) & NROW(bigtable)==NROW(bigtable.e))) { stop("Estimates and MOE table rows don't match!\n") }
+      # }
       
-      if ( all(bigtable.e$KEY==bigtable.m$KEY) ) {
-        bigtable <- data.frame( KEY=bigtable.e$KEY,
-                                bigtable.e[ , names(bigtable.e)!="KEY"],
-                                bigtable.m[ , names(bigtable.m)!="KEY"], stringsAsFactors=FALSE)
-      } else {
-        cat("  Warning: Estimates and MOE table rows don't match or are sorted differently!\n")
-        bigtable <- merge(bigtable.e, bigtable.m, by="KEY")
-      }
       rm(bigtable.e, bigtable.m)
-      if (testing) {cat(as.character(Sys.time()), "Done merging.\n")}
-      
       if (dt) {
         bigtable <- data.frame(bigtable, stringsAsFactors = FALSE)
       }
+      
+      if (!silent) {cat(as.character(Sys.time()), "Finished merging \n")}
       ##############
       
       if (save.files) {
         # save each table as a data file
         datafile.prefix <- get.datafile.prefix(end.year = end.year)
         fname <- paste("ACS-", datafile.prefix, "-", this.tab, ".RData", sep="")
-        save( bigtable, file=file.path(folder, fname))
-        cat(paste("  Saved as file (tracts / block groups but no geo info): ", fname, "\n"))
+        save( bigtable, file=file.path(output.path, fname))
+        if (!silent) { cat(as.character(Sys.time()), paste("Saved as file (tracts / block groups but no geo info): ", fname, "\n") ) }
         
         #fname <- paste("ACS-", datafile.prefix, "-", this.tab, ".csv", sep="")
         #write.csv(bigtable, file=fname, row.names=FALSE)
-        #cat(paste("  Saved as file (tracts / block groups but no geo info): ", fname,"\n"))
+        # if (!silent) {cat(paste("  Saved as file (tracts / block groups but no geo info): ", fname,"\n")) }
       }
       
       ####################
@@ -376,11 +378,11 @@ read.concat.states <- function(tables, mystates, geo, needed, folder=getwd(), ou
     
     if (length(mytables.in.this.seq) > 1 & this.tab!=mytables.in.this.seq[length(mytables.in.this.seq)]) {
       # if there are 2+ seqfiles, then after each but the last one, print a divider line:
-      cat("--------------------------\n")
+      if (!silent) {cat("--------------------------\n")}
     }
     
   } # end of loop over sequence files
-  cat("----------------------------------------------------\n")
+  if (!silent) {cat(" \n \n")}
   
   # function returns a list of tables, one or more per sequence file (for all states specified merged)
   # NOTE THAT ONE SEQUENCE FILE MAY HAVE MORE THAN ONE CENSUS DATA TABLE IN IT

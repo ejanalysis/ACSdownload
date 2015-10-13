@@ -9,6 +9,7 @@
 #'   but their names are identical to those of estimates fields other than being MOE instead of estimate.
 #' @param basic FALSE by default. If TRUE, a very limited subset of the info is returned
 #'   (just variable number and name). This parameter is ignored if table.info.only=TRUE
+#' @param silent Optional logical, FALSE by default. Whether to send progress info to standard output (like the screen)
 #' @return data.frame of information about each table and each variable in table: \cr
 #'   Value returned is data.frame of info about each table and also each variable in the table\cr
 #'   e.g., longname2 which is version where no spaces or colons or escaped quotation marks etc. \cr
@@ -21,7 +22,7 @@
 #'   cbind( foundnames, substr(finfo$longname.unique[match(foundnames, finfo$shortname)], 1, 100))
 #' }
 #' @export
-get.field.info <- function(tables, end.year='2012', table.info.only=FALSE, moe=FALSE, basic=FALSE) {
+get.field.info <- function(tables, end.year='2012', table.info.only=FALSE, moe=FALSE, basic=FALSE, silent=FALSE) {
 
   # Error checking
   if (missing(tables)) {stop('Must specify tables as a vector of character string table IDs, such as B01001')}
@@ -36,8 +37,8 @@ get.field.info <- function(tables, end.year='2012', table.info.only=FALSE, moe=F
 
   # Error checking
   if (!all(tables %in% unique(x$Table.ID))) {
-    cat('Not found in list of ACS tables: ')
-    cat(tables[!(tables %in% unique(x$Table.ID))]); cat('\n')
+    if (!silent) {cat('Not found in list of ACS tables: ')}
+    if (!silent) {cat(tables[!(tables %in% unique(x$Table.ID))]); cat('\n')}
     #stop('To see a list of ACS table IDs, try  get.lookup.acs function')
     stop('unique(get.lookup.acs()$Table.ID)  will show a list of ACS table IDs that can be used in get.field.info() or get.table.info...')
   }

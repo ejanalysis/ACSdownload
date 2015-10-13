@@ -4,7 +4,7 @@
 \alias{read.geo}
 \title{Read and concatenate state geo files from Census ACS}
 \usage{
-read.geo(mystates, folder = getwd(), end.year = "2012")
+read.geo(mystates, folder = getwd(), end.year = "2012", silent = FALSE)
 }
 \arguments{
 \item{mystates}{Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.}
@@ -12,6 +12,8 @@ read.geo(mystates, folder = getwd(), end.year = "2012")
 \item{folder}{Optional path to where files are stored, defaults to getwd()}
 
 \item{end.year}{End year of 5-year data, default is "2012"}
+
+\item{silent}{Default is FALSE. Whether to send progress info to standard output.}
 }
 \value{
 Returns a large data.frame of selected geographic information on

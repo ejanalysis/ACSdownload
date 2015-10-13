@@ -11,6 +11,7 @@
 #'   Defines which 5-year summary file to use, based on end-year.
 #'   Can be 2009 or later. Data for end.year='2014' is released December 2015, for example.
 #' @param folder Optional path to where to download file to, defaults to current working directory.
+#' @param silent Optional, default is FALSE. Whether to send progress info to standard output (like the screen)
 #' @return By default, returns a data.frame with these fields:
 #'   \itemize{
 #'     \item $ Table.ID               : chr  "B00001" "B00001" "B00001" "B00002" ...
@@ -37,7 +38,7 @@
 #'  lookup.acs <- download.lookup.acs()
 #'  }
 #' @export
-download.lookup.acs <- function(end.year='2012', folder=getwd()) {
+download.lookup.acs <- function(end.year='2012', folder=getwd(), silent=FALSE) {
 
   my.url.prefix.lookup.table <- get.url.prefix.lookup.table(end.year)  # paste("ftp://ftp.census.gov/acs", end.year, "_5yr/summaryfile/", sep="") # but lacking last /
   my.lookup.file.name <- get.lookup.file.name(end.year)
@@ -46,7 +47,7 @@ download.lookup.acs <- function(end.year='2012', folder=getwd()) {
   # Use the working directory to download the file.
 
   if (!file.exists(file.path(folder, my.lookup.file.name.dated)) | file.size(file.path(folder, my.lookup.file.name.dated))==0 ) {
-    cat("  Downloading lookup table with table and variable names from", paste( my.url.prefix.lookup.table, my.lookup.file.name, sep=""),"\n")
+    if (!silent) {cat("  Downloading lookup table with table and variable names from", paste( my.url.prefix.lookup.table, my.lookup.file.name, sep=""),"\n")}
     try(download.file(
       paste( my.url.prefix.lookup.table, my.lookup.file.name, sep=""),
       file.path(folder, my.lookup.file.name.dated)
@@ -54,7 +55,7 @@ download.lookup.acs <- function(end.year='2012', folder=getwd()) {
     if (!file.exists(file.path(folder, my.lookup.file.name.dated)) | file.size(file.path(folder, my.lookup.file.name.dated))==0) {stop('Failed to download lookup table of variable names by table')}
     # could add error checking here to verify it was downloaded correctly
   }
-  cat("  Reading lookup table with table and variable names\n")
+  if (!silent) {cat("  Reading lookup table with table and variable names\n")}
 
   if (end.year==2009) {
     # The 2009 table was provided as xls not txt. Other years have a txt file with this info.

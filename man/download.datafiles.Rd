@@ -5,7 +5,7 @@
 \title{Download American Community Survey 5-yr data files}
 \usage{
 download.datafiles(tables, end.year = "2012", mystates, folder = getwd(),
-  testing = FALSE, attempts = 5)
+  testing = FALSE, attempts = 5, silent = FALSE)
 }
 \arguments{
 \item{tables}{Required character vector of table numbers, such as c("B01001", "B03002")}
@@ -17,6 +17,8 @@ download.datafiles(tables, end.year = "2012", mystates, folder = getwd(),
 \item{testing}{Default to FALSE. If TRUE, provides info on progress of download.}
 
 \item{attempts}{Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.}
+
+\item{silent}{Optional, default is FALSE. Whether progress info should be sent to standard output (like the screen).}
 }
 \value{
 Effect is to download and save locally a number of data files.

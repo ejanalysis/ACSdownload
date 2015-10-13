@@ -8,10 +8,11 @@
 #' @param end.year Default is "2012" -- specifies last year of 5-year summary file.
 #' @param testing Default is FALSE. If TRUE, prints more info.
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
+#' @param silent Default is FALSE. Whether to send progress info to standard output.
 #' @return Side effect is unzipping file on disk (unless testing=TRUE)
 #' @seealso \code{\link{get.acs}}
 #' @export
-unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012', testing=FALSE, attempts=5) {
+unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012', testing=FALSE, attempts=5, silent=FALSE) {
 
   myseqfiles <- which.seqfiles(tables, end.year=end.year)
 
@@ -64,19 +65,19 @@ unzip.datafiles <- function(tables, mystates, folder=getwd(), end.year = '2012',
               # CHECK IF PROBLEM WITH FILE SIZE ZERO
               # Actually it is the US estimates and MOE files inside the US zips that are empty & size zero.
               if (file.info(file.path(folder, efile))$size==0 | file.info(file.path(folder, mfile))$size==0) {
-                cat('Problem: File size zero for '); cat(efile); cat(' or '); cat(mfile); cat('\n')
+                if (!silent) {cat('Problem: File size zero for '); cat(efile); cat(' or '); cat(mfile); cat('\n')}
                 ok <- FALSE
               }
             }
             if (attempt > attempts) {
-              cat('***Problem: Repeatedly failed to obtain valid data and/or moe file. May need to download/unzip manually. ***\n')
+              warning('***Problem: Repeatedly failed to obtain valid data and/or moe file. May need to download/unzip manually. ***')
               break
             }
             if (!ok) {
               # Try downloading the state's zip file(s) again, and then unzip just the problem one, since contents were missing/bad.
               # Not clear how to back calculate what tables are the ones in this seqfilenum !?
               # Assume end.year is available as a global or at least in this environment
-              cat('Retrying download of zip file since bad/missing contents after unzip attempts.\n')
+              if (!silent) {cat('Retrying download of zip file since bad/missing contents after unzip attempts.\n')}
 
               download.datafiles(tables, end.year=end.year, mystates=state.abbrev, folder=folder, testing=testing)
             }

@@ -5,7 +5,7 @@
 \title{Download (if necessary) and merge GEO files for ACS}
 \usage{
 get.read.geo(mystates, new.geo = FALSE, folder = getwd(),
-  end.year = "2012", testing = FALSE)
+  end.year = "2012", testing = FALSE, silent = FALSE)
 }
 \arguments{
 \item{mystates}{Character vector of 2-character state abbreviations, required.}
@@ -17,6 +17,8 @@ get.read.geo(mystates, new.geo = FALSE, folder = getwd(),
 \item{end.year}{Defaults to "2012" to specify last year of 5-year summary file.}
 
 \item{testing}{Default to FALSE. If TRUE, provides info on progress of download.}
+
+\item{silent}{Default is FALSE.}
 }
 \value{
 Returns a data.frame of all states geo info. \cr

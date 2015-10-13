@@ -183,9 +183,12 @@
 #' @param save.files Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.
 #' @param write.acspkg Default is FALSE. If TRUE, saves csv file of tracts and file of block groups, for each of the \code{tables},
 #'   in a format that the Census Bureau American Fact Finder provides as downloadable tables. That format can be easily read in by the very useful \pkg{acs} package.
-#' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory.
+#' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory. But see silent parameter.
 #' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
 #'   when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
+#' @param filename.log Optional name (without extension) for a log file, which gets date and time and .txt extension appended to it. Default is "log" 
+#' @param save.log Optional logical, default is TRUE. Should log file be saved in output.path folder
+#' @param silent Optional logical, default is FALSE. Should progress updates be shown (sent to standard out, like the screen).
 #'
 #' @return By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
 #'   bg, tracts, headers, and info. The headers and info elements are data.frames providing metadata such as short and long field names.
@@ -215,6 +218,7 @@
 #'   ##### Data for just DC & DE, just the default table.
 #'   out <- get.acs(mystates=c('dc','de'))
 #'   names(out$bg); cat('\n\n'); head(out$info)
+#'   head(  t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe, subj=out$headers$subject,  out$bg[1:2,]) ), 15)
 #'   cbind(longname=out$info$longname,
 #'         total=colSums(out$bg[ , names(out$bg) %in% out$info$shortname ]))
 #'   # to see data on 2 places, 1 per column, with short and long field names
@@ -237,41 +241,64 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
                     base.path=getwd(), data.path=file.path(base.path, 'acsdata'), output.path=file.path(base.path, 'acsoutput'),
                     sumlevel='both', vars='all', varsfile,
                     new.geo=TRUE, write.files=FALSE, save.files=FALSE, write.acspkg=FALSE,
-                    testing=FALSE, noEditOnMac=FALSE) {
-
+                    testing=FALSE, noEditOnMac=FALSE,
+                    silent=FALSE, save.log=TRUE, filename.log='log') {
+  
   ejscreentables <- c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034")
-
-  # require(analyze.stuff)
-
+  
   # check if base.path seems to be a valid folder
   if (!file.exists(base.path)) {stop(paste('base.path', base.path, 'does not exist'))}
-
-  cat('\n')
-
+  
+  if (!save.log & silent) {
+    nocat <- TRUE
+  } else {
+    nocat <- FALSE
+  }
+  #  if (!nocat) {cat('\n')}
+  
+  starttime <- Sys.time()
+  
   if (!file.exists(output.path)) {
     diroutcome <- try( dir.create(output.path), silent = TRUE)
     if (class(diroutcome) == 'try-error') { stop('output.path not found and could not be created\n')}
-    cat(paste('output.path', output.path, 'not found so it was created\n'))
+    created.output.path <- TRUE
+  } else {
+    created.output.path <- FALSE
   }
+  
+  # Set up the log file if requested, which also suppresses or does not suppress on screen messages, depending on parameter called silent
+  logfullpath <- file.path(output.path, paste(filename.log, ' ', gsub(':', '.', Sys.time() ),'.txt', sep=''))
+  if (save.log & !silent) {
+    sink(logfullpath, split=TRUE); on.exit({warning(); sink()})
+  }
+  if (save.log & silent) {
+    sink(logfullpath, split=FALSE); on.exit({warning(); sink()})
+  }
+  
+  if (created.output.path) {if (!nocat) {cat(as.character(Sys.time()), ' '); cat(paste('output.path', output.path, 'not found so it was created\n')) } }
   
   if (!file.exists(data.path)) {
     diroutcome <- try( dir.create(data.path), silent = TRUE)
     if (class(diroutcome) == 'try-error') { stop('data.path not found and could not be created\n')}
-    cat(paste('data.path', data.path, 'not found so it was created\n'))
+    if (!nocat) {cat(as.character(Sys.time()), ' '); cat(paste('data.path  ', data.path, 'not found so it was created\n'))}
   }
-
-  if (testing) {
-    cat(  'base.path: ', base.path, '\n')
-    cat(  'data.path: ', data.path, '\n')
-    cat('output.path', output.path, '\n')
-    cat('getwd(): ',   getwd(),     '\n')
-  }
-
+  
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat(  'base.path: ', base.path, '\n')}
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat(  'data.path: ', data.path, '\n')}
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat(  'output.path:', output.path, '\n')}
+  #if (!nocat) {cat(as.character(Sys.time()), ' '); cat('working directory: ',   getwd(),     '\n')}
+  
   # if tables equals or contains 'ejscreen' then replace the 'ejscreen' part with the default tables as follows, leaving any other tables specified in addition to ejscreen tables:
   if (any(tolower(tables)=='ejscreen')) {tables <- c(ejscreentables, tables[tolower(tables)!='ejscreen'])}
   # note b16001 is tract only and not in core set of EJSCREEN variables
   # or e.g.,   mystates <- c("dc", "de")
 
+  if (!nocat) {
+    cat(as.character(Sys.time()), ' '); cat('Tables:   ', tables,   '\n')
+    cat(as.character(Sys.time()), ' '); cat('End year: ', end.year, '\n')
+    cat(as.character(Sys.time()), ' '); cat('States:   ', mystates, '\n')
+  }
+  
   ######################################################################################
   # STEPS:
   #
@@ -285,14 +312,14 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   #
   #	download txt (or csv) file(s) with GEO information (for linking data file to file with FIPS/GEOID/NAME/SUMLEVEL/CKEY)
   #	read and concatenate state geo files
-
+  
   #	create names of individual data & moe files extracted from the zip files (based on 2-letter state abbreviations, years needed, and seq file #s)
   #	download zip files with data (estimates and margins of error)
   #	unzip DATA & MOE files
-
+  
   #	read and concatenate state DATA & MOE files (csv) into one data frame or file per Census table
   #	  while selecting just the desired fields, ideally
-
+  
   #   MERGE FILES
   #
   #	join (merge) US data and US geo files on FIPS for each Census table
@@ -302,95 +329,82 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   #   CREATE CALCULATED VARIABLES (done elsewhere)
   #
   #######################################################
-
-  #require(proxistat)
-  #data(lookup.states, envir = environment(), package='proxistat')
-  #stateabbs	<- tolower(lookup.states[, 'ST'])
-  # or could use
-  #   stateabbs <- tolower(c(state.abb, c("DC", "AS", "GU", "MP", "PR", "UM", "VI", "US")))
-  # but other functions in this pkg now require lookup.states anyway, and not just abbs
+  
   mystates <- clean.mystates(mystates=mystates, testing=testing)
-
-  cat(as.character(Sys.time()), ' '); cat("Started scripts to download and parse ACS data\n")
-  cat('data.path is now set to '); cat(data.path, '\n')
-  # setwd(data.path)
-
+  
+  if (!nocat) {
+    cat(as.character(Sys.time()), ' '); cat("Started scripts to download and parse ACS data\n")
+  }
+  
   ##########################################
   #  GET URLs and table/variable name lookup
   ##########################################
-
-  cat(as.character(Sys.time()), ' '); cat('Started getting URLs, table/variable name lookup table, etc. \n')
-
+  
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat('Started getting URLs, table/variable name lookup table, etc. \n')}
+  
   # How we get FTP site URL and file names.
   #   url.prefix <- get.url.prefix(end.year)
   #   url.prefix.lookup.table <- get.url.prefix.lookup.table(end.year)
   #   lookup.file.name  <- get.lookup.file.name(end.year)
   #   datafile.prefix 	<- get.datafile.prefix(end.year)
   #   zipfile.prefix    <- get.zipfile.prefix(end.year)
-
+  
   if (testing) {cat('starting get.lookup.acs\n')}
   # Get lookup table of sequence files, table IDs, variable names & positions in the sequence file.
-
-  ######## MAY CHANGE THIS TO DATA?? but varies by year ** also see acs.lookup in acs package as an alternative
+  
   lookup.acs <- get.lookup.acs(end.year, folder=data.path)
-
+  
   seqfilelistnums <- which.seqfiles(tables=tables, lookup.acs=lookup.acs, end.year=end.year)
   # convert these to four-character-long strings with correct # of leading zeroes (already done when reading lookup csv but ok to repeat):
   seqfilelistnums <- as.character(seqfilelistnums)
   seqfilelistnums <- analyze.stuff::lead.zeroes(seqfilelistnums, 4)
   if (testing) { print(cbind(seqfilelistnums)) }
   # e.g. seqfilelistnums <- c(2, 5, 43, 44, 49, 104)
-  cat(as.character(Sys.time()), ' '); cat("Finished getting URLs, table/variable name lookup table, etc. \n")
-
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat("Finished getting URLs, table/variable name lookup table, etc. \n")}
+  
   ##########################################
   #  Check csv to see which fields user needs (may not need every field from every specified table)
   ##########################################
-
+  
   ########### ***********************
   #	THIS CURRENTLY DOESN'T WAIT TO
   # CHECK IF THE csv FILE HAS BEEN MODIFIED BY USER TO SPECIFY DESIRED VARIABLES:
   # It just uses all variables in tables
   # unless it finds file "variables needed.csv" in data folder that is based on variables needed template.csv format
-  # "needed" will be a dataframe that specifies which variables are needed, from among the specified tables
-
-  cat(as.character(Sys.time()), ' '); cat("Started specifying which variables are needed from the specified ACS tables \n")
-
-  needed <- set.needed(tables=tables, lookup.acs=lookup.acs, vars=vars, folder=data.path, noEditOnMac=noEditOnMac, end.year=end.year, varsfile=varsfile)
-  #   if (exists('varsfile')) {
-  #     needed <- set.needed(tables=tables, lookup.acs=lookup.acs, vars=vars, folder=data.path, noEditOnMac=noEditOnMac, end.year=end.year, varsfile=varsfile)
-  #     # wanted to use  ...  to specify varsfile if necessary but then other params for get.acs that are not in set.needed would get sent there and cause an error
-  #   } else {
-  #     needed <- set.needed(tables=tables, lookup.acs=lookup.acs, vars=vars, folder=data.path, noEditOnMac=noEditOnMac, end.year=end.year)
-  #   }
-
-
+  # "needed" will be a data.frame that specifies which variables are needed, from among the specified tables
+  
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat("Started specifying which variables are needed from the specified ACS tables \n")}
+  
+  needed <- set.needed(tables=tables, lookup.acs=lookup.acs, vars=vars, folder=data.path, noEditOnMac=noEditOnMac, end.year=end.year, varsfile=varsfile, silent=nocat)
+  
   # ensure leading zeroes on sequence file number
   needed$seq <- analyze.stuff::lead.zeroes(needed$seq, 4)
-  cat(as.character(Sys.time()), ' '); cat("Finished specifying which variables are needed from the specified ACS tables \n")
-
-  geo <- get.read.geo(mystates=mystates, new.geo=new.geo, end.year=end.year, folder=data.path)
-
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat("Finished specifying which variables are needed from the specified ACS tables \n")}
+  
+  geo <- get.read.geo(mystates=mystates, new.geo=new.geo, end.year=end.year, folder=data.path, silent=nocat)
+  
   ##################################################################
-  #
   #  Call functions to
   #  download and unzip specified set of
   #  ACS DATA TABLES
-  #
   ##################################################################
-
-  cat(as.character(Sys.time()), ' '); cat("Started downloading data files... \n")
-  # if they have already been downloaded, this will not try to re-download them:
-  cat('  Tables: ', tables, '\n  End year: ', end.year, '\n  States: ', mystates, '\n')
-
-  download.datafiles(tables=tables, end.year=end.year, mystates=mystates, folder=data.path, testing=testing)
-
-  cat(as.character(Sys.time()), ' '); cat("Finished downloading data files... \n")
-  cat(as.character(Sys.time()), ' '); cat("Started unzipping data files... \n")
-
-  unzip.datafiles(tables=tables, mystates=mystates, folder=data.path, end.year=end.year, testing=testing)
-
-  cat(as.character(Sys.time()), ' '); cat("Finished unzipping data files... \n")
-
+  
+  if (!nocat) {
+    cat(as.character(Sys.time()), ' '); cat("Started downloading data files \n")
+    # if they have already been downloaded, this will not try to re-download them
+  }
+  
+  download.datafiles(tables=tables, end.year=end.year, mystates=mystates, folder=data.path, testing=testing, silent=nocat)
+  
+  if (!nocat) {
+    cat(as.character(Sys.time()), ' '); cat("Finished downloading data files \n")
+    cat(as.character(Sys.time()), ' '); cat("Started unzipping data files \n")
+  }
+  
+  unzip.datafiles(tables=tables, mystates=mystates, folder=data.path, end.year=end.year, testing=testing, silent=nocat)
+  
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat("Finished unzipping data files \n")}
+  
   #########################################################################################################
   #  **** ERRORS MAY STILL OCCUR HERE  ****#  **** ERRORS MAY STILL OCCUR HERE  ****
   # Having memory problems in Windows when trying to get several tables for all US states/DC/PR at once all in memory.
@@ -399,75 +413,67 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
     # Test smaller set:
     tables <- c("B03002", "B15002", "B25034")
   }
-  ################################################################
-  # NOTE : IF ONLY TRACTS ARE NEEDED, IT WOULD BE MORE EFFICIENT TO
+  # NOTE : IF ONLY TRACTS ARE NEEDED, *** IT WOULD BE MORE EFFICIENT TO
   # JOIN DATA TO GEO FOR EACH STATE AND/OR TABLE,
   # THEN DROP THE BLOCK GROUP ROWS,
   # PRIOR TO MERGING ALL THE ROWS IN ONE BIG TABLE HERE.
   # BUT CURRENTLY THIS ASSEMBLES ALL EVEN IF YOU ONLY NEED TRACTS, OR JUST BG.
-
-  cat(as.character(Sys.time()), ' '); cat("Started reading/assembling all data files... \n")
-
-  # NOTE - Inefficient to pass entire geo table here! Just need count of rows per state to help read in data tables from csv files...
+  
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat("Started reading/assembling all data files \n")}
+  
+  # *** NOTE - Inefficient to pass entire geo table here! Just need count of rows per state to help read in data tables from csv files
   # Could recode to *** make this and read.concat.states() more efficient:
-  alltab <- read.concat.states(tables, mystates, geo=geo, save.files=save.files, folder=data.path, output.path=output.path, end.year=end.year, needed=needed, sumlevel=sumlevel, testing=testing)
-
-  cat(as.character(Sys.time()), ' '); cat("Finished reading data \n")
-
-  # There should be this many unique tables here: # length(alltab)
+  alltab <- read.concat.states(tables, mystates, geo=geo, save.files=save.files, folder=data.path, output.path=output.path, end.year=end.year, needed=needed, sumlevel=sumlevel, testing=testing, silent=nocat)
+  
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat("Finished reading data \n")}
+  
   #########################################################################################################
-
-  #if (save.files & testing) {
-  #  # ******* SAVED WORKSPACE JUST IN CASE, IF TESTING DURING DEVELOPMENT
-  #  save.image(file='ACS EARLY work in progress.RData')
-  #}
-
   #########################################################################################################
-
+  
   if (testing) {
     if (save.files) {
       #  USED TO SAVE THE FULL SET OF TABLES JUST IN CASE:
       save(alltab, file=file.path(output.path, "alltab no geo.RData"));  cat(as.character(Sys.time()), ' '); cat('Finished saving RData \n')
       gc()
     }
-  }
-  # could look at what is in alltab so far
-  if (testing) {
+    # could look at what is in alltab so far
     lapply(alltab, FUN=names)
     #  e.g.:		# $B01001
     #  [1] "KEY"          "STUSAB"       "LOGRECNO"     "B01001.001"   "B01001.003"   "B01001.020"   "B01001.021"   "B01001.022"
     head(alltab[[1]])
   }	# end testing
-
+  
   #########################################################################################################
-
+  
   #############################
   # JOIN GEO INFO TO TABLES
   #############################
-
-  cat(as.character(Sys.time()), ' '); cat("Started joining geo to data tables \n")
-
+  
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat("Started joining geo to data tables \n")}
+  
   alltab <- join.geo.to.tablist(geo, alltab, folder=output.path, save.csv=write.files, sumlevel=sumlevel, end.year=end.year)
-
-  cat(as.character(Sys.time()), ' '); cat('Finished joining geo to data tables \n')
-  cat(as.character(Sys.time()), ' '); cat('Checked block groups and tracts, retained ');cat(sumlevel); cat('\n')
-
+  
+  if (!nocat) {
+    cat(as.character(Sys.time()), ' '); cat('Finished joining geo to data tables \n')
+    cat(as.character(Sys.time()), ' '); cat('Checked block groups and tracts, retained ');cat(sumlevel); cat('\n')
+  }
+  
   gc()
   if (testing) {
     if (save.files) {
-      #  USED TO SAVE THE FULL SET OF TABLES JUST IN CASE:
+      #  COULD SAVE THE FULL SET OF TABLES JUST IN CASE:
       save(alltab, file=file.path(output.path, "alltab with geo.RData"))
       cat(as.character(Sys.time()), ' '); cat("Saved alltab with geo\n")
     }
   }
-
+  
   #############################
   # REORDER THE COLUMNS,   # E.G., MARGIN OF ERROR COLUMNS INTERSPERSED WITH ESTIMATES DATA COLUMNS
   #############################
-
+  
   alltab <- format.est.moe(alltab)
-
-  cat(as.character(Sys.time()), ' '); cat('Re-ordered estimates and margin of error columns \n')
+  
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat('Re-ordered estimates and margin of error columns \n')}
   if (testing) {
     # lapply(alltab, FUN=names)
     if (save.files) {
@@ -479,12 +485,12 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   #############################
   # MERGE the list of tables into one big table
   #############################
-  #Error: cannot allocate vector of size 2.2 Mb
-
+  #Error: cannot allocate vector of size 2.2 Mb - on Windows this was a problem
+  
   merged <- merge.tables(alltab)
-
-  cat(as.character(Sys.time()), ' '); cat('Merged all tables into one big table \n')
-
+  
+  if (!nocat) {cat(as.character(Sys.time()), ' '); cat('Merged all tables into one big table \n')}
+  
   if (testing) {
     if (save.files) {
       #  CAN SAVE THE FULL SET OF TABLES HERE, IN CASE -- block groups and tracts as well:
@@ -492,70 +498,62 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
       cat(as.character(Sys.time()), ' '); cat("Saved merged tables \n")
     }
   }
-
+  
   ######################################
   #  SPLIT into a BLOCK GROUPS dataset & a TRACTS dataset
   ######################################
-
+  
   tracts <- get.tracts(merged)
   bg     <- get.bg(merged)
-
+  
   rm(merged)
-
-  cat(as.character(Sys.time()), ' '); cat('Split data into block groups dataset and tracts dataset \n')
-  cat("TRACTS count: "); cat(length(tracts$FIPS)); cat(" "); cat(length(unique(tracts$FIPS))); cat("\n")
-  cat("BLOCK GROUPS count: "); cat(length(bg$FIPS)); cat(" "); cat(length(unique(bg$FIPS))); cat("\n")
-
-  ######################################
+  
+  if (!nocat) {
+    cat(as.character(Sys.time()), ' '); cat('Split data into block groups dataset and tracts dataset \n \n')
+    cat(as.character(Sys.time()), ' '); cat("Tracts count:       "); cat(length(tracts$FIPS)); cat(" ");   cat('(', length(unique(tracts$FIPS)), 'unique FIPS)' ); cat(" \n")
+    cat(as.character(Sys.time()), ' '); cat("Block groups count: "); cat(length(bg$FIPS)); cat(" "); cat('(', length(unique(tracts$FIPS)), 'unique FIPS)' ); cat(" \n")
+  }
+  
   # REMOVE TABLE B16001 from block group dataset because it is at tract level only
-  ######################################
   # table(is.na((alltab[[4]][ , "B16001.001"])))
   # This table has tract but not BG data:
   # FALSE   TRUE
   # 74001 220333
-
   bg <- bg[ , !(grepl("B16001", names(bg)))]
-
+  
   # Drop now-useless field SUMLEVEL
   bg$SUMLEVEL <- NULL
   tracts$SUMLEVEL <- NULL
   #print(head(tracts))
-
+  
   if (testing) {
     if (save.files) {save.image(file=file.path(output.path, 'ACS all but table.info step done.RData'))}
   }
-
+  
   ########################################################
   # GET TABLE TITLE, UNIVERSE, AND LONG VARIABLE NAMES
   ########################################################
-  # instead of obsolete section
-
+  
   # This is Just one entry per variable in estimates table, not for MOE, not basic info cols like "FIPS"
   table.info <- get.table.info(tables, end.year, table.info.only=FALSE)
   # NOTE: THIS HAS ALL VARIABLES, NOT JUST needed, so we want to remove any not needed so it matches retained data fields.
   table.info <- table.info[ table.info$shortname %in% names(bg), ]
   rownames(table.info) <- table.info$shortname
-
+  
   # This is All the entries like MOE and basic info (FIPS) so it can serve as header rows to final output table
   table.info.all <- table.info
-
+  
   # make the MOE versions of the estimates columns,
   # then intersperse with estimates, to match full list of longnames
   table.info.all.m <- get.table.info(tables, end.year, table.info.only=FALSE, moe=TRUE)
   # NOTE: THIS HAS ALL VARIABLES, NOT JUST needed, so we want to remove any not needed so it matches retained data fields.
   table.info.all.m <- table.info.all.m[ table.info.all.m$shortname %in% paste(names(bg),'.m',sep='') , ]
   rownames(table.info.all.m) <- table.info.all.m$shortname
-  #table.info.all.m <- table.info.all
-  #  table.info.all.m$shortname <- paste(table.info.all.m$shortname, '.m', sep='')
-  # now other field names will be "MOE for ..." instead of "..._MOE"
-  #  table.info.all.m$longname <- paste(table.info.all.m$longname, '_MOE', sep='')
-  #  table.info.all.m$longname2 <- paste(table.info.all.m$longname2, '_MOE', sep='')
-  #  table.info.all.m$longname.unique <- paste(table.info.all.m$longname.unique, '_MOE', sep='')
 
   # append MOE names and then reorder these rows so that estimate and MOE are adjacent for each variable:
   table.info.all <- rbind(table.info.all, table.info.all.m)
   table.info.all <- table.info.all[  analyze.stuff::intersperse(1:length(table.info.all[ , 1])), ]
-
+  
   # Now add the basic info columns up front to match full list of longnames
   #otherfields <- c('KEY', 'STUSAB', 'SUMLEVEL', 'GEOID', 'FIPS') # SUMLEVEL was dropped from bg and tracts
   otherfields <- c(  "KEY", "FIPS", "STUSAB", "GEOID")
@@ -570,116 +568,13 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
                             longname.unique=otherfields,
                             stringsAsFactors=FALSE)
   table.info.all <- rbind(rows.to.add, table.info.all)
-  # MIGHT WANT TO TRANSPOSE IT HERE?
-
+  
   ################################################################################################################
-  ################################################################################################################
-
-  # THIS SECTION IS OBSOLETE -- NOW USING get.table.info()
-
-  ################################################################################################################
-  ################################################################################################################
-  if (1==0) {
-    ###############
-    # GET TITLE OF EACH TABLE
-    ###############
-    tables.titles <- table.info$Table.Title[match(tables, table.info$Table.ID)]
-
-    ###############
-    # GET UNIVERSE FOR EACH TABLE
-    ###############
-    tables.universe <- table.info$Table.Title[1 + match(tables, table.info$Table.ID)]
-    table.info.only <- data.frame(Table.ID=tables, Table.Title=tables.titles, universe=tables.universe, stringsAsFactors=FALSE)
-    # print('table.info.only: '); print( table.info.only)
-    ###############
-    # GET LONG FIELD NAMES
-    # corresponding to the current bg or tract dataset (merged set of all selected tables)
-    ###############
-    if (exists('bg') && length(bg)>0) {longnames <- names(bg)} else {longnames <- names(tracts)}
-    valids<- !is.na(table.info$Line.Number)
-    needed.table.var <- longnames # just all those that had been needed and were parsed to make bg or tracts, but may be subset of all vars in table.info
-    cat('Fields obtained: '); print(longnames)
-
-    for (i in 1:length(longnames)) {
-      if (longnames[i] %in% table.info$table.var[valids]) {
-        longnames[i] <- table.info$varname2[match(longnames[i], table.info$table.var)]
-      }
-      if (longnames[i] %in% paste(table.info$table.var[valids],'.m',sep='')) {
-        longnames[i] <- paste(table.info$varname2[match(longnames[i], paste(table.info$table.var,'.m',sep=''))],'_MOE',sep='')
-      }
-      #  if (exists('bg'))     { if (length(bg)>0)     { label(bg[ , i])     <- longnames[i] } }
-      #  if (exists('tracts')) { if (length(tracts)>0) { label(tracts[ , i]) <- longnames[i] } }
-    }
-    # ************
-    # MAKE table.info.best which has
-    # only valid fields/rows and has new columns for tables.universe
-    # & tables.titles corrected & repeated for each row as appropriate.
-    # ************
-    #
-    # Format of table.info:
-    #   Table.ID Line.Number                 Table.Title  table.var   varname2 (a cleaned up version of Table.Title)
-    #7    B01001          NA                  SEX BY AGE       <NA>   SEX BY AGE
-    table.info.best <- table.info  # but this has too many variables if needed only a subset, so fix below
-    # rename a column
-    names(table.info.best) <- c('Table.ID', 'Line.Number', 'Table.Title', 'table.var', 'longnames')
-    # remove rows that are just table title or universe
-    table.info.best <- subset(table.info.best[!is.na(table.info.best$Line.Number) ,])
-    # now fix problem where needed only subset of variables so table.info or table.info.best has all in ACS table but longnames is based on subset.
-    table.info.best <- table.info.best[ table.info.best$table.var %in%  needed.table.var, ]
-    if (testing) {print('before any');print('table.info.best');print(table.info.best);cat('\n\n\n');print('longnames: ');cat(longnames,'\n\n')}
-    # make the MOE versions of the estimates columns, interspersed with estimates, to match full list of longnames
-    table.info.best.m <- table.info.best
-    table.info.best.m$table.var <- paste(table.info.best.m$table.var, '.m', sep='')
-    if (testing) { print('before rbind, this is the dot m version');print(str(table.info.best.m)); cat('\n\n') }
-    table.info.best <- rbind(table.info.best, table.info.best.m)
-    if (testing) { print('str of table.info.best now'); print(str(table.info.best));print(table.info.best);cat('\n\n') }
-    table.info.best <- table.info.best[  analyze.stuff::intersperse(1:length(table.info.best[,1])) , ]
-    # add the basic info columns up front to match full list of longnames
-    rows.to.add <- data.frame(Table.ID=c('KEY', 'FIPS', 'STUSAB', 'GEOID'), Line.Number=0, Table.Title=0, table.var=0, longnames=c('KEY', 'FIPS', 'STUSAB', 'GEOID'))
-    if (testing) { print(rows.to.add); cat('\n\n') }
-    table.info.best <- rbind(rows.to.add, table.info.best)
-    if (testing) { print('after second rbind');cat('\n\n');print('table.info.best');print(table.info.best);cat('\n\n\n');print('longnames: ');cat(longnames,'\n')}
-    # add actual longnames which have _MOE indication ********
-    table.info.best$longnames <-  longnames    # now has the basic info cols, followed by estimates & MOE interspersed
-    # make Table.Title column now be that (instead of fieldname), repeating the full table title for every row of the table (each variable in the table)
-    table.info.best$Table.Title <- table.info.only$Table.Title[ match(table.info.best$Table.ID, table.info.only$Table.ID)]
-    # add column specifying universe (out of which the estimate is a subset)
-    table.info.best$universe <- table.info.only$universe[ match(table.info.best$Table.ID, table.info.only$Table.ID)]
-    # use better order for columns
-    table.info.best <- table.info.best[ , c('Table.Title', 'Table.ID', 'Line.Number', 'table.var', 'longnames', 'universe')]
-    # print(table.info.best)
-    save(table.info.best, file=file.path(output.path, 'table.info.best.RData'))
-    ###############
-    # NOTE: IT IS EASIER TO WORK WITH get.table.info(tables) which has useful cols plus new cols for just selected tables
-    #   than with get.lookup.acs() which returns nonuseful info and for all tables in acs
-
-    ###############
-    # OBSOLETE / USEFUL EXAMPLES OF GETTING TABLE VARIABLES INFORMATION:
-    ###############
-    #
-    # To get those long names for the variables in ONE ACS table in memory:
-    #mytable <- data.frame(C17002.001=1:10, C17002.002=1:10) # create example dataset
-    #longnames <- merge(
-    #  data.frame(var=names(mytable)),
-    #  data.frame(longname=table.info$varname2, table.var=table.info$table.var),
-    #  by.x="var", by.y="table.var", all.x=TRUE, all.y=FALSE)
-    #
-    # To get from ALL ACS tables specifed in 'tables', just the long names, for ALL the variables in a given table, not just needed variables:
-    #longnames	<- with(lookup.acs, varname2[(Table.ID %in% tables) & !is.na(Line.Number)])
-    #
-    # To get from ALL ACS tables specifed in 'tables', just the specified variables in a given table, as cleaned variable names,
-    # assuming "needed" is in memory as a global variable still.
-    #longnames	<- with(needed, varname2[(table %in% tables) ])
-    #print(names(tracts));print(names(bg))
-    ###############
-  }
-  ################################################################################################################
-  ################################################################################################################
-
+  
   #################################
   #  maybe save on disk final merged results as tracts and block groups files
   #################################
-
+  
   if (save.files) {
     save(bg,     file=file.path(output.path, "bg all tables.RData"))
     save(tracts, file=file.path(output.path,"tracts all tables.RData"))
@@ -691,9 +586,9 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
     save(info, file=file.path(output.path, 'info.RData'))
     rm(info)
     #save()
-    cat(as.character(Sys.time()), ' '); cat('Saved block group file and tracts file as .RData \n')
+    if (!nocat) {cat(as.character(Sys.time()), ' '); cat('Saved block group file and tracts file as .RData \n')}
   }
-
+  
   if (testing) {
     # These are big so probably do not want them even if write.files=TRUE since they can be saved as .RData and are returned by function get.acs() already
     if (write.files) {
@@ -702,44 +597,44 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
       cat(as.character(Sys.time()), ' '); cat('Saved block group file and tracts file as .csv ')
     }
   }
-
+  
   if (write.files) {
-    #
-    # NOTE THIS WAS SAVING JUST ONE NAME PER DATA FIELD, NOT ONCE FOR ESTIMATES AND ONCE FOR MOE.
+    # *** NOTE THIS HAD BEEN SAVING JUST ONE NAME PER DATA FIELD, NOT ONCE FOR ESTIMATES AND ONCE FOR MOE.
     # AND  NOT  FIELD NAMES FOR OTHER FIELDS "KEY"          "FIPS"         "STUSAB"       "GEOID"
     # SO DID NOT CORRESPOND TO names(bg)
-    #
     write.csv(table.info,     file=file.path(output.path, 'info.csv'), row.names=FALSE)
     write.csv(table.info.all, file=file.path(output.path, 'headers.csv'), row.names=FALSE)
-    cat(as.character(Sys.time()), ' '); cat('Saved longnames, etc fieldnames as csv file. \n')
+    if (!nocat) {cat(as.character(Sys.time()), ' '); cat('Saved longnames, etc fieldnames as csv file. \n')}
   }
-
+  
   ########################################################
-  cat(as.character(Sys.time()), '\n')
-
-  cat("################ DONE ############## \n\n")
-
-  #  format for acs package here:
+  if (!nocat) {
+    cat(as.character(Sys.time()), '\n')
+    cat("################ DONE ############## \n")
+  }
+  
+  # Format for acs package here:
   #print(names(alltab))
   #print(str(alltab))
   if (write.acspkg) {
-    cat(as.character(Sys.time()), ' '); cat('Started to save tables as files formatted for use in the acs package \n')
+    if (!nocat) {cat(as.character(Sys.time()), ' '); cat('Started to save tables as files formatted for use in the acs package \n')}
     for (this.tab in names(alltab)) {
-      cat('      ', this.tab, '\n')
+      if (!nocat) {cat('      ', this.tab, '\n')}
       acs.this.tab <- format.for.acs.package( alltab[[this.tab]] )
       #         head( format.for.acs.package( alltab[[2]]) )
       filename.tracts <- paste("ACS_", substr(end.year, 3, 4), "_5YR_", this.tab, "_with_ann.csv", sep="")
       filename.bg     <- paste("ACS_", substr(end.year, 3, 4), "_5YR_", this.tab, "_with_ann_BG.csv", sep="")
       write.csv(acs.this.tab[ acs.this.tab$SUMLEVEL=="140"], row.names=FALSE, file=filename.tracts)
       write.csv(acs.this.tab[ acs.this.tab$SUMLEVEL=="150"], row.names=FALSE, file=filename.bg)
-      cat(as.character(Sys.time()), ' '); cat('Saved tracts files formatted for use in the acs package \n')
+      if (!nocat) {cat(as.character(Sys.time()), ' '); cat('Saved tracts files formatted for use in the acs package \n')}
     }
   }
 
-
   # Return block group or tracts file (or both) as list, along with table.info.best which has fieldnames etc.
   sumlevel <- clean.sumlevel(sumlevel)
-
+  
+  if (!nocat) { print(round( Sys.time() - starttime, 0 ) ); cat('\n') }
+  
   if (sumlevel=='tract') {
     return(list(tracts=tracts, headers=table.info.all, info=table.info))
   } else {
@@ -750,6 +645,6 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
       return(list(bg=bg, headers=table.info.all, info=table.info))
     }
   }
-
+  
 }
 
