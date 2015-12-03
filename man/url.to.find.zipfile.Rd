@@ -34,6 +34,7 @@ The zip files look like this for example: "20135dc0001000.zip" \cr
     "ftp://ftp.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/" \cr
   "http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/" \cr
   URL must be the ftp site, not the http version.
+  But 2010-2014 was on http only, not ftp, as of mid Dec 3 2015 release day.
 }
 \seealso{
 \code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}

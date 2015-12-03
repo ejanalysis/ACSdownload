@@ -17,6 +17,7 @@
 #'     "ftp://ftp.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/" \cr
 #'   "http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/" \cr
 #'   URL must be the ftp site, not the http version.
+#'   But 2010-2014 was on http only, not ftp, as of mid Dec 3 2015 release day.
 #' @param mystates Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.
 #' @param url.prefix Optional character element that defaults to what is returned by \code{\link{get.url.prefix}(end.year)}
 #' @param end.year Optional end year for 5-year summary file, as character, defaulting to "2012" but ignored if url.prefix is specified

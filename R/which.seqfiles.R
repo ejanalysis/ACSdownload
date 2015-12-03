@@ -3,19 +3,19 @@
 #'   The US Census Bureau provides 5-year summary file data from the American Community Survey in sequence files on their FTP site.
 #'   This function reports which sequence files contain the specified tables. Used by \code{\link{get.acs}}
 #' @param tables character vector, required. Defines which ACS table(s) to check, such as 'B01001'
-#' @param lookup.acs data.frame, optional (if not provided then it is downloaded from Census). 
+#' @param lookup.acs data.frame, optional (if not provided then it is downloaded from Census).
 #'   Specifies what variables are in which tables and which tables are in which sequence files on the FTP site.
-#' @param end.year Character element, optional, "2012" by default. Defines end year for 5-year dataset. 
-#'   Valid years are 2009:2013 as of mid 2015, with more to be added over time.
+#' @param end.year Character element, optional, "2012" by default. Defines end year for 5-year dataset.
+#'   Valid years are 2009:2014 as of Dec 2015 - Nov 2016, with more to be added over time.
 #'   Ignored if lookup.acs is specified, however. If they imply different years, the function stops with an error message.
 #' @return Returns a vector of one or more numbers stored as characters, each defining one sequence file, such as "0001".
 #' @seealso \code{\link{get.acs}} and \code{\link[acs]{acs.lookup}} from the \pkg{acs} package, which does something related but is more flexible & robust. Also see \code{\link{get.acs}} which uses this.
 #' @export
 which.seqfiles <- function(tables, lookup.acs, end.year="2012") {
-  
-  validyears <- 2009:2013
+
+  validyears <- 2009:2014
   if (!(end.year %in% validyears)) {stop('invalid end.year')}
-  
+
   if (missing(lookup.acs)) {
     lookup.acs <- get.lookup.acs(end.year)
   } else {
@@ -37,7 +37,7 @@ which.seqfiles <- function(tables, lookup.acs, end.year="2012") {
       # 	    [1] 2110
       # 	    > sum(is.na(lookup.acs2014$Line.Number))
       # 	    Error: object 'lookup.acs2014' not found
-      uniquetoyearlist <- list('2009'=2018, '2010'=2036, '2011'=1908, '2012'=2080, '2013'=2110)
+      uniquetoyearlist <- list('2009'=2018, '2010'=2036, '2011'=1908, '2012'=2080, '2013'=2110, '2014'=2114)
       uniquetoyear <- sum(is.na(lookup.acs$Line.Number))
       if (uniquetoyearlist[end.year] != uniquetoyear) {warning('both lookup.acs and end.year were specified, but imply different years -- ignoring end.year and using lookup.acs provided')}
     }

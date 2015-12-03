@@ -7,5 +7,6 @@
 #' @export
 get.url.prefix.lookup.table	<- function(end.year="2012") {
   #if (end.year < 2009) {stop('Years prior to 2009 are not valid. ACS 5-year file was not available until 2005-2009, end.year=2009.')}
+  if (end.year==2014) {return('http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/')}
   return(paste("ftp://ftp.census.gov/acs", end.year, "_5yr/summaryfile/", sep=""))
 }

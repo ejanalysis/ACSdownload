@@ -6,9 +6,12 @@
 #' @details
 #'   The source of this lookup table was, for example,
 #'   \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
+#'   and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
+#'   Note 2014 file lacks leading zeroes on Sequence Number field, so those were added before saving as .RData file as data for package.
+#'    via lookup.acs2014$Sequence.Number <- analyze.stuff::lead.zeroes(lookup.acs2014$Sequence.Number, 4)
 #' @param end.year Character, optional, '2012' by default, which specifies the 2008-2012 dataset.
 #'   Defines which 5-year summary file to use, based on end-year.
-#'   Can be 2009 or later. Data for end.year='2014' is released December 2015, for example.
+#'   Can be 2009 or later. Data for end.year='2014' was released December 2015, for example.
 #'   Note: Function stops with error if given end.year is not yet added to this package.
 #' @param folder Ignored (leftover from when this was like download.lookup.acs)
 #' @return By default, returns a data.frame with these fields:
@@ -47,7 +50,7 @@ get.lookup.acs <- function(end.year="2012", folder=getwd()) {
   # "Sequence_Number_and_Table_Number_Lookup.txt" for end.year=2010 through 2013, but 2009 had only .xls not .txt
   if (end.year < 2009) {stop('Years prior to 2009 are not valid. ACS 5-year file was not available until 2005-2009, end.year=2009.')}
   if (end.year==2009)  {warning('2005-2009 dataset used an xls file for this information, not fully tested here.')}
-  if (end.year > 2013) {warning('end.year of 2014 or later may not be available yet -- 2010-2014 dataset is expected in December 2015.')}
+  if (end.year > 2014) {warning('end.year of 2015 or later may not be available yet -- 2011-2015 dataset is expected in December 2016.')}
 
   # just get these via lazy loading as with data()
   my.lookup <- switch(EXPR = paste('yr', end.year,sep=''),

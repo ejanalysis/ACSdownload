@@ -6,12 +6,17 @@
 #' @seealso \code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}
 #' @export
 get.url.prefix <- function(end.year="2012") {
-  return(paste(
-    "ftp://ftp.census.gov/acs",
-    end.year,
-    "_5yr/summaryfile/",
-    as.character(as.numeric(end.year)-4), "-", end.year,
-    "_ACSSF_By_State_By_Sequence_Table_Subset",
-    sep=""
+  if (end.year==2014) {
+    return('http://www2.census.gov/programs-surveys/acs/summary_file/2014/data/5_year_seq_by_state/')
+  } else {
+    return(paste(
+      "ftp://ftp.census.gov/acs",
+      end.year,
+      "_5yr/summaryfile/",
+      as.character(as.numeric(end.year)-4), "-", end.year,
+      "_ACSSF_By_State_By_Sequence_Table_Subset",
+      sep=""
     ))
+
+  }
 }
