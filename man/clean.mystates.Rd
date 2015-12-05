@@ -4,24 +4,30 @@
 \alias{clean.mystates}
 \title{Utility to Clean Names of States for get.acs}
 \usage{
-clean.mystates(mystates, testing = FALSE)
+clean.mystates(mystates = "all", testing = FALSE)
 }
 \arguments{
-\item{mystates}{Character vector, required. Defines which states, using 2-character abbreviations (case-insensitive), or 'all' for all available.}
+\item{mystates}{Character vector, optional.
+  Defines which states, using 2-character abbreviations (case-insensitive), or 'all' for all available.
+
+  Default is 'all' which is 50 states plus DC plus PR (but not AS, GU, MP, UM, VI, US).
+  If mystates is not specified or is 'all' then this returns the default.
+  If mystates is specified, returns those defaults that match any of mystates.
+  If mystates includes DC, PR, or US, those are returned, but "AS" "GU" "MP" "UM" "VI" are removed.
+  One element of the vector can be 50, 51, or 52, which represents the 50 states, those 50 plus DC, or the 51 plus PR.
+  In other words, the default could be written as c(50,'DC','PR') or as c(51,'PR') or just 52.
+  Redundant entries are dropped, e.g., c(51,'DC') becomes 51.}
 
 \item{testing}{Logical value, optional, FALSE by default. LIMITS STATES TO DC AND DE if TRUE.}
 }
 \value{
-Returns character vector of 2-character State abbreviations. Does not remove duplicates.
-  If mystates is not specified or is 'all' or has any NULL values, returns 50 States plus DC and PR and US (for totals).
-  If mystates is specified, returns those defaults that match any of mystates.
-  If mystates includes DC, PR, or US, those are returned, but "AS" "GU" "MP" "UM" "VI" are removed.
+Returns character vector of 2-character State abbreviations, lower case.
 }
 \description{
-Utility function used by \code{\link{get.acs}}
+Utility function used by \code{\link{get.acs}} and \code{\link{download.datafiles}}
 }
 \details{
-Not in FTP ACS Summary files and not returned by this function: \cr
+Not in FTP ACS Summary files and not returned by this function's default: \cr
  #53         60 AS              American Samoa               <NA>\cr
  #54         66 GU                        Guam               <NA>\cr
  #55         69 MP    Northern Mariana Islands               <NA>\cr
@@ -31,6 +37,6 @@ Not in FTP ACS Summary files and not returned by this function: \cr
  but it returns only those excluding these five above, so an invalid state like 'ZQ' causes an error but an invalid state like 'VI' is silently removed without any error.
 }
 \seealso{
-\code{\link{get.acs}} which uses this, and \code{\link[ejanalysis]{get.state.info}} (from \pkg{ejanalysis} package) based on \code{\link[proxistat]{lookup.states}} or \code{data(lookup.states, package=proxistat)} using \pkg{proxistat} package
+\code{\link{get.acs}} and \code{\link{download.datafiles}} which use this, and \code{\link[ejanalysis]{get.state.info}} (from \pkg{ejanalysis} package) based on \code{\link[proxistat]{lookup.states}} or \code{data(lookup.states, package=proxistat)} using \pkg{proxistat} package
 }
 

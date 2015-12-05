@@ -4,15 +4,15 @@
 \alias{download.datafiles}
 \title{Download American Community Survey 5-yr data files}
 \usage{
-download.datafiles(tables, end.year = "2012", mystates, folder = getwd(),
-  testing = FALSE, attempts = 5, silent = FALSE)
+download.datafiles(tables, end.year = "2012", mystates = 52,
+  folder = getwd(), testing = FALSE, attempts = 5, silent = FALSE)
 }
 \arguments{
 \item{tables}{Required character vector of table numbers, such as c("B01001", "B03002")}
 
 \item{end.year}{Character element, optional, "2012" by default. Defines last of five years of summary file dataset; default is 2008-2012.}
 
-\item{mystates}{Character vector, required. Defines states/DC/PR for which files should be downloaded.}
+\item{mystates}{Character vector, now optional - Default is 50 states + DC + PR here, but otherwise relies on \code{\link{clean.mystates}}}
 
 \item{testing}{Default to FALSE. If TRUE, provides info on progress of download.}
 
