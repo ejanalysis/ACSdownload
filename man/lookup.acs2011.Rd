@@ -2,7 +2,6 @@
 % Please edit documentation in R/lookup.acs2011.R
 \docType{data}
 \name{lookup.acs2011}
-\alias{Sequence_Number_and_Table_Number_Lookup}
 \alias{lookup.acs2011}
 \title{Sequence_Number_and_Table_Number_Lookup.txt for 2007-2011 ACS dataset}
 \format{A data.frame with these fields: \cr

@@ -2,8 +2,8 @@
 #' @description Read downloaded and unzipped csv and txt files obtained from NHGIS.org,
 #'   with US Census Bureau data from the American Community Survey (ACS).
 #' @details This is designed to read and parse csv and txt files
-#'   obtained from NHGIS.org and already unzipped in a local folder. 
-#'   It only reads one set of files at a time, meaning the data and codebook files all have to be for the same set of ACS tables (a single NHGIS query) 
+#'   obtained from NHGIS.org and already unzipped in a local folder.
+#'   It only reads one set of files at a time, meaning the data and codebook files all have to be for the same set of ACS tables (a single NHGIS query)
 #'   (but can be a separate data & codebook file pair for each spatial resolution like county, state, etc.)
 #'   Obtaining NHGIS.org data requires an account at
 #'   \url{https://data2.nhgis.org/main}, \url{https://www.nhgis.org}
@@ -20,15 +20,15 @@
 #'   Each summary level has a list of the following: data, contextfields, fields, tables, geolevel, years, dataset \cr
 #'   For example: \cr
 #'   \code{
-#'   summary(x[['us']]) \cr
-#'                 Length Class      Mode \cr
-#'   data          279    data.frame list \cr
-#'   contextfields   3    data.frame list \cr
-#'   fields          4    data.frame list \cr
-#'   tables          4    data.frame list \cr
-#'   geolevel        1    -none-     character \cr
-#'   years           1    -none-     character \cr
-#'   dataset         1    -none-     character \cr
+#'   summary(x[['us']])
+#'                 Length Class      Mode
+#'   data          279    data.frame list
+#'   contextfields   3    data.frame list
+#'   fields          4    data.frame list
+#'   tables          4    data.frame list
+#'   geolevel        1    -none-     character
+#'   years           1    -none-     character
+#'   dataset         1    -none-     character
 #'   }
 #' @seealso \code{\link{nhgisread}} used by this function. Also, for other ways to obtain ACS data see \code{\link{get.acs}}
 #' @examples

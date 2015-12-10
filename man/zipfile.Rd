@@ -7,13 +7,13 @@
 zipfile(mystates, seqfilenum, zipfile.prefix, end.year = "2012")
 }
 \arguments{
+\item{mystates}{Required vector of 2-character state abbreviation(s)}
+
 \item{seqfilenum}{Required single sequence file number used by ACS 5-year summary file}
 
 \item{zipfile.prefix}{Optional character element, defaults to value looked up based on end.year.}
 
 \item{end.year}{Optional end year for 5-year summary file, as character, defaulting to "2012"}
-
-\item{state.abbrev}{Required vector of 2-character state abbreviation(s)}
 }
 \value{
 Returns character element that is name of zip file such as "20115dc0113000.zip"

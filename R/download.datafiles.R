@@ -6,6 +6,7 @@
 #' @param tables Required character vector of table numbers, such as c("B01001", "B03002")
 #' @param end.year Character element, optional, "2012" by default. Defines last of five years of summary file dataset; default is 2008-2012.
 #' @param mystates Character vector, required. Defines states/DC/PR for which files should be downloaded.
+#' @param folder Default is getwd()
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
 #' @param silent Optional, default is FALSE. Whether progress info should be sent to standard output (like the screen).
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
@@ -109,7 +110,7 @@ download.datafiles <- function(tables, end.year="2012", mystates, folder=getwd()
             ok <- FALSE
             if (!silent) {cat('Attempt #', attempt, " because unable to download data file "); cat(file.path(folder, zipfile(state.abbrev, seqfilenum))); cat(" on attempt ",attempt-1," ... \n")}
           } else {if (!silent) {cat('Downloaded. \n')}}
-          
+
           # *** Some zip downloads give warnings that zip file size is
           # WRONG AND THEY ARE CORRUPT. Not clear how to check for and fix that.
 

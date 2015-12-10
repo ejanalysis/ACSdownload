@@ -24,15 +24,15 @@ Returns a named list, one element per summary level found (names are, e.g., 'us'
   Each summary level has a list of the following: data, contextfields, fields, tables, geolevel, years, dataset \cr
   For example: \cr
   \code{
-  summary(x[['us']]) \cr
-                Length Class      Mode \cr
-  data          279    data.frame list \cr
-  contextfields   3    data.frame list \cr
-  fields          4    data.frame list \cr
-  tables          4    data.frame list \cr
-  geolevel        1    -none-     character \cr
-  years           1    -none-     character \cr
-  dataset         1    -none-     character \cr
+  summary(x[['us']])
+                Length Class      Mode
+  data          279    data.frame list
+  contextfields   3    data.frame list
+  fields          4    data.frame list
+  tables          4    data.frame list
+  geolevel        1    -none-     character
+  years           1    -none-     character
+  dataset         1    -none-     character
   }
 }
 \description{

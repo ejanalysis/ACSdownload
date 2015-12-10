@@ -14,6 +14,8 @@ download.datafiles(tables, end.year = "2012", mystates, folder = getwd(),
 
 \item{mystates}{Character vector, required. Defines states/DC/PR for which files should be downloaded.}
 
+\item{folder}{Default is getwd()}
+
 \item{testing}{Default to FALSE. If TRUE, provides info on progress of download.}
 
 \item{attempts}{Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.}

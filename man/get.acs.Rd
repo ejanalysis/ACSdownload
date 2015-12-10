@@ -89,16 +89,16 @@ By default, returns a list of ACS data tables and information about them, with t
   The info data.frame can look like this, for example: \cr
 
  \code{
-  'data.frame':	xxxx obs. of  9 variables:  \cr
- $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...  \cr
- $ line           : num  1 2 3 4 5 6 7 8 9 10 ...  \cr
- $ shortname      : chr  "B01001.001" "B01001.002" "B01001.003" "B01001.004" ...  \cr
- $ longname       : chr  "Total:" "Male:" "Under 5 years" "5 to 9 years" ...  \cr
- $ table.title    : chr  "SEX BY AGE" "SEX BY AGE" "SEX BY AGE" "SEX BY AGE" ...  \cr
- $ universe       : chr  "Universe:  Total population" "Universe:  Total population" "Universe:  Total population" "Universe:  Total population" ...  \cr
- $ subject        : chr  "Age-Sex" "Age-Sex" "Age-Sex" "Age-Sex" ...  \cr
- $ longname2      : chr  "Total" "Male" "Under5years" "5to9years" ...  \cr
- $ longname.unique: chr  "Total:|SEX BY AGE" "Male:|SEX BY AGE" "Under 5 years|SEX BY AGE" "5 to 9 years|SEX BY AGE" ...  \cr
+  'data.frame':	xxxx obs. of  9 variables:
+ $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...
+ $ line           : num  1 2 3 4 5 6 7 8 9 10 ...
+ $ shortname      : chr  "B01001.001" "B01001.002" "B01001.003" "B01001.004" ...
+ $ longname       : chr  "Total:" "Male:" "Under 5 years" "5 to 9 years" ...
+ $ table.title    : chr  "SEX BY AGE" "SEX BY AGE" "SEX BY AGE" "SEX BY AGE" ...
+ $ universe       : chr  "Universe:  Total population" "Universe:  Total population" "Universe:  Total population" "Universe:  Total population" ...
+ $ subject        : chr  "Age-Sex" "Age-Sex" "Age-Sex" "Age-Sex" ...
+ $ longname2      : chr  "Total" "Male" "Under5years" "5to9years" ...
+ $ longname.unique: chr  "Total:|SEX BY AGE" "Male:|SEX BY AGE" "Under 5 years|SEX BY AGE" "5 to 9 years|SEX BY AGE" ...
  }
 }
 \description{
@@ -111,7 +111,7 @@ This function will download and parse 1 or more tables of data from the American
 The United States Census Bureau provides detailed demographic data by US Census tract and block group
   in the American Community Survey (ACS) 5-year summary file via their FTP site. For those interested in block group or tract data,
   Census Bureau tools tend to focus on obtaining data one state at a time rather than for the entire US at once.
-  The \code{get.acs} function lets a user specify (tables and) variables needed. The code will look up what sequence files
+  This function lets a user specify (tables and) variables needed. This will look up what sequence files
   contain those tables. Using a table of variables for those selected tables, a user can specify variables
   or tables to drop by putting x or anything other than "Y" in the column specifying needed variables. \cr\cr
   For ACS documentation, see for example:\cr\cr

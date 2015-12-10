@@ -25,6 +25,8 @@ If geo is not provided, the function still reads each file whatever its length.}
 
 \item{end.year}{Default is "2012", specifies end year of 5-year summary file.}
 
+\item{save.files}{Default is TRUE, in which case it saves each resulting table/ data file on disk.}
+
 \item{sumlevel}{Default is "both". Specifies if "tracts" or "blockgroups" or "both" should be returned.}
 
 \item{testing}{Default is FALSE. If TRUE, prints filenames but does not unzip them, and prints more messages.}

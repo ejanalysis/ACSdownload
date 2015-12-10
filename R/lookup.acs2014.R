@@ -1,6 +1,5 @@
 #' @name lookup.acs2014
 #' @docType data
-#' @aliases Sequence_Number_and_Table_Number_Lookup
 #' @title ACS_5yr_Seq_Table_Number_Lookup.txt for 2010-2014 ACS dataset
 #' @description This data set provides information about variables in tables forming the American Community Survey (ACS) 5-year summary file.
 #' @usage data('lookup.acs2014')
