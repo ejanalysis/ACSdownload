@@ -511,7 +511,7 @@ get.acs <- function(tables='B01001', mystates='all', end.year='2012',
   if (!nocat) {
     cat(as.character(Sys.time()), ' '); cat('Split data into block groups dataset and tracts dataset \n \n')
     cat(as.character(Sys.time()), ' '); cat("Tracts count:       "); cat(length(tracts$FIPS)); cat(" ");   cat('(', length(unique(tracts$FIPS)), 'unique FIPS)' ); cat(" \n")
-    cat(as.character(Sys.time()), ' '); cat("Block groups count: "); cat(length(bg$FIPS)); cat(" "); cat('(', length(unique(tracts$FIPS)), 'unique FIPS)' ); cat(" \n")
+    cat(as.character(Sys.time()), ' '); cat("Block groups count: "); cat(length(bg$FIPS)); cat(" "); cat('(', length(unique(bg$FIPS)), 'unique FIPS)' ); cat(" \n")
   }
 
   # REMOVE TABLE B16001 from block group dataset because it is at tract level only

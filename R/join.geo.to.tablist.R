@@ -44,6 +44,7 @@ join.geo.to.tablist <- function(mygeo, my.list.of.tables, save.csv=FALSE, sumlev
 
 
 		# MIGHT WANT TO DO ERROR CHECKING HERE FOR LENGTH & HOW MANY FAIL TO MATCH
+		# print(overlaps(mygeo$KEY, bigtable$KEY))
 
 		rm(bigtable)
 		if (save.csv) {
