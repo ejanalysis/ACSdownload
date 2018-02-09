@@ -2,8 +2,8 @@
 % Please edit documentation in R/lookup.acs.R
 \docType{data}
 \name{lookup.acs}
-\alias{Sequence_Number_and_Table_Number_Lookup}
 \alias{lookup.acs}
+\alias{Sequence_Number_and_Table_Number_Lookup}
 \title{Sequence_Number_and_Table_Number_Lookup.txt for 2008-2012 ACS dataset}
 \format{A data.frame with these fields: \cr
    'data.frame':	24741 obs. of  8 variables:
@@ -48,4 +48,3 @@ This data set provides information about variables in tables forming the America
   Also see \code{\link{get.acs}}.
 }
 \keyword{datasets}
-

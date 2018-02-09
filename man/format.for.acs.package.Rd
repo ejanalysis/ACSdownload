@@ -65,4 +65,3 @@ Actually starting with 2009-2013 ACS, block groups are available via AFF, but on
 \seealso{
 \code{\link{get.acs}} to obtain acs data for use in this function, and then \code{\link[acs]{read.acs}} to read csv created by this function
 }
-

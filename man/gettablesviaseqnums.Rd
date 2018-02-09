@@ -22,4 +22,3 @@ Helper function to look for which American Community Survey (ACS) tables are in 
 \seealso{
 \code{\link{read.concat.states}} which uses this, and \code{\link{get.loookup.acs}} which is used by this
 }
-

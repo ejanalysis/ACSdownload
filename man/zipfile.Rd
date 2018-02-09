@@ -24,4 +24,3 @@ Returns name(s) of zip file(s) based on state(s), a sequence file number, a pref
 \seealso{
 \code{\link{get.acs}}
 }
-

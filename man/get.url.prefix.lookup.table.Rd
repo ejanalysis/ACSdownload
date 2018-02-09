@@ -18,4 +18,3 @@ Returns first part of URL(s) of folders (on Census Bureau FTP site) with zip fil
 \seealso{
 \code{\link{get.acs}}, \code{\link{get.lookup.acs}}, \code{\link{get.lookup.file.name}}
 }
-

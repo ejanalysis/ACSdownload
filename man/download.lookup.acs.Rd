@@ -55,4 +55,3 @@ The source of this lookup table is, for example,
   Also see \code{data(lookup.acs2013)} and similar data for other years.
   Also see \code{\link{get.acs}}, \code{\link{get.lookup.file.name}}, \code{\link{get.url.prefix.lookup.table}}
 }
-

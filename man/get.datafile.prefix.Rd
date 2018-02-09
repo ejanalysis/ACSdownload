@@ -18,4 +18,3 @@ Get the first part of the datafile name for the ACS 5-year summary file datafile
 \seealso{
 \code{\link{get.acs}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
 }
-

@@ -50,4 +50,3 @@ This can use read.csv (takes about 1 minute total for one table, all states, est
 \seealso{
 \code{\link{get.acs}}
 }
-

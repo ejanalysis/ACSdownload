@@ -18,4 +18,3 @@ Returns part of URL of folders (on Census Bureau FTP site) with zip file(s) base
 \seealso{
 \code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}
 }
-

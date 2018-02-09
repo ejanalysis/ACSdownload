@@ -39,4 +39,3 @@ Not in FTP ACS Summary files and not returned by this function's default: \cr
 \seealso{
 \code{\link{get.acs}} and \code{\link{download.datafiles}} which use this, and \code{\link[ejanalysis]{get.state.info}} (from \pkg{ejanalysis} package) based on \code{\link[proxistat]{lookup.states}} or \code{data(lookup.states, package=proxistat)} using \pkg{proxistat} package
 }
-

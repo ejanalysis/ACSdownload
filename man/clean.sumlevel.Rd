@@ -23,4 +23,3 @@ Interprets as 'bg' any of these:    150, '150', 'blockgroup', 'block group', or 
 \seealso{
 \code{\link{get.acs}} which uses this
 }
-

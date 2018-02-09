@@ -19,4 +19,3 @@ Start with a table that has all the estimates columns together, followed by all 
 \seealso{
 \code{\link{get.acs}} and \code{\link[analyze.stuff]{intersperse}}
 }
-

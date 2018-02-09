@@ -26,4 +26,3 @@ The US Census Bureau provides 5-year summary file data from the American Communi
 \seealso{
 \code{\link{get.acs}} and \code{\link[acs]{acs.lookup}} from the \pkg{acs} package, which does something related but is more flexible & robust. Also see \code{\link{get.acs}} which uses this.
 }
-

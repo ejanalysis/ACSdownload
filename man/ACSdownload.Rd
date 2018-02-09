@@ -4,6 +4,7 @@
 \name{ACSdownload}
 \alias{ACSdownload}
 \alias{ACSdownload-package}
+\alias{ACSdownload-package}
 \title{Obtain American Community Survey Summary File Data Tables from Census Bureau FTP Site}
 \description{
 This R package helps you download and parse raw data from the
@@ -22,9 +23,6 @@ This R package helps you download and parse raw data from the
   The key function in this package is \code{\link{get.acs}} \cr\cr
   For ACS documentation, see \url{http://www.census.gov/programs-surveys/acs.html}
 }
-\author{
-info@ejanalysis.com <info@ejanalysis.com>
-}
 \references{
 \url{http://ejanalysis.github.io} \cr
  \url{http://www.ejanalysis.com} \cr
@@ -34,4 +32,6 @@ info@ejanalysis.com <info@ejanalysis.com>
   which lets one obtain more limited amounts of ACS data
   but provides better tools for working with the data once obtained.
 }
-
+\author{
+info@ejanalysis.com <info@ejanalysis.com>
+}

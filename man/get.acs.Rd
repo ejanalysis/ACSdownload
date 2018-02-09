@@ -272,4 +272,3 @@ OTHER SOURCES include \cr
 \pkg{\link[acs]{acs}} package, which allows you to download and work with ACS data (using the API and your own key).
    Also see \code{\link{nhgis}} which parses any files manually downloaded from \url{NHGIS.org}
 }
-

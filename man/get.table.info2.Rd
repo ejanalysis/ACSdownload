@@ -36,4 +36,3 @@ Wrapper for \code{\link{get.field.info}}
 \seealso{
 \code{\link{get.acs}}, \code{\link{get.table.info}}, and \code{\link{get.field.info}}
 }
-

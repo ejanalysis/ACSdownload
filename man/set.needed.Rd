@@ -49,4 +49,3 @@ Utility used by get.acs to help user specify which variables are needed.
 \seealso{
 \code{\link{get.acs}} which uses this
 }
-

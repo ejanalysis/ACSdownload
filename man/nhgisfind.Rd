@@ -33,4 +33,3 @@ This is designed to get a list of filenames that match the format of csv and txt
 \seealso{
 \code{\link{nhgis}}, \code{\link{nhgisread}}
 }
-

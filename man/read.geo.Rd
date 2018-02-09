@@ -41,4 +41,3 @@ Note that if this finds the geographic file in folder already, it will not downl
 \seealso{
 \code{\link{get.acs}}, \code{\link{download.geo}}
 }
-
