@@ -61,4 +61,3 @@ Microsoft Windows XP Professional \cr
 \seealso{
 \code{\link{get.acs}} which uses this, and \code{\link{download.geo}}
 }
-

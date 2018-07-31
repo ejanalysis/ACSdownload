@@ -18,4 +18,3 @@ Helper function to return just the block group resolution part of a dataset in \
 \seealso{
 \code{\link{get.acs}}, \code{\link{get.tracts}}
 }
-

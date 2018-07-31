@@ -20,4 +20,3 @@ Helper function to look for unzipped csv files of estimates for American Communi
 \seealso{
 \code{\link{read.concat.states}} which uses this
 }
-

@@ -20,4 +20,3 @@ Returns name of text file provided by US Census Bureau,
 \seealso{
 \code{\link{get.acs}}, \code{\link{get.lookup.acs}}, \code{\link{get.url.prefix.lookup.table}}. Also see \code{data(lookup.acs)}.
 }
-

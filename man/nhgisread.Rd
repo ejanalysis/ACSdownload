@@ -25,4 +25,3 @@ Helper function used by \code{\link{nhgis}} to read downloaded and unzipped csv 
 \code{\link{nhgis}} which uses this, \code{\link{nhgisreadcodebook}} for reading codebook files,
   \code{\link{get.acs}}, \code{\link{get.datafile.prefix}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
 }
-

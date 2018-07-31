@@ -39,4 +39,3 @@ The zip files look like this for example: "20135dc0001000.zip" \cr
 \seealso{
 \code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}
 }
-

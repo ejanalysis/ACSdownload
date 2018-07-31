@@ -41,4 +41,3 @@ This data set provides information about variables in tables forming the America
   Also see \code{\link{get.acs}}.
 }
 \keyword{datasets}
-

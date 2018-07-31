@@ -18,4 +18,3 @@ Helper function to return just the tract resolution part of a dataset in \code{\
 \seealso{
 \code{\link{get.acs}}, \code{\link{get.bg}}
 }
-

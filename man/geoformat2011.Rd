@@ -21,4 +21,3 @@ This data set has the format used by geographic identifier files in the American
 \code{\link{get.acs}}
 }
 \keyword{datasets}
-

@@ -21,4 +21,3 @@ Helper function used by \code{\link{nhgis}} to read downloaded and unzipped code
 \seealso{
 \code{\link{nhgis}} which uses this, \code{\link{nhgisread}} for reading datafiles, \code{\link{get.acs}}, \code{\link{get.datafile.prefix}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
 }
-

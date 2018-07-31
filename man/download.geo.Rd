@@ -47,4 +47,3 @@ Downloads to the current working directory unless another folder is specified.
 \seealso{
 \code{\link{get.acs}} which uses this, and \code{\link{get.read.geo}}
 }
-

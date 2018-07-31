@@ -48,4 +48,3 @@ nhgisfips(x)
 \seealso{
 \code{\link{nhgis}}, \code{\link{nhgisread}}, \code{\link[ejanalysis]{clean.fips}}
 }
-

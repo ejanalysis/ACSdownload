@@ -18,4 +18,3 @@ Concatenate several ACS data tables into one big table
 \seealso{
 \code{\link{get.acs}}
 }
-

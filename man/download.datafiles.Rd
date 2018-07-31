@@ -32,4 +32,3 @@ Attempts to download data files (estimates and margins of error) for specified s
 \seealso{
 \code{\link{get.distances}} which allows you to get distances between all points.
 }
-

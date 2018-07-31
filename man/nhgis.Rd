@@ -74,4 +74,3 @@ cbind(sort(table(dat$STATE[dat$B01001.001 > 1E6])))
 \seealso{
 \code{\link{nhgisread}} used by this function. Also, for other ways to obtain ACS data see \code{\link{get.acs}}
 }
-

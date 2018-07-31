@@ -10,11 +10,19 @@ clean.mystates(mystates = "all", testing = FALSE)
 \item{mystates}{Character vector, optional. 
 Defines which states, using 2-character abbreviations (case-insensitive), or 'all' for all available.
 
+<<<<<<< HEAD
 Default is 'all' which is 50 states plus DC plus PR (but not AS, GU, MP, UM, VI, US).
 If mystates is not specified or is 'all' then this returns the default.
 If mystates is specified, returns those defaults that match any of mystates.
 If mystates includes DC, PR, or US, those are returned, but "AS" "GU" "MP" "UM" "VI" are removed.
 One element of the vector can be 50, 51, or 52, which represents the 50 states, those 50 plus DC, or the 51 plus PR. 
+=======
+Default is 'all' which is 50 states plus DC, BUT NO LONGER PR (& not AS, GU, MP, UM, VI, US).
+If mystates is not specified or is 'all' then this returns the default.
+If mystates is specified, returns those defaults that match any of mystates.
+If mystates includes DC, PR, or US, those are returned, but "AS" "GU" "MP" "UM" "VI" are removed.
+One element of the vector can be 50, 51, or 52, where 50 represents the 50 states, 51 = 50 plus DC, or 52 = the 51 plus PR.
+>>>>>>> 432b60ac63f2153b90bc23f75c01f62c09fd2160
 In other words, the default could be written as c(50,'DC','PR') or as c(51,'PR') or just 52.
 Redundant entries are dropped, e.g., c(51,'DC') becomes 51.}
 
@@ -39,4 +47,3 @@ Not in FTP ACS Summary files and not returned by this function's default: \cr
 \seealso{
 \code{\link{get.acs}} and \code{\link{download.datafiles}} which use this, and \code{\link[ejanalysis]{get.state.info}} (from \pkg{ejanalysis} package) based on \code{\link[proxistat]{lookup.states}} or \code{data(lookup.states, package=proxistat)} using \pkg{proxistat} package
 }
-

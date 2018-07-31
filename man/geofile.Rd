@@ -22,4 +22,3 @@ Get name of text file used by US Census Bureau with geographic information for A
 \seealso{
 \code{\link{get.acs}} and \code{\link{download.geo}} which uses this
 }
-
