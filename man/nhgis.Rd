@@ -4,9 +4,9 @@
 \alias{nhgis}
 \title{Read and Parse NHGIS.org ACS Data Files and Codebooks}
 \usage{
-nhgis(base.path = getwd(), code.dir = file.path(base.path, "nhgiscode"),
-  data.dir = file.path(base.path, "nhgisdata"), silent = FALSE,
-  savefiles = FALSE)
+nhgis(base.path = getwd(), code.dir = file.path(base.path,
+  "nhgiscode"), data.dir = file.path(base.path, "nhgisdata"),
+  silent = FALSE, savefiles = FALSE)
 }
 \arguments{
 \item{base.path}{Optional base path, default is getwd()}

@@ -4,7 +4,8 @@
 \alias{read.geo}
 \title{Read and concatenate state geo files from Census ACS}
 \usage{
-read.geo(mystates, folder = getwd(), end.year = "2012", silent = FALSE)
+read.geo(mystates, folder = getwd(), end.year = "2012",
+  silent = FALSE)
 }
 \arguments{
 \item{mystates}{Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.}

@@ -4,7 +4,6 @@
 \name{ACSdownload}
 \alias{ACSdownload}
 \alias{ACSdownload-package}
-\alias{ACSdownload-package}
 \title{Obtain American Community Survey Summary File Data Tables from Census Bureau FTP Site}
 \description{
 This R package helps you download and parse raw data from the

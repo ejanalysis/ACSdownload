@@ -4,7 +4,8 @@
 \alias{download.lookup.acs}
 \title{Download File with Information about ACS 5-Year Summary File Tables}
 \usage{
-download.lookup.acs(end.year = "2012", folder = getwd(), silent = FALSE)
+download.lookup.acs(end.year = "2012", folder = getwd(),
+  silent = FALSE)
 }
 \arguments{
 \item{end.year}{Character, optional, '2012' by default, which specifies the 2008-2012 dataset.
@@ -43,6 +44,7 @@ Download and read lookup table of information on American Community Survey (ACS)
 The source of this lookup table is, for example,
   \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
   and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
+  and for 2016 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
 }
 \examples{
  \dontrun{

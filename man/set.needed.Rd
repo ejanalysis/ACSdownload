@@ -4,9 +4,9 @@
 \alias{set.needed}
 \title{Specify which ACS Variables are Needed}
 \usage{
-set.needed(tables, lookup.acs, vars = "all", varsfile, folder = getwd(),
-  noEditOnMac = FALSE, end.year = "2012", silent = TRUE,
-  writefile = TRUE)
+set.needed(tables, lookup.acs, vars = "all", varsfile,
+  folder = getwd(), noEditOnMac = FALSE, end.year = "2012",
+  silent = TRUE, writefile = TRUE)
 }
 \arguments{
 \item{tables}{Character vector, required. Specifies which ACS tables.}
