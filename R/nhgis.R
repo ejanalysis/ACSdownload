@@ -31,25 +31,25 @@
 #'   dataset         1    -none-     character
 #'   }
 #' @seealso \code{\link{nhgisread}} used by this function. Also, for other ways to obtain ACS data see \code{\link{get.acs}}
-#' @examples
-#' \donotrun{
-#' x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')
-#' # save state data as csv
-#' write.csv(x$states$data, file='statedata.csv', row.names = FALSE)
-#' # Which geolevels were found (and what years)?
-#' summary(x)
-#' t(cbind(sapply(x, function(y) y[c('geolevel', 'years')])))
-#' summary(x[['counties']])
-#' # Which Census Bureau tables were found?
-#' x[['states']]$tables
-#' # See the data for one State
-#' t(x[['states']]$data[1, ])
-#' # How many counties are in each State?
-#' dat <- x[['counties']]$data
-#' cbind(sort(table(dat$STATE)))
-#' # How many counties have population > 1 million, for each State?
-#' cbind(sort(table(dat$STATE[dat$B01001.001 > 1E6])))
-#' }
+#' @examples  
+#'   \donotrun{
+#'   x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')
+#'   # save state data as csv
+#'   write.csv(x$states$data, file='statedata.csv', row.names = FALSE)
+#'   # Which geolevels were found (and what years)?
+#'   summary(x)
+#'   t(cbind(sapply(x, function(y) y[c('geolevel', 'years')])))
+#'   summary(x[['counties']])
+#'   # Which Census Bureau tables were found?
+#'   x[['states']]$tables
+#'   # See the data for one State
+#'   t(x[['states']]$data[1, ])
+#'   # How many counties are in each State?
+#'   dat <- x[['counties']]$data
+#'   cbind(sort(table(dat$STATE)))
+#'   # How many counties have population > 1 million, for each State?
+#'   cbind(sort(table(dat$STATE[dat$B01001.001 > 1E6])))
+#'   }
 #' @export
 nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'), data.dir=file.path(base.path, 'nhgisdata'), silent=FALSE, savefiles=FALSE) {
 
@@ -87,7 +87,7 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
   fipsvar <- fipsvar[resfound]
   #cat("res: ", res, ' /  resf: ', resf, '\n')
 
-  ####################################################
+  ################################################### #
   # To see list of field names where every entry is NA:   names(bg$data)[analyze.stuff::na.check2(bg$data)$na.count==length(bg$data[,1])]
   # Define a function that finds which columns have only NA values for every row
   na.cols.y <- function(df) { colSums(is.na(as.data.frame(df))) == length(NROW(as.data.frame(df))) }
@@ -236,9 +236,9 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
   #   us$fields$long[is.moe] <- paste(us$fields$long[is.moe], '_MOE', sep='')
 
 
-  ################################################
+  ############################################### #
   # COULD RENAME TO FRIENDLY FIELD NAMES
-  ################################################
+  ############################################### #
 
   # bg$data <- change.fieldnames(bg$data, bg$fields$new, bg$fields$long)
   # or something like this:
@@ -246,9 +246,9 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
   # bg$data <- change.fieldnames(bg$data, bg$fields$new, friendlynames)
 
 
-  ########################
+  ####################### #
   # save each of these sets of tables:
-  ########################
+  ####################### #
   # if (savefiles) {
   # save results:
   #setwd(data.dir)
@@ -286,19 +286,19 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
 
 
 
-############################################################################################################
+########################################################################################################### #
 # done getting data # STOP HERE #
-############################################################################################################
+########################################################################################################### #
 
 if (1==0) {
   # i.e. don't execute the following if this file was source()-ed
 
-  ############################################################################################################
-  ############################################################################################################
+  ########################################################################################################### #
+  ########################################################################################################### #
 
-  ################################
+  ############################### #
   #  old EXAMPLES OF USAGE OF nhgisreadcodebook and nhgisread and nhgisfind
-  ################################
+  ############################### #
 
   # Get functions if not already in memory
   code.path <- getwd() # or specified folder
@@ -343,9 +343,9 @@ if (1==0) {
   # or equivalently,
   cbind(c(acs$contextfields$long, acs$fields$long), t(head(acs$data,1)))
 
-  ##################################################################
+  ################################################################# #
   # Extract one Census table from results 	******************
-  ##################################################################
+  ################################################################# #
   mytab <- "C17002"
   select.table <- function(tablename, dataset) {
     dataset$geolevel  <- dataset$geolevel
@@ -361,7 +361,7 @@ if (1==0) {
     return(dataset)
   }
   mydf <- select.table(mytab, acs)
-  ##################################################################
+  ################################################################# #
 
 
   # Get just the estimate column names, not MOE or other columns:
@@ -393,12 +393,12 @@ if (1==0) {
 
 
 
-  ############################################################################################################
-  ############################################################################################################
-  ############################################################################################################
+  ########################################################################################################### #
+  ########################################################################################################### #
+  ########################################################################################################### #
 
   # MY ERROR TESTS
-
+  base.path <- getwd(); data.dir <- getwd()
   test.folder	<- file.path(base.path, "ACS - download and parse/ACS DOWNLOADED/NHGIS ORG as source/test")
   test.file1 		<- "nhgis0002_ds176_20105_2010_blck_grp.csv"
   test.file 		<- "nhgis0003_ds184_20115_2011_state_E.csv"
@@ -457,7 +457,7 @@ if (1==0) {
   # if ask for MOE
   acs <- nhgisread(test.fileM, folder=file.path(test.folder, "nothing missing and EM in 2 files"))
 
-  ############################################################################################################
+  ########################################################################################################### #
 }
 # not run
 

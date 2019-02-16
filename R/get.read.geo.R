@@ -43,99 +43,150 @@
 #'  By removing these characters, the new GEOID in the ACS Summary File exactly matches the field GEOID in the TIGER/Line Shapefiles.
 #' @seealso \code{\link{get.acs}} which uses this, and \code{\link{download.geo}}
 #' @export
-get.read.geo <- function(mystates, new.geo=FALSE, folder=getwd(), end.year='2012', testing=FALSE, silent=FALSE) {
-
-  if (!new.geo) { # IF DO NOT WANT TO REDO WORK TO GET GEO DATA
-    if (exists('geo')) {
-      if (!silent) {cat('Using geo info from prior work, already in memory\n')}
-      # skip download & parse
-    }
-    if (!exists('geo')) {
-      if (file.exists(file.path(folder, 'geo.RData'))) {
-        load(file.path(folder, 'geo.RData'))
-        if (!silent) {cat('Loading geo.RData\n')}
+get.read.geo <-
+  function(mystates,
+           new.geo = FALSE,
+           folder = getwd(),
+           end.year = '2012',
+           testing = FALSE,
+           silent = FALSE) {
+    if (!new.geo) {
+      # IF DO NOT WANT TO REDO WORK TO GET GEO DATA
+      if (exists('geo')) {
+        if (!silent) {
+          cat('Using geo info from prior work, already in memory\n')
+        }
         # skip download & parse
       }
-      if (!file.exists(file.path(folder, 'geo.RData'))) {
-        # Said !new.geo, but can't find old geo, so must do all parsing after all.
-        # Repeating download.geo() is ok since checks for need to download, then do parsing
-        if (!silent) {cat('  Cannot find geo in memory or disk, so redoing parsing (downloading first if necessary)\n')}
-        new.geo <- TRUE
+      if (!exists('geo')) {
+        if (file.exists(file.path(folder, 'geo.RData'))) {
+          load(file.path(folder, 'geo.RData'))
+          if (!silent) {
+            cat('Loading geo.RData\n')
+          }
+          # skip download & parse
+        }
+        if (!file.exists(file.path(folder, 'geo.RData'))) {
+          # Said !new.geo, but can't find old geo, so must do all parsing after all.
+          # Repeating download.geo() is ok since checks for need to download, then do parsing
+          if (!silent) {
+            cat(
+              '  Cannot find geo in memory or disk, so redoing parsing (downloading first if necessary)\n'
+            )
+          }
+          new.geo <- TRUE
+        }
       }
     }
-  }
-
-  if (new.geo) {  # IF WANT NEW GEO, do download & parse new geo.
-    # if user choice is to create a new geo dataset, (default), do that here (downloading if needed, then parsing):
-
-    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Started to download geo files \n")}
-    # note this won't re-download geofiles that have already been downloaded into the local data folder
-    # don't need to specify   download.geo(..., data.path) since already did setwd(data.path)
-
-    download.geo(mystates, end.year=end.year, folder=folder, testing=testing, silent=silent)
-
-    # e.g.,  download.geo( c("pr", "dc") )
-    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Finished downloading geo files \n")}
-
-    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Started parsing geo files \n")}
-
-    geo <- read.geo(mystates, folder=folder, end.year = end.year, silent=silent)
-
-    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Finished parsing geo files \n")}
-    # or just for example
-    # stateabbs.mine <- c("de", "dc");  geo <- read.geo( stateabbs.mine)
-    gc()
-
-    # CLEAN UP THE geo DATA
-
-    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Started cleaning up geo files \n")}
-    # Cut white space (OR drop GEOID entirely), (but already used trim.whitespace so redundant)
-    geo$GEOID <- gsub(" *$", "", geo$GEOID)
-    #geo$GEOID <- NULL
-
-    # Might also drop huge name field if it was imported (but it causes problems on OSX likely due to encoding)
-    # or at least trim large amounts of white space at end of name field (but already used trim.whitespace)
-
-    if ("NAME" %in% names(geo)) {
-      geo$NAME <- gsub(" {2,}", "", geo$NAME)
-      # geo$NAME <- NULL
+    
+    if (new.geo) {
+      # IF WANT NEW GEO, do download & parse new geo.
+      # if user choice is to create a new geo dataset, (default), do that here (downloading if needed, then parsing):
+      
+      if (!silent) {
+        cat(as.character(Sys.time()), ' ')
+        cat("Started to download geo files \n")
+      }
+      # note this won't re-download geofiles that have already been downloaded into the local data folder
+      # don't need to specify   download.geo(..., data.path) since already did setwd(data.path)
+      
+      download.geo(
+        mystates,
+        end.year = end.year,
+        folder = folder,
+        testing = testing,
+        silent = silent
+      )
+      
+      # e.g.,  download.geo( c("pr", "dc") )
+      if (!silent) {
+        cat(as.character(Sys.time()), ' ')
+        cat("Finished downloading geo files \n")
+      }
+      
+      if (!silent) {
+        cat(as.character(Sys.time()), ' ')
+        cat("Started parsing geo files \n")
+      }
+      
+      geo <-
+        read.geo(mystates,
+                 folder = folder,
+                 end.year = end.year,
+                 silent = silent)
+      
+      if (!silent) {
+        cat(as.character(Sys.time()), ' ')
+        cat("Finished parsing geo files \n")
+      }
+      # or just for example
+      # stateabbs.mine <- c("de", "dc");  geo <- read.geo( stateabbs.mine)
+      gc()
+      
+      # CLEAN UP THE geo DATA
+      
+      if (!silent) {
+        cat(as.character(Sys.time()), ' ')
+        cat("Started cleaning up geo files \n")
+      }
+      # Cut white space (OR drop GEOID entirely), (but already used trim.whitespace so redundant)
+      geo$GEOID <- gsub(" *$", "", geo$GEOID)
+      #geo$GEOID <- NULL
+      
+      # Might also drop huge name field if it was imported (but it causes problems on OSX likely due to encoding)
+      # or at least trim large amounts of white space at end of name field (but already used trim.whitespace)
+      
+      if ("NAME" %in% names(geo)) {
+        geo$NAME <- gsub(" {2,}", "", geo$NAME)
+        # geo$NAME <- NULL
+      }
+      
+      ############################## #
+      # Add leading zeroes and create FIPS (don't actually need all these fields once FIPS and KEY are created)
+      # An alternative way to create fips would be to extract it from the geoid field:
+      # geo$FIPS <- gsub("[[:alnum:]]*US", "", geo$GEOID)
+      
+      geo$BLKGRP[is.na(geo$BLKGRP)] <- ""
+      geo$TRACT	<- analyze.stuff::lead.zeroes(geo$TRACT, 6)
+      geo$STATE	<- analyze.stuff::lead.zeroes(geo$STATE, 2)
+      geo$COUNTY	<- analyze.stuff::lead.zeroes(geo$COUNTY, 3)
+      geo$FIPS	<-
+        with(geo, paste(STATE, COUNTY, TRACT, BLKGRP, sep = ""))
+      # Ideally would call these FIPS.ST, FIPS.COUNTY, FIPS.TRACT, FIPS as elsewhere
+      
+      ############################### #
+      #	THE UNIQUE ID THAT WILL BE USED FOR JOINS IS A COMBO OF STATE AND LOGRECNO
+      #	NOTE LOWER CASE STUSAB USED TO CREATE KEY
+      
+      geo$KEY <- paste(tolower(geo$STUSAB), geo$LOGRECNO, sep = "")
+      
+      #  THESE CAN BE DROPPED, AT LEAST AFTER THE KEY FIELD IS CREATED: (saving about 8 MB of memory)
+      #  LOGRECNO, STATE, COUNTY,  TRACT, BLKGRP
+      
+      geo <-
+        geo[, names(geo)[!(names(geo) %in% c("LOGRECNO", "STATE", "COUNTY", "TRACT", "BLKGRP"))]]
+      
+      if (!silent) {
+        cat(as.character(Sys.time()), ' ')
+        cat("Finished cleaning up geo files \n")
+      }
+      
+      # if (save.files) {
+      #  save this .RData file, so that restarting interrupted get.acs() will look for it and not recreate it once it is on disk.
+      # Would save lots of time to avoid parsing geo files more than once - don't need to do that usually..?
+      # unless first run on a few places and then expanded to more states? *** problem if sees small geo and doesn't make bigger one!
+      if (!silent) {
+        cat(as.character(Sys.time()), ' ')
+        cat("Started saving geo files on disk \n")
+      }
+      # can save on disk in case a copy is needed later
+      save(geo, file = file.path(folder, "geo.RData"))
+      if (!silent) {
+        cat(as.character(Sys.time()), ' ')
+        cat("Finished saving geo.RData file on disk \n")
+      }
+      #  }
     }
-
-    ###############################
-    # Add leading zeroes and create FIPS (don't actually need all these fields once FIPS and KEY are created)
-    # An alternative way to create fips would be to extract it from the geoid field:
-    # geo$FIPS <- gsub("[[:alnum:]]*US", "", geo$GEOID)
-
-    geo$BLKGRP[is.na(geo$BLKGRP)] <- ""
-    geo$TRACT	<- analyze.stuff::lead.zeroes(geo$TRACT, 6)
-    geo$STATE	<- analyze.stuff::lead.zeroes(geo$STATE, 2)
-    geo$COUNTY	<- analyze.stuff::lead.zeroes(geo$COUNTY, 3)
-    geo$FIPS	<- with(geo, paste( STATE, COUNTY, TRACT, BLKGRP, sep=""))
-    # Ideally would call these FIPS.ST, FIPS.COUNTY, FIPS.TRACT, FIPS as elsewhere
-
-    ################################
-    #	THE UNIQUE ID THAT WILL BE USED FOR JOINS IS A COMBO OF STATE AND LOGRECNO
-    #	NOTE LOWER CASE STUSAB USED TO CREATE KEY
-
-    geo$KEY <- paste(tolower(geo$STUSAB), geo$LOGRECNO, sep="")
-
-    #  THESE CAN BE DROPPED, AT LEAST AFTER THE KEY FIELD IS CREATED: (saving about 8 MB of memory)
-    #  LOGRECNO, STATE, COUNTY,  TRACT, BLKGRP
-
-    geo <- geo[ , names(geo)[!(names(geo) %in% c("LOGRECNO", "STATE", "COUNTY", "TRACT", "BLKGRP"))] ]
-
-    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Finished cleaning up geo files \n")}
-
-    # if (save.files) {
-    #  save this .RData file, so that restarting interrupted get.acs() will look for it and not recreate it once it is on disk.
-    # Would save lots of time to avoid parsing geo files more than once - don't need to do that usually..?
-    # unless first run on a few places and then expanded to more states? *** problem if sees small geo and doesn't make bigger one!
-    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Started saving geo files on disk \n")}
-    # can save on disk in case a copy is needed later
-    save(geo, file=file.path(folder, "geo.RData"))
-    if (!silent) {cat(as.character(Sys.time()), ' '); cat("Finished saving geo.RData file on disk \n")}
-    #  }
+    return(geo)
+    ########################################## DONE reading GEO FILES ######################### #
   }
-  return(geo)
-  ########################################## DONE reading GEO FILES ##########################
-}

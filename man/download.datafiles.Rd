@@ -30,5 +30,5 @@ Attempts to download data files (estimates and margins of error) for specified s
   from the US Census Bureau's FTP site for American Community Survey (ACS) 5-year summary file data.
 }
 \seealso{
-\code{\link{get.distances}} which allows you to get distances between all points.
+\code{\link[proxistat]{get.distances}} which allows you to get distances between all points.
 }

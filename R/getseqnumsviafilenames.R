@@ -6,15 +6,18 @@
 #' @return Returns a character vector of unique sequence file numbers
 #' @seealso \code{\link{read.concat.states}} which uses this
 #' @export
-getseqnumsviafilenames <- function(folder=getwd() ) {
+getseqnumsviafilenames <- function(folder = getwd()) {
   # infer nums based on what filenames are found in folder
   
-  is.datafilename <- function(x) {grepl(pattern = '[em]20[0-9][0-9]5[a-z][a-z][0-9]*\\.txt', x)}
+  is.datafilename <-
+    function(x) {
+      grepl(pattern = '[em]20[0-9][0-9]5[a-z][a-z][0-9]*\\.txt', x)
+    }
   found.efiles.not.us <- list.files(path = folder)
-  found.efiles.not.us <- found.efiles.not.us[is.datafilename(found.efiles.not.us)]
-  mynums <-  unique(substr(found.efiles.not.us, 9, 12)) 
+  found.efiles.not.us <-
+    found.efiles.not.us[is.datafilename(found.efiles.not.us)]
+  mynums <-  unique(substr(found.efiles.not.us, 9, 12))
   #allnums <- ***
   #mynums <- mynums[mynums %in% allnums]
   return(mynums)
-  
 }

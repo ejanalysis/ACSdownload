@@ -13,7 +13,7 @@
 List of tables like input but with columns sorted in a new order.
 }
 \description{
-Start with a table that has all the estimates columns together, followed by all the MOEs columns, 
+Start with a table that has all the estimates columns together, followed by all the MOEs columns,
  and create a new column sort order so that estimates will be interspersed with (next to) their MOE values, as FactFinder format provides.
 }
 \seealso{

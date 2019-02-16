@@ -8,15 +8,24 @@
 #' @return Returns character element that is name of zip file such as "20115dc0113000.zip"
 #' @seealso \code{\link{get.acs}}
 #' @export
-zipfile <- function(mystates, seqfilenum, zipfile.prefix, end.year='2012') {
-
+zipfile <-
+  function(mystates,
+           seqfilenum,
+           zipfile.prefix,
+           end.year = '2012') {
     # zip FILENAME example
-  # 	20115dc0113000.zip
-  if (missing(zipfile.prefix)) {zipfile.prefix    <- get.zipfile.prefix(end.year) }
-  zipfile.states <- tolower(mystates)
-  zipfile.seqfilenum <- seqfilenum
-  zipfile.suffix <- "000.zip"
-  zipfile <- paste(zipfile.prefix, zipfile.states, zipfile.seqfilenum, zipfile.suffix, sep="")
-  return(zipfile)
-}
-
+    # 	20115dc0113000.zip
+    if (missing(zipfile.prefix)) {
+      zipfile.prefix    <- get.zipfile.prefix(end.year)
+    }
+    zipfile.states <- tolower(mystates)
+    zipfile.seqfilenum <- seqfilenum
+    zipfile.suffix <- "000.zip"
+    zipfile <-
+      paste(zipfile.prefix,
+            zipfile.states,
+            zipfile.seqfilenum,
+            zipfile.suffix,
+            sep = "")
+    return(zipfile)
+  }

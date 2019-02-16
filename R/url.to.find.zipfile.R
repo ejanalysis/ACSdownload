@@ -24,18 +24,20 @@
 #' @return Returns character vector that is URL(s) such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile"
 #' @seealso \code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}
 #' @export
-url.to.find.zipfile <- function(mystates, end.year='2012', url.prefix) {
-
-  if (missing(mystates)) {
-    # default is to get all states # which includes DC, AND "AS" "GU" "MP" "PR" "UM" "VI" "US"
-
-    data(lookup.states, envir = environment(), package = 'proxistat')
-    mystates <- lookup.states$ST
+url.to.find.zipfile <-
+  function(mystates, end.year = '2012', url.prefix) {
+    if (missing(mystates)) {
+      # default is to get all states # which includes DC, AND "AS" "GU" "MP" "PR" "UM" "VI" "US"
+      
+      data(lookup.states, envir = environment(), package = 'proxistat')
+      mystates <- lookup.states$ST
+    }
+    
+    url.states <- mystates
+    url.suffix <- "Tracts_Block_Groups_Only"
+    if (missing(url.prefix)) {
+      url.prefix <- get.url.prefix(end.year = end.year)
+    }
+    url <- paste(url.prefix, url.states, url.suffix, sep = "/")
+    return(url)
   }
-
-  url.states <- mystates
-	url.suffix <- "Tracts_Block_Groups_Only"
-	if (missing(url.prefix)) { url.prefix <- get.url.prefix(end.year=end.year) }
-	url <- paste(url.prefix, url.states, url.suffix, sep="/")
-	return(url)
-}

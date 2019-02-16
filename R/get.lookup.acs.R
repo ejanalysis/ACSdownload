@@ -43,32 +43,43 @@
 #'  lookup.acs <- get.lookup.acs()
 #'  }
 #' @export
-get.lookup.acs <- function(end.year="2012", folder=getwd()) {
-
+get.lookup.acs <- function(end.year = "2012",
+                           folder = getwd()) {
   # "Sequence_Number_and_Table_Number_Lookup.txt" for end.year=2010 through 2013, but 2009 had only .xls not .txt
-  if (end.year < 2009) {stop('Years prior to 2009 are not valid. ACS 5-year file was not available until 2005-2009, end.year=2009.')}
-  if (end.year==2009)  {warning('2005-2009 dataset used an xls file for this information, not fully tested here.')}
-  if (end.year > 2014) {warning('end.year of 2015 or later may not be available yet -- 2011-2015 dataset is expected in December 2016.')}
-
+  if (end.year < 2009) {
+    stop(
+      'Years prior to 2009 are not valid. ACS 5-year file was not available until 2005-2009, end.year=2009.'
+    )
+  }
+  if (end.year == 2009)  {
+    warning('2005-2009 dataset used an xls file for this information, not fully tested here.')
+  }
+  if (end.year > 2014) {
+    warning(
+      'end.year of 2015 or later may not be available yet -- 2011-2015 dataset is expected in December 2016.'
+    )
+  }
+  
   # just get these via lazy loading as with data()
-  my.lookup <- switch(EXPR = paste('yr', end.year,sep=''),
-                      yr2009 = lookup.acs2009,
-                      yr2010 = lookup.acs2010,
-                      yr2011 = lookup.acs2011,
-                      yr2012 = lookup.acs2012,
-                      yr2013 = lookup.acs2013,
-                      yr2014 = lookup.acs2014,
-                      yr2015 = lookup.acs2015,
-                      yr2016 = lookup.acs2016,
-                      yr2017 = lookup.acs2017,
-                      yr2018 = lookup.acs2018,
-                      yr2019 = lookup.acs2019,
-                      yr2020 = lookup.acs2020)
+  my.lookup <- switch(
+    EXPR = paste('yr', end.year, sep = ''),
+    yr2009 = lookup.acs2009,
+    yr2010 = lookup.acs2010,
+    yr2011 = lookup.acs2011,
+    yr2012 = lookup.acs2012,
+    yr2013 = lookup.acs2013,
+    yr2014 = lookup.acs2014,
+    yr2015 = lookup.acs2015,
+    yr2016 = lookup.acs2016,
+    yr2017 = lookup.acs2017,
+    yr2018 = lookup.acs2018,
+    yr2019 = lookup.acs2019,
+    yr2020 = lookup.acs2020
+  )
   # NOTE THAT WILL CRASH IF THE GIVEN YEAR OF DATA IS NOT YET AVAILABLE FROM CENSUS AND ADDED TO THIS PACKAGE.
-
+  
   # old data source was this (and that is how these were obtained and cleaned up):
   # my.lookup <- download.lookup.acs(end.year=end.year, folder=folder)
-
+  
   return(my.lookup)
 }
-

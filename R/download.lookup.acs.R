@@ -40,74 +40,140 @@
 #'  lookup.acs <- download.lookup.acs()
 #'  }
 #' @export
-download.lookup.acs <- function(end.year='2012', folder=getwd(), silent=FALSE) {
-
-  my.url.prefix.lookup.table <- get.url.prefix.lookup.table(end.year)  # paste("ftp://ftp.census.gov/acs", end.year, "_5yr/summaryfile/", sep="") # but lacking last /
-  my.lookup.file.name <- get.lookup.file.name(end.year)
-  my.lookup.file.name.dated <- paste(end.year, my.lookup.file.name, sep = '')
-  print(my.lookup.file.name.dated)
-  # Use the working directory to download the file.
-
-  if (!file.exists(file.path(folder, my.lookup.file.name.dated)) | file.size(file.path(folder, my.lookup.file.name.dated))==0 ) {
-    if (!silent) {cat("  Downloading lookup table with table and variable names from", paste( my.url.prefix.lookup.table, my.lookup.file.name, sep=""),"\n")}
-    try(download.file(
-      paste( my.url.prefix.lookup.table, my.lookup.file.name, sep=""),
-      file.path(folder, my.lookup.file.name.dated)
-    ))
-    if (!file.exists(file.path(folder, my.lookup.file.name.dated)) | file.size(file.path(folder, my.lookup.file.name.dated))==0) {stop('Failed to download lookup table of variable names by table')}
-    # could add error checking here to verify it was downloaded correctly
-  }
-  if (!silent) {cat("  Reading lookup table with table and variable names\n")}
-
-  if (end.year==2009) {
-    # The 2009 table was provided as xls not txt. Other years have a txt file with this info.
-    # colnames are the same but read_excel imports it differently than read.csv does
-    #2012:  [File ID,]Table ID, Sequence Number,  Line Number, Start Position,  Total Cells in Table, Total Cells in Sequence,  Table Title, Subject Area
-    #2009:  File ID,	Table ID,	Sequence Number,	Line Number, Start Position,	Total Cells in Table,	Total Cells in Sequence,	Table Title, Subject Area
-    my.lookup <- readxl::read_excel(
-      file.path(folder, my.lookup.file.name.dated),
-      col_types=c("text", "text", "text",  "numeric", "numeric",  "text",  "numeric",  "text", "text")
-    )
-    # replace spaces with periods in colnames, which read.csv does automatically but read_excel does not:
-    names(my.lookup) <- gsub(' ', '.', names(my.lookup))
-    # remove the last row, which gets imported as <NA> and NA values
-    my.lookup <- my.lookup[!is.na(my.lookup$Table.ID), ]
-    # The 2009 file has NA values instead of blanks in some columns
-    my.lookup$Subject.Area[is.na(my.lookup$Subject.Area)] <- ''
-    my.lookup$Total.Cells.in.Table[is.na(my.lookup$Total.Cells.in.Table)] <- ''
-
-  } else {
-    if (end.year==2011) {
-      # 2011 format was different:
-      #"fileid","Table ID","seq",   "Line Number Decimal M Lines", "position", "cells",   "total","Long Table Title","subject_area"
-      #"ACSSF","B00001","0001",   ".", "7","1 CELL",    ".", "UNWEIGHTED SAMPLE COUNT OF THE POPULATION", "Unweighted Count"
-      my.lookup <- read.csv(
-        file.path(folder, my.lookup.file.name.dated), stringsAsFactors=FALSE,
-        colClasses=c("character", "character", "character",       "character", "character",  "character",     "character",  "character", "character"))
-      names(my.lookup) <- c('File ID', 'Table ID', 'Sequence Number',	    'Line Number', 'Start Position', 'Total Cells in Table',     'Total Cells in Sequence', 'Table Title', 'Subject Area')
-      names(my.lookup) <- gsub(' ', '.', names(my.lookup))
-
-      my.lookup$Line.Number[my.lookup$Line.Number=='.'] <- NA
-      my.lookup$Line.Number <- as.numeric(my.lookup$Line.Number)
-      my.lookup$Total.Cells.in.Sequence[my.lookup$Total.Cells.in.Sequence=='.'] <- NA
-      my.lookup$Total.Cells.in.Sequence <- as.numeric(my.lookup$Total.Cells.in.Sequence)
-      my.lookup$Start.Position[my.lookup$Start.Position=='.'] <- NA
-      my.lookup$Start.Position <- as.numeric(my.lookup$Start.Position)
-
-    } else {
-      #e.g., 2012:  [File ID,]Table ID, Sequence Number,  Line Number, Start Position,  Total Cells in Table, Total Cells in Sequence,  Table Title, Subject Area
-      my.lookup <- read.csv(
-        file.path(folder, my.lookup.file.name.dated), stringsAsFactors=FALSE,
-        colClasses=c("character", "character", "character",  "numeric", "numeric",  "character",  "numeric",  "character", "character"))
+download.lookup.acs <-
+  function(end.year = '2012',
+           folder = getwd(),
+           silent = FALSE) {
+    my.url.prefix.lookup.table <-
+      get.url.prefix.lookup.table(end.year)  # paste("ftp://ftp.census.gov/acs", end.year, "_5yr/summaryfile/", sep="") # but lacking last /
+    my.lookup.file.name <- get.lookup.file.name(end.year)
+    my.lookup.file.name.dated <-
+      paste(end.year, my.lookup.file.name, sep = '')
+    print(my.lookup.file.name.dated)
+    # Use the working directory to download the file.
+    
+    if (!file.exists(file.path(folder, my.lookup.file.name.dated)) |
+        file.size(file.path(folder, my.lookup.file.name.dated)) == 0) {
+      if (!silent) {
+        cat(
+          "  Downloading lookup table with table and variable names from",
+          paste(my.url.prefix.lookup.table, my.lookup.file.name, sep = ""),
+          "\n"
+        )
+      }
+      try(download.file(
+        paste(my.url.prefix.lookup.table, my.lookup.file.name, sep = ""),
+        file.path(folder, my.lookup.file.name.dated)
+      ))
+      if (!file.exists(file.path(folder, my.lookup.file.name.dated)) |
+          file.size(file.path(folder, my.lookup.file.name.dated)) == 0) {
+        stop('Failed to download lookup table of variable names by table')
+      }
+      # could add error checking here to verify it was downloaded correctly
     }
+    if (!silent) {
+      cat("  Reading lookup table with table and variable names\n")
+    }
+    
+    if (end.year == 2009) {
+      # The 2009 table was provided as xls not txt. Other years have a txt file with this info.
+      # colnames are the same but read_excel imports it differently than read.csv does
+      #2012:  [File ID,]Table ID, Sequence Number,  Line Number, Start Position,  Total Cells in Table, Total Cells in Sequence,  Table Title, Subject Area
+      #2009:  File ID,	Table ID,	Sequence Number,	Line Number, Start Position,	Total Cells in Table,	Total Cells in Sequence,	Table Title, Subject Area
+      my.lookup <- readxl::read_excel(
+        file.path(folder, my.lookup.file.name.dated),
+        col_types = c(
+          "text",
+          "text",
+          "text",
+          "numeric",
+          "numeric",
+          "text",
+          "numeric",
+          "text",
+          "text"
+        )
+      )
+      # replace spaces with periods in colnames, which read.csv does automatically but read_excel does not:
+      names(my.lookup) <- gsub(' ', '.', names(my.lookup))
+      # remove the last row, which gets imported as <NA> and NA values
+      my.lookup <- my.lookup[!is.na(my.lookup$Table.ID),]
+      # The 2009 file has NA values instead of blanks in some columns
+      my.lookup$Subject.Area[is.na(my.lookup$Subject.Area)] <- ''
+      my.lookup$Total.Cells.in.Table[is.na(my.lookup$Total.Cells.in.Table)] <-
+        ''
+      
+    } else {
+      if (end.year == 2011) {
+        # 2011 format was different:
+        #"fileid","Table ID","seq",   "Line Number Decimal M Lines", "position", "cells",   "total","Long Table Title","subject_area"
+        #"ACSSF","B00001","0001",   ".", "7","1 CELL",    ".", "UNWEIGHTED SAMPLE COUNT OF THE POPULATION", "Unweighted Count"
+        my.lookup <- read.csv(
+          file.path(folder, my.lookup.file.name.dated),
+          stringsAsFactors = FALSE,
+          colClasses = c(
+            "character",
+            "character",
+            "character",
+            "character",
+            "character",
+            "character",
+            "character",
+            "character",
+            "character"
+          )
+        )
+        names(my.lookup) <-
+          c(
+            'File ID',
+            'Table ID',
+            'Sequence Number',
+            'Line Number',
+            'Start Position',
+            'Total Cells in Table',
+            'Total Cells in Sequence',
+            'Table Title',
+            'Subject Area'
+          )
+        names(my.lookup) <- gsub(' ', '.', names(my.lookup))
+        
+        my.lookup$Line.Number[my.lookup$Line.Number == '.'] <- NA
+        my.lookup$Line.Number <- as.numeric(my.lookup$Line.Number)
+        my.lookup$Total.Cells.in.Sequence[my.lookup$Total.Cells.in.Sequence ==
+                                            '.'] <- NA
+        my.lookup$Total.Cells.in.Sequence <-
+          as.numeric(my.lookup$Total.Cells.in.Sequence)
+        my.lookup$Start.Position[my.lookup$Start.Position == '.'] <-
+          NA
+        my.lookup$Start.Position <-
+          as.numeric(my.lookup$Start.Position)
+        
+      } else {
+        #e.g., 2012:  [File ID,]Table ID, Sequence Number,  Line Number, Start Position,  Total Cells in Table, Total Cells in Sequence,  Table Title, Subject Area
+        my.lookup <- read.csv(
+          file.path(folder, my.lookup.file.name.dated),
+          stringsAsFactors = FALSE,
+          colClasses = c(
+            "character",
+            "character",
+            "character",
+            "numeric",
+            "numeric",
+            "character",
+            "numeric",
+            "character",
+            "character"
+          )
+        )
+      }
+    }
+    
+    my.lookup$File.ID <- NULL
+    
+    # add leading zeroes so seqnum always has 4 characters (e.g., '0001' or '0105')
+    # or could do this before saving .RData files for use via data()
+    my.lookup$Sequence.Number <-
+      analyze.stuff::lead.zeroes(floor(as.numeric(my.lookup$Sequence.Number)), 4)
+    
+    return(my.lookup)
   }
-
-  my.lookup$File.ID <- NULL
-
-  # add leading zeroes so seqnum always has 4 characters (e.g., '0001' or '0105')
-  # or could do this before saving .RData files for use via data()
-  my.lookup$Sequence.Number <- analyze.stuff::lead.zeroes(floor(as.numeric(my.lookup$Sequence.Number)), 4)
-
-  return(my.lookup)
-}
-

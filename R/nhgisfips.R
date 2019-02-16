@@ -27,24 +27,34 @@
 #' nhgisfips(x)
 #' @export
 nhgisfips <- function(x,
-                      validfields=c('STATEA', 'COUNTYA', 'TRACTA', 'BLKGRPA'),
+                      validfields = c('STATEA', 'COUNTYA', 'TRACTA', 'BLKGRPA'),
                       fullname = c('FIPS.ST', 'FIPS.COUNTY', 'FIPS.TRACT', 'FIPS.BG'),
-                      leadz = c(2, 3, 6, 1) ) {
-
+                      leadz = c(2, 3, 6, 1)) {
   # leadz is correct total nchar() for this portion of fips, including leading zeroes
-
+  
   ishere <- validfields %in% colnames(x)
-  xfipscols <- x[ , validfields[ishere], drop=FALSE]
-  ishere <- !(colSums(is.na(xfipscols))==NROW(xfipscols))
-  xfipscols <- x[ , validfields[ishere], drop=FALSE]
-  fieldnamesok <- paste(as.numeric(ishere), collapse='') %in% c('1000', '1100', '1110', '1111')
-  if (!fieldnamesok) {stop('failed to find appropriate fieldnames in x, such as ', paste(validfields, collapse=' '))}
-
-  FIPS <- mapply(FUN=analyze.stuff::lead.zeroes, xfipscols, leadz[ishere])
-  FIPS <- apply(FIPS, 1, FUN = function(z) paste(z, collapse=''))
+  xfipscols <- x[, validfields[ishere], drop = FALSE]
+  ishere <- !(colSums(is.na(xfipscols)) == NROW(xfipscols))
+  xfipscols <- x[, validfields[ishere], drop = FALSE]
+  fieldnamesok <-
+    paste(as.numeric(ishere), collapse = '') %in% c('1000', '1100', '1110', '1111')
+  if (!fieldnamesok) {
+    stop(
+      'failed to find appropriate fieldnames in x, such as ',
+      paste(validfields, collapse = ' ')
+    )
+  }
+  
+  FIPS <-
+    mapply(FUN = analyze.stuff::lead.zeroes, xfipscols, leadz[ishere])
+  FIPS <- apply(
+    FIPS,
+    1,
+    FUN = function(z)
+      paste(z, collapse = '')
+  )
   # return as a 1-column data.frame
   FIPS <- data.frame(FIPS, stringsAsFactors = FALSE)
   colnames(FIPS) <- fullname[sum(ishere)]
   return(FIPS)
 }
-

@@ -36,9 +36,13 @@ Uses \code{\link{get.lookup.acs}} but for 2012 version could just use \code{data
 \examples{
 \dontrun{
   finfo <- get.field.info(c('B17020A', 'B17020H'))
-  cbind( names(tracts), substr(finfo$longname.unique[match(names(tracts), finfo$shortname)], 1, 100))
+  cbind(
+    names(tracts), substr(finfo$longname.unique[match(names(tracts), finfo$shortname)], 1, 100)
+  )
   foundnames <- names(tracts)[names(tracts) \%in\% finfo$shortname]
-  cbind( foundnames, substr(finfo$longname.unique[match(foundnames, finfo$shortname)], 1, 100))
+  cbind(
+    foundnames, substr(finfo$longname.unique[match(foundnames, finfo$shortname)], 1, 100)
+  )
 }
 }
 \seealso{

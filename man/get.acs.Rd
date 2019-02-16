@@ -249,7 +249,8 @@ OTHER SOURCES include \cr
   ##### Data for just DC & DE, just the default table.
   out <- get.acs(mystates=c('dc','de'))
   names(out$bg); cat('\\n\\n'); head(out$info)
-  head(  t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe, subj=out$headers$subject,  out$bg[1:2,]) ), 15)
+  head(  t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe, 
+     subj=out$headers$subject,  out$bg[1:2,]) ), 15)
   cbind(longname=out$info$longname,
         total=colSums(out$bg[ , names(out$bg) \%in\% out$info$shortname ]))
   # to see data on 2 places, 1 per column, with short and long field names

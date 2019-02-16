@@ -52,24 +52,25 @@ This is designed to read and parse csv and txt files
   Minnesota Population Center. National Historical Geographic Information System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
 }
 \examples{
-\\donotrun{
-x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')
-# save state data as csv
-write.csv(x$states$data, file='statedata.csv', row.names = FALSE)
-# Which geolevels were found (and what years)?
-summary(x)
-t(cbind(sapply(x, function(y) y[c('geolevel', 'years')])))
-summary(x[['counties']])
-# Which Census Bureau tables were found?
-x[['states']]$tables
-# See the data for one State
-t(x[['states']]$data[1, ])
-# How many counties are in each State?
-dat <- x[['counties']]$data
-cbind(sort(table(dat$STATE)))
-# How many counties have population > 1 million, for each State?
-cbind(sort(table(dat$STATE[dat$B01001.001 > 1E6])))
-}
+ 
+  \\donotrun{
+  x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')
+  # save state data as csv
+  write.csv(x$states$data, file='statedata.csv', row.names = FALSE)
+  # Which geolevels were found (and what years)?
+  summary(x)
+  t(cbind(sapply(x, function(y) y[c('geolevel', 'years')])))
+  summary(x[['counties']])
+  # Which Census Bureau tables were found?
+  x[['states']]$tables
+  # See the data for one State
+  t(x[['states']]$data[1, ])
+  # How many counties are in each State?
+  dat <- x[['counties']]$data
+  cbind(sort(table(dat$STATE)))
+  # How many counties have population > 1 million, for each State?
+  cbind(sort(table(dat$STATE[dat$B01001.001 > 1E6])))
+  }
 }
 \seealso{
 \code{\link{nhgisread}} used by this function. Also, for other ways to obtain ACS data see \code{\link{get.acs}}

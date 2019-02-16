@@ -9,16 +9,16 @@ gettablesviaseqnums(x, end.year = "2012")
 \arguments{
 \item{x}{Required character vector of table IDs such as "B01001"}
 
-\item{end.year}{Optional character variable providing the end year of the 5-year ACS survey, 
+\item{end.year}{Optional character variable providing the end year of the 5-year ACS survey,
 to ensure the proper sequence file to table ID matching is used.}
 }
 \value{
 Returns a character vector of table IDs such as "B01001"
 }
 \description{
-Helper function to look for which American Community Survey (ACS) tables are in given sequence files 
+Helper function to look for which American Community Survey (ACS) tables are in given sequence files
   as obtained from the US Census FTP site.
 }
 \seealso{
-\code{\link{read.concat.states}} which uses this, and \code{\link{get.loookup.acs}} which is used by this
+\code{\link{read.concat.states}} which uses this, and \code{\link{get.lookup.acs}} which is used by this
 }

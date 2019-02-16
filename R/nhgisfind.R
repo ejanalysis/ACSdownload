@@ -16,22 +16,27 @@
 #'   codebooks= a vector of one or more filenames. The function also prints the information unless silent=TRUE.
 #' @seealso \code{\link{nhgis}}, \code{\link{nhgisread}}
 #' @export
-nhgisfind <- function(folder=getwd(), silent=FALSE) {
-
-  datafiles 		<- list.files(path=folder, pattern="^nhgis.*csv$")
-  codebookfiles <- list.files(path=folder, pattern="^nhgis.*codebook\\.txt$")
-
+nhgisfind <- function(folder = getwd(), silent = FALSE) {
+  datafiles 		<- list.files(path = folder, pattern = "^nhgis.*csv$")
+  codebookfiles <-
+    list.files(path = folder, pattern = "^nhgis.*codebook\\.txt$")
+  
   if (!silent) {
     cat("-----------------------\n")
     cat("Looking for NHGIS files in \n")
-    cat(folder); cat("\n")
+    cat(folder)
+    cat("\n")
     cat("-----------------------\n")
   }
-  if (length(datafiles)==length(codebookfiles)) {
+  if (length(datafiles) == length(codebookfiles)) {
     if (!silent) {
       cat("Folder contains these data and codebook files:\n")
       cat("  \n")
-      print(cbind(DATA=sort(datafiles), CODEBOOKS=sort(codebookfiles))); cat("\n")
+      print(cbind(
+        DATA = sort(datafiles),
+        CODEBOOKS = sort(codebookfiles)
+      ))
+      cat("\n")
       cat("-----------------------\n")
     }
   } else {
@@ -45,7 +50,6 @@ nhgisfind <- function(folder=getwd(), silent=FALSE) {
       cat("-----------------------\n")
     }
   }
-
-  return(list(datafiles=datafiles, codebooks=codebookfiles))
+  
+  return(list(datafiles = datafiles, codebooks = codebookfiles))
 }
-

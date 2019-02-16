@@ -17,10 +17,22 @@
 #'   10      B01001           2                                                       Male: B01001.002                                               Male\cr
 #' @seealso \code{\link{get.acs}}, \code{\link{get.table.info}}, and \code{\link{get.field.info}}
 #' @export
-get.table.info2 <- function(tables, end.year='2012', table.info.only=TRUE, moe=FALSE) {
-
-  if (missing(tables)) {stop('Must specify tables as a vector of character string table IDs, such as B01001')}
-
-  return( get.field.info(tables=tables, end.year=end.year, table.info.only=table.info.only, moe=moe) )
-
-}
+get.table.info2 <-
+  function(tables,
+           end.year = '2012',
+           table.info.only = TRUE,
+           moe = FALSE) {
+    if (missing(tables)) {
+      stop('Must specify tables as a vector of character string table IDs, such as B01001')
+    }
+    
+    return(
+      get.field.info(
+        tables = tables,
+        end.year = end.year,
+        table.info.only = table.info.only,
+        moe = moe
+      )
+    )
+    
+  }

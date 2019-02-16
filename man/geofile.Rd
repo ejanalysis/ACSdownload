@@ -12,11 +12,11 @@ geofile(mystates, end.year = "2012")
 \item{end.year}{end.year of 5-year summary file such as '2012' (default)}
 }
 \value{
-Character vector of file names, example: "g20105md.txt" 
+Character vector of file names, example: "g20105md.txt"
   Note this is only needed once per state, not once per seqfile. (It might even be available as a single US file?)
 }
 \description{
-Get name of text file used by US Census Bureau with geographic information for American Community Survey. 
+Get name of text file used by US Census Bureau with geographic information for American Community Survey.
  That geo file can be used to join data file(s) to FIPS/GEOID/NAME/SUMLEVEL/CKEY.
 }
 \seealso{

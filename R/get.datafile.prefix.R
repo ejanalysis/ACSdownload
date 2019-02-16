@@ -4,6 +4,6 @@
 #' @return By default, returns "20125"
 #' @seealso \code{\link{get.acs}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
 #' @export
-get.datafile.prefix	<- function(end.year="2012") {
-  return(paste(end.year, "5", sep=""))
+get.datafile.prefix	<- function(end.year = "2012") {
+  return(paste(end.year, "5", sep = ""))
 }

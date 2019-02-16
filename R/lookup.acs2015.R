@@ -21,12 +21,12 @@
 #' @seealso  \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
 #'   Also see \code{\link{get.lookup.acs}} which downloads these files.
 #'   Also see \code{\link{get.acs}}.
-#' @examples
-#'  \dontrun{
-#'  data(lookup.acs2015, package='ACSdownload')
-#'  # or
-#'  lookup.acs <- ACSdownload::get.lookup.acs(2015)
-#'  # or related info from
-#'  acs::acs.lookup()
-#'  }
+#' @examples  
+#'   \dontrun{
+#'   data(lookup.acs2015, package='ACSdownload')
+#'   # or
+#'   lookup.acs <- ACSdownload::get.lookup.acs(2015)
+#'   # or related info from
+#'   acs::acs.lookup()
+#'   }
 NULL

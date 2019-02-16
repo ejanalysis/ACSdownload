@@ -46,54 +46,69 @@
 #' @return Data.frame for use in \link[acs]{acs} package.
 #' @seealso \code{\link{get.acs}} to obtain acs data for use in this function, and then \code{\link[acs]{read.acs}} to read csv created by this function
 #' @export
-format.for.acs.package <- function(x, tableid='', folder=getwd(), end.year="2012", savefile=TRUE) {
-
-  warning('FUNCTION IS NOT FINISHED / NOT WORKING YET')
-
-  # Function in acs package that reads results:
-  #   read.acs(filename, endyear = "auto", span = "auto", col.names= "auto",
-  #            acs.units = "auto", geocols = "auto", skip = "auto")
-
-
-	keycols <- c("GEOID", "FIPS", "NAME")
-	keycols1 <- c('GEO.id', 'GEO.id2', 'GEO.display.label')
-	keycols2 <- c('Id', 'Id2', 'Geography')
-
-	# NAME field was not downloaded and retained due to encoding problems on OS X,
-	# but is belongs in the AFF format table to be imported by acs package
-	#if ('NAME' %in% colnames(x)) {x$NAME <- "NA"}
-
-	datacolnames <- names(x)[!(names(x) %in% keycols)]
-	# not tested yet to see what happens / should happen if more than one ACS table is here
-	tableid <- unique(gsub('\\..*', '', datacolnames))
-
-	####### shift to headers AFF uses
-
-	x <- x[ , c(keycols, datacolnames)]
-	#names(x) <- c(keycols1, *************************)
-
-	# placeholder for longnames row
-	longnames <- datacolnames   # **** get longnames from where?
-	# They are not quite acs.lookup(endyear=2013, span = 5, table.number = 'B01001')
-	#variable.code table.number table.name           variable.name
-	#1     B01001_001       B01001 Sex by Age                 Total:
-	#2     B01001_002       B01001 Sex by Age                  Male:
-	#3     B01001_003       B01001 Sex by Age    Male: Under 5 years
-
-
-	row2 <- c(keycols2, longnames)
-
-	x <- rbind(row2, x)
-
-	# 	cat(filename, '\n')
-	# 	cat( names(x) , '\n');
-	# 	cat("-------------------\n")
-
-	if (savefile) {
-	  if (missing(end.year)) {warning('end.year not specified so filename created assuming ', end.year)}
-	  filename <- paste("ACS_", substr(end.year, 3, 4), "_5YR_", tableid, "_with_ann.csv", sep="") # ACS_13_5YR_B01001_with_ann.csv
-	  write.csv(x, row.names = FALSE, file=file.path(folder, filename)  )
-	}
-
-	return(x)
-}
+format.for.acs.package <-
+  function(x,
+           tableid = '',
+           folder = getwd(),
+           end.year = "2012",
+           savefile = TRUE) {
+    warning('FUNCTION IS NOT FINISHED / NOT WORKING YET')
+    
+    # Function in acs package that reads results:
+    #   read.acs(filename, endyear = "auto", span = "auto", col.names= "auto",
+    #            acs.units = "auto", geocols = "auto", skip = "auto")
+    
+    
+    keycols <- c("GEOID", "FIPS", "NAME")
+    keycols1 <- c('GEO.id', 'GEO.id2', 'GEO.display.label')
+    keycols2 <- c('Id', 'Id2', 'Geography')
+    
+    # NAME field was not downloaded and retained due to encoding problems on OS X,
+    # but is belongs in the AFF format table to be imported by acs package
+    #if ('NAME' %in% colnames(x)) {x$NAME <- "NA"}
+    
+    datacolnames <- names(x)[!(names(x) %in% keycols)]
+    # not tested yet to see what happens / should happen if more than one ACS table is here
+    tableid <- unique(gsub('\\..*', '', datacolnames))
+    
+    ####### shift to headers AFF uses
+    
+    x <- x[, c(keycols, datacolnames)]
+    #names(x) <- c(keycols1, *************************)
+    
+    # placeholder for longnames row
+    longnames <- datacolnames   # **** get longnames from where?
+    # They are not quite acs.lookup(endyear=2013, span = 5, table.number = 'B01001')
+    #variable.code table.number table.name           variable.name
+    #1     B01001_001       B01001 Sex by Age                 Total:
+    #2     B01001_002       B01001 Sex by Age                  Male:
+    #3     B01001_003       B01001 Sex by Age    Male: Under 5 years
+    
+    
+    row2 <- c(keycols2, longnames)
+    
+    x <- rbind(row2, x)
+    
+    # 	cat(filename, '\n')
+    # 	cat( names(x) , '\n');
+    # 	cat("-------------------\n")
+    
+    if (savefile) {
+      if (missing(end.year)) {
+        warning('end.year not specified so filename created assuming ',
+                end.year)
+      }
+      filename <-
+        paste("ACS_",
+              substr(end.year, 3, 4),
+              "_5YR_",
+              tableid,
+              "_with_ann.csv",
+              sep = "") # ACS_13_5YR_B01001_with_ann.csv
+      write.csv(x,
+                row.names = FALSE,
+                file = file.path(folder, filename))
+    }
+    
+    return(x)
+  }
