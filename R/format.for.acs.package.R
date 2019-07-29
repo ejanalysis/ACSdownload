@@ -38,7 +38,7 @@
 #'  ###############################################################################\cr
 #'
 #' @param x Required list of tables from earlier steps in \code{\link{get.acs}}
-#' @param end.year Optional, text to use in filename if savefile=TRUE, default is '2012'. The acs package
+#' @param end.year Optional, text to use in filename if savefile=TRUE. The acs package
 #' needs this in the filename to infer the year, or that can be specified as the \code{endyear} parameter in \code{\link[acs]{read.acs}}
 #' @param tableid Used to name any saved file. Should be a string such as 'B01001'. Default is ''
 #' @param savefile Default is TRUE which means save a csv file to folder
@@ -50,7 +50,7 @@ format.for.acs.package <-
   function(x,
            tableid = '',
            folder = getwd(),
-           end.year = "2012",
+           end.year = '2017',
            savefile = TRUE) {
     warning('FUNCTION IS NOT FINISHED / NOT WORKING YET')
     

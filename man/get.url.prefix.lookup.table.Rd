@@ -4,10 +4,10 @@
 \alias{get.url.prefix.lookup.table}
 \title{Get first part of name(s) of URL(s) for ACS 5-year summary file data}
 \usage{
-get.url.prefix.lookup.table(end.year = "2012")
+get.url.prefix.lookup.table(end.year = "2017")
 }
 \arguments{
-\item{end.year}{Optional end year for 5-year summary file, as character, defaulting to "2012"}
+\item{end.year}{Optional end year for 5-year summary file, as character, like '2018'}
 }
 \value{
 Returns character element that is first part of URL such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile/"

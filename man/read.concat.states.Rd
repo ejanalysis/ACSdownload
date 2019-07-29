@@ -5,7 +5,7 @@
 \title{Read and concatenate State files of ACS data}
 \usage{
 read.concat.states(tables, mystates, geo, needed, folder = getwd(),
-  output.path, end.year = "2012", save.files = TRUE,
+  output.path, end.year = "2017", save.files = TRUE,
   sumlevel = "both", testing = FALSE, dt = TRUE, silent = FALSE)
 }
 \arguments{
@@ -14,7 +14,7 @@ read.concat.states(tables, mystates, geo, needed, folder = getwd(),
 \item{mystates}{Optional character vector of 2-character state abbreviations. Default is all states for which matching filenames are found in folder.}
 
 \item{geo}{Optional table of geographic identifiers that elsewhere would be merged with data here.
-If provided, can uses it here to look up data file length, based on state abbrev's list. See \code{\link{get.read.geo}}
+If provided, it is used here to look up data file length, based on state abbrev's list. See \code{\link{get.read.geo}}
 If geo is not provided, the function still reads each file whatever its length.}
 
 \item{needed}{Optional data.frame specifying which variables to keep from each table. Default is to keep all. See \code{\link{set.needed}} and \code{\link{get.acs}}}
@@ -23,7 +23,7 @@ If geo is not provided, the function still reads each file whatever its length.}
 
 \item{output.path}{Default is whatever the parameter \code{folder} is set to. Results as .RData files are saved here if save.files=TRUE.}
 
-\item{end.year}{Default is "2012", specifies end year of 5-year summary file.}
+\item{end.year}{Optional, specifies end year of 5-year summary file.}
 
 \item{save.files}{Default is TRUE, in which case it saves each resulting table/ data file on disk.}
 

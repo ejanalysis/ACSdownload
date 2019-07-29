@@ -5,7 +5,7 @@
 #' @param tables Character vector of table numbers needed such as 'B01001'
 #' @param mystates Character vector of 2-character state abbreviations. Default is all states.
 #' @param folder Default is current working directory.
-#' @param end.year Default is "2012" -- specifies last year of 5-year summary file.
+#' @param end.year optional -- specifies last year of 5-year summary file.
 #' @param testing Default is FALSE. If TRUE, prints more info.
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
 #' @param silent Default is FALSE. Whether to send progress info to standard output.
@@ -16,7 +16,7 @@ unzip.datafiles <-
   function(tables,
            mystates,
            folder = getwd(),
-           end.year = '2012',
+           end.year = '2017',
            testing = FALSE,
            attempts = 5,
            silent = FALSE) {

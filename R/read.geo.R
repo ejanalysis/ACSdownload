@@ -12,7 +12,7 @@
 #'   Format of files is here: \code{\url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf}}
 #' @param mystates Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.
 #' @param folder Optional path to where files are stored, defaults to getwd()
-#' @param end.year End year of 5-year data, default is "2012"
+#' @param end.year End year of 5-year data, like "2018"
 #' @param silent Default is FALSE. Whether to send progress info to standard output.
 #' @return Returns a large data.frame of selected geographic information on
 #'   all block groups and tracts in the specified states/DC/PR, with just these fields:\cr
@@ -26,7 +26,7 @@
 read.geo <-
   function(mystates,
            folder = getwd(),
-           end.year = '2012',
+           end.year = '2017',
            silent = FALSE) {
     ############# #
     # concatenate geos over all states
@@ -161,7 +161,13 @@ read.geo <-
       x2012 = geoformat2012,
       x2013 = geoformat2013,
       x2014 = geoformat2014,
-      x2015 = geoformat2015
+      x2015 = geoformat2015,
+      x2016 = geoformat2016,
+      x2017 = geoformat2017,
+      x2018 = geoformat2018,
+      x2019 = geoformat2019,
+      x2020 = geoformat2020,
+      x2021 = geoformat2021
     )
     
     # just import these:

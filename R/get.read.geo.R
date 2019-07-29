@@ -19,7 +19,7 @@
 #' @param mystates Character vector of 2-character state abbreviations, required.
 #' @param new.geo Logical value, optional, FALSE by default. If FALSE, if geo exists in memory don't download and parse again.
 #' @param folder Defaults to current working directory.
-#' @param end.year Defaults to "2012" to specify last year of 5-year summary file.
+#' @param end.year optional character year to specify last year of 5-year summary file.
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
 #' @param silent Default is FALSE.
 #' @return Returns a data.frame of all states geo info. \cr
@@ -47,13 +47,14 @@ get.read.geo <-
   function(mystates,
            new.geo = FALSE,
            folder = getwd(),
-           end.year = '2012',
+           end.year = '2017',
            testing = FALSE,
            silent = FALSE) {
     if (!new.geo) {
       # IF DO NOT WANT TO REDO WORK TO GET GEO DATA
       if (exists('geo')) {
         if (!silent) {
+          cat(as.character(Sys.time()), ' ')
           cat('Using geo info from prior work, already in memory\n')
         }
         # skip download & parse

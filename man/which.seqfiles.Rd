@@ -4,7 +4,7 @@
 \alias{which.seqfiles}
 \title{Find Which Sequence Files Contain Given ACS Table(s)}
 \usage{
-which.seqfiles(tables, lookup.acs, end.year = "2012")
+which.seqfiles(tables, lookup.acs, end.year = "2017")
 }
 \arguments{
 \item{tables}{character vector, required. Defines which ACS table(s) to check, such as 'B01001'}
@@ -12,7 +12,7 @@ which.seqfiles(tables, lookup.acs, end.year = "2012")
 \item{lookup.acs}{data.frame, optional (if not provided then it is downloaded from Census).
 Specifies what variables are in which tables and which tables are in which sequence files on the FTP site.}
 
-\item{end.year}{Character element, optional, "2012" by default. Defines end year for 5-year dataset.
+\item{end.year}{Character element, optional. Defines end year for 5-year dataset.
 Valid years are 2009:2014 as of Dec 2015 - Nov 2016, with more to be added over time.
 Ignored if lookup.acs is specified, however. If they imply different years, the function stops with an error message.}
 }

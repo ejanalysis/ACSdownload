@@ -4,12 +4,12 @@
 \alias{url.to.find.zipfile}
 \title{Get URL(s) for FTP site folder(s) with ACS 5-year summary file data}
 \usage{
-url.to.find.zipfile(mystates, end.year = "2012", url.prefix)
+url.to.find.zipfile(mystates, end.year = "2017", url.prefix)
 }
 \arguments{
 \item{mystates}{Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.}
 
-\item{end.year}{Optional end year for 5-year summary file, as character, defaulting to "2012" but ignored if url.prefix is specified}
+\item{end.year}{Optional end year for 5-year summary file, as character,  but ignored if url.prefix is specified}
 
 \item{url.prefix}{Optional character element that defaults to what is returned by \code{\link{get.url.prefix}(end.year)}}
 }

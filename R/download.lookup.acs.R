@@ -5,11 +5,14 @@
 #'   namely which sequence files on the FTP site contain which tables and which variables.
 #'   NOTE: This is largely obsolete now that data(lookup.acs2013) and similar files for other years are in this package.
 #' @details
+#'   Now folders are like:
+#'   https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
+#'   https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
 #'   The source of this lookup table is, for example,
 #'   \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
 #'   and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
 #'   and for 2016 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
-#' @param end.year Character, optional, '2012' by default, which specifies the 2008-2012 dataset.
+#' @param end.year Character, optional, like '2012', which specifies the 2008-2012 dataset.
 #'   Defines which 5-year summary file to use, based on end-year.
 #'   Can be 2009 or later. Data for end.year='2014' were released in early December 2015, for example.
 #' @param folder Optional path to where to download file to, defaults to current working directory.
@@ -41,7 +44,7 @@
 #'  }
 #' @export
 download.lookup.acs <-
-  function(end.year = '2012',
+  function(end.year = '2017',
            folder = getwd(),
            silent = FALSE) {
     my.url.prefix.lookup.table <-

@@ -1,9 +1,9 @@
 #' @title Get short and long field names etc for ACS tables
 #' @description
 #'  Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
-#' @details Uses \code{\link{get.lookup.acs}} but for 2012 version could just use \code{data(lookup.acs)}
+#' @details Uses \code{\link{get.lookup.acs}} but for latest version could just use \code{data(lookup.acs)}
 #' @param tables Required vector of tables such as "B01001"
-#' @param end.year Last year of 5-year summary file such as '2012' (default)
+#' @param end.year Last year of 5-year summary file such as '2018' 
 #' @param table.info.only FALSE by default. If TRUE, only return info about the table(s), not variables in table(s).
 #' @param moe FALSE by default. Margin of error variables also included if TRUE,
 #'   but their names are identical to those of estimates fields other than being MOE instead of estimate.
@@ -28,7 +28,7 @@
 #' @export
 get.field.info <-
   function(tables,
-           end.year = '2012',
+           end.year = '2017',
            table.info.only = FALSE,
            moe = FALSE,
            basic = FALSE,
@@ -40,7 +40,7 @@ get.field.info <-
     tables <- toupper(tables) # assume all are upper case in ACS
     
     # Get the text file with information on ACS tables and variables, downloading it if lookup.acs is not already a global variable in memory.
-    x <- get.lookup.acs(end.year)
+    x <- get.lookup.acs(end.year = end.year)
     x <-
       x[, c('Table.ID', 'Line.Number', 'Table.Title', 'Subject.Area')]
     

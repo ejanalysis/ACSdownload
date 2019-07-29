@@ -8,14 +8,14 @@
 #' @param tables Optional character vector of table numbers needed such as 'B01001', but default is all tables from each sequence file found.
 #' @param needed Optional data.frame specifying which variables to keep from each table. Default is to keep all. See \code{\link{set.needed}} and \code{\link{get.acs}}
 #' @param mystates Optional character vector of 2-character state abbreviations. Default is all states for which matching filenames are found in folder.
-#' @param end.year Default is "2012", specifies end year of 5-year summary file.
+#' @param end.year Optional, specifies end year of 5-year summary file.
 #' @param save.files Default is TRUE, in which case it saves each resulting table/ data file on disk.
 #' @param testing Default is FALSE. If TRUE, prints filenames but does not unzip them, and prints more messages.
 #' @param silent Default is FALSE. Whether to send progress info to standard output.
 #' @param sumlevel Default is "both". Specifies if "tracts" or "blockgroups" or "both" should be returned.
 #' @param output.path Default is whatever the parameter \code{folder} is set to. Results as .RData files are saved here if save.files=TRUE.
 #' @param geo Optional table of geographic identifiers that elsewhere would be merged with data here.
-#'   If provided, can uses it here to look up data file length, based on state abbrev's list. See \code{\link{get.read.geo}}
+#'   If provided, it is used here to look up data file length, based on state abbrev's list. See \code{\link{get.read.geo}}
 #'   If geo is not provided, the function still reads each file whatever its length.
 #' @param dt Optional logical, TRUE by default, specifies whether data.table::fread should be used instead of read.csv
 #' @return Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.
@@ -28,7 +28,7 @@ read.concat.states <-
            needed,
            folder = getwd(),
            output.path,
-           end.year = '2012',
+           end.year = '2017',
            save.files = TRUE,
            sumlevel = 'both',
            testing = FALSE,
@@ -38,9 +38,9 @@ read.concat.states <-
       output.path <- folder
     }
     
-    if (!exists('lookup.acs')) {
-      lookup.acs <- get.lookup.acs(end.year = end.year, folder = folder)
-    }
+    #if (!exists('lookup.acs')) {
+      lookup.acs <- get.lookup.acs(end.year = end.year)
+    #}
     # lookup.acs (the table of all ACS variables/tables/seqfiles and which columns of seqfile and table have each)
     # stateabbs  (so the default will work, a vector of 2-letter state abbreviations for the US)
     
@@ -133,7 +133,8 @@ read.concat.states <-
     
     for (this.seq in seqfilelistnums.mine) {
       if (!silent) {
-        cat("\nNow working on sequence file ", this.seq, " ----\n")
+        cat(as.character(Sys.time()), ' ')
+        cat("Now working on sequence file ", this.seq, " ----\n")
       }
       # e.g. # this.seq <- "0044"
       
@@ -165,9 +166,9 @@ read.concat.states <-
           ))
       } else {
         cols.in.csv <-
-          length(data.table::fread(
+          NCOL(junk <- data.table::fread(
             input = file.path(folder, efiles.not.us[1]),
-            nrows = 0
+            nrows = 1
           ))
       }
       
@@ -201,7 +202,6 @@ read.concat.states <-
         
         # Now convert to units of which column in the sequence file, not within the individual table
         # start at starting point of this table within the sequence file (but retain the key columns like LOGRECNO)
-        # NOTE: THIS REQUIRES lookup.acs be in memory !!! ***
         
         #allcolnums <- 1:cols.in.csv
         start.col <-
@@ -467,7 +467,7 @@ read.concat.states <-
         }
         
         if (!silent) {
-          cat(as.character(Sys.time()), "Finished merging \n")
+          cat(as.character(Sys.time()), "Finished merging")
         }
         ############# #
         
@@ -526,7 +526,7 @@ read.concat.states <-
       
     } # end of loop over sequence files
     if (!silent) {
-      cat(" \n \n")
+      cat(" \n")
     }
     
     # function returns a list of tables, one or more per sequence file (for all states specified merged)

@@ -4,13 +4,13 @@
 \alias{get.field.info}
 \title{Get short and long field names etc for ACS tables}
 \usage{
-get.field.info(tables, end.year = "2012", table.info.only = FALSE,
+get.field.info(tables, end.year = "2017", table.info.only = FALSE,
   moe = FALSE, basic = FALSE, silent = FALSE)
 }
 \arguments{
 \item{tables}{Required vector of tables such as "B01001"}
 
-\item{end.year}{Last year of 5-year summary file such as '2012' (default)}
+\item{end.year}{Last year of 5-year summary file such as '2018'}
 
 \item{table.info.only}{FALSE by default. If TRUE, only return info about the table(s), not variables in table(s).}
 
@@ -31,7 +31,7 @@ data.frame of information about each table and each variable in table: \cr
 Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
 }
 \details{
-Uses \code{\link{get.lookup.acs}} but for 2012 version could just use \code{data(lookup.acs)}
+Uses \code{\link{get.lookup.acs}} but for latest version could just use \code{data(lookup.acs)}
 }
 \examples{
 \dontrun{

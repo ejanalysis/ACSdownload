@@ -4,10 +4,10 @@
 \alias{get.lookup.acs}
 \title{Get Information about ACS 5-Year Summary File Tables}
 \usage{
-get.lookup.acs(end.year = "2012", folder = getwd())
+get.lookup.acs(end.year = "2017", folder = getwd())
 }
 \arguments{
-\item{end.year}{Character, optional, '2012' by default, which specifies the 2008-2012 dataset.
+\item{end.year}{Character, optional, like '2012', which specifies the 2008-2012 dataset.
 Defines which 5-year summary file to use, based on end-year.
 Can be 2009 or later. Data for end.year='2014' was released December 2015, for example.
 Note: Function stops with error if given end.year is not yet added to this package.}
@@ -41,7 +41,11 @@ Get lookup table of information on American Community Survey (ACS) tables, from 
   NOTE: This uses lazy loading from data(lookup.acs2013) and similarly for other years.
 }
 \details{
-The source of this lookup table was, for example,
+Now folders are like:
+  https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
+  https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
+  
+  The source of this lookup table was, for example,
   \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
   and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
   Note 2014 file lacks leading zeroes on Sequence Number field, so those were added before saving as .RData file as data for package.

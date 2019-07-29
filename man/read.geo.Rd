@@ -4,7 +4,7 @@
 \alias{read.geo}
 \title{Read and concatenate state geo files from Census ACS}
 \usage{
-read.geo(mystates, folder = getwd(), end.year = "2012",
+read.geo(mystates, folder = getwd(), end.year = "2017",
   silent = FALSE)
 }
 \arguments{
@@ -12,7 +12,7 @@ read.geo(mystates, folder = getwd(), end.year = "2012",
 
 \item{folder}{Optional path to where files are stored, defaults to getwd()}
 
-\item{end.year}{End year of 5-year data, default is "2012"}
+\item{end.year}{End year of 5-year data, like "2018"}
 
 \item{silent}{Default is FALSE. Whether to send progress info to standard output.}
 }

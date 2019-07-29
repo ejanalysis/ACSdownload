@@ -5,7 +5,7 @@
 \title{Reformat ACS Data Obtained by \code{\link{get.acs}} for Import to the acs Package}
 \usage{
 \method{format}{for.acs.package}(x, tableid = "", folder = getwd(),
-  end.year = "2012", savefile = TRUE)
+  end.year = "2017", savefile = TRUE)
 }
 \arguments{
 \item{x}{Required list of tables from earlier steps in \code{\link{get.acs}}}
@@ -14,7 +14,7 @@
 
 \item{folder}{Default is getwd() and specifies where to save csv if savefile=TRUE}
 
-\item{end.year}{Optional, text to use in filename if savefile=TRUE, default is '2012'. The acs package
+\item{end.year}{Optional, text to use in filename if savefile=TRUE. The acs package
 needs this in the filename to infer the year, or that can be specified as the \code{endyear} parameter in \code{\link[acs]{read.acs}}}
 
 \item{savefile}{Default is TRUE which means save a csv file to folder}

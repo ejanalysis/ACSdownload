@@ -4,13 +4,10 @@
 \alias{get.zipfile.prefix}
 \title{Get first part of ACS zip file name.}
 \usage{
-get.zipfile.prefix(end.year = "2012")
+get.zipfile.prefix(end.year = "2017")
 }
 \arguments{
-\item{end.year}{Optional character, default is "2012", specifying last year of 5-year summary file data.}
-}
-\value{
-By default, returns "20125"
+\item{end.year}{Optional character, specifying last year of 5-year summary file data.}
 }
 \description{
 Get the first part of the zipfile name for the ACS 5-year summary file datafiles on the US Census Bureau FTP site.

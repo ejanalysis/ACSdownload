@@ -7,7 +7,7 @@
 #' @return Returns a character vector of table IDs such as "B01001"
 #' @seealso \code{\link{read.concat.states}} which uses this, and \code{\link{get.lookup.acs}} which is used by this
 #' @export
-gettablesviaseqnums <- function(x, end.year = '2012') {
+gettablesviaseqnums <- function(x, end.year = '2017') {
   lookup.acs <- get.lookup.acs(end.year = end.year)
   
   unique(lookup.acs$Table.ID[as.numeric(lookup.acs$Sequence.Number) %in% as.numeric(x)])

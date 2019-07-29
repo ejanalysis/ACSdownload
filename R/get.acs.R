@@ -5,7 +5,6 @@
 #'   5-year Summary File FTP site, for all Census tracts and/or block groups in specified State(s).
 #'   Estimates and margins of error are obtained, as well as long and short names for the variables,
 #'   which can be specified if only parts of a table are needed.
-#'
 #' @details
 #'   The United States Census Bureau provides detailed demographic data by US Census tract and block group
 #'   in the American Community Survey (ACS) 5-year summary file via their FTP site. For those interested in block group or tract data,
@@ -14,79 +13,127 @@
 #'   contain those tables. Using a table of variables for those selected tables, a user can specify variables
 #'   or tables to drop by putting x or anything other than "Y" in the column specifying needed variables. \cr\cr
 #'   For ACS documentation, see for example:\cr\cr
-#' \url{http://www.census.gov/programs-surveys/acs.html} \cr
-#' or\cr
-#' \url{http://www.census.gov/acs/www/Downloads/data_documentation/SumFileTemp/2012-5-Year/Sequence_Number_and_Table_Number_Lookup.xls}\cr
-#' linked from\cr
-#' \url{http://www.census.gov/programs-surveys/acs/data/summary-file.html} \cr \cr
-#' #####################################	ADDITIONAL NOTES ######################################\cr
-#' 	NOTES ON NON-NUMERIC FIELDS IN ESTIMATE AND MOE FILES:\cr \cr
-#' FROM 2008-2012 ACS 5-Year Summary File Technical Documentation:\cr \cr
-#' Some data values represent unique situations where either the information to be conveyed is
-#' an explanation for the absence of data, represented by a #symbol in the data display, such as "(X)",
-#' or the information to be conveyed is an open-ended distribution, such as 115 or greater, represented by 115+.
-#' The following special data values can appear in the ACS Summary File table as an explanation for the absence of data:\cr
-#' 2008-2012 ACS 5-Year Summary File Technical Documentation\cr \cr
-#' ? Missing Value = ??    **********\cr
-#' A missing string indicates that the estimate is unavailable. (This appears in the estimates and margins or error
-#' files as two commas adjacent to each #other without anything between them, or if the last cell in a data file is
-#' filtered then you get a comma followed immediately by a carriage return or #EOF.)
-#' A missing value indicates when an estimate is missing because of filtering for geographic restrictions,
-#' coefficients of variations (CV), or was #removed due to the Disclosure Review Board?s (DRB) requirements.
-#' For more detail on filtering, please see Appendix C.5.\cr \cr
+#'   \url{http://www.census.gov/programs-surveys/acs.html} \cr
+#' @param tables Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
+#'   NOTE: If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
+#'   Those tables are "B01001", "B03002", "B15002", "B16002", "C17002", "B25034"
+#' @param base.path Character, optional, getwd() by default. Defines a base folder to start from, in case
+#'   data.path and/or output.path are not specified, in which case a subfolder under base.path,
+#'   called acsdata or acsoutput respectively, will be created and used for downloads or outputs of the function.
+#' @param data.path Character, optional, file.path(base.path, 'acsdata') by default.
+#'   Defines folder (created if does not exist) where downloaded files will be stored.
+#' @param output.path Character, optional, file.path(base.path, 'acsoutput') by default.
+#'   Defines folder (created if does not exist) where output files (results of this function) will be stored.
+#' @param end.year Character, optional. Defines a valid ending year of a 5-year summary file.
+#'   Can be '2017' for example. Not all years are tested. Actually works if numeric like 2017, instead of character, too. 
+#' @param mystates Character vector, optional, 'all' by default which means all available states
+#'   plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.
+#' @param sumlevel Default is "both" (case insensitive) in which case tracts and block groups are returned.
+#'   Also c('tract', 'bg') or c(140,150) and similar patterns work.
+#'   If "tract" or 140 or some other match, but not block groups, is specified (insensitive to case, tract can be plural or part of a word, etc.),
+#'   just tracts are returned.
+#'   If "bg" or 150 or "blockgroups" or "block groups" or some other match (insensitive to case, singular or plural or part of a word)
+#'   but no match on tracts is specified, just block groups are returned.
+#'   Non-matching elements are ignored (e.g., sumlevel=c('bg', 'tracs', 'block') will return block groups
+#'   but neither tracts (because of the typo) nor blocks (not available in ACS), with no warning --
+#'   No warning is given if sumlevel is set to a list of elements where some are not recognized as matches to bg or tract,
+#'   as long as one or more match bg, tracts, or both (or variants as already noted).
+#' @param vars Optional, default is 'all' (in which case all variables from each table will be returned unless otherwise specified -- see below).
+#'   This parameter specifies whether to pause and ask the user about which variables are needed in an interactive session in R.
+#'   This gives the user a chance to prepare the file "variables needed.csv" (or just ensure it is ready),
+#'   or to edit and save "variables needed.csv" within a window in the default editor used by R (the user is asked which of these is preferred).
+#'   If vars is 'ask', the function just looks in \code{data.folder} for a file called "variables needed.csv" that, if used,
+#'   must specify which variables to keep from each table.
+#'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function --
+#'   keeping the letter "Y" in the column named "keep" indicates the given variable is needed.
+#'   A blank or "N" or other non-Y specifies the variable should be dropped and not returned by get.acs().
+#'   If the "variables needed.csv" file is not found, however, this function looks for and uses the file called "variables needed template.csv"
+#'   which is written by this function and specifies all of the variables from each table, so all variables will be retained and returned by get.acs().
+#' @param varsfile See help for \code{\link{set.needed}} for details. Optional name of file that can be used to specify which variables are needed from specified tables.
+#'   If varsfile is specified, parameter vars is ignored, and the function just looks in folder for file called filename, e.g., "variables needed.csv"
+#'   that should specify which variables to keep from each table.
+#' @param new.geo Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously.
+#' @param write.files Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.
+#' @param save.files Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.
+#' @param write.acspkg Default is FALSE. If TRUE, saves csv file of tracts and file of block groups, for each of the \code{tables},
+#'   in a format that the Census Bureau American Fact Finder provides as downloadable tables. That format can be easily read in by the very useful \pkg{acs} package.
+#' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory. But see silent parameter.
+#' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
+#'   when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
+#' @param filename.log Optional name (without extension) for a log file, which gets date and time and .txt extension appended to it. Default is "log"
+#' @param save.log Optional logical, default is TRUE. Should log file be saved in output.path folder
+#' @param silent Optional logical, default is FALSE. Should progress updates be shown (sent to standard out, like the screen).
 #'
-#' ? Dot = ?.?		********\cr
-#' A dot indicates when the estimate has no sample observations or too few sample observations.
-#' In the margin of error files, this value could also indicate #that the margin of error is unavailable for
-#' a median estimate that has been replaced with a jam value.\cr \cr
+#' @return By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
+#'   bg, tracts, headers, and info. The headers and info elements are data.frames providing metadata such as short and long field names.
+#'   The same column names are found in x$info and x$headers, but headers has more rows. The info table just provides information about each
+#'   data variable in the estimates tables. The headers table provides similar information but made to match the bg or tract format,
+#'   so the headers table has as many rows as bg or tracts has columns -- enough for the estimates and MOE fields, and the basic fields such as FIPS.
+#'   The info data.frame can look like this, for example: \cr
 #'
-#' ? Zero = ?0?\cr
-#' A ?0? entry in the margin of error column indicates that the estimate is controlled.
-#' A statistical test for sampling variability is not appropriate.
-#' This #is similar to the ?*****? symbol used in American FactFinder.\cr \cr
-#'
-#' ? Negative 1 = ?-1?\cr
-#' This indicates that an estimate does not contain a Margin of Error.
-#' Tables B00001, B00002, and tables starting with B98 and B99 do not have margin of #error (MOE)
-#' associated with them. The MOE calculations are set to -1 for these tables.\cr\cr
-#'
-#' ? Jam Values for Medians\cr
-#' The following is a listing of the jam values for medians. For example, if there is an estimate of "2499"
-#' for table B10010, then it does not indicate a #dollar amount. It means that the median is somewhere
-#' below 2,500 and thus isn't calculated. \cr\cr
-#'
-#' "Jam Value","Actual Meaning","Use for Medians" \cr
-#' "0","1 or less","Age, Duration of Marriage" \cr
-#' "9","9.0 or more","Rooms" \cr
-#' "10","10.0 or less","Gross Rent as Percentage of Income, Owner Costs as Percentage of Income" \cr
-#' "50","50.0 or more","Gross Rent as Percentage of Income, Owner Costs as Percentage of Income" \cr
-#' "99","100 or less","Rent, Gross Rent, Selected Monthly Owner Costs, Monthly Housing Costs" \cr
-#' "101","101 or more","Duration of Marriage" \cr
-#' "116","115 or more","Age" \cr
-#' "199","200 or less","Tax" \cr
-#' "1001","1,000 or more","Selected Monthly Owner Costs" \cr
-#' "1939","1939 or earlier","Year Built" \cr
-#' "1969","1969 or earlier","Year Moved In" \cr
-#' "2001","2,000 or more","Rent, Gross Rent" \cr
-#' "2005","2005 or later","Year Built, Year Moved In" \cr
-#' "2499","2,500 or less","Income, Earnings" \cr
-#' "4001","4,000 or more","Selected Monthly Owner Costs, Monthly Housing Costs" \cr
-#' "9999","10,000 or less","Value" \cr
-#' "10001","10,000 or more","Tax" \cr
-#' "200001","200,000 or more","Income" \cr
-#' "250001","250,000 or more","Income, Earnings" \cr
-#' "1000001","1,000,000 or more","Value" \cr
-#'  ############################################### \cr \cr
-#'
-#'    in older 2005-2009 and 2005-2010 also these were the sequence numbers, but they change over time: \cr
-#' seqnum <- "0010" has ageunder5m = B01001.003 etc. \cr
-#' seqnum <- "0013" has hisp = B03002.012 etc. \cr
-#' seqnum <- "0040" has age25up = B15002.001 etc. \cr
-#' seqnum <- "0042" has lingisospanish = B16002.004 etc. \cr
-#' seqnum <- "0046" has povknownratio = C17002.001 etc. \cr
-#' NOTE:  seq file 98 was used for year built in ACS 2005-2009 but in ACS 2006-2010 that is in seq file 97 \cr
+#'  \code{
+#'   'data.frame':	xxxx obs. of  9 variables:
+#'  $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...
+#'  $ line           : num  1 2 3 4 5 6 7 8 9 10 ...
+#'  $ shortname      : chr  "B01001.001" "B01001.002" "B01001.003" "B01001.004" ...
+#'  $ longname       : chr  "Total:" "Male:" "Under 5 years" "5 to 9 years" ...
+#'  $ table.title    : chr  "SEX BY AGE" "SEX BY AGE" "SEX BY AGE" "SEX BY AGE" ...
+#'  $ universe       : chr  "Universe:  Total population" "Universe:  Total population" "Universe:  Total population" "Universe:  Total population" ...
+#'  $ subject        : chr  "Age-Sex" "Age-Sex" "Age-Sex" "Age-Sex" ...
+#'  $ longname2      : chr  "Total" "Male" "Under5years" "5to9years" ...
+#'  $ longname.unique: chr  "Total:|SEX BY AGE" "Male:|SEX BY AGE" "Under 5 years|SEX BY AGE" "5 to 9 years|SEX BY AGE" ...
+#'  }
+#' @seealso \pkg{\link[acs]{acs}} package, which allows you to download and work with ACS data (using the API and your own key).
+#'    To get the tables and variables used in EJSCREEN, see \link[ejscreen]{ejscreen.download}. 
+#'    Also see \code{\link{nhgis}} which parses any files manually downloaded from \url{NHGIS.org}
+#' @examples
+#'   ##### Basic info on ACS tables:
+#'   cbind(table(lookup.acs2017$Subject.Area))
+#'  \dontrun{
+#'   ##### Basic info on ACS tables:
+#'   t( get.table.info('B01001', end.year = '2017') )
+#'   t( get.table.info(c('B17001', 'C17002'), end.year = 2017) )
+#'   get.field.info('C17002', end.year = 2017)
+#'   ##### Data for just DC & DE, just two tables:
+#'   outsmall <- get.acs(tables = c('B01001', 'C17002'), mystates=c('dc','de'),
+#'    end.year = '2017', base.path = '~/Downloads', write.files = T, new.geo = FALSE)
+#'   summary(outsmall)
+#'   t(outsmall$info[1, ])
+#'   t(outsmall$bg[1, ])
+#' 
+#'    ## ENTIRE USA -- DOWNLOAD AND PARSE -- TAKES A COUPLE OF MINUTES for one table:
+#'    acs_2013_2017_B01001_vars_bg_and_tract <- get.acs(
+#'      base.path='~/Downloads', end.year='2017', write.files = TRUE, new.geo = FALSE)
+#' 
+#'   ########################################################################
+#'   ##### Data for just DC & DE, just the default pop count table:
+#'   out <- get.acs(mystates=c('dc','de'), end.year = '2017', new.geo = FALSE)
+#'   names(out$bg); cat('\n\n'); head(out$info)
+#'   head(t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe,
+#'      subj=out$headers$subject,  out$bg[1:2,]) ), 15)
+#'   cbind(longname=out$info$longname,
+#'         total=colSums(out$bg[ , names(out$bg) %in% out$info$shortname ]))
+#'   ### to see data on 2 places, 1 per column, with short and long field names
+#'   cbind( out$headers$longname, t(out$bg[1:2, ]) )
+#'   ### to see 7 places, 1 per row, with short and long field name as header
+#'   head( rbind(out$headers$longname, out$bg) )[,1:7]
+#'   ##### just 2 tables for just Delaware
+#'   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))
+#'   summary(out); head(out$info); head(out$bg)
+#'   ##### uses all EJSCREEN defaults and the specified folders:
+#'   out <- get.acs(base.path='~', data.path='~/ACStemp', output.path='~/ACSresults')
+#'   summary(out); head(out$info); head(out$bg)
+#'   ##### all tables needed for EJSCREEN, plus 'B16001',
+#'     with variables specified in 'variables needed.csv', all states and DC and PR:
+#'   out <- get.acs(tables=c('ejscreen', 'B16001'))
+#'   summary(out); head(out$info); head(out$bg)
+#'  }
+#'  
+#' @note 
+#' #' #####################################	ADDITIONAL NOTES ######################################\cr
+#' 	SEE CENSUS ACS DOCUMENTATION ON NON-NUMERIC FIELDS IN ESTIMATE AND MOE FILES.\cr \cr
+#'  Note relevant sequence numbers change over time. \cr
 #' ############# \cr \cr
-#'
 #' #####################################################################################  \cr
 #'	NOTES on where to obtain ACS data - sources for downloads of summary file data  \cr
 #' ##################################################################################### \cr\cr \cr
@@ -140,108 +187,11 @@
 #'   \item Geolytics - commercial
 #'   \item etc.
 #' }
-#' @param tables Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
-#'   If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
-#'   Those tables are "B01001", "B03002", "B15002", "B16002", "C17002", "B25034"
-#' @param base.path Character, optional, getwd() by default. Defines a base folder to start from, in case
-#'   data.path and/or output.path are not specified, in which case a subfolder under base.path,
-#'   called acsdata or acsoutput respectively, will be created and used for downloads or outputs of the function.
-#' @param data.path Character, optional, file.path(base.path, 'acsdata') by default.
-#'   Defines folder (created if does not exist) where downloaded files will be stored.
-#' @param output.path Character, optional, file.path(base.path, 'acsoutput') by default.
-#'   Defines folder (created if does not exist) where output files (results of this function) will be stored.
-#' @param end.year Character, optional, '2012' by default. Defines a valid ending year of a 5-year summary file.
-#'   Can be '2010' for example. Not all years are tested.
-#' @param mystates Character vector, optional, 'all' by default which means all available states
-#'   plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.
-#' @param sumlevel Default is "both" (case insensitive) in which case tracts and block groups are returned.
-#'   Also c('tract', 'bg') or c(140,150) and similar patterns work.
-#'   If "tract" or 140 or some other match, but not block groups, is specified (insensitive to case, tract can be plural or part of a word, etc.),
-#'   just tracts are returned.
-#'   If "bg" or 150 or "blockgroups" or "block groups" or some other match (insensitive to case, singular or plural or part of a word)
-#'   but no match on tracts is specified, just block groups are returned.
-#'   Non-matching elements are ignored (e.g., sumlevel=c('bg', 'tracs', 'block') will return block groups
-#'   but neither tracts (because of the typo) nor blocks (not available in ACS), with no warning --
-#'   No warning is given if sumlevel is set to a list of elements where some are not recognized as matches to bg or tract,
-#'   as long as one or more match bg, tracts, or both (or variants as already noted).
-#' @param vars Optional logical, default is FALSE (in which case all variables from each table will be returned unless otherwise specified -- see below).
-#'   This parameter specifies whether to pause and ask the user about which variables are needed in an interactive session in R.
-#'   This gives the user a chance to prepare the file "variables needed.csv" (or just ensure it is ready),
-#'   or to edit and save "variables needed.csv" within a window in the default editor used by R (the user is asked which of these is preferred).
-#'   If vars=FALSE, the function just looks in \code{data.folder} for a file called "variables needed.csv" that, if used,
-#'   must specify which variables to keep from each table.
-#'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function --
-#'   keeping the letter "Y" in the column named "keep" indicates the given variable is needed.
-#'   A blank or "N" or other non-Y specifies the variable should be dropped and not returned by get.acs().
-#'   If the "variables needed.csv" file is not found, however, this function looks for and uses the file called "variables needed template.csv"
-#'   which is written by this function and specifies all of the variables from each table, so all variables will be retained and returned by get.acs().
-#' @param varsfile See help for \code{\link{set.needed}} for details. Optional name of file that can be used to specify which variables are needed from specified tables.
-#'   If varsfile is specified, parameter vars is ignored, and the function just looks in folder for file called filename, e.g., "variables needed.csv"
-#'   that should specify which variables to keep from each table.
-#' @param new.geo Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously.
-#' @param write.files Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.
-#' @param save.files Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.
-#' @param write.acspkg Default is FALSE. If TRUE, saves csv file of tracts and file of block groups, for each of the \code{tables},
-#'   in a format that the Census Bureau American Fact Finder provides as downloadable tables. That format can be easily read in by the very useful \pkg{acs} package.
-#' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory. But see silent parameter.
-#' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
-#'   when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
-#' @param filename.log Optional name (without extension) for a log file, which gets date and time and .txt extension appended to it. Default is "log"
-#' @param save.log Optional logical, default is TRUE. Should log file be saved in output.path folder
-#' @param silent Optional logical, default is FALSE. Should progress updates be shown (sent to standard out, like the screen).
-#'
-#' @return By default, returns a list of ACS data tables and information about them, with these elements in the list: \cr
-#'   bg, tracts, headers, and info. The headers and info elements are data.frames providing metadata such as short and long field names.
-#'   The same column names are found in x$info and x$headers, but headers has more rows. The info table just provides information about each
-#'   data variable in the estimates tables. The headers table provides similar information but made to match the bg or tract format,
-#'   so the headers table has as many rows as bg or tracts has columns -- enough for the estimates and MOE fields, and the basic fields such as FIPS.
-#'   The info data.frame can look like this, for example: \cr
-#'
-#'  \code{
-#'   'data.frame':	xxxx obs. of  9 variables:
-#'  $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...
-#'  $ line           : num  1 2 3 4 5 6 7 8 9 10 ...
-#'  $ shortname      : chr  "B01001.001" "B01001.002" "B01001.003" "B01001.004" ...
-#'  $ longname       : chr  "Total:" "Male:" "Under 5 years" "5 to 9 years" ...
-#'  $ table.title    : chr  "SEX BY AGE" "SEX BY AGE" "SEX BY AGE" "SEX BY AGE" ...
-#'  $ universe       : chr  "Universe:  Total population" "Universe:  Total population" "Universe:  Total population" "Universe:  Total population" ...
-#'  $ subject        : chr  "Age-Sex" "Age-Sex" "Age-Sex" "Age-Sex" ...
-#'  $ longname2      : chr  "Total" "Male" "Under5years" "5to9years" ...
-#'  $ longname.unique: chr  "Total:|SEX BY AGE" "Male:|SEX BY AGE" "Under 5 years|SEX BY AGE" "5 to 9 years|SEX BY AGE" ...
-#'  }
-#' @seealso \pkg{\link[acs]{acs}} package, which allows you to download and work with ACS data (using the API and your own key).
-#'    Also see \code{\link{nhgis}} which parses any files manually downloaded from \url{NHGIS.org}
-#' @examples
-#'  \dontrun{
-#'   ##### Basic info on ACS tables
-#'   t( get.table.info(c('B01001', 'C17002', 'B03002')) )
-#'   ##### Data for just DC & DE, just the default table.
-#'   out <- get.acs(mystates=c('dc','de'))
-#'   names(out$bg); cat('\n\n'); head(out$info)
-#'   head(  t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe, 
-#'      subj=out$headers$subject,  out$bg[1:2,]) ), 15)
-#'   cbind(longname=out$info$longname,
-#'         total=colSums(out$bg[ , names(out$bg) %in% out$info$shortname ]))
-#'   # to see data on 2 places, 1 per column, with short and long field names
-#'   cbind( out$headers$longname, t(out$bg[1:2, ]) )
-#'   # to see 7 places, 1 per row, with short and long field name as header
-#'   head( rbind(out$headers$longname, out$bg) )[,1:7]
-#'   ##### just 2 tables for just Delaware
-#'   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))
-#'   summary(out); head(out$info); head(out$bg)
-#'   ##### uses all EJSCREEN defaults and the specified folders:
-#'   out <- get.acs(base.path='~', data.path='~/ACStemp', output.path='~/ACSresults')
-#'   summary(out); head(out$info); head(out$bg)
-#'   ##### all tables needed for EJSCREEN, plus 'B16001',
-#'     with variables specified in 'variables needed.csv', all states and DC and PR:
-#'   out <- get.acs(tables=c('ejscreen', 'B16001'))
-#'   summary(out); head(out$info); head(out$bg)
-#'  }
 #' @export
 get.acs <-
   function(tables = 'B01001',
            mystates = 'all',
-           end.year = '2012',
+           end.year = '2017',
            base.path = getwd(),
            data.path = file.path(base.path, 'acsdata'),
            output.path = file.path(base.path, 'acsoutput'),
@@ -259,7 +209,10 @@ get.acs <-
            filename.log = 'log') {
     ejscreentables <-
       c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034")
-    
+    end.year <- as.character(end.year)
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    if (!(end.year %in% as.character(2009:2030))) {stop('end.year must be a plausible year such as 2017')}
+
     # check if base.path seems to be a valid folder
     if (!file.exists(base.path)) {
       stop(paste('base.path', base.path, 'does not exist'))
@@ -291,14 +244,14 @@ get.acs <-
     if (save.log & !silent) {
       sink(logfullpath, split = TRUE)
       on.exit({
-        warning()
+        warning('Exiting')
         sink()
       })
     }
     if (save.log & silent) {
       sink(logfullpath, split = FALSE)
       on.exit({
-        warning()
+        warning('Exiting')
         sink()
       })
     }
@@ -410,7 +363,7 @@ get.acs <-
     }
     # Get lookup table of sequence files, table IDs, variable names & positions in the sequence file.
     
-    lookup.acs <- get.lookup.acs(end.year, folder = data.path)
+    lookup.acs <- get.lookup.acs(end.year = end.year)
     
     seqfilelistnums <-
       which.seqfiles(tables = tables,

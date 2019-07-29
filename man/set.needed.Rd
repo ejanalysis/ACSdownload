@@ -5,7 +5,7 @@
 \title{Specify which ACS Variables are Needed}
 \usage{
 set.needed(tables, lookup.acs, vars = "all", varsfile,
-  folder = getwd(), noEditOnMac = FALSE, end.year = "2012",
+  folder = getwd(), noEditOnMac = FALSE, end.year = "2017",
   silent = TRUE, writefile = TRUE)
 }
 \arguments{
@@ -13,7 +13,7 @@ set.needed(tables, lookup.acs, vars = "all", varsfile,
 
 \item{lookup.acs}{Data.frame, optional. Defines which variables are in which tables. Output of \code{\link{get.lookup.acs}}}
 
-\item{vars}{Optional logical, default is "all" (unless varsfile specified).
+\item{vars}{Optional default is all, which means all fields from table unless varsfile specified.
 Specifies what variables to use from specified tables, and how to determine that.
 If varsfile is provided, vars is ignored (see parameter varsfile).
 If vars="ask", function will ask user about variables needed and allow specification in an interactive session.}
@@ -32,7 +32,7 @@ The column called "keep" should have an upper or lowercase letter Y to indicate 
 
 \item{noEditOnMac}{FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.}
 
-\item{end.year}{Optional, defaults to '2012' -- specifies last year of 5-year summary file that is being used.}
+\item{end.year}{Optional,  -- specifies last year of 5-year summary file that is being used.}
 
 \item{silent}{Optional, defaults to TRUE. If FALSE, prints some indications of progress.}
 

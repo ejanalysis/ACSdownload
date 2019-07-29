@@ -4,7 +4,7 @@
 #'   from the US Census Bureau's FTP site for American Community Survey (ACS) 5-year summary file data.
 #'
 #' @param tables Required character vector of table numbers, such as c("B01001", "B03002")
-#' @param end.year Character element, optional, "2012" by default. Defines last of five years of summary file dataset; default is 2008-2012.
+#' @param end.year Character element, optional, like "2012". Defines last of five years of summary file dataset; default is 2008-2012.
 #' @param folder Default is getwd()
 #' @param mystates Character vector, now optional - Default is 50 states + DC + PR here, but otherwise relies on \code{\link{clean.mystates}}
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
@@ -15,7 +15,7 @@
 #' @export
 download.datafiles <-
   function(tables,
-           end.year = "2012",
+           end.year = '2017',
            mystates = 52,
            folder = getwd(),
            testing = FALSE,
@@ -173,7 +173,7 @@ download.datafiles <-
               }
             } else {
               if (!silent) {
-                cat('Downloaded. \n')
+                cat('Downloaded. ')
               }
             }
             
@@ -218,9 +218,9 @@ download.datafiles <-
         cat(' \n')
       }
     } # end of for loop over states
-    if (!silent) {
-      cat(' \n')
-    }
+    # if (!silent) {
+    #   cat(' \n')
+    # }
     
     ################# #
     # VERIFY ALL FILES WERE DOWNLOADED
@@ -242,8 +242,7 @@ download.datafiles <-
     } else {
       if (!silent) {
         cat(as.character(Sys.time()), ' ')
-        cat(
-          "All data zipfiles, or their estimates or MOE contents file, were downloaded/ found locally \n"
+        cat("All data zipfiles, or their estimates or MOE contents file, were downloaded/ found locally \n"
         )
       }
     }

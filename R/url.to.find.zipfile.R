@@ -20,12 +20,12 @@
 #'   But 2010-2014 was on http only, not ftp, as of mid Dec 3 2015 release day.
 #' @param mystates Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.
 #' @param url.prefix Optional character element that defaults to what is returned by \code{\link{get.url.prefix}(end.year)}
-#' @param end.year Optional end year for 5-year summary file, as character, defaulting to "2012" but ignored if url.prefix is specified
+#' @param end.year Optional end year for 5-year summary file, as character,  but ignored if url.prefix is specified
 #' @return Returns character vector that is URL(s) such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile"
 #' @seealso \code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}
 #' @export
 url.to.find.zipfile <-
-  function(mystates, end.year = '2012', url.prefix) {
+  function(mystates, end.year = '2017', url.prefix) {
     if (missing(mystates)) {
       # default is to get all states # which includes DC, AND "AS" "GU" "MP" "PR" "UM" "VI" "US"
       

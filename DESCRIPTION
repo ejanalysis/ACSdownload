@@ -14,14 +14,14 @@ Description: This R package helps you download and parse raw data from the
     at http://www.census.gov/geo/maps-data/data/tiger-data.html and data at 
     http://www.census.gov/geo/maps-data/data/gazetteer.html 
     For any imported/suggested packages not on CRAN, see http://ejanalysis.github.io 
-Version: 0.1.2
+Version: 0.1.2017
 Suggests:
   UScensus2010blocks,
   analyze.stuff,
   ejanalysis
 URL: http://ejanalysis.github.io, https://github.com/ejanalysis/ACSdownload, http://www.ejanalysis.com/
 BugReports: https://github.com/ejanalysis/ACSdownload/issues
-Date: 2018-09-01
+Date: 2019-07-26
 Depends: R (>= 3.1.0)
 RoxygenNote: 6.1.1
 License: MIT + file LICENSE

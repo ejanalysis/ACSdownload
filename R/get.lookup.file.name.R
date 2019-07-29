@@ -5,11 +5,11 @@
 #' @description Returns name of text file provided by US Census Bureau,
 #'   such as Sequence_Number_and_Table_Number_Lookup.txt, which provides the
 #'   sequence numbers (file numbers) and table numbers for data in the American Community Survey (ACS) 5-year summary file.
-#' @param end.year Not yet implemented, but will be optional end year for 5-year summary file, as character, defaulting to "2012"
+#' @param end.year Not yet implemented, but will be optional end year for 5-year summary file, as character
 #' @return Returns character element that is name of file such as "Sequence_Number_and_Table_Number_Lookup.txt"
 #' @seealso \code{\link{get.acs}}, \code{\link{get.lookup.acs}}, \code{\link{get.url.prefix.lookup.table}}. Also see \code{data(lookup.acs)}.
 #' @export
-get.lookup.file.name	<- function(end.year = "2012") {
+get.lookup.file.name	<- function(end.year = '2017') {
   if (end.year < 2009) {
     stop(
       'Years prior to 2009 are not valid. ACS 5-year file was not available until 2005-2009, end.year=2009.'
@@ -19,10 +19,12 @@ get.lookup.file.name	<- function(end.year = "2012") {
     if (end.year == 2014) {
       return('ACS_5yr_Seq_Table_Number_Lookup.txt')
     } else {
-      return("Sequence_Number_and_Table_Number_Lookup.txt")
+      return('ACS_5yr_Seq_Table_Number_Lookup.txt')
+      # return("Sequence_Number_and_Table_Number_Lookup.txt")
     }
   } else {
-    return("Sequence_Number_and_Table_Number_Lookup.xls")
+    return('ACS_5yr_Seq_Table_Number_Lookup.txt')
+    # return("Sequence_Number_and_Table_Number_Lookup.xls")
   }
   
   #	For other end years (and possibly 1 or 3 year files at some point? those lack block groups):

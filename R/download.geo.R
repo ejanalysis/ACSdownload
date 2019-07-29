@@ -16,7 +16,7 @@
 #'  }
 #'
 #' @param mystates vector of character 2-letter State abbreviations specifying which are needed
-#' @param end.year Specifies end year of 5-year summary file such as '2012' (default)
+#' @param end.year Specifies end year of 5-year summary file such as '2012' 
 #' @param folder folder to use for saving files - default is current working directory
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
@@ -31,7 +31,7 @@
 #' @export
 download.geo <-
   function(mystates,
-           end.year = "2012",
+           end.year = '2017',
            folder = getwd(),
            testing = FALSE,
            attempts = 5,

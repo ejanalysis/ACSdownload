@@ -4,10 +4,10 @@
 \alias{get.lookup.file.name}
 \title{Get name of Census file with Sequence and Table Numbers for ACS 5-year summary file data}
 \usage{
-get.lookup.file.name(end.year = "2012")
+get.lookup.file.name(end.year = "2017")
 }
 \arguments{
-\item{end.year}{Not yet implemented, but will be optional end year for 5-year summary file, as character, defaulting to "2012"}
+\item{end.year}{Not yet implemented, but will be optional end year for 5-year summary file, as character}
 }
 \value{
 Returns character element that is name of file such as "Sequence_Number_and_Table_Number_Lookup.txt"

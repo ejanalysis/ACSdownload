@@ -4,7 +4,7 @@
 \alias{get.acs}
 \title{Download Tables from American Community Survey (ACS) 5-year Summary File}
 \usage{
-get.acs(tables = "B01001", mystates = "all", end.year = "2012",
+get.acs(tables = "B01001", mystates = "all", end.year = "2017",
   base.path = getwd(), data.path = file.path(base.path, "acsdata"),
   output.path = file.path(base.path, "acsoutput"), sumlevel = "both",
   vars = "all", varsfile, new.geo = TRUE, write.files = FALSE,
@@ -14,14 +14,14 @@ get.acs(tables = "B01001", mystates = "all", end.year = "2012",
 }
 \arguments{
 \item{tables}{Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
-If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
+NOTE: If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
 Those tables are "B01001", "B03002", "B15002", "B16002", "C17002", "B25034"}
 
 \item{mystates}{Character vector, optional, 'all' by default which means all available states
 plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.}
 
-\item{end.year}{Character, optional, '2012' by default. Defines a valid ending year of a 5-year summary file.
-Can be '2010' for example. Not all years are tested.}
+\item{end.year}{Character, optional. Defines a valid ending year of a 5-year summary file.
+Can be '2017' for example. Not all years are tested. Actually works if numeric like 2017, instead of character, too.}
 
 \item{base.path}{Character, optional, getwd() by default. Defines a base folder to start from, in case
 data.path and/or output.path are not specified, in which case a subfolder under base.path,
@@ -44,11 +44,11 @@ but neither tracts (because of the typo) nor blocks (not available in ACS), with
 No warning is given if sumlevel is set to a list of elements where some are not recognized as matches to bg or tract,
 as long as one or more match bg, tracts, or both (or variants as already noted).}
 
-\item{vars}{Optional logical, default is FALSE (in which case all variables from each table will be returned unless otherwise specified -- see below).
+\item{vars}{Optional, default is 'all' (in which case all variables from each table will be returned unless otherwise specified -- see below).
 This parameter specifies whether to pause and ask the user about which variables are needed in an interactive session in R.
 This gives the user a chance to prepare the file "variables needed.csv" (or just ensure it is ready),
 or to edit and save "variables needed.csv" within a window in the default editor used by R (the user is asked which of these is preferred).
-If vars=FALSE, the function just looks in \code{data.folder} for a file called "variables needed.csv" that, if used,
+If vars is 'ask', the function just looks in \code{data.folder} for a file called "variables needed.csv" that, if used,
 must specify which variables to keep from each table.
 The format of that file should be the same as is found in the file "variables needed template.csv" created by this function --
 keeping the letter "Y" in the column named "keep" indicates the given variable is needed.
@@ -115,79 +115,13 @@ The United States Census Bureau provides detailed demographic data by US Census 
   contain those tables. Using a table of variables for those selected tables, a user can specify variables
   or tables to drop by putting x or anything other than "Y" in the column specifying needed variables. \cr\cr
   For ACS documentation, see for example:\cr\cr
-\url{http://www.census.gov/programs-surveys/acs.html} \cr
-or\cr
-\url{http://www.census.gov/acs/www/Downloads/data_documentation/SumFileTemp/2012-5-Year/Sequence_Number_and_Table_Number_Lookup.xls}\cr
-linked from\cr
-\url{http://www.census.gov/programs-surveys/acs/data/summary-file.html} \cr \cr
-#####################################	ADDITIONAL NOTES ######################################\cr
-	NOTES ON NON-NUMERIC FIELDS IN ESTIMATE AND MOE FILES:\cr \cr
-FROM 2008-2012 ACS 5-Year Summary File Technical Documentation:\cr \cr
-Some data values represent unique situations where either the information to be conveyed is
-an explanation for the absence of data, represented by a #symbol in the data display, such as "(X)",
-or the information to be conveyed is an open-ended distribution, such as 115 or greater, represented by 115+.
-The following special data values can appear in the ACS Summary File table as an explanation for the absence of data:\cr
-2008-2012 ACS 5-Year Summary File Technical Documentation\cr \cr
-? Missing Value = ??    **********\cr
-A missing string indicates that the estimate is unavailable. (This appears in the estimates and margins or error
-files as two commas adjacent to each #other without anything between them, or if the last cell in a data file is
-filtered then you get a comma followed immediately by a carriage return or #EOF.)
-A missing value indicates when an estimate is missing because of filtering for geographic restrictions,
-coefficients of variations (CV), or was #removed due to the Disclosure Review Board?s (DRB) requirements.
-For more detail on filtering, please see Appendix C.5.\cr \cr
-
-? Dot = ?.?		********\cr
-A dot indicates when the estimate has no sample observations or too few sample observations.
-In the margin of error files, this value could also indicate #that the margin of error is unavailable for
-a median estimate that has been replaced with a jam value.\cr \cr
-
-? Zero = ?0?\cr
-A ?0? entry in the margin of error column indicates that the estimate is controlled.
-A statistical test for sampling variability is not appropriate.
-This #is similar to the ?*****? symbol used in American FactFinder.\cr \cr
-
-? Negative 1 = ?-1?\cr
-This indicates that an estimate does not contain a Margin of Error.
-Tables B00001, B00002, and tables starting with B98 and B99 do not have margin of #error (MOE)
-associated with them. The MOE calculations are set to -1 for these tables.\cr\cr
-
-? Jam Values for Medians\cr
-The following is a listing of the jam values for medians. For example, if there is an estimate of "2499"
-for table B10010, then it does not indicate a #dollar amount. It means that the median is somewhere
-below 2,500 and thus isn't calculated. \cr\cr
-
-"Jam Value","Actual Meaning","Use for Medians" \cr
-"0","1 or less","Age, Duration of Marriage" \cr
-"9","9.0 or more","Rooms" \cr
-"10","10.0 or less","Gross Rent as Percentage of Income, Owner Costs as Percentage of Income" \cr
-"50","50.0 or more","Gross Rent as Percentage of Income, Owner Costs as Percentage of Income" \cr
-"99","100 or less","Rent, Gross Rent, Selected Monthly Owner Costs, Monthly Housing Costs" \cr
-"101","101 or more","Duration of Marriage" \cr
-"116","115 or more","Age" \cr
-"199","200 or less","Tax" \cr
-"1001","1,000 or more","Selected Monthly Owner Costs" \cr
-"1939","1939 or earlier","Year Built" \cr
-"1969","1969 or earlier","Year Moved In" \cr
-"2001","2,000 or more","Rent, Gross Rent" \cr
-"2005","2005 or later","Year Built, Year Moved In" \cr
-"2499","2,500 or less","Income, Earnings" \cr
-"4001","4,000 or more","Selected Monthly Owner Costs, Monthly Housing Costs" \cr
-"9999","10,000 or less","Value" \cr
-"10001","10,000 or more","Tax" \cr
-"200001","200,000 or more","Income" \cr
-"250001","250,000 or more","Income, Earnings" \cr
-"1000001","1,000,000 or more","Value" \cr
- ############################################### \cr \cr
-
-   in older 2005-2009 and 2005-2010 also these were the sequence numbers, but they change over time: \cr
-seqnum <- "0010" has ageunder5m = B01001.003 etc. \cr
-seqnum <- "0013" has hisp = B03002.012 etc. \cr
-seqnum <- "0040" has age25up = B15002.001 etc. \cr
-seqnum <- "0042" has lingisospanish = B16002.004 etc. \cr
-seqnum <- "0046" has povknownratio = C17002.001 etc. \cr
-NOTE:  seq file 98 was used for year built in ACS 2005-2009 but in ACS 2006-2010 that is in seq file 97 \cr
+  \url{http://www.census.gov/programs-surveys/acs.html} \cr
+}
+\note{
+#' #####################################	ADDITIONAL NOTES ######################################\cr
+	SEE CENSUS ACS DOCUMENTATION ON NON-NUMERIC FIELDS IN ESTIMATE AND MOE FILES.\cr \cr
+ Note relevant sequence numbers change over time. \cr
 ############# \cr \cr
-
 #####################################################################################  \cr
 NOTES on where to obtain ACS data - sources for downloads of summary file data  \cr
 ##################################################################################### \cr\cr \cr
@@ -243,19 +177,35 @@ OTHER SOURCES include \cr
 }
 }
 \examples{
+  ##### Basic info on ACS tables:
+  cbind(table(lookup.acs2017$Subject.Area))
  \dontrun{
-  ##### Basic info on ACS tables
-  t( get.table.info(c('B01001', 'C17002', 'B03002')) )
-  ##### Data for just DC & DE, just the default table.
-  out <- get.acs(mystates=c('dc','de'))
+  ##### Basic info on ACS tables:
+  t( get.table.info('B01001', end.year = '2017') )
+  t( get.table.info(c('B17001', 'C17002'), end.year = 2017) )
+  get.field.info('C17002', end.year = 2017)
+  ##### Data for just DC & DE, just two tables:
+  outsmall <- get.acs(tables = c('B01001', 'C17002'), mystates=c('dc','de'),
+   end.year = '2017', base.path = '~/Downloads', write.files = T, new.geo = FALSE)
+  summary(outsmall)
+  t(outsmall$info[1, ])
+  t(outsmall$bg[1, ])
+
+   ## ENTIRE USA -- DOWNLOAD AND PARSE -- TAKES A COUPLE OF MINUTES for one table:
+   acs_2013_2017_B01001_vars_bg_and_tract <- get.acs(
+     base.path='~/Downloads', end.year='2017', write.files = TRUE, new.geo = FALSE)
+
+  ########################################################################
+  ##### Data for just DC & DE, just the default pop count table:
+  out <- get.acs(mystates=c('dc','de'), end.year = '2017', new.geo = FALSE)
   names(out$bg); cat('\\n\\n'); head(out$info)
-  head(  t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe, 
+  head(t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe,
      subj=out$headers$subject,  out$bg[1:2,]) ), 15)
   cbind(longname=out$info$longname,
         total=colSums(out$bg[ , names(out$bg) \%in\% out$info$shortname ]))
-  # to see data on 2 places, 1 per column, with short and long field names
+  ### to see data on 2 places, 1 per column, with short and long field names
   cbind( out$headers$longname, t(out$bg[1:2, ]) )
-  # to see 7 places, 1 per row, with short and long field name as header
+  ### to see 7 places, 1 per row, with short and long field name as header
   head( rbind(out$headers$longname, out$bg) )[,1:7]
   ##### just 2 tables for just Delaware
   out <- get.acs(mystates='de', tables=c('B01001', 'C17002'))
@@ -268,8 +218,10 @@ OTHER SOURCES include \cr
   out <- get.acs(tables=c('ejscreen', 'B16001'))
   summary(out); head(out$info); head(out$bg)
  }
+ 
 }
 \seealso{
 \pkg{\link[acs]{acs}} package, which allows you to download and work with ACS data (using the API and your own key).
+   To get the tables and variables used in EJSCREEN, see \link[ejscreen]{ejscreen.download}. 
    Also see \code{\link{nhgis}} which parses any files manually downloaded from \url{NHGIS.org}
 }

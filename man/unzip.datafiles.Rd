@@ -4,7 +4,7 @@
 \alias{unzip.datafiles}
 \title{Unzip ACS datafile per state, downloading missing ones first}
 \usage{
-unzip.datafiles(tables, mystates, folder = getwd(), end.year = "2012",
+unzip.datafiles(tables, mystates, folder = getwd(), end.year = "2017",
   testing = FALSE, attempts = 5, silent = FALSE)
 }
 \arguments{
@@ -14,7 +14,7 @@ unzip.datafiles(tables, mystates, folder = getwd(), end.year = "2012",
 
 \item{folder}{Default is current working directory.}
 
-\item{end.year}{Default is "2012" -- specifies last year of 5-year summary file.}
+\item{end.year}{optional -- specifies last year of 5-year summary file.}
 
 \item{testing}{Default is FALSE. If TRUE, prints more info.}
 

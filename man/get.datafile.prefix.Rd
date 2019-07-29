@@ -4,13 +4,10 @@
 \alias{get.datafile.prefix}
 \title{Get first part of ACS datafile name.}
 \usage{
-get.datafile.prefix(end.year = "2012")
+get.datafile.prefix(end.year = "2017")
 }
 \arguments{
-\item{end.year}{Optional character, default is "2012", specifying last year of 5-year summary file data.}
-}
-\value{
-By default, returns "20125"
+\item{end.year}{Optional character, such as "2012", specifying last year of 5-year summary file data.}
 }
 \description{
 Get the first part of the datafile name for the ACS 5-year summary file datafiles on the US Census Bureau FTP site.

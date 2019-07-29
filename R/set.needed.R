@@ -15,12 +15,12 @@
 #'   which is written by this function and specifies all of the variables from each table.
 #'   The column called "keep" should have an upper or lowercase letter Y to indicate that row (variable) should be kept.
 #'     Blanks or other values (even the word "yes") indicate the variable is not needed from that data table and it will be dropped.
-#' @param vars Optional logical, default is "all" (unless varsfile specified).
+#' @param vars Optional default is all, which means all fields from table unless varsfile specified.
 #'   Specifies what variables to use from specified tables, and how to determine that.
 #'   If varsfile is provided, vars is ignored (see parameter varsfile).
 #'   If vars="ask", function will ask user about variables needed and allow specification in an interactive session.
 #' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
-#' @param end.year Optional, defaults to '2012' -- specifies last year of 5-year summary file that is being used.
+#' @param end.year Optional,  -- specifies last year of 5-year summary file that is being used.
 #' @param silent Optional, defaults to TRUE. If FALSE, prints some indications of progress.
 #' @param writefile Optional, defaults to TRUE. If TRUE, saves template of needed variables as "variables needed template.csv" file to folder.
 #' @return Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.
@@ -33,7 +33,7 @@ set.needed <-
            varsfile,
            folder = getwd(),
            noEditOnMac = FALSE,
-           end.year = '2012',
+           end.year = '2017',
            silent = TRUE,
            writefile = TRUE) {
     if (missing(lookup.acs)) {
@@ -56,8 +56,9 @@ set.needed <-
     needed$colnum <- lookup.acs$Line.Number
     
     # limit the "needed" table to the needed tables (not entire sequence files necessarily)
-    needed <- needed[needed$table %in% tables,]
-    
+    tablematches <- needed$table %in% tables
+    if (all(tablematches == FALSE)) {stop('None of the specified tables were found in specified lookup.acs')}
+    needed <- needed[tablematches, ]
     # Fix "Total:" or other type of first row (e.g. Aggregate travel time to work (in minutes):)
     #  to also show the universe from one row above it in lookup table
     # needed$varname[needed$varname=="Total:"] <- gsub("Universe:  ", "", needed$varname[which(needed$varname=="Total:")-1])
@@ -136,7 +137,7 @@ set.needed <-
       if (!silent) {
         cat(as.character(Sys.time()), ' ')
         cat(
-          'Finished writing template file to working directory on disk: variables needed template.csv\n'
+          'Finished writing template file: variables needed template.csv\n'
         )
       }
     }
