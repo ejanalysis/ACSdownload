@@ -41,9 +41,9 @@ clean.mystates <- function(mystates = 'all', testing = FALSE) {
   # that leaves 52 (states+dc+pr)
   # *** now remove pr
   stateabbs <- stateabbs[stateabbs != 'pr']
-  
+
   mystates <- tolower(mystates)
-  
+
   # expand states specified by 50,51,52,'all'
   x51 <- allabbs[1:51]
   if ('all' %in% mystates) {
@@ -58,20 +58,20 @@ clean.mystates <- function(mystates = 'all', testing = FALSE) {
   if (52 %in% mystates)    {
     mystates <- c(mystates[mystates != 52], x51, 'pr')
   }
-  
+
   # remove duplicates:
   mystates <- unique(mystates)
-  
+
   if (!all(mystates %in% allabbs)) {
     stop('not all specified states were found in list of state abbreviations')
   }
-  
+
   #  remove island areas/territories ( but not  'us'?)  :
   mystates <- mystates[mystates %in% c('us', stateabbs)]
-  
-  if (testing) {
+
+  if (testing & missing(mystates)) {
     mystates	<- c("dc", "de")
   }
-  
+
   return(mystates)
 }

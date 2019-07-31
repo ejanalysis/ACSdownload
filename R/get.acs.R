@@ -25,7 +25,7 @@
 #' @param output.path Character, optional, file.path(base.path, 'acsoutput') by default.
 #'   Defines folder (created if does not exist) where output files (results of this function) will be stored.
 #' @param end.year Character, optional. Defines a valid ending year of a 5-year summary file.
-#'   Can be '2017' for example. Not all years are tested. Actually works if numeric like 2017, instead of character, too. 
+#'   Can be '2017' for example. Not all years are tested. Actually works if numeric like 2017, instead of character, too.
 #' @param mystates Character vector, optional, 'all' by default which means all available states
 #'   plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.
 #' @param sumlevel Default is "both" (case insensitive) in which case tracts and block groups are returned.
@@ -84,7 +84,7 @@
 #'  $ longname.unique: chr  "Total:|SEX BY AGE" "Male:|SEX BY AGE" "Under 5 years|SEX BY AGE" "5 to 9 years|SEX BY AGE" ...
 #'  }
 #' @seealso \pkg{\link[acs]{acs}} package, which allows you to download and work with ACS data (using the API and your own key).
-#'    To get the tables and variables used in EJSCREEN, see \link[ejscreen]{ejscreen.download}. 
+#'    To get the tables and variables used in EJSCREEN, see \link[ejscreen]{ejscreen.download}.
 #'    Also see \code{\link{nhgis}} which parses any files manually downloaded from \url{NHGIS.org}
 #' @examples
 #'   ##### Basic info on ACS tables:
@@ -100,11 +100,11 @@
 #'   summary(outsmall)
 #'   t(outsmall$info[1, ])
 #'   t(outsmall$bg[1, ])
-#' 
+#'
 #'    ## ENTIRE USA -- DOWNLOAD AND PARSE -- TAKES A COUPLE OF MINUTES for one table:
 #'    acs_2013_2017_B01001_vars_bg_and_tract <- get.acs(
 #'      base.path='~/Downloads', end.year='2017', write.files = TRUE, new.geo = FALSE)
-#' 
+#'
 #'   ########################################################################
 #'   ##### Data for just DC & DE, just the default pop count table:
 #'   out <- get.acs(mystates=c('dc','de'), end.year = '2017', new.geo = FALSE)
@@ -128,8 +128,8 @@
 #'   out <- get.acs(tables=c('ejscreen', 'B16001'))
 #'   summary(out); head(out$info); head(out$bg)
 #'  }
-#'  
-#' @note 
+#'
+#' @note
 #' #' #####################################	ADDITIONAL NOTES ######################################\cr
 #' 	SEE CENSUS ACS DOCUMENTATION ON NON-NUMERIC FIELDS IN ESTIMATE AND MOE FILES.\cr \cr
 #'  Note relevant sequence numbers change over time. \cr
@@ -217,16 +217,16 @@ get.acs <-
     if (!file.exists(base.path)) {
       stop(paste('base.path', base.path, 'does not exist'))
     }
-    
+
     if (!save.log & silent) {
       nocat <- TRUE
     } else {
       nocat <- FALSE
     }
     #  if (!nocat) {cat('\n')}
-    
+
     starttime <- Sys.time()
-    
+
     if (!file.exists(output.path)) {
       diroutcome <- try(dir.create(output.path), silent = TRUE)
       if (class(diroutcome) == 'try-error') {
@@ -236,7 +236,7 @@ get.acs <-
     } else {
       created.output.path <- FALSE
     }
-    
+
     # Set up the log file if requested, which also suppresses or does not suppress on screen messages, depending on parameter called silent
     logfullpath <-
       file.path(output.path, paste(filename.log, ' ', gsub(':', '.', Sys.time()), '.txt', sep =
@@ -255,14 +255,14 @@ get.acs <-
         sink()
       })
     }
-    
+
     if (created.output.path) {
       if (!nocat) {
         cat(as.character(Sys.time()), ' ')
         cat(paste('output.path', output.path, 'not found so it was created\n'))
       }
     }
-    
+
     if (!file.exists(data.path)) {
       diroutcome <- try(dir.create(data.path), silent = TRUE)
       if (class(diroutcome) == 'try-error') {
@@ -273,7 +273,7 @@ get.acs <-
         cat(paste('data.path  ', data.path, 'not found so it was created\n'))
       }
     }
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat('base.path: ', base.path, '\n')
@@ -287,14 +287,14 @@ get.acs <-
       cat('output.path:', output.path, '\n')
     }
     #if (!nocat) {cat(as.character(Sys.time()), ' '); cat('working directory: ',   getwd(),     '\n')}
-    
+
     # if tables equals or contains 'ejscreen' then replace the 'ejscreen' part with the default tables as follows, leaving any other tables specified in addition to ejscreen tables:
     if (any(tolower(tables) == 'ejscreen')) {
       tables <- c(ejscreentables, tables[tolower(tables) != 'ejscreen'])
     }
     # note b16001 is tract only and not in core set of EJSCREEN variables
     # or e.g.,   mystates <- c("dc", "de")
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat('Tables:   ', tables,   '\n')
@@ -303,7 +303,7 @@ get.acs <-
       cat(as.character(Sys.time()), ' ')
       cat('States:   ', mystates, '\n')
     }
-    
+
     ##################################################################################### #
     # STEPS:
     #
@@ -317,14 +317,14 @@ get.acs <-
     #
     #	download txt (or csv) file(s) with GEO information (for linking data file to file with FIPS/GEOID/NAME/SUMLEVEL/CKEY)
     #	read and concatenate state geo files
-    
+
     #	create names of individual data & moe files extracted from the zip files (based on 2-letter state abbreviations, years needed, and seq file #s)
     #	download zip files with data (estimates and margins of error)
     #	unzip DATA & MOE files
-    
+
     #	read and concatenate state DATA & MOE files (csv) into one data frame or file per Census table
     #	  while selecting just the desired fields, ideally
-    
+
     #   MERGE FILES
     #
     #	join (merge) US data and US geo files on FIPS for each Census table
@@ -334,37 +334,37 @@ get.acs <-
     #   CREATE CALCULATED VARIABLES (done elsewhere)
     #
     ###################################################### #
-    
+
     mystates <- clean.mystates(mystates = mystates, testing = testing)
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat("Started scripts to download and parse ACS data\n")
     }
-    
+
     ######################################### #
     #  GET URLs and table/variable name lookup
     ######################################### #
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat('Started getting URLs, table/variable name lookup table, etc. \n')
     }
-    
+
     # How we get FTP site URL and file names.
     #   url.prefix <- get.url.prefix(end.year)
     #   url.prefix.lookup.table <- get.url.prefix.lookup.table(end.year)
     #   lookup.file.name  <- get.lookup.file.name(end.year)
     #   datafile.prefix 	<- get.datafile.prefix(end.year)
     #   zipfile.prefix    <- get.zipfile.prefix(end.year)
-    
+
     if (testing) {
       cat('starting get.lookup.acs\n')
     }
     # Get lookup table of sequence files, table IDs, variable names & positions in the sequence file.
-    
+
     lookup.acs <- get.lookup.acs(end.year = end.year)
-    
+
     seqfilelistnums <-
       which.seqfiles(tables = tables,
                      lookup.acs = lookup.acs,
@@ -380,23 +380,23 @@ get.acs <-
       cat(as.character(Sys.time()), ' ')
       cat("Finished getting URLs, table/variable name lookup table, etc. \n")
     }
-    
+
     ######################################### #
     #  Check csv to see which fields user needs (may not need every field from every specified table)
     ######################################### #
-    
+
     ########### ***********************
     #	THIS CURRENTLY DOESN'T WAIT TO
     # CHECK IF THE csv FILE HAS BEEN MODIFIED BY USER TO SPECIFY DESIRED VARIABLES:
     # It just uses all variables in tables
     # unless it finds file "variables needed.csv" in data folder that is based on variables needed template.csv format
     # "needed" will be a data.frame that specifies which variables are needed, from among the specified tables
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat("Started specifying which variables are needed from the specified ACS tables \n")
     }
-    
+
     needed <-
       set.needed(
         tables = tables,
@@ -408,14 +408,14 @@ get.acs <-
         varsfile = varsfile,
         silent = nocat
       )
-    
+
     # ensure leading zeroes on sequence file number
     needed$seq <- analyze.stuff::lead.zeroes(needed$seq, 4)
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat("Finished specifying which variables are needed from the specified ACS tables \n")
     }
-    
+
     geo <-
       get.read.geo(
         mystates = mystates,
@@ -424,19 +424,19 @@ get.acs <-
         folder = data.path,
         silent = nocat
       )
-    
+
     ################################################################# #
     #  Call functions to
     #  download and unzip specified set of
     #  ACS DATA TABLES
     ################################################################# #
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat("Started downloading data files \n")
       # if they have already been downloaded, this will not try to re-download them
     }
-    
+
     download.datafiles(
       tables = tables,
       end.year = end.year,
@@ -445,14 +445,14 @@ get.acs <-
       testing = testing,
       silent = nocat
     )
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat("Finished downloading data files \n")
       cat(as.character(Sys.time()), ' ')
       cat("Started unzipping data files \n")
     }
-    
+
     unzip.datafiles(
       tables = tables,
       mystates = mystates,
@@ -461,12 +461,12 @@ get.acs <-
       testing = testing,
       silent = nocat
     )
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat("Finished unzipping data files \n")
     }
-    
+
     ######################################################################################################## #
     #  **** ERRORS MAY STILL OCCUR HERE  ****#  **** ERRORS MAY STILL OCCUR HERE  ****
     # Having memory problems in Windows when trying to get several tables for all US states/DC/PR at once all in memory.
@@ -480,18 +480,18 @@ get.acs <-
     # THEN DROP THE BLOCK GROUP ROWS,
     # PRIOR TO MERGING ALL THE ROWS IN ONE BIG TABLE HERE.
     # BUT CURRENTLY THIS ASSEMBLES ALL EVEN IF YOU ONLY NEED TRACTS, OR JUST BG.
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat("Started reading/assembling all data files \n")
     }
-    
+
     # *** NOTE - Inefficient to pass entire geo table here! Just need count of rows per state to help read in data tables from csv files
     # Could recode to *** make this and read.concat.states() more efficient:
     alltab <-
       read.concat.states(
-        tables,
-        mystates,
+        tables = tables,
+        mystates = mystates,
         geo = geo,
         save.files = save.files,
         folder = data.path,
@@ -502,15 +502,15 @@ get.acs <-
         testing = testing,
         silent = nocat
       )
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat("Finished reading data \n")
     }
-    
+
     ######################################################################################################## #
     ######################################################################################################## #
-    
+
     if (testing) {
       if (save.files) {
         #  USED TO SAVE THE FULL SET OF TABLES JUST IN CASE:
@@ -525,18 +525,18 @@ get.acs <-
       #  [1] "KEY"          "STUSAB"       "LOGRECNO"     "B01001.001"   "B01001.003"   "B01001.020"   "B01001.021"   "B01001.022"
       head(alltab[[1]])
     }	# end testing
-    
+
     ######################################################################################################## #
-    
+
     ############################ #
     # JOIN GEO INFO TO TABLES
     ############################ #
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat("Started joining geo to data tables \n")
     }
-    
+
     alltab <-
       join.geo.to.tablist(
         geo,
@@ -546,7 +546,7 @@ get.acs <-
         sumlevel = sumlevel,
         end.year = end.year
       )
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat('Finished joining geo to data tables \n')
@@ -555,7 +555,7 @@ get.acs <-
       cat(sumlevel)
       cat('\n')
     }
-    
+
     gc()
     if (testing) {
       if (save.files) {
@@ -565,13 +565,13 @@ get.acs <-
         cat("Saved alltab with geo\n")
       }
     }
-    
+
     ############################ #
     # REORDER THE COLUMNS,   # E.G., MARGIN OF ERROR COLUMNS INTERSPERSED WITH ESTIMATES DATA COLUMNS
     ############################ #
-    
+
     alltab <- format.est.moe(alltab)
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat('Re-ordered estimates and margin of error columns \n')
@@ -590,14 +590,14 @@ get.acs <-
     # MERGE the list of tables into one big table
     ############################ #
     #Error: cannot allocate vector of size 2.2 Mb - on Windows this was a problem
-    
+
     merged <- merge.tables(alltab)
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat('Merged all tables into one big table \n')
     }
-    
+
     if (testing) {
       if (save.files) {
         #  CAN SAVE THE FULL SET OF TABLES HERE, IN CASE -- block groups and tracts as well:
@@ -606,16 +606,16 @@ get.acs <-
         cat("Saved merged tables \n")
       }
     }
-    
+
     ##################################### #
     #  SPLIT into a BLOCK GROUPS dataset & a TRACTS dataset
     ##################################### #
-    
+
     tracts <- get.tracts(merged)
     bg     <- get.bg(merged)
-    
+
     rm(merged)
-    
+
     if (!nocat) {
       cat(as.character(Sys.time()), ' ')
       cat('Split data into block groups dataset and tracts dataset \n \n')
@@ -632,39 +632,39 @@ get.acs <-
       cat('(', length(unique(bg$FIPS)), 'unique FIPS)')
       cat(" \n")
     }
-    
+
     # REMOVE TABLE B16001 from block group dataset because it is at tract level only
     # table(is.na((alltab[[4]][ , "B16001.001"])))
     # This table has tract but not BG data:
     # FALSE   TRUE
     # 74001 220333
     bg <- bg[, !(grepl("B16001", names(bg)))]
-    
+
     # Drop now-useless field SUMLEVEL
     bg$SUMLEVEL <- NULL
     tracts$SUMLEVEL <- NULL
     #print(head(tracts))
-    
+
     if (testing) {
       if (save.files) {
         save.image(file = file.path(output.path, 'ACS all but table.info step done.RData'))
       }
     }
-    
+
     ####################################################### #
     # GET TABLE TITLE, UNIVERSE, AND LONG VARIABLE NAMES
     ####################################################### #
-    
+
     # This is Just one entry per variable in estimates table, not for MOE, not basic info cols like "FIPS"
     table.info <-
       get.table.info(tables, end.year, table.info.only = FALSE)
     # NOTE: THIS HAS ALL VARIABLES, NOT JUST needed, so we want to remove any not needed so it matches retained data fields.
     table.info <- table.info[table.info$shortname %in% names(bg),]
     rownames(table.info) <- table.info$shortname
-    
+
     # This is All the entries like MOE and basic info (FIPS) so it can serve as header rows to final output table
     table.info.all <- table.info
-    
+
     # make the MOE versions of the estimates columns,
     # then intersperse with estimates, to match full list of longnames
     table.info.all.m <-
@@ -677,12 +677,12 @@ get.acs <-
       table.info.all.m[table.info.all.m$shortname %in% paste(names(bg), '.m', sep =
                                                                '') ,]
     rownames(table.info.all.m) <- table.info.all.m$shortname
-    
+
     # append MOE names and then reorder these rows so that estimate and MOE are adjacent for each variable:
     table.info.all <- rbind(table.info.all, table.info.all.m)
     table.info.all <-
       table.info.all[analyze.stuff::intersperse(1:length(table.info.all[, 1])),]
-    
+
     # Now add the basic info columns up front to match full list of longnames
     #otherfields <- c('KEY', 'STUSAB', 'SUMLEVEL', 'GEOID', 'FIPS') # SUMLEVEL was dropped from bg and tracts
     otherfields <- c("KEY", "FIPS", "STUSAB", "GEOID")
@@ -699,13 +699,13 @@ get.acs <-
       stringsAsFactors = FALSE
     )
     table.info.all <- rbind(rows.to.add, table.info.all)
-    
+
     ############################################################################################################### #
-    
+
     ################################ #
     #  maybe save on disk final merged results as tracts and block groups files
     ################################ #
-    
+
     if (save.files) {
       save(bg,     file = file.path(output.path, "bg all tables.RData"))
       save(tracts, file = file.path(output.path, "tracts all tables.RData"))
@@ -722,7 +722,7 @@ get.acs <-
         cat('Saved block group file and tracts file as .RData \n')
       }
     }
-    
+
     if (testing) {
       # These are big so probably do not want them even if write.files=TRUE since they can be saved as .RData and are returned by function get.acs() already
       if (write.files) {
@@ -738,7 +738,7 @@ get.acs <-
         cat('Saved block group file and tracts file as .csv ')
       }
     }
-    
+
     if (write.files) {
       # *** NOTE THIS HAD BEEN SAVING JUST ONE NAME PER DATA FIELD, NOT ONCE FOR ESTIMATES AND ONCE FOR MOE.
       # AND  NOT  FIELD NAMES FOR OTHER FIELDS "KEY"          "FIPS"         "STUSAB"       "GEOID"
@@ -756,13 +756,13 @@ get.acs <-
         cat('Saved longnames, etc fieldnames as csv file. \n')
       }
     }
-    
+
     ####################################################### #
     if (!nocat) {
       cat(as.character(Sys.time()), '\n')
       cat("################ DONE ############## \n")
     }
-    
+
     # Format for acs package here:
     #print(names(alltab))
     #print(str(alltab))
@@ -801,15 +801,15 @@ get.acs <-
         }
       }
     }
-    
+
     # Return block group or tracts file (or both) as list, along with table.info.best which has fieldnames etc.
     sumlevel <- clean.sumlevel(sumlevel)
-    
+
     if (!nocat) {
       print(round(Sys.time() - starttime, 0))
       cat('\n')
     }
-    
+
     if (sumlevel == 'tract') {
       return(list(
         tracts = tracts,
@@ -833,5 +833,5 @@ get.acs <-
         ))
       }
     }
-    
+
   }

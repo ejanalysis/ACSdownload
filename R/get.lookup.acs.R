@@ -7,7 +7,7 @@
 #'   Now folders are like:
 #'   https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
 #'   https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
-#'   
+#'
 #'   The source of this lookup table was, for example,
 #'   \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
 #'   and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
@@ -63,13 +63,14 @@ get.lookup.acs <- function(end.year = '2017',
       'That end.year ', end.year, ' seems to be in the future '
     )
   }
-  
-  # already has these via lazy loading as with data()
+
+  # already has these via lazy loading as with data() - but that does not work unless library(ACSdownload) not just ACSdownload::get.acs()
   # nameoflookupdata <- paste('lookup.acs', end.year, sep = '')
   # if (!exists(nameoflookupdata)) {stop(nameoflookupdata, ' does not exist via data(package = "ACSdownload")')}
   nameofthelookup <- paste('yr', end.year, sep = '')
-  force(nameofthelookup) # not sure if needed?
-  data(nameofthelookup) # not sure if needed?
+  #force(nameofthelookup) # not sure if needed?
+  #data(get(nameofthelookup)) # not sure if needed? does not work like that - need value of that
+
   my.lookup <- switch(
     EXPR = nameofthelookup,
     yr2009 = lookup.acs2009,
@@ -79,7 +80,7 @@ get.lookup.acs <- function(end.year = '2017',
     yr2013 = lookup.acs2013,
     yr2014 = lookup.acs2014,
     yr2015 = lookup.acs2015,
-    yr2016 = lookup.acs2016,  
+    yr2016 = lookup.acs2016,
     yr2017 = lookup.acs2017,
     yr2018 = lookup.acs2018,
     yr2019 = lookup.acs2019,
