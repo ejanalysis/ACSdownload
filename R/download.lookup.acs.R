@@ -5,13 +5,33 @@
 #'   namely which sequence files on the FTP site contain which tables and which variables.
 #'   NOTE: This is largely obsolete now that data(lookup.acs2013) and similar files for other years are in this package.
 #' @details
-#'   Now folders are like:
-#'   https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
-#'   https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
-#'   The source of this lookup table is, for example,
-#'   \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
-#'   and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
-#'   and for 2016 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
+#'   The URL scheme for lookup tables or datasets varies by year, for example,  \cr
+#'   For 2012 it is  \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}  \cr
+#'   and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+#'   and for 2016 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+#'  \cr
+#'   The 2013-2017 dataset is here...  \cr
+#'  \cr
+#'     Data tables by state by seqfile were here:  \cr
+#'  \cr
+#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/}  \cr
+#'   such as  \cr
+#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/20175al0001000.zip}  \cr
+#'  \cr
+#'     Geographies in Excel spreadsheets were here:  \cr
+#'  \cr
+#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/}  \cr
+#'   such as  \cr
+#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/ak.xlsx}  \cr
+#'  \cr
+#'     Lookup table of sequence files and variables was here:  \cr
+#'  \cr
+#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+#'  \cr\cr
+#'   The 2014-2018 folders are here:  \cr
+#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/}  \cr
+#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/}  \cr
+#'  \cr
 #' @param end.year Character, optional, like '2012', which specifies the 2008-2012 dataset.
 #'   Defines which 5-year summary file to use, based on end-year.
 #'   Can be 2009 or later. Data for end.year='2014' were released in early December 2015, for example.
@@ -54,7 +74,7 @@ download.lookup.acs <-
       paste(end.year, my.lookup.file.name, sep = '')
     print(my.lookup.file.name.dated)
     # Use the working directory to download the file.
-    
+
     if (!file.exists(file.path(folder, my.lookup.file.name.dated)) |
         file.size(file.path(folder, my.lookup.file.name.dated)) == 0) {
       if (!silent) {
@@ -77,7 +97,7 @@ download.lookup.acs <-
     if (!silent) {
       cat("  Reading lookup table with table and variable names\n")
     }
-    
+
     if (end.year == 2009) {
       # The 2009 table was provided as xls not txt. Other years have a txt file with this info.
       # colnames are the same but read_excel imports it differently than read.csv does
@@ -105,7 +125,7 @@ download.lookup.acs <-
       my.lookup$Subject.Area[is.na(my.lookup$Subject.Area)] <- ''
       my.lookup$Total.Cells.in.Table[is.na(my.lookup$Total.Cells.in.Table)] <-
         ''
-      
+
     } else {
       if (end.year == 2011) {
         # 2011 format was different:
@@ -139,7 +159,7 @@ download.lookup.acs <-
             'Subject Area'
           )
         names(my.lookup) <- gsub(' ', '.', names(my.lookup))
-        
+
         my.lookup$Line.Number[my.lookup$Line.Number == '.'] <- NA
         my.lookup$Line.Number <- as.numeric(my.lookup$Line.Number)
         my.lookup$Total.Cells.in.Sequence[my.lookup$Total.Cells.in.Sequence ==
@@ -150,7 +170,7 @@ download.lookup.acs <-
           NA
         my.lookup$Start.Position <-
           as.numeric(my.lookup$Start.Position)
-        
+
       } else {
         #e.g., 2012:  [File ID,]Table ID, Sequence Number,  Line Number, Start Position,  Total Cells in Table, Total Cells in Sequence,  Table Title, Subject Area
         my.lookup <- read.csv(
@@ -170,13 +190,13 @@ download.lookup.acs <-
         )
       }
     }
-    
+
     my.lookup$File.ID <- NULL
-    
+
     # add leading zeroes so seqnum always has 4 characters (e.g., '0001' or '0105')
     # or could do this before saving .RData files for use via data()
     my.lookup$Sequence.Number <-
       analyze.stuff::lead.zeroes(floor(as.numeric(my.lookup$Sequence.Number)), 4)
-    
+
     return(my.lookup)
   }

@@ -2,6 +2,8 @@
 #' @docType data
 #' @title geographic information for ACS dataset
 #' @description This data set has the format used by geographic identifier files in the American Community Survey (ACS) 5-year summary file.
+#'   The data and documentation for the 5 years ending in year X
+#'   is typically available by December of the year X+1, so 2014-2018 would be available by Dec 2019.
 #' @source Table found in given year dataset, such as \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/tech_docs/2018_SummaryFile_Tech_Doc.pdf}
 #' @keywords datasets
 #' @format A data.frame

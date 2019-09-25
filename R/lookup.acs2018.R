@@ -1,8 +1,10 @@
 #' @name lookup.acs2018
 #' @docType data
 #' @title ACS_5yr_Seq_Table_Number_Lookup.txt for ACS dataset
-#' @description This data set provides information about variables 
+#' @description This data set provides information about variables
 #'   in tables forming the American Community Survey (ACS) 5-year summary file.
+#'   The data and documentation for the 5 years ending in year X
+#'   is typically available by December of the year X+1, so 2014-2018 would be available by Dec 2019.
 #' @keywords datasets
 #' @format A data.frame with these fields: \cr
 #'    'data.frame':	approx 25074 obs. of approx  8 variables:
