@@ -218,10 +218,10 @@ OTHER SOURCES include \cr
   out <- get.acs(tables=c('ejscreen', 'B16001'))
   summary(out); head(out$info); head(out$bg)
  }
- 
+
 }
 \seealso{
 \pkg{\link[acs]{acs}} package, which allows you to download and work with ACS data (using the API and your own key).
-   To get the tables and variables used in EJSCREEN, see \link[ejscreen]{ejscreen.download}. 
+   To get the tables and variables used in EJSCREEN, see \link[ejscreen]{ejscreen.download}.
    Also see \code{\link{nhgis}} which parses any files manually downloaded from \url{NHGIS.org}
 }

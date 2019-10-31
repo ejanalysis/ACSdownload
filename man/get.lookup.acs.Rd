@@ -44,7 +44,7 @@ Get lookup table of information on American Community Survey (ACS) tables, from 
 Now folders are like:
   https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
   https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
-  
+
   The source of this lookup table was, for example,
   \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
   and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
