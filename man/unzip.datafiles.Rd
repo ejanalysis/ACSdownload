@@ -4,8 +4,15 @@
 \alias{unzip.datafiles}
 \title{Unzip ACS datafile per state, downloading missing ones first}
 \usage{
-unzip.datafiles(tables, mystates, folder = getwd(), end.year = "2017",
-  testing = FALSE, attempts = 5, silent = FALSE)
+unzip.datafiles(
+  tables,
+  mystates,
+  folder = getwd(),
+  end.year = "2017",
+  testing = FALSE,
+  attempts = 5,
+  silent = FALSE
+)
 }
 \arguments{
 \item{tables}{Character vector of table numbers needed such as 'B01001'}

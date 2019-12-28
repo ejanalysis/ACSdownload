@@ -20,20 +20,23 @@ Returns character vector that is URL(s) such as "ftp://ftp.census.gov/acs2012_5y
 Returns URL(s) of folders (on Census Bureau FTP site) with zip file(s) based on end year.
 }
 \details{
-The zip files look like this for example: "20135dc0001000.zip" \cr
-
+See help for \link{download.lookup.acs} for more details on the URLs used for the data. \cr
+  The zip files look like this for example: "20135dc0001000.zip" \cr
+  \cr
   The 2009-2013 summary file by state-seqfile combo is in folders that look like this: \cr
-
-  "ftp://ftp.census.gov/acs2013_5yr/summaryfile/2009-2013_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only" \cr
-
+  \cr
+  \url{ftp://ftp.census.gov/acs2013_5yr/summaryfile/2009-2013_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only} \cr
+  \cr
   The 2008-2012 summary file by state-seqfile combo is in folders that look like this: \cr
-
+  \cr
+	 \url{http://www2.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset/Alabama/Tracts_Block_Groups_Only} \cr
 
   The 2007-2011 summary file by state-seqfile combo is in folders that look like this:\cr
-
-    "ftp://ftp.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/" \cr
-  "http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/" \cr
+ \cr
+  \url{ftp://ftp.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/} \cr
+  \url{http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/} \cr
   URL must be the ftp site, not the http version.
+
   But 2010-2014 was on http only, not ftp, as of mid Dec 3 2015 release day.
 }
 \seealso{

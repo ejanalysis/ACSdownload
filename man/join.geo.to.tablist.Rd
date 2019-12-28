@@ -4,9 +4,15 @@
 \alias{join.geo.to.tablist}
 \title{Join US ACS data and US geo files on FIPS}
 \usage{
-join.geo.to.tablist(mygeo, my.list.of.tables, save.csv = FALSE,
-  sumlevel = "both", folder = getwd(), testing = FALSE,
-  end.year = "")
+join.geo.to.tablist(
+  mygeo,
+  my.list.of.tables,
+  save.csv = FALSE,
+  sumlevel = "both",
+  folder = getwd(),
+  testing = FALSE,
+  end.year = ""
+)
 }
 \arguments{
 \item{mygeo}{Required geo file. See \code{\link{get.acs}} and \code{\link{get.read.geo}}}

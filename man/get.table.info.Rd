@@ -4,8 +4,7 @@
 \alias{get.table.info}
 \title{Get field names etc for ACS tables}
 \usage{
-get.table.info(tables, end.year = "2017", table.info.only = TRUE,
-  moe = FALSE)
+get.table.info(tables, end.year = "2017", table.info.only = TRUE, moe = FALSE)
 }
 \arguments{
 \item{tables}{Required vector of tables such as "B01001"}

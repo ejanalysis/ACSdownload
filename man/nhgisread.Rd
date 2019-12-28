@@ -4,8 +4,11 @@
 \alias{nhgisread}
 \title{Read NHGIS.org ACS Data Files and Codebooks}
 \usage{
-nhgisread(datafile, codebookfile = gsub("\\\\.csv", "_codebook.txt",
-  datafile), folder = getwd())
+nhgisread(
+  datafile,
+  codebookfile = gsub("\\\\.csv", "_codebook.txt", datafile),
+  folder = getwd()
+)
 }
 \arguments{
 \item{datafile}{Names of files}

@@ -4,9 +4,12 @@
 \alias{nhgisfips}
 \title{Assemble FIPS Code from State, County, Tract, Blockgroup Portions}
 \usage{
-nhgisfips(x, validfields = c("STATEA", "COUNTYA", "TRACTA", "BLKGRPA"),
+nhgisfips(
+  x,
+  validfields = c("STATEA", "COUNTYA", "TRACTA", "BLKGRPA"),
   fullname = c("FIPS.ST", "FIPS.COUNTY", "FIPS.TRACT", "FIPS.BG"),
-  leadz = c(2, 3, 6, 1))
+  leadz = c(2, 3, 6, 1)
+)
 }
 \arguments{
 \item{x}{Data.frame or matrix with appropriate colnames, containing portions of FIPS code in separate columns.}

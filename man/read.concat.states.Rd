@@ -4,9 +4,20 @@
 \alias{read.concat.states}
 \title{Read and concatenate State files of ACS data}
 \usage{
-read.concat.states(tables, mystates, geo, needed, folder = getwd(),
-  output.path, end.year = "2017", save.files = TRUE,
-  sumlevel = "both", testing = FALSE, dt = TRUE, silent = FALSE)
+read.concat.states(
+  tables,
+  mystates,
+  geo,
+  needed,
+  folder = getwd(),
+  output.path,
+  end.year = "2017",
+  save.files = TRUE,
+  sumlevel = "both",
+  testing = FALSE,
+  dt = TRUE,
+  silent = FALSE
+)
 }
 \arguments{
 \item{tables}{Optional character vector of table numbers needed such as 'B01001', but default is all tables from each sequence file found.}

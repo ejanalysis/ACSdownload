@@ -4,9 +4,13 @@
 \alias{nhgis}
 \title{Read and Parse NHGIS.org ACS Data Files and Codebooks}
 \usage{
-nhgis(base.path = getwd(), code.dir = file.path(base.path,
-  "nhgiscode"), data.dir = file.path(base.path, "nhgisdata"),
-  silent = FALSE, savefiles = FALSE)
+nhgis(
+  base.path = getwd(),
+  code.dir = file.path(base.path, "nhgiscode"),
+  data.dir = file.path(base.path, "nhgisdata"),
+  silent = FALSE,
+  savefiles = FALSE
+)
 }
 \arguments{
 \item{base.path}{Optional base path, default is getwd()}
@@ -53,7 +57,7 @@ This is designed to read and parse csv and txt files
 }
 \examples{
  
-  \\donotrun{
+  \dontrun{
   x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')
   # save state data as csv
   write.csv(x$states$data, file='statedata.csv', row.names = FALSE)

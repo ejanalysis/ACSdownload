@@ -4,8 +4,7 @@
 \alias{download.lookup.acs}
 \title{Download File with Information about ACS 5-Year Summary File Tables}
 \usage{
-download.lookup.acs(end.year = "2017", folder = getwd(),
-  silent = FALSE)
+download.lookup.acs(end.year = "2017", folder = getwd(), silent = FALSE)
 }
 \arguments{
 \item{end.year}{Character, optional, like '2012', which specifies the 2008-2012 dataset.
@@ -41,13 +40,33 @@ Download and read lookup table of information on American Community Survey (ACS)
   NOTE: This is largely obsolete now that data(lookup.acs2013) and similar files for other years are in this package.
 }
 \details{
-Now folders are like:
-  https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
-  https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
-  The source of this lookup table is, for example,
-  \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
-  and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
-  and for 2016 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
+The URL scheme for lookup tables or datasets varies by year, for example,  \cr
+  For 2012 it is  \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}  \cr
+  and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+  and for 2016 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+ \cr
+  The 2013-2017 dataset is here...  \cr
+ \cr
+    Data tables by state by seqfile were here:  \cr
+ \cr
+  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/}  \cr
+  such as  \cr
+  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/20175al0001000.zip}  \cr
+ \cr
+    Geographies in Excel spreadsheets were here:  \cr
+ \cr
+  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/}  \cr
+  such as  \cr
+  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/ak.xlsx}  \cr
+ \cr
+    Lookup table of sequence files and variables was here:  \cr
+ \cr
+  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+ \cr\cr
+  The 2014-2018 folders are here:  \cr
+  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/}  \cr
+  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/}  \cr
+ \cr
 }
 \examples{
  \dontrun{

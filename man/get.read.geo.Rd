@@ -4,8 +4,14 @@
 \alias{get.read.geo}
 \title{Download (if necessary) and merge GEO files for ACS}
 \usage{
-get.read.geo(mystates, new.geo = FALSE, folder = getwd(),
-  end.year = "2017", testing = FALSE, silent = FALSE)
+get.read.geo(
+  mystates,
+  new.geo = FALSE,
+  folder = getwd(),
+  end.year = "2017",
+  testing = FALSE,
+  silent = FALSE
+)
 }
 \arguments{
 \item{mystates}{Character vector of 2-character state abbreviations, required.}

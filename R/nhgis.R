@@ -32,7 +32,7 @@
 #'   }
 #' @seealso \code{\link{nhgisread}} used by this function. Also, for other ways to obtain ACS data see \code{\link{get.acs}}
 #' @examples  
-#'   \donotrun{
+#'   \dontrun{
 #'   x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')
 #'   # save state data as csv
 #'   write.csv(x$states$data, file='statedata.csv', row.names = FALSE)

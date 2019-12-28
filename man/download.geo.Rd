@@ -4,8 +4,14 @@
 \alias{download.geo}
 \title{Download GEO txt file(s) with geo information for ACS}
 \usage{
-download.geo(mystates, end.year = "2017", folder = getwd(),
-  testing = FALSE, attempts = 5, silent = FALSE)
+download.geo(
+  mystates,
+  end.year = "2017",
+  folder = getwd(),
+  testing = FALSE,
+  attempts = 5,
+  silent = FALSE
+)
 }
 \arguments{
 \item{mystates}{vector of character 2-letter State abbreviations specifying which are needed}

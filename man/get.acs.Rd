@@ -4,13 +4,26 @@
 \alias{get.acs}
 \title{Download Tables from American Community Survey (ACS) 5-year Summary File}
 \usage{
-get.acs(tables = "B01001", mystates = "all", end.year = "2017",
-  base.path = getwd(), data.path = file.path(base.path, "acsdata"),
-  output.path = file.path(base.path, "acsoutput"), sumlevel = "both",
-  vars = "all", varsfile, new.geo = TRUE, write.files = FALSE,
-  save.files = FALSE, write.acspkg = FALSE, testing = FALSE,
-  noEditOnMac = FALSE, silent = FALSE, save.log = TRUE,
-  filename.log = "log")
+get.acs(
+  tables = "B01001",
+  mystates = "all",
+  end.year = "2017",
+  base.path = getwd(),
+  data.path = file.path(base.path, "acsdata"),
+  output.path = file.path(base.path, "acsoutput"),
+  sumlevel = "both",
+  vars = "all",
+  varsfile,
+  new.geo = TRUE,
+  write.files = FALSE,
+  save.files = FALSE,
+  write.acspkg = FALSE,
+  testing = FALSE,
+  noEditOnMac = FALSE,
+  silent = FALSE,
+  save.log = TRUE,
+  filename.log = "log"
+)
 }
 \arguments{
 \item{tables}{Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
@@ -198,7 +211,7 @@ OTHER SOURCES include \cr
   ########################################################################
   ##### Data for just DC & DE, just the default pop count table:
   out <- get.acs(mystates=c('dc','de'), end.year = '2017', new.geo = FALSE)
-  names(out$bg); cat('\\n\\n'); head(out$info)
+  names(out$bg); cat('\n\n'); head(out$info)
   head(t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe,
      subj=out$headers$subject,  out$bg[1:2,]) ), 15)
   cbind(longname=out$info$longname,
