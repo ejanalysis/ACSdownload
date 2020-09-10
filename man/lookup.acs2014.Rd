@@ -4,7 +4,8 @@
 \name{lookup.acs2014}
 \alias{lookup.acs2014}
 \title{ACS_5yr_Seq_Table_Number_Lookup.txt for 2010-2014 ACS dataset}
-\format{A data.frame with these fields: \cr
+\format{
+A data.frame with these fields: \cr
    'data.frame':	xxx obs. of  8 variables:
   \itemize{
     \item $ Table.ID               : chr  "B00001" "B00001" "B00001" "B00002" ...
@@ -15,7 +16,8 @@
     \item $ Total.Cells.in.Sequence: num  NA NA NA 2 NA NA NA NA NA NA ...
     \item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
     \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
-  }}
+  }
+}
 \source{
 For the 2010-2014 dataset, \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
   obtained December 3, 2015.
