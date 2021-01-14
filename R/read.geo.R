@@ -1,6 +1,8 @@
 #' @title Read and concatenate state geo files from Census ACS
 #'
 #' @description Reads and merges geo files that have been obtained from the US Census Bureau FTP site for American Community Survey (ACS) data.
+#'   It uses read.fwf() at least for older years. 2018 or 2019 might have csv not just txt format now?
+#'   
 #' @details
 #'   Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
 #'   Currently works for ACS 2008-2012 5-year file format, other years not tested.

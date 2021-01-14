@@ -22,6 +22,7 @@ Returns a large data.frame of selected geographic information on
 }
 \description{
 Reads and merges geo files that have been obtained from the US Census Bureau FTP site for American Community Survey (ACS) data.
+  It uses read.fwf() at least for older years. 2018 or 2019 might have csv not just txt format now?
 }
 \details{
 Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.

@@ -4,6 +4,8 @@
 #' Returns a data.frame of all states merged geo info and saves geo.RData to working directory.
 #'
 #' @details
+#' Uses download.geo() then read.geo(), and then does some cleanup.
+#' 
 #' Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
 #' Read and compile geo data for entire USA with PR DC, \cr
 #'	This takes some time for the entire USA:  \cr
