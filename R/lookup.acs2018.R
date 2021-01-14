@@ -5,6 +5,15 @@
 #'   in tables forming the American Community Survey (ACS) 5-year summary file.
 #'   The data and documentation for the 5 years ending in year X
 #'   is typically available by December of the year X+1, so 2014-2018 would be available by Dec 2019.
+#'   @details 
+#'   # example of how data was imported after download
+#' # 
+#' # setwd('~/R/ACSdownload/inst/')
+#' # download.file('https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt', destfile = 'ACS_5yr_Seq_Table_Number_Lookup-2018.txt')
+#' # lookup.acs2018 <- readr::read_csv('ACS_5yr_Seq_Table_Number_Lookup-2018.txt')
+#' # lookup.acs2018 <- data.frame(lookup.acs2018, stringsAsFactors = FALSE)
+#' # setwd('~/R/ACSdownload/data')
+#' # save(lookup.acs2018, file = 'lookup.acs2018.rdata')
 #' @keywords datasets
 #' @format A data.frame with these fields: \cr
 #'    'data.frame':	approx 25074 obs. of approx  8 variables:

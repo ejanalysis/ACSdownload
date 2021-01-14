@@ -48,6 +48,11 @@ which.seqfiles <- function(tables, lookup.acs, end.year = '2019') {
       # [1] 2116
       # > sum(is.na(lookup.acs2017$Line.Number))
       # [1] 2280
+      # > sum(is.na(lookup.acs2018$Line.Number))
+      # [1] 2308
+      # > sum(is.na(lookup.acs2019$Line.Number))
+      # [1] 2310
+      # > 
       uniquetoyearlist <-
         list(
           '2009' = 2018,
@@ -59,9 +64,8 @@ which.seqfiles <- function(tables, lookup.acs, end.year = '2019') {
           '2015' = 2114, 
           '2016' = 2116, 
           '2017' = 2280, 
-          '2018' = 0,  # to add
-          '2017' = 0,  # to add
-          '2019' = 0,  # to add
+          '2018' = 2308, 
+          '2019' = 2310, 
           '2020' = 0,  # to add
           '2021' = 0,  # to add
           '2022' = 0  # to add

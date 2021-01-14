@@ -11,7 +11,7 @@ This R package helps you download and parse raw data from the
   providing demographic data at the block and tract levels of resolution.
   You can obtain data from the entire USA all at once using this package, for one or more tables.
   Key function is \code{\link{get.acs}}, and also see \code{\link{set.needed}}, \code{\link{nhgis}},
-  and also see data(\link{lookup.acs})
+  and also see data(\link{lookup.acs2019})
 }
 \details{
 Typically the Census Bureau makes it easy to obtain data from one state at a time,
