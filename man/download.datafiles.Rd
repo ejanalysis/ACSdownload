@@ -6,7 +6,7 @@
 \usage{
 download.datafiles(
   tables,
-  end.year = "2017",
+  end.year = "2019",
   mystates = 52,
   folder = getwd(),
   testing = FALSE,
@@ -17,7 +17,7 @@ download.datafiles(
 \arguments{
 \item{tables}{Required character vector of table numbers, such as c("B01001", "B03002")}
 
-\item{end.year}{Character element, optional, like "2012". Defines last of five years of summary file dataset; default is 2008-2012.}
+\item{end.year}{Character element, optional, like "2012". Defines last of five years of summary file dataset.}
 
 \item{mystates}{Character vector, now optional - Default is 50 states + DC + PR here, but otherwise relies on \code{\link{clean.mystates}}}
 

@@ -4,7 +4,7 @@
 \alias{format.for.acs.package}
 \title{Reformat ACS Data Obtained by \code{\link{get.acs}} for Import to the acs Package}
 \usage{
-\method{format}{for.acs.package}(x, tableid = "", folder = getwd(), end.year = "2017", savefile = TRUE)
+\method{format}{for.acs.package}(x, tableid = "", folder = getwd(), end.year = "2019", savefile = TRUE)
 }
 \arguments{
 \item{x}{Required list of tables from earlier steps in \code{\link{get.acs}}}

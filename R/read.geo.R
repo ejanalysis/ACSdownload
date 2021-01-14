@@ -26,7 +26,7 @@
 read.geo <-
   function(mystates,
            folder = getwd(),
-           end.year = '2017',
+           end.year = '2019',
            silent = FALSE) {
     ############# #
     # concatenate geos over all states
@@ -153,6 +153,10 @@ read.geo <-
     #     save(geoformat2014, file = 'geoformat2014.RData')
     
     ################################################################### #
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    
     geoformat <- switch(
       paste('x', end.year, sep = ''),
       x2009 = geoformat2009,
@@ -167,8 +171,9 @@ read.geo <-
       x2018 = geoformat2018,
       x2019 = geoformat2019,
       x2020 = geoformat2020,
-      x2021 = geoformat2021
-    )
+      x2021 = geoformat2021,
+      x2022 = geoformat2022
+      )
     
     # just import these:
     #	(name is very long and not essential)

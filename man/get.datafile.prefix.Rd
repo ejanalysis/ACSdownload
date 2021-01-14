@@ -4,7 +4,7 @@
 \alias{get.datafile.prefix}
 \title{Get first part of ACS datafile name.}
 \usage{
-get.datafile.prefix(end.year = "2017")
+get.datafile.prefix(end.year = "2019")
 }
 \arguments{
 \item{end.year}{Optional character, such as "2012", specifying last year of 5-year summary file data.}

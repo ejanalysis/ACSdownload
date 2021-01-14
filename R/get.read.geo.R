@@ -47,9 +47,13 @@ get.read.geo <-
   function(mystates,
            new.geo = FALSE,
            folder = getwd(),
-           end.year = '2017',
+           end.year = '2019',
            testing = FALSE,
            silent = FALSE) {
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    
     if (!new.geo) {
       # IF DO NOT WANT TO REDO WORK TO GET GEO DATA
       if (exists('geo')) {

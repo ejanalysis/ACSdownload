@@ -6,7 +6,7 @@
 \usage{
 get.field.info(
   tables,
-  end.year = "2017",
+  end.year = "2019",
   table.info.only = FALSE,
   moe = FALSE,
   basic = FALSE,

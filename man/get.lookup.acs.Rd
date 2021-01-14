@@ -4,7 +4,7 @@
 \alias{get.lookup.acs}
 \title{Get Information about ACS 5-Year Summary File Tables}
 \usage{
-get.lookup.acs(end.year = "2017", folder = getwd())
+get.lookup.acs(end.year = "2019", folder = getwd())
 }
 \arguments{
 \item{end.year}{Character, optional, like '2012', which specifies the 2008-2012 dataset.

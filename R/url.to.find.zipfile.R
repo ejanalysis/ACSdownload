@@ -28,7 +28,11 @@
 #' @seealso \code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}
 #' @export
 url.to.find.zipfile <-
-  function(mystates, end.year = '2017', url.prefix) {
+  function(mystates, end.year = '2019', url.prefix) {
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    
     if (missing(mystates)) {
       # default is to get all states # which includes DC, AND "AS" "GU" "MP" "PR" "UM" "VI" "US"
 

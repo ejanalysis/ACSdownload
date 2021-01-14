@@ -64,9 +64,13 @@
 #'  }
 #' @export
 download.lookup.acs <-
-  function(end.year = '2017',
+  function(end.year = '2019',
            folder = getwd(),
            silent = FALSE) {
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    
     my.url.prefix.lookup.table <-
       get.url.prefix.lookup.table(end.year)  # paste("ftp://ftp.census.gov/acs", end.year, "_5yr/summaryfile/", sep="") # but lacking last /
     my.lookup.file.name <- get.lookup.file.name(end.year)

@@ -47,8 +47,11 @@
 #'  lookup.acs <- get.lookup.acs()
 #'  }
 #' @export
-get.lookup.acs <- function(end.year = '2017',
+get.lookup.acs <- function(end.year = '2019',
                            folder = getwd()) {
+  if (length(end.year) != 1) {stop('end.year must be a single value')}
+  thisyear <- data.table::year(Sys.Date())
+  if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
   # "Sequence_Number_and_Table_Number_Lookup.txt" for end.year=2010 through 2013, but 2009 had only .xls not .txt
   if (end.year < 2009) {
     stop(
@@ -58,12 +61,7 @@ get.lookup.acs <- function(end.year = '2017',
   if (end.year == 2009)  {
     warning('2005-2009 dataset originally used an xls file for this information, not fully tested here.')
   }
-  if (end.year > substr(Sys.time(),1,4)) {
-    warning(
-      'That end.year ', end.year, ' seems to be in the future '
-    )
-  }
-
+  
   # already has these via lazy loading as with data() - but that does not work unless library(ACSdownload) not just ACSdownload::get.acs()
   # nameoflookupdata <- paste('lookup.acs', end.year, sep = '')
   # if (!exists(nameoflookupdata)) {stop(nameoflookupdata, ' does not exist via data(package = "ACSdownload")')}

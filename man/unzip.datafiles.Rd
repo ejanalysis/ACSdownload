@@ -8,7 +8,7 @@ unzip.datafiles(
   tables,
   mystates,
   folder = getwd(),
-  end.year = "2017",
+  end.year = "2019",
   testing = FALSE,
   attempts = 5,
   silent = FALSE

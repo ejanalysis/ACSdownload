@@ -12,9 +12,13 @@ zipfile <-
   function(mystates,
            seqfilenum,
            zipfile.prefix,
-           end.year = '2017') {
+           end.year = '2019') {
     # zip FILENAME example
     # 	20115dc0113000.zip
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    
     if (missing(zipfile.prefix)) {
       zipfile.prefix    <- get.zipfile.prefix(end.year)
     }

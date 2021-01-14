@@ -3,14 +3,17 @@
 #' @description Returns name(s) of data file(s) based on state(s), a sequence file number, and end year.
 #' @param state.abbrev Required vector of one or more 2-character state abbreviations like "DC"
 #' @param seqfilenum Required sequence file number(s) used by ACS 5-year summary file (can be a single value like "0022" or a vector)
-#' @param end.year Optional end year for 5-year summary file, as character
+#' @param end.year Optional end year for 5-year summary file, as character or number
 #' @return Returns character element that is name of data file such as e20105de0017000 or m20105de0017000
 #' @seealso \code{\link{get.acs}}
 #' @export
-datafile <- function(state.abbrev, seqfilenum, end.year = '2017') {
+datafile <- function(state.abbrev, seqfilenum, end.year = '2019') {
   # datafile name examples:
   #	e20105de0017000
   #	m20105de0017000
+  if (length(end.year) != 1) {stop('end.year must be a single value')}
+  thisyear <- data.table::year(Sys.Date())
+  if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
   
   datafile.prefix 	<- get.datafile.prefix(end.year = end.year)
   

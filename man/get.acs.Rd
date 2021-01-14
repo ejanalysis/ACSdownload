@@ -7,7 +7,7 @@
 get.acs(
   tables = "B01001",
   mystates = "all",
-  end.year = "2017",
+  end.year = "2019",
   base.path = getwd(),
   data.path = file.path(base.path, "acsdata"),
   output.path = file.path(base.path, "acsoutput"),
@@ -194,12 +194,12 @@ OTHER SOURCES include \cr
   cbind(table(lookup.acs2017$Subject.Area))
  \dontrun{
   ##### Basic info on ACS tables:
-  t( get.table.info('B01001', end.year = '2017') )
+  t( get.table.info('B01001', end.year = '2019') )
   t( get.table.info(c('B17001', 'C17002'), end.year = 2017) )
   get.field.info('C17002', end.year = 2017)
   ##### Data for just DC & DE, just two tables:
   outsmall <- get.acs(tables = c('B01001', 'C17002'), mystates=c('dc','de'),
-   end.year = '2017', base.path = '~/Downloads', write.files = T, new.geo = FALSE)
+   end.year = '2019', base.path = '~/Downloads', write.files = T, new.geo = FALSE)
   summary(outsmall)
   t(outsmall$info[1, ])
   t(outsmall$bg[1, ])
@@ -210,7 +210,7 @@ OTHER SOURCES include \cr
 
   ########################################################################
   ##### Data for just DC & DE, just the default pop count table:
-  out <- get.acs(mystates=c('dc','de'), end.year = '2017', new.geo = FALSE)
+  out <- get.acs(mystates=c('dc','de'), end.year = '2019', new.geo = FALSE)
   names(out$bg); cat('\n\n'); head(out$info)
   head(t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe,
      subj=out$headers$subject,  out$bg[1:2,]) ), 15)

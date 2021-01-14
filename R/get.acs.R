@@ -91,12 +91,12 @@
 #'   cbind(table(lookup.acs2017$Subject.Area))
 #'  \dontrun{
 #'   ##### Basic info on ACS tables:
-#'   t( get.table.info('B01001', end.year = '2017') )
+#'   t( get.table.info('B01001', end.year = '2019') )
 #'   t( get.table.info(c('B17001', 'C17002'), end.year = 2017) )
 #'   get.field.info('C17002', end.year = 2017)
 #'   ##### Data for just DC & DE, just two tables:
 #'   outsmall <- get.acs(tables = c('B01001', 'C17002'), mystates=c('dc','de'),
-#'    end.year = '2017', base.path = '~/Downloads', write.files = T, new.geo = FALSE)
+#'    end.year = '2019', base.path = '~/Downloads', write.files = T, new.geo = FALSE)
 #'   summary(outsmall)
 #'   t(outsmall$info[1, ])
 #'   t(outsmall$bg[1, ])
@@ -107,7 +107,7 @@
 #'
 #'   ########################################################################
 #'   ##### Data for just DC & DE, just the default pop count table:
-#'   out <- get.acs(mystates=c('dc','de'), end.year = '2017', new.geo = FALSE)
+#'   out <- get.acs(mystates=c('dc','de'), end.year = '2019', new.geo = FALSE)
 #'   names(out$bg); cat('\n\n'); head(out$info)
 #'   head(t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe,
 #'      subj=out$headers$subject,  out$bg[1:2,]) ), 15)
@@ -191,7 +191,7 @@
 get.acs <-
   function(tables = 'B01001',
            mystates = 'all',
-           end.year = '2017',
+           end.year = '2019',
            base.path = getwd(),
            data.path = file.path(base.path, 'acsdata'),
            output.path = file.path(base.path, 'acsoutput'),
@@ -211,7 +211,8 @@ get.acs <-
       c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034")
     end.year <- as.character(end.year)
     if (length(end.year) != 1) {stop('end.year must be a single value')}
-    if (!(end.year %in% as.character(2009:2030))) {stop('end.year must be a plausible year such as 2017')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
 
     # check if base.path seems to be a valid folder
     if (!file.exists(base.path)) {

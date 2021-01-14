@@ -50,13 +50,16 @@ format.for.acs.package <-
   function(x,
            tableid = '',
            folder = getwd(),
-           end.year = '2017',
+           end.year = '2019',
            savefile = TRUE) {
     warning('FUNCTION IS NOT FINISHED / NOT WORKING YET')
     
     # Function in acs package that reads results:
     #   read.acs(filename, endyear = "auto", span = "auto", col.names= "auto",
     #            acs.units = "auto", geocols = "auto", skip = "auto")
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
     
     
     keycols <- c("GEOID", "FIPS", "NAME")

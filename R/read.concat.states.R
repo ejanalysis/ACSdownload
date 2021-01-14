@@ -28,7 +28,7 @@ read.concat.states <-
            needed,
            folder = getwd(),
            output.path,
-           end.year = '2017',
+           end.year = '2019',
            save.files = TRUE,
            sumlevel = 'both',
            testing = FALSE,
@@ -37,6 +37,9 @@ read.concat.states <-
     if (missing(output.path)) {
       output.path <- folder
     }
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
     
     #if (!exists('lookup.acs')) {
       lookup.acs <- get.lookup.acs(end.year = end.year)

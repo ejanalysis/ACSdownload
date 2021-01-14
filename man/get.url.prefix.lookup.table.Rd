@@ -4,7 +4,7 @@
 \alias{get.url.prefix.lookup.table}
 \title{Get first part of name(s) of URL(s) for ACS 5-year summary file data}
 \usage{
-get.url.prefix.lookup.table(end.year = "2017")
+get.url.prefix.lookup.table(end.year = "2019")
 }
 \arguments{
 \item{end.year}{Optional end year for 5-year summary file, as character, like '2018'}

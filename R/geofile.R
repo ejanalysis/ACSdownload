@@ -8,7 +8,11 @@
 #'   Note this is only needed once per state, not once per seqfile. (It might even be available as a single US file?)
 #' @seealso \code{\link{get.acs}} and \code{\link{download.geo}} which uses this
 #' @export
-geofile <- function(mystates, end.year = '2017') {
+geofile <- function(mystates, end.year = '2019') {
+  if (length(end.year) != 1) {stop('end.year must be a single value')}
+  thisyear <- data.table::year(Sys.Date())
+  if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+  
   if (missing(mystates)) {
     #mystates <- ejanalysis::get.state.info(fields='ST')
     data(lookup.states, package = 'proxistat', envir = environment())

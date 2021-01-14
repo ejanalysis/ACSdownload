@@ -9,12 +9,11 @@
 #' @return Returns character element that is name of file such as "Sequence_Number_and_Table_Number_Lookup.txt"
 #' @seealso \code{\link{get.acs}}, \code{\link{get.lookup.acs}}, \code{\link{get.url.prefix.lookup.table}}. Also see \code{data(lookup.acs)}.
 #' @export
-get.lookup.file.name	<- function(end.year = '2017') {
-  if (end.year < 2009) {
-    stop(
-      'Years prior to 2009 are not valid. ACS 5-year file was not available until 2005-2009, end.year=2009.'
-    )
-  }
+get.lookup.file.name	<- function(end.year = '2019') {
+  if (length(end.year) != 1) {stop('end.year must be a single value')}
+  thisyear <- data.table::year(Sys.Date())
+  if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+  
   if (end.year > 2009) {
     if (end.year == 2014) {
       return('ACS_5yr_Seq_Table_Number_Lookup.txt')

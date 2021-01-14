@@ -8,7 +8,7 @@ get.read.geo(
   mystates,
   new.geo = FALSE,
   folder = getwd(),
-  end.year = "2017",
+  end.year = "2019",
   testing = FALSE,
   silent = FALSE
 )

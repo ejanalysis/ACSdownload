@@ -16,7 +16,7 @@
 #'  }
 #'
 #' @param mystates vector of character 2-letter State abbreviations specifying which are needed
-#' @param end.year Specifies end year of 5-year summary file such as '2012' 
+#' @param end.year Specifies end year of 5-year summary file such as '2017' 
 #' @param folder folder to use for saving files - default is current working directory
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
@@ -31,11 +31,15 @@
 #' @export
 download.geo <-
   function(mystates,
-           end.year = '2017',
+           end.year = '2019',
            folder = getwd(),
            testing = FALSE,
            attempts = 5,
            silent = FALSE) {
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    
     # ****  get names of states and geo files that correspond to state abbreviations parameter
     if (!exists('stateabbs') | !exists('statenames')) {
       #stateinfo	<- ejanalysis::get.state.info()

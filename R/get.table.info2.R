@@ -19,12 +19,15 @@
 #' @export
 get.table.info2 <-
   function(tables,
-           end.year = '2017',
+           end.year = '2019',
            table.info.only = TRUE,
            moe = FALSE) {
     if (missing(tables)) {
       stop('Must specify tables as a vector of character string table IDs, such as B01001')
     }
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
     
     return(
       get.field.info(

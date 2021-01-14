@@ -3,6 +3,6 @@
 #' @param end.year Optional character, specifying last year of 5-year summary file data.
 #' @seealso \code{\link{get.acs}}, \code{\link{get.datafile.prefix}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
 #' @export
-get.zipfile.prefix	<- function(end.year = '2017') {
+get.zipfile.prefix	<- function(end.year = '2019') {
   return(get.datafile.prefix(end.year = end.year))
 }

@@ -4,7 +4,7 @@
 #'   from the US Census Bureau's FTP site for American Community Survey (ACS) 5-year summary file data.
 #'
 #' @param tables Required character vector of table numbers, such as c("B01001", "B03002")
-#' @param end.year Character element, optional, like "2012". Defines last of five years of summary file dataset; default is 2008-2012.
+#' @param end.year Character element, optional, like "2012". Defines last of five years of summary file dataset.
 #' @param folder Default is getwd()
 #' @param mystates Character vector, now optional - Default is 50 states + DC + PR here, but otherwise relies on \code{\link{clean.mystates}}
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
@@ -15,12 +15,17 @@
 #' @export
 download.datafiles <-
   function(tables,
-           end.year = '2017',
+           end.year = '2019',
            mystates = 52,
            folder = getwd(),
            testing = FALSE,
            attempts = 5,
            silent = FALSE) {
+    
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    
     # FUNCTION TO DOWNLOAD ZIP FILES WITH DATA (ESTIMATES AND MOE)
     
     #stateinfo <- ejanalysis::get.state.info()

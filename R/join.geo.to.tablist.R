@@ -18,12 +18,15 @@ join.geo.to.tablist <-
            sumlevel = 'both',
            folder = getwd(),
            testing = FALSE,
-           end.year = '') {
+           end.year = 2019) {
     #	FUNCTION TO join (merge) US data and US geo files on FIPS
     
     # Do geo join for one seqfile at a time, or actually one table at a time.
     # That is somewhat inefficient because geo merge has to be done repeatedly instead of once.
     # But it may be useful to have one file per table.
+    if (length(end.year) != 1) {stop('end.year must be a single value')}
+    thisyear <- data.table::year(Sys.Date())
+    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
     
     for (i in 1:length(my.list.of.tables)) {
       if (testing) {

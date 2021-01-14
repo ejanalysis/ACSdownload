@@ -11,7 +11,7 @@ set.needed(
   varsfile,
   folder = getwd(),
   noEditOnMac = FALSE,
-  end.year = "2017",
+  end.year = "2019",
   silent = TRUE,
   writefile = TRUE
 )
