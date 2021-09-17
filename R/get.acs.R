@@ -4,7 +4,11 @@
 #'   This function will download and parse 1 or more tables of data from the American Community Survey's
 #'   5-year Summary File FTP site, for all Census tracts and/or block groups in specified State(s).
 #'   Estimates and margins of error are obtained, as well as long and short names for the variables,
-#'   which can be specified if only parts of a table are needed.
+#'   which can be specified if only parts of a table are needed. \cr\cr
+#'   It is especially useful if you want a lot of data such as all the blockgroups in the USA,
+#'   which may take a long time to obtain using the Census API and a package like \pkg{\link[tidycensus]{tidycensus}} \cr\cr
+#'   Release schedule for ACS 5-year data is here: \url{https://www.census.gov/programs-surveys/acs/news/data-releases.html}
+#'   The 2016-2020 ACS 5-year estimates release date is December 9, 2021.
 #' @details
 #'   The United States Census Bureau provides detailed demographic data by US Census tract and block group
 #'   in the American Community Survey (ACS) 5-year summary file via their FTP site. For those interested in block group or tract data,
@@ -179,7 +183,8 @@
 #'
 #' OTHER SOURCES include \cr
 #' \itemize{
-#'   \item \pkg{acs} package for R - very useful for modest numbers of Census units rather than every block group in US
+#'   \item \pkg{\link[tidycensus]{tidycensus}} package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
+#'   \item \pkg{\link[acs]{acs}} package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
 #'   \item \url{http://www.NHGIS.org} - (and see \code{\link{nhgis}}) very useful for block group (or tract/county/state/US) datasets
 #'   \item DataFerrett (\url{http://dataferrett.census.gov/AboutDatasets/ACS.html}) -- not all tracts in US at once
 #'   \item American Fact Finder (\url{http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/}) (not block groups for ACS SF, and the tracts are not for the whole US at once)
