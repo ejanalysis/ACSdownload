@@ -11,7 +11,7 @@ set.needed(
   varsfile,
   folder = getwd(),
   noEditOnMac = FALSE,
-  end.year = "2019",
+  end.year = acsdefaultendyearhere_func(),
   silent = TRUE,
   writefile = TRUE
 )

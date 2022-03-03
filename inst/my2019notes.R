@@ -1,8 +1,16 @@
+# # American Community Survey directories are located on the FTP server at www2.census.gov/programs-surveys/acs/. 
+# If you are using a FTP client, the server address is ftp2.census.gov.
+
+# this worked at least: download.file('https://www2.census.gov/programs-surveys/acs/summary_file/2019/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt', destfile = 'ACS_5yr_Seq_Table_Number_Lookup.txt')
+
+
 # see data at 
-# https://www2.census.gov/programs-surveys/acs/summary_file/2019/data/5_year_seq_by_state/UnitedStates/Tracts_Block_Groups_Only/
+# browseURL('https://www2.census.gov/programs-surveys/acs/summary_file/2019/data/5_year_seq_by_state/UnitedStates/Tracts_Block_Groups_Only/')
+# but that is not available in analogous URL for 2020.
+
 
 ###geo files:
-###https://www2.census.gov/programs-surveys/acs/summary_file/2019/documentation/geography/5yr_year_geo/
+### browseURL('https://www2.census.gov/programs-surveys/acs/summary_file/2019/documentation/geography/5yr_year_geo/')
 # setwd('~/R/ACSdownload/inst/')
 # download.file('https://www2.census.gov/programs-surveys/acs/summary_file/2019/documentation/geography/5yr_year_geo/g20195us.csv', destfile = 'g20195us.csv')
 # that is the full US geo file, not what I call the geoformat file (which is tiny)

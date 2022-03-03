@@ -4,7 +4,7 @@
 \alias{gettablesviaseqnums}
 \title{Look up ACS table IDs of tables in given sequence number files}
 \usage{
-gettablesviaseqnums(x, end.year = "2019")
+gettablesviaseqnums(x, end.year = acsdefaultendyearhere_func())
 }
 \arguments{
 \item{x}{Required character vector of table IDs such as "B01001"}

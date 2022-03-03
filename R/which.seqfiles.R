@@ -11,11 +11,11 @@
 #' @return Returns a vector of one or more numbers stored as characters, each defining one sequence file, such as "0001".
 #' @seealso \code{\link{get.acs}} and \code{\link[acs]{acs.lookup}} from the \pkg{acs} package, which does something related but is more flexible & robust. Also see \code{\link{get.acs}} which uses this.
 #' @export
-which.seqfiles <- function(tables, lookup.acs, end.year = '2019') {
+which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere_func()) {
 
   if (length(end.year) != 1) {stop('end.year must be a single value')}
   thisyear <- data.table::year(Sys.Date())
-  if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+  if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a recent year')}
   # validyears <- 2009:2022
   # if (!(end.year %in% validyears)) {
   #   stop('invalid end.year')
@@ -55,15 +55,15 @@ which.seqfiles <- function(tables, lookup.acs, end.year = '2019') {
       # > 
       uniquetoyearlist <-
         list(
-          '2009' = 2018,
-          '2010' = 2036,
-          '2011' = 1908,
-          '2012' = 2080,
-          '2013' = 2110,
-          '2014' = 2114,
-          '2015' = 2114, 
-          '2016' = 2116, 
-          '2017' = 2280, 
+          # '2009' = 2018,
+          # '2010' = 2036,
+          # '2011' = 1908,
+          # '2012' = 2080,
+          # '2013' = 2110,
+          # '2014' = 2114,
+          # '2015' = 2114, 
+          # '2016' = 2116, 
+          # '2017' = 2280, 
           '2018' = 2308, 
           '2019' = 2310, 
           '2020' = 0,  # to add

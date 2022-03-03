@@ -47,20 +47,20 @@
 #'  lookup.acs <- get.lookup.acs()
 #'  }
 #' @export
-get.lookup.acs <- function(end.year = '2019',
+get.lookup.acs <- function(end.year = acsdefaultendyearhere_func(),
                            folder = getwd()) {
   if (length(end.year) != 1) {stop('end.year must be a single value')}
   thisyear <- data.table::year(Sys.Date())
-  if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+  if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a recent year')}
   # "Sequence_Number_and_Table_Number_Lookup.txt" for end.year=2010 through 2013, but 2009 had only .xls not .txt
-  if (end.year < 2009) {
+  if (end.year < acsfirstyearavailablehere) {
     stop(
-      'Years prior to 2009 are not valid. ACS 5-year file was not available until 2005-2009, end.year=2009.'
+      'Years prior to 2018 are not valid. ACS 5-year file was 1st available 2005-2009, but this package now has only recent years.'
     )
   }
-  if (end.year == 2009)  {
-    warning('2005-2009 dataset originally used an xls file for this information, not fully tested here.')
-  }
+  # if (end.year == 2009)  {
+  #   warning('2005-2009 dataset originally used an xls file for this information, not fully tested here.')
+  # }
   
   # already has these via lazy loading as with data() - but that does not work unless library(ACSdownload) not just ACSdownload::get.acs()
   # nameoflookupdata <- paste('lookup.acs', end.year, sep = '')
@@ -71,17 +71,18 @@ get.lookup.acs <- function(end.year = '2019',
 
   my.lookup <- switch(
     EXPR = nameofthelookup,
-    yr2009 = lookup.acs2009,
-    yr2010 = lookup.acs2010,
-    yr2011 = lookup.acs2011,
-    yr2012 = lookup.acs2012,
-    yr2013 = lookup.acs2013,
-    yr2014 = lookup.acs2014,
-    yr2015 = lookup.acs2015,
-    yr2016 = lookup.acs2016,
-    yr2017 = lookup.acs2017,
+    # yr2009 = lookup.acs2009,
+    # yr2010 = lookup.acs2010,
+    # yr2011 = lookup.acs2011,
+    # yr2012 = lookup.acs2012,
+    # yr2013 = lookup.acs2013,
+    # yr2014 = lookup.acs2014,
+    # yr2015 = lookup.acs2015,
+    # yr2016 = lookup.acs2016,
+    # yr2017 = lookup.acs2017,
     yr2018 = lookup.acs2018,
     yr2019 = lookup.acs2019,
+    yr2020 = lookup.acs2020,
     yr2020 = lookup.acs2020
   )
   force(my.lookup)

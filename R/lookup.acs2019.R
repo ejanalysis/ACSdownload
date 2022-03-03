@@ -5,15 +5,15 @@
 #'   in tables forming the American Community Survey (ACS) 5-year summary file.
 #'   The data and documentation for the 5 years ending in year X
 #'   is typically available by December of the year X+1, so 2015-2019 was available by Dec 2020.
-#'   @details 
-#'   # example of how data was imported after download
-#' # 
-#' # setwd('~/R/ACSdownload/inst/')
-#' # download.file('https://www2.census.gov/programs-surveys/acs/summary_file/2019/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt', destfile = 'ACS_5yr_Seq_Table_Number_Lookup.txt')
-#' # lookup.acs2019 <- readr::read_csv('ACS_5yr_Seq_Table_Number_Lookup.txt')
-#' # lookup.acs2019 <- data.frame(lookup.acs2019, stringsAsFactors = FALSE)
-#' # setwd('~/R/ACSdownload/data')
-#' # save(lookup.acs2019, file = 'lookup.acs2019.rdata')
+#' \preformatted{
+#'  # example of how data was imported after download
+#'  # 
+#'  # setwd('./inst/')
+#'  # download.file('https://www2.census.gov/programs-surveys/acs/summary_file/2019/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt', destfile = 'ACS_5yr_Seq_Table_Number_Lookup.txt')
+#'  # lookup.acs2019 <- readr::read_csv('ACS_5yr_Seq_Table_Number_Lookup.txt')
+#'  # lookup.acs2019 <- data.frame(lookup.acs2019, stringsAsFactors = FALSE)
+#'  # save(lookup.acs2019, file = './data/lookup.acs2019.rdata') # or usethis::use_data(lookup.acs2019)
+#' }
 #' @keywords datasets
 #' @format A data.frame with these fields: \cr
 #'    'data.frame':	 29501 obs. of 9 variables:

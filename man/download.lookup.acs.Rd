@@ -4,12 +4,16 @@
 \alias{download.lookup.acs}
 \title{Download File with Information about ACS 5-Year Summary File Tables}
 \usage{
-download.lookup.acs(end.year = "2019", folder = getwd(), silent = FALSE)
+download.lookup.acs(
+  end.year = acsdefaultendyearhere_func(),
+  folder = getwd(),
+  silent = FALSE
+)
 }
 \arguments{
-\item{end.year}{Character, optional, like '2012', which specifies the 2008-2012 dataset.
+\item{end.year}{Character, optional, like '2020', which specifies the 2016-2020 dataset.
 Defines which 5-year summary file to use, based on end-year.
-Can be 2009 or later. Data for end.year='2014' were released in early December 2015, for example.}
+Can be acsfirstyearavailablehere or later. Data for end.year='2019' were released in December 2020, for example.}
 
 \item{folder}{Optional path to where to download file to, defaults to current working directory.}
 

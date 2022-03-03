@@ -18,7 +18,7 @@ join.geo.to.tablist <-
            sumlevel = 'both',
            folder = getwd(),
            testing = FALSE,
-           end.year = 2019) {
+           end.year = acsdefaultendyearhere_func()) {
     #	FUNCTION TO join (merge) US data and US geo files on FIPS
     
     # Do geo join for one seqfile at a time, or actually one table at a time.
@@ -26,7 +26,7 @@ join.geo.to.tablist <-
     # But it may be useful to have one file per table.
     if (length(end.year) != 1) {stop('end.year must be a single value')}
     thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
     
     for (i in 1:length(my.list.of.tables)) {
       if (testing) {
@@ -62,7 +62,6 @@ join.geo.to.tablist <-
           subset(my.list.of.tables[[i]],
                  my.list.of.tables[[i]]$SUMLEVEL == '150')
       }
-      
       
       # MIGHT WANT TO DO ERROR CHECKING HERE FOR LENGTH & HOW MANY FAIL TO MATCH
       # print(overlaps(mygeo$KEY, bigtable$KEY))

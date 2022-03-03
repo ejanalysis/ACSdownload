@@ -19,7 +19,7 @@
 #' @export
 get.table.info2 <-
   function(tables,
-           end.year = '2019',
+           end.year = acsdefaultendyearhere_func(),
            table.info.only = TRUE,
            moe = FALSE) {
     if (missing(tables)) {
@@ -27,7 +27,7 @@ get.table.info2 <-
     }
     if (length(end.year) != 1) {stop('end.year must be a single value')}
     thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
     
     return(
       get.field.info(

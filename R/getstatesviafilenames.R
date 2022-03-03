@@ -8,7 +8,7 @@
 #' @export
 getstatesviafilenames <- function(folder = getwd()) {
   # infer states based on what filenames are found in folder
-  #getstatesviafilenames <- function(folder=getwd(), seqfilelistnums, end.year = '2019' ) {
+  #getstatesviafilenames <- function(folder=getwd(), seqfilelistnums, end.year = acsdefaultendyearhere_func() ) {
   is.datafilename <-
     function(x) {
       grepl(pattern = '[em]20[0-9][0-9]5[a-z][a-z][0-9]*\\.txt', x)

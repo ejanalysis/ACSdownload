@@ -4,7 +4,7 @@
 \alias{get.url.prefix}
 \title{Get URL prefix for FTP site folder(s) with ACS 5-year summary file data}
 \usage{
-get.url.prefix(end.year = "2019")
+get.url.prefix(end.year = acsdefaultendyearhere_func())
 }
 \arguments{
 \item{end.year}{Optional end year for 5-year summary file, as character, but ignored if url.prefix is specified}

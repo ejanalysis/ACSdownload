@@ -6,7 +6,7 @@
 \usage{
 download.datafiles(
   tables,
-  end.year = "2019",
+  end.year = acsdefaultendyearhere_func(),
   mystates = 52,
   folder = getwd(),
   testing = FALSE,

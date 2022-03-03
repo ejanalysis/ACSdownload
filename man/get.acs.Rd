@@ -7,7 +7,7 @@
 get.acs(
   tables = "B01001",
   mystates = "all",
-  end.year = "2019",
+  end.year = acsdefaultendyearhere_func(),
   base.path = getwd(),
   data.path = file.path(base.path, "acsdata"),
   output.path = file.path(base.path, "acsoutput"),
@@ -34,7 +34,7 @@ Those tables are "B01001", "B03002", "B15002", "B16002", "C17002", "B25034"}
 plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.}
 
 \item{end.year}{Character, optional. Defines a valid ending year of a 5-year summary file.
-Can be '2017' for example. Not all years are tested. Actually works if numeric like 2017, instead of character, too.}
+Can be '2020' for example. Not all years are tested. Actually works if numeric like 2017, instead of character, too.}
 
 \item{base.path}{Character, optional, getwd() by default. Defines a base folder to start from, in case
 data.path and/or output.path are not specified, in which case a subfolder under base.path,
@@ -100,8 +100,7 @@ By default, returns a list of ACS data tables and information about them, with t
   data variable in the estimates tables. The headers table provides similar information but made to match the bg or tract format,
   so the headers table has as many rows as bg or tracts has columns -- enough for the estimates and MOE fields, and the basic fields such as FIPS.
   The info data.frame can look like this, for example: \cr
-
- \code{
+ \preformatted{
   'data.frame':	xxxx obs. of  9 variables:
  $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...
  $ line           : num  1 2 3 4 5 6 7 8 9 10 ...
@@ -118,7 +117,11 @@ By default, returns a list of ACS data tables and information about them, with t
 This function will download and parse 1 or more tables of data from the American Community Survey's
   5-year Summary File FTP site, for all Census tracts and/or block groups in specified State(s).
   Estimates and margins of error are obtained, as well as long and short names for the variables,
-  which can be specified if only parts of a table are needed.
+  which can be specified if only parts of a table are needed. \cr\cr
+  It is especially useful if you want a lot of data such as all the blockgroups in the USA,
+  which may take a long time to obtain using the Census API and a package like \pkg{\link[tidycensus]{tidycensus}} \cr\cr
+  Release schedule for ACS 5-year data is here: \url{https://www.census.gov/programs-surveys/acs/news/data-releases.html}
+  The 2016-2020 ACS 5-year estimates release date is December 9, 2021.
 }
 \details{
 The United States Census Bureau provides detailed demographic data by US Census tract and block group
@@ -180,7 +183,8 @@ Note the US file is not bg/tract level:  geo for whole US at once doesn't have t
 
 OTHER SOURCES include \cr
 \itemize{
-  \item \pkg{acs} package for R - very useful for modest numbers of Census units rather than every block group in US
+  \item \pkg{\link[tidycensus]{tidycensus}} package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
+  \item \pkg{\link[acs]{acs}} package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
   \item \url{http://www.NHGIS.org} - (and see \code{\link{nhgis}}) very useful for block group (or tract/county/state/US) datasets
   \item DataFerrett (\url{http://dataferrett.census.gov/AboutDatasets/ACS.html}) -- not all tracts in US at once
   \item American Fact Finder (\url{http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/}) (not block groups for ACS SF, and the tracts are not for the whole US at once)
@@ -191,26 +195,26 @@ OTHER SOURCES include \cr
 }
 \examples{
   ##### Basic info on ACS tables:
-  cbind(table(lookup.acs2017$Subject.Area))
+  cbind(table(lookup.acs2019$Subject.Area))
  \dontrun{
   ##### Basic info on ACS tables:
-  t( get.table.info('B01001', end.year = '2019') )
-  t( get.table.info(c('B17001', 'C17002'), end.year = 2017) )
-  get.field.info('C17002', end.year = 2017)
+  t( get.table.info('B01001', end.year = acsdefaultendyearhere_func()) )
+  t( get.table.info(c('B17001', 'C17002'), end.year = 2019) )
+  get.field.info('C17002', end.year = 2019)
   ##### Data for just DC & DE, just two tables:
   outsmall <- get.acs(tables = c('B01001', 'C17002'), mystates=c('dc','de'),
-   end.year = '2019', base.path = '~/Downloads', write.files = T, new.geo = FALSE)
+   end.year = acsdefaultendyearhere_func(), base.path = '~/Downloads', write.files = T, new.geo = FALSE)
   summary(outsmall)
   t(outsmall$info[1, ])
   t(outsmall$bg[1, ])
 
    ## ENTIRE USA -- DOWNLOAD AND PARSE -- TAKES A COUPLE OF MINUTES for one table:
-   acs_2013_2017_B01001_vars_bg_and_tract <- get.acs(
-     base.path='~/Downloads', end.year='2017', write.files = TRUE, new.geo = FALSE)
+   acs_2014_2018_B01001_vars_bg_and_tract <- get.acs(
+     base.path='~/Downloads', end.year='2018', write.files = TRUE, new.geo = FALSE)
 
   ########################################################################
   ##### Data for just DC & DE, just the default pop count table:
-  out <- get.acs(mystates=c('dc','de'), end.year = '2019', new.geo = FALSE)
+  out <- get.acs(mystates=c('dc','de'), end.year = acsdefaultendyearhere_func(), new.geo = FALSE)
   names(out$bg); cat('\n\n'); head(out$info)
   head(t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe,
      subj=out$headers$subject,  out$bg[1:2,]) ), 15)

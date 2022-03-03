@@ -4,12 +4,12 @@
 \alias{geofile}
 \title{Get name(s) of GEO txt file(s) with geo information for ACS}
 \usage{
-geofile(mystates, end.year = "2019")
+geofile(mystates, end.year = acsdefaultendyearhere_func())
 }
 \arguments{
 \item{mystates}{vector of character 2-letter State abbreviations specifying which are needed}
 
-\item{end.year}{end.year of 5-year summary file such as '2018'}
+\item{end.year}{end.year of 5-year summary file such as '2020'}
 }
 \value{
 Character vector of file names, example: "g20105md.txt"

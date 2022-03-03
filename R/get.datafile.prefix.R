@@ -3,9 +3,9 @@
 #' @param end.year Optional character, such as "2012", specifying last year of 5-year summary file data.
 #' @seealso \code{\link{get.acs}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
 #' @export
-get.datafile.prefix	<- function(end.year = '2019') {
+get.datafile.prefix	<- function(end.year = acsdefaultendyearhere_func()) {
   if (length(end.year) != 1) {stop('end.year must be a single value')}
   thisyear <- data.table::year(Sys.Date())
-  if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+  if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
   return(paste(end.year, "5", sep = ""))
 }

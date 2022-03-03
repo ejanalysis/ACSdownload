@@ -33,12 +33,12 @@ set.needed <-
            varsfile,
            folder = getwd(),
            noEditOnMac = FALSE,
-           end.year = '2019',
+           end.year = acsdefaultendyearhere_func(),
            silent = TRUE,
            writefile = TRUE) {
     if (length(end.year) != 1) {stop('end.year must be a single value')}
     thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
     
     if (missing(lookup.acs)) {
       lookup.acs <- get.lookup.acs(end.year = end.year)

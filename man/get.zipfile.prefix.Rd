@@ -4,7 +4,7 @@
 \alias{get.zipfile.prefix}
 \title{Get first part of ACS zip file name.}
 \usage{
-get.zipfile.prefix(end.year = "2019")
+get.zipfile.prefix(end.year = acsdefaultendyearhere_func())
 }
 \arguments{
 \item{end.year}{Optional character, specifying last year of 5-year summary file data.}

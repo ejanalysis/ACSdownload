@@ -4,7 +4,12 @@
 \alias{read.geo}
 \title{Read and concatenate state geo files from Census ACS}
 \usage{
-read.geo(mystates, folder = getwd(), end.year = "2019", silent = FALSE)
+read.geo(
+  mystates,
+  folder = getwd(),
+  end.year = acsdefaultendyearhere_func(),
+  silent = FALSE
+)
 }
 \arguments{
 \item{mystates}{Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.}
@@ -26,7 +31,6 @@ Reads and merges geo files that have been obtained from the US Census Bureau FTP
 }
 \details{
 Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
-  Currently works for ACS 2008-2012 5-year file format, other years not tested.
   Extracts just block group (SUMLEVEL=150) and tract (SUMLEVEL=140) geo information (not county info., since data files used in this package lack county info.)
   The NAME field works on pc but mac can hit an error if trying to read the NAME field. Due to encoding? specifying encoding didn't help.\cr
   (name is very long and not essential)\cr

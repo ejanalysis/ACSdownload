@@ -32,9 +32,9 @@
 #'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/}  \cr
 #'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/}  \cr
 #'  \cr
-#' @param end.year Character, optional, like '2012', which specifies the 2008-2012 dataset.
+#' @param end.year Character, optional, like '2020', which specifies the 2016-2020 dataset.
 #'   Defines which 5-year summary file to use, based on end-year.
-#'   Can be 2009 or later. Data for end.year='2014' were released in early December 2015, for example.
+#'   Can be acsfirstyearavailablehere or later. Data for end.year='2019' were released in December 2020, for example.
 #' @param folder Optional path to where to download file to, defaults to current working directory.
 #' @param silent Optional, default is FALSE. Whether to send progress info to standard output (like the screen)
 #' @return By default, returns a data.frame with these fields:
@@ -64,12 +64,12 @@
 #'  }
 #' @export
 download.lookup.acs <-
-  function(end.year = '2019',
+  function(end.year = acsdefaultendyearhere_func(),
            folder = getwd(),
            silent = FALSE) {
     if (length(end.year) != 1) {stop('end.year must be a single value')}
     thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
     
     my.url.prefix.lookup.table <-
       get.url.prefix.lookup.table(end.year)  # paste("ftp://ftp.census.gov/acs", end.year, "_5yr/summaryfile/", sep="") # but lacking last /

@@ -3,6 +3,7 @@
 S3method(format,est.moe)
 S3method(format,for.acs.package)
 S3method(merge,tables)
+export(acsdefaultendyearhere_func)
 export(clean.mystates)
 export(clean.sumlevel)
 export(datafile)

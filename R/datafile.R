@@ -7,13 +7,13 @@
 #' @return Returns character element that is name of data file such as e20105de0017000 or m20105de0017000
 #' @seealso \code{\link{get.acs}}
 #' @export
-datafile <- function(state.abbrev, seqfilenum, end.year = '2019') {
+datafile <- function(state.abbrev, seqfilenum, end.year = acsdefaultendyearhere_func()) {
   # datafile name examples:
   #	e20105de0017000
   #	m20105de0017000
   if (length(end.year) != 1) {stop('end.year must be a single value')}
   thisyear <- data.table::year(Sys.Date())
-  if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+  if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
   
   datafile.prefix 	<- get.datafile.prefix(end.year = end.year)
   

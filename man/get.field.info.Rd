@@ -6,7 +6,7 @@
 \usage{
 get.field.info(
   tables,
-  end.year = "2019",
+  end.year = acsdefaultendyearhere_func(),
   table.info.only = FALSE,
   moe = FALSE,
   basic = FALSE,

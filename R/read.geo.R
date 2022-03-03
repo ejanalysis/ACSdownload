@@ -5,7 +5,6 @@
 #'   
 #' @details
 #'   Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
-#'   Currently works for ACS 2008-2012 5-year file format, other years not tested.
 #'   Extracts just block group (SUMLEVEL=150) and tract (SUMLEVEL=140) geo information (not county info., since data files used in this package lack county info.)
 #'   The NAME field works on pc but mac can hit an error if trying to read the NAME field. Due to encoding? specifying encoding didn't help.\cr
 #'   (name is very long and not essential)\cr
@@ -28,7 +27,7 @@
 read.geo <-
   function(mystates,
            folder = getwd(),
-           end.year = '2019',
+           end.year = acsdefaultendyearhere_func(),
            silent = FALSE) {
     ############# #
     # concatenate geos over all states
@@ -157,7 +156,7 @@ read.geo <-
     ################################################################### #
     if (length(end.year) != 1) {stop('end.year must be a single value')}
     thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
     
     geoformat <- switch(
       paste('x', end.year, sep = ''),

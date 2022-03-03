@@ -1,7 +1,8 @@
 #' @name geo
 #' @docType data
 #' @title downloaded saved geographic information for 5-year summary file ACS dataset ending in given year
-#' @description See \code{\link{get.read.geo}}. This data set is a geographic identifier file from the American Community Survey (ACS) 5-year summary file.
+#' @description See \code{\link{get.read.geo}}. This data set is a 
+#'   geographic identifier file from the American Community Survey (ACS) 5-year summary file.
 #' @source \url{http://www2.census.gov/programs-surveys/acs}
 #' @keywords datasets
 #' @format A data.frame

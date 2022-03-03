@@ -5,10 +5,10 @@
 #' @return Returns character vector that is first part of URL such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset"
 #' @seealso \code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}
 #' @export
-get.url.prefix <- function(end.year = '2019') {
+get.url.prefix <- function(end.year = acsdefaultendyearhere_func()) {
   if (length(end.year) != 1) {stop('end.year must be a single value')}
   thisyear <- data.table::year(Sys.Date())
-  if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+  if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
   
   if (end.year == 2014) {
     return(

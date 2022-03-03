@@ -29,7 +29,7 @@
 #' @param output.path Character, optional, file.path(base.path, 'acsoutput') by default.
 #'   Defines folder (created if does not exist) where output files (results of this function) will be stored.
 #' @param end.year Character, optional. Defines a valid ending year of a 5-year summary file.
-#'   Can be '2017' for example. Not all years are tested. Actually works if numeric like 2017, instead of character, too.
+#'   Can be '2020' for example. Not all years are tested. Actually works if numeric like 2017, instead of character, too.
 #' @param mystates Character vector, optional, 'all' by default which means all available states
 #'   plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.
 #' @param sumlevel Default is "both" (case insensitive) in which case tracts and block groups are returned.
@@ -74,8 +74,7 @@
 #'   data variable in the estimates tables. The headers table provides similar information but made to match the bg or tract format,
 #'   so the headers table has as many rows as bg or tracts has columns -- enough for the estimates and MOE fields, and the basic fields such as FIPS.
 #'   The info data.frame can look like this, for example: \cr
-#'
-#'  \code{
+#'  \preformatted{
 #'   'data.frame':	xxxx obs. of  9 variables:
 #'  $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...
 #'  $ line           : num  1 2 3 4 5 6 7 8 9 10 ...
@@ -92,26 +91,26 @@
 #'    Also see \code{\link{nhgis}} which parses any files manually downloaded from \url{NHGIS.org}
 #' @examples
 #'   ##### Basic info on ACS tables:
-#'   cbind(table(lookup.acs2017$Subject.Area))
+#'   cbind(table(lookup.acs2019$Subject.Area))
 #'  \dontrun{
 #'   ##### Basic info on ACS tables:
-#'   t( get.table.info('B01001', end.year = '2019') )
-#'   t( get.table.info(c('B17001', 'C17002'), end.year = 2017) )
-#'   get.field.info('C17002', end.year = 2017)
+#'   t( get.table.info('B01001', end.year = acsdefaultendyearhere_func()) )
+#'   t( get.table.info(c('B17001', 'C17002'), end.year = 2019) )
+#'   get.field.info('C17002', end.year = 2019)
 #'   ##### Data for just DC & DE, just two tables:
 #'   outsmall <- get.acs(tables = c('B01001', 'C17002'), mystates=c('dc','de'),
-#'    end.year = '2019', base.path = '~/Downloads', write.files = T, new.geo = FALSE)
+#'    end.year = acsdefaultendyearhere_func(), base.path = '~/Downloads', write.files = T, new.geo = FALSE)
 #'   summary(outsmall)
 #'   t(outsmall$info[1, ])
 #'   t(outsmall$bg[1, ])
 #'
 #'    ## ENTIRE USA -- DOWNLOAD AND PARSE -- TAKES A COUPLE OF MINUTES for one table:
-#'    acs_2013_2017_B01001_vars_bg_and_tract <- get.acs(
-#'      base.path='~/Downloads', end.year='2017', write.files = TRUE, new.geo = FALSE)
+#'    acs_2014_2018_B01001_vars_bg_and_tract <- get.acs(
+#'      base.path='~/Downloads', end.year='2018', write.files = TRUE, new.geo = FALSE)
 #'
 #'   ########################################################################
 #'   ##### Data for just DC & DE, just the default pop count table:
-#'   out <- get.acs(mystates=c('dc','de'), end.year = '2019', new.geo = FALSE)
+#'   out <- get.acs(mystates=c('dc','de'), end.year = acsdefaultendyearhere_func(), new.geo = FALSE)
 #'   names(out$bg); cat('\n\n'); head(out$info)
 #'   head(t(rbind(id=out$headers$table.ID, long=out$headers$longname, univ=out$headers$universe,
 #'      subj=out$headers$subject,  out$bg[1:2,]) ), 15)
@@ -196,7 +195,7 @@
 get.acs <-
   function(tables = 'B01001',
            mystates = 'all',
-           end.year = '2019',
+           end.year = acsdefaultendyearhere_func(),
            base.path = getwd(),
            data.path = file.path(base.path, 'acsdata'),
            output.path = file.path(base.path, 'acsoutput'),
@@ -217,7 +216,7 @@ get.acs <-
     end.year <- as.character(end.year)
     if (length(end.year) != 1) {stop('end.year must be a single value')}
     thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(2009:(thisyear - 1)))) {stop('end.year must be a plausible year such as 2017')}
+    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
 
     # check if base.path seems to be a valid folder
     if (!file.exists(base.path)) {
