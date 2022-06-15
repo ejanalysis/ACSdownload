@@ -1,5 +1,5 @@
 list_files_ftp <- function(url, credentials = "", sleep = NA, sort = FALSE, verbose = FALSE) {
-  
+  require(magrittr)
   # Do
   x <- url %>%
     purrr::map(

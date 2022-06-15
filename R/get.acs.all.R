@@ -3,6 +3,8 @@
 #' Uses Census Bureau new format files that offer the full USA in 1 file per table,
 #'   via FTP or https. 
 #'   
+#'   note API provides better list of variable names, in order as found on summary files, than documentation does.
+#'   
 #' @param tables 'ejscreen' or else one or more table codes like 'b01001' or c("B01001", "B03002")
 #' @param end.year 2020 or another available year
 #' @param dataset default is 5, for 5-year summary file data like 2016-2020 ACS
@@ -17,7 +19,7 @@ get.acs.all <- function(tables="B01001", end.year=2020, dataset='5', sumlevel=15
   # makes it easier to get one table for every blockgroup in the US
   
   # table_for_sumlevel
-  ejscreentables <- c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034")
+  ejscreentables <- c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034", 'B23025') # all are in NHGIS except: b16004 not 16002 ?. and added B23025 unemployement 
   # if tables equals or contains 'ejscreen' then replace the 'ejscreen' part with the default tables as follows, leaving any other tables specified in addition to ejscreen tables:
   if (any(tolower(tables) == 'ejscreen')) {
     tables <- c(ejscreentables, tables[tolower(tables) != 'ejscreen'])

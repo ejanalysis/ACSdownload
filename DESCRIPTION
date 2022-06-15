@@ -31,3 +31,5 @@ Maintainer: info@ejanalysis.com <info@ejanalysis.com>
 NeedsCompilation: no
 LazyData: true
 Encoding: UTF-8
+Imports: 
+    magrittr
