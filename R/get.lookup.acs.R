@@ -2,9 +2,9 @@
 #' @description
 #'   Get lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
 #'   namely which sequence files on the FTP site contain which tables and which variables.
-#'   NOTE: This uses lazy loading from data(lookup.acs2013) and similarly for other years.
+#'   NOTE: This uses lazy loading from datasets in the package.
 #' @details
-#'   Now folders are like:
+#'   Now folders are or were like:
 #'   https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
 #'   https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
 #'
@@ -29,7 +29,7 @@
 #'      $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
 #'      $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
 #'   }
-#'   For ACS 2008-2012: \cr
+#'   For ACS 2008-2012 it used to be: \cr
 #'   \code{
 #'   length(my.lookup[,1])
 #'   [1] 24741
@@ -55,7 +55,7 @@ get.lookup.acs <- function(end.year = acsdefaultendyearhere_func(),
   # "Sequence_Number_and_Table_Number_Lookup.txt" for end.year=2010 through 2013, but 2009 had only .xls not .txt
   if (end.year < acsfirstyearavailablehere) {
     stop(
-      'Years prior to 2018 are not valid. ACS 5-year file was 1st available 2005-2009, but this package now has only recent years.'
+      'Years prior to 2018 or maybe 2021 are not valid. ACS 5-year file was 1st available 2005-2009, but this package now has only recent year(s).'
     )
   }
   # if (end.year == 2009)  {
