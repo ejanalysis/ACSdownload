@@ -46,7 +46,7 @@
 #' @return Data.frame for use in \link[acs]{acs} package.
 #' @seealso \code{\link{get.acs}} to obtain acs data for use in this function, and then \code{\link[acs]{read.acs}} to read csv created by this function
 #' @export
-format.for.acs.package <-
+format_for_acs_package <-
   function(x,
            tableid = '',
            folder = getwd(),

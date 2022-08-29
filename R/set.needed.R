@@ -92,8 +92,9 @@ set.needed <-
     #  B03002   0  21   0   0   0   0
     #  B15002   0   0  35   0   0   0
     #  B16001   0   0   0 119   0   0
-    #  B16002   0   0   0  14   0   0
-    #  also note B16004 is in seqfile 44
+    #  B16002   0   0   0  14   0   0   # now 16004
+    #  also note B16004 was in seqfile 44 but
+    # C16002 replaced B16004 that was older ACS source for what had been called linguistic isolation, now called limited English speaking households.
     #  B25034   0   0   0   0   0  10
     #  C17002   0   0   0   0   8   0
     

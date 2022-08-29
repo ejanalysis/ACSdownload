@@ -68,8 +68,9 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
 
   # to do:
   # update to 2022 formats and tables etc. 
-  # ejscreentables <- c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034", 'B23025') # all are in NHGIS except: b16004 not 16002 ?. and added B23025 unemployement 
-  # 
+  # ejscreentables <- c("B01001", "B03002", "B15002", "C16002", "C17002", "B25034", 'B23025') 
+  # # C16002 replaced B16004 that was older ACS source for what had been called linguistic isolation, now called limited English speaking households.
+  
   # I don't think this works for more than one table at a time (it can read all resolutions like state, county, etc files for one table, but not 2+ tables at once)
   # could fix 2 cases below that crash.
   # could add allfields df as an output of nhgisread()

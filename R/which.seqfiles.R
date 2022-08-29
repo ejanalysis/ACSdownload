@@ -6,7 +6,7 @@
 #' @param lookup.acs data.frame, optional (if not provided then it is downloaded from Census).
 #'   Specifies what variables are in which tables and which tables are in which sequence files on the FTP site.
 #' @param end.year Character element, optional. Defines end year for 5-year dataset.
-#'   Valid years are 2009:2014 as of Dec 2015 - Nov 2016, with more to be added over time.
+#'   Valid years are limited.
 #'   Ignored if lookup.acs is specified, however. If they imply different years, the function stops with an error message.
 #' @return Returns a vector of one or more numbers stored as characters, each defining one sequence file, such as "0001".
 #' @seealso \code{\link{get.acs}} and \code{\link[acs]{acs.lookup}} from the \pkg{acs} package, which does something related but is more flexible & robust. Also see \code{\link{get.acs}} which uses this.
@@ -66,9 +66,9 @@ which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere_
           # '2017' = 2280, 
           '2018' = 2308, 
           '2019' = 2310, 
-          '2020' = 0,  # to add
-          '2021' = 0,  # to add
-          '2022' = 0  # to add
+          '2020' = 2324,  
+          '2021' = sum(is.na(lookup.acs2021$Line.Number)),  # to add
+          '2022' = sum(is.na(lookup.acs2022$Line.Number))  # to add
         )
       if (uniquetoyearlist[end.year] == 0) stop('code not yet updated in which.seqfiles.R')
       uniquetoyear <- sum(is.na(lookup.acs$Line.Number))

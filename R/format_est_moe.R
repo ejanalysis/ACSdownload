@@ -6,7 +6,7 @@
 #' @return List of tables like input but with columns sorted in a new order.
 #' @seealso \code{\link{get.acs}} and \code{\link[analyze.stuff]{intersperse}}
 #' @export
-format.est.moe <- function(my.list.of.tables) {
+format_est_moe <- function(my.list.of.tables) {
   for (i in 1:length(my.list.of.tables)) {
     df <- my.list.of.tables[[i]]
     keycols <- c("KEY", "SUMLEVEL", "GEOID", "FIPS", "STUSAB")

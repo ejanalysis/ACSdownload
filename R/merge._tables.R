@@ -5,7 +5,7 @@
 #' @return Returns one big data.frame with all columns of all input tables
 #' @seealso \code{\link{get.acs}}
 #' @export
-merge.tables <- function(my.list.of.tables) {
+merge_tables <- function(my.list.of.tables) {
   # fields already removed:
   # "STATE", "COUNTY", "TRACT", "BLKGRP", "LOGRECNO"
   # nondata fields remaining (but not at front of table):

@@ -28,7 +28,8 @@ get.acs(
 \arguments{
 \item{tables}{Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
 NOTE: If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
-Those tables are "B01001", "B03002", "B15002", "B16002", "C17002", "B25034"}
+Those tables in EJScreen 2.0 are  
+c("B01001", "B03002", "B15002", 'C16002', "C17002", "B25034", 'B23025')}
 
 \item{mystates}{Character vector, optional, 'all' by default which means all available states
 plus DC and PR but not VI etc. Defines which States to include in downloads of data tables.}
@@ -139,17 +140,15 @@ The United States Census Bureau provides detailed demographic data by US Census 
  Note relevant sequence numbers change over time. \cr
 ############# \cr \cr
 #####################################################################################  \cr
-NOTES on where to obtain ACS data - sources for downloads of summary file data  \cr
+OLDER NOTES on where to obtain ACS data - sources for downloads of summary file data  \cr
 ##################################################################################### \cr\cr \cr
 
 FOR ACS SUMMARY FILE DOCUMENTATION, SEE \cr
-\url{http://www.census.gov/acs/www/data_documentation/summary_file/} \cr \cr
-
-	As of 12/2012, ACS block group/tract summary file ESTIMATES on FTP site is provided as either \cr\cr
+\url{https://www.census.gov/acs/www/data_documentation/summary_file/} \cr \cr
 
  LARGER THAN NECESSARY: \cr\cr
 
-*** all states and all tables in one huge tar.gz file (plus a zip of all geography codes), \cr
+*** all states and all tables in one huge tar.gz file (plus a zip of all geography codes)  \cr
 \url{ftp://ftp.census.gov/acs2011_5yr/summaryfile//2007-2011_ACSSF_All_In_2_Giant_Files(Experienced-Users-Only)} \cr
 \url{ftp://ftp.census.gov/acs2011_5yr/summaryfile//2007-2011_ACSSF_All_In_2_Giant_Files(Experienced-Users-Only)/2011_ACS_Geography_Files.zip} \cr
 2011_ACS_Geography_Files.zip		# \cr
@@ -170,7 +169,7 @@ so downloading about 400 files and expanding to about 750 files, and joining int
 OR \cr\cr
 
  PREJOINED TO TIGER BLOCK GROUP BOUNDARIES SHAPEFILES/ GEODATABASES - \cr
-ONE PER STATE HAS SEVERAL TABLES BUT NOT B16001, B16002 (many languages but tracts only), B16004 (has block groups but fewer languages) \cr
+ONE PER STATE HAS SEVERAL TABLES \cr
 \url{http://www.census.gov/geo/maps-data/data/tiger-data.html} \cr
  BUT NOT one file per sequence file FOR ALL STATES AT ONCE. \cr
 Estimates & margin of error (MOE), (ONCE UNZIPPED), and GEOgraphies (not zipped) are in 3 separate files. \cr \cr
@@ -195,12 +194,32 @@ OTHER SOURCES include \cr
 }
 \examples{
   ##### Basic info on ACS tables:
-  cbind(table(lookup.acs2019$Subject.Area))
+  cbind(table(lookup.acs2020$Subject.Area))
+  
+                                                                                   table.title table.ID
+                                                                                    SEX BY AGE   B01001
+                                                             HISPANIC OR LATINO ORIGIN BY RACE   B03002
+                            SEX BY EDUCATIONAL ATTAINMENT FOR THE POPULATION 25 YEARS AND OVER   B15002
+                            
+AGE BY LANGUAGE SPOKEN AT HOME BY ABILITY TO SPEAK ENGLISH FOR THE POPULATION 5 YEARS AND OVER   B16004
+                               HOUSEHOLD LANGUAGE BY HOUSEHOLD LIMITED ENGLISH SPEAKING STATUS   C16002
+
+                                        RATIO OF INCOME TO POVERTY LEVEL IN THE PAST 12 MONTHS   C17002
+                                        EMPLOYMENT STATUS FOR THE POPULATION 16 YEARS AND OVER   B23025    
+                                                                                                                  YEAR STRUCTURE BUILT   B25034    #' 
+  # from the census website, see USA ACS tables:
+ mytables <- c("B01001", "B03002", "B15002", 'B23025', "B25034", "C16002", "C17002") # EJScreen-related
+ yr <- 2020 # ACS 5YR Summary File 2016-2020
+ geos <- '0100000US_0400000US72' # US (just 50 States and DC) and PR: 
+ https://data.census.gov/cedsci/table?q=acs\%20B01001\%20B03002\%20B15002\%20B23025\%20B25034\%20C16002\%20C17002&g=0100000US_0400000US72&y=2020
+ myurl <- paste0('https://data.census.gov/cedsci/table?q=acs\%20', paste(mytables, collapse= '\%20'), '&g=', geos, '&y=', yr)
+ # browseURL(myurl)
+ 
+  
  \dontrun{
-  ##### Basic info on ACS tables:
   t( get.table.info('B01001', end.year = acsdefaultendyearhere_func()) )
-  t( get.table.info(c('B17001', 'C17002'), end.year = 2019) )
-  get.field.info('C17002', end.year = 2019)
+  t( get.table.info(c('B17001', 'C17002') ) )
+  get.field.info('C17002')
   ##### Data for just DC & DE, just two tables:
   outsmall <- get.acs(tables = c('B01001', 'C17002'), mystates=c('dc','de'),
    end.year = acsdefaultendyearhere_func(), base.path = '~/Downloads', write.files = T, new.geo = FALSE)
@@ -230,7 +249,7 @@ OTHER SOURCES include \cr
   ##### uses all EJSCREEN defaults and the specified folders:
   out <- get.acs(base.path='~', data.path='~/ACStemp', output.path='~/ACSresults')
   summary(out); head(out$info); head(out$bg)
-  ##### all tables needed for EJSCREEN, plus 'B16001',
+  ##### all tables needed for EJSCREEN, plus 'B16001', # b16001 has more details on specific languages spoken
     with variables specified in 'variables needed.csv', all states and DC and PR:
   out <- get.acs(tables=c('ejscreen', 'B16001'))
   summary(out); head(out$info); head(out$bg)

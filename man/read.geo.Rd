@@ -36,7 +36,7 @@ Note that if this finds the geographic file in folder already, it will not downl
   (name is very long and not essential)\cr
   Error in substring(x, first, last) : \cr
   invalid multibyte string at '<f1>onc<69>to Chapter; Navajo Nation Reservation and Off-Reservation Trust Land, AZ--NM--UT \cr
-  Format of files is here: \code{\url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf}}
+  Format of files is here: \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf}
 }
 \examples{
  \dontrun{

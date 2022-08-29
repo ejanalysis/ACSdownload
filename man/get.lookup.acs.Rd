@@ -4,52 +4,33 @@
 \alias{get.lookup.acs}
 \title{Get Information about ACS 5-Year Summary File Tables}
 \usage{
-get.lookup.acs(end.year = acsdefaultendyearhere_func(), folder = getwd())
+get.lookup.acs(end.year = acsdefaultendyearhere_func())
 }
 \arguments{
-\item{end.year}{Character, optional, like '2012', which specifies the 2008-2012 dataset.
+\item{end.year}{Character, optional, like '2020', which specifies the 2016-2020 dataset.
 Defines which 5-year summary file to use, based on end-year.
-Can be 2009 or later. Data for end.year='2014' was released December 2015, for example.
-Note: Function stops with error if given end.year is not yet added to this package.}
-
-\item{folder}{Ignored (leftover from when this was like download.lookup.acs)}
+Note: Function stops with error if given end.year is not yet added to this package or is too old.}
 }
 \value{
-By default, returns a data.frame with these fields:
+returns a data.frame  
   \code{
-     $ Table.ID               : chr  "B00001" "B00001" "B00001" "B00002" ...
-     $ Sequence.Number        : chr  "0001" "0001" "0001" "0001" ...
-     $ Line.Number            : num  NA NA 1 NA NA 1 NA NA 1 2 ...
-     $ Start.Position         : num  7 NA NA 8 NA NA 7 NA NA NA ...
-     $ Total.Cells.in.Table   : chr  "1 CELL" "" "" "1 CELL" ...
-     $ Total.Cells.in.Sequence: num  NA NA NA 2 NA NA NA NA NA NA ...
-     $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
-     $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
-  }
-  For ACS 2008-2012: \cr
-  \code{
-  length(my.lookup[,1])
-  [1] 24741
-  names(my.lookup)
-  [1] "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position"
-  [6] "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"
+  dim(lookup.acs2020)
+  [1] 30326     9
+  names(lookup.acs2020)
+  [1] "File.ID"                 "Table.ID"                "Sequence.Number"        
+  [4] "Line.Number"             "Start.Position"          "Total.Cells.in.Table"   
+  [7] "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"           
   }
 }
 \description{
 Get lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
   namely which sequence files on the FTP site contain which tables and which variables.
-  NOTE: This uses lazy loading from data(lookup.acs2013) and similarly for other years.
+  NOTE: This uses lazy loading from datasets in the package.
 }
 \details{
-Now folders are like:
+Now folders are or were like:
   https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
   https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
-
-  The source of this lookup table was, for example,
-  \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}
-  and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}
-  Note 2014 file lacks leading zeroes on Sequence Number field, so those were added before saving as .RData file as data for package.
-   via lookup.acs2014$Sequence.Number <- analyze.stuff::lead.zeroes(lookup.acs2014$Sequence.Number, 4)
 }
 \examples{
  \dontrun{
@@ -60,6 +41,6 @@ Now folders are like:
 \code{\link{get.table.info}} and \code{\link{get.field.info}}. \cr
   Also see \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
   Also see \code{\link{download.lookup.acs}} to download the file from the Census FTP site.
-  Also see \code{data(lookup.acs2013)} and similar data for other years.
+  Also see \code{data(lookup.acs2020)} and similar data for other years.
   Also see \code{\link{get.acs}}, \code{\link{get.lookup.file.name}}, \code{\link{get.url.prefix.lookup.table}}
 }

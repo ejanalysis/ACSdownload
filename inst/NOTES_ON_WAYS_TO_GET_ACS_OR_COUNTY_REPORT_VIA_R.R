@@ -54,7 +54,10 @@
 #    #B01001  Sex By Age
 #    #B03002  Hispanic Or Latino Origin By Race
 #    #B15002  Sex By Educational Attainment For The Population 25 Years And Over
+#
 #    #B16002 IS NOT HERE   #[has B16004  Age By Language Spoken At Home By Ability To Speak English For The Population 5 Years And Over  ]
+#  #C16002 replaced B16004 that was older ACS source for what had been called linguistic isolation, now called limited English speaking households.
+#
 #    #B17002 IS NOT HERE   #[has B17021  Poverty Status Of Individuals In The Past 12 Months By Living Arrangement  ]
 #    #B25034  Year Structure Built
 #  # Lag-time: As of 1/2/2014, the 2012 5yr file is not yet here in gdb format.

@@ -11,7 +11,7 @@
 #'   Defines total number of characters in correctly formatted portions of FIPS, such as 2 for State FIPS (e.g., "01").
 #' @return A 1-column data.frame with same number of rows as x. Provides assembled FIPS for each row.
 #' @seealso \code{\link{nhgis}}, \code{\link{nhgisread}}, \code{\link[ejanalysis]{clean.fips}}
-#' @examples
+#' @examples \dontrun{
 #' x <- structure(list(STATEA = structure(c(2L, 3L, 1L),
 #' .Label = c("10", "8", "9"), class = "factor"),
 #' COUNTYA = structure(1:3, .Label = c("1", "10", "100"), class = "factor"),
@@ -25,6 +25,7 @@
 #' nhgisfips(x[ , 1:3])
 #' nhgisfips(x[ , 1:4])
 #' nhgisfips(x)
+#' }
 #' @export
 nhgisfips <- function(x,
                       validfields = c('STATEA', 'COUNTYA', 'TRACTA', 'BLKGRPA'),

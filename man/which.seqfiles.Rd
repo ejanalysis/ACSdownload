@@ -13,7 +13,7 @@ which.seqfiles(tables, lookup.acs, end.year = acsdefaultendyearhere_func())
 Specifies what variables are in which tables and which tables are in which sequence files on the FTP site.}
 
 \item{end.year}{Character element, optional. Defines end year for 5-year dataset.
-Valid years are 2009:2014 as of Dec 2015 - Nov 2016, with more to be added over time.
+Valid years are limited.
 Ignored if lookup.acs is specified, however. If they imply different years, the function stops with an error message.}
 }
 \value{

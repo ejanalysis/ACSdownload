@@ -1,6 +1,6 @@
 Package: ACSdownload
 Title: Obtain American Community Survey Summary File Data Tables from Census
-    Bureau FTP Site
+    Bureau FTP Site (for EJ analysis, etc.)
 Description: This R package helps you download and parse raw data from the
     Census Bureau American Community Survey 5-year Summary Files, providing
     demographic data at the block and tract levels of resolution. You can obtain
@@ -13,9 +13,9 @@ Description: This R package helps you download and parse raw data from the
     Other data sources that may be relevant include Census geodatabases 
     at http://www.census.gov/geo/maps-data/data/tiger-data.html and data at 
     http://www.census.gov/geo/maps-data/data/gazetteer.html 
-    For any imported/suggested packages not on CRAN, see http://ejanalysis.github.io 
-Version: 1.1.0
-Date: 2021-01-20
+    For any imported/suggested packages not on CRAN, see http://ejanalysis.github.io .
+Version: 2.1.0
+Date: 2022-07-07
 Suggests:
   UScensus2010blocks,
   analyze.stuff,
@@ -23,7 +23,7 @@ Suggests:
 URL: http://ejanalysis.github.io, https://github.com/ejanalysis/ACSdownload, http://www.ejanalysis.com/
 BugReports: https://github.com/ejanalysis/ACSdownload/issues
 Depends: R (>= 3.1.0)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 License: MIT + file LICENSE
 Repository: GitHub
 Author: info@ejanalysis.com

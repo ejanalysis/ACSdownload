@@ -2,7 +2,7 @@
 % Please edit documentation in R/nhgis.R
 \name{nhgis}
 \alias{nhgis}
-\title{Read and Parse NHGIS.org ACS Data Files and Codebooks}
+\title{Read and Parse NHGIS.org ACS Data Files and Codebooks - not tested or updated}
 \usage{
 nhgis(
   base.path = getwd(),
@@ -41,10 +41,12 @@ Returns a named list, one element per summary level found (names are, e.g., 'us'
 }
 \description{
 Read downloaded and unzipped csv and txt files obtained from NHGIS.org,
-  with US Census Bureau data from the American Community Survey (ACS).
+  with US Census Bureau data from the American Community Survey (ACS). 
+  
+  Needs to be updated for 2022 formats, etc.
 }
 \details{
-This is designed to read and parse csv and txt files
+This was designed to read and parse csv and txt files
   obtained from NHGIS.org and already unzipped in a local folder.
   It only reads one set of files at a time, meaning the data and codebook files all have to be for the same set of ACS tables (a single NHGIS query)
   (but can be a separate data & codebook file pair for each spatial resolution like county, state, etc.)
@@ -54,6 +56,12 @@ This is designed to read and parse csv and txt files
   tracts and block groups, all in US, acs2007-2011, and specifying the desired ACS Table(s). \cr
   Research using NHGIS data should cite it as: \cr
   Minnesota Population Center. National Historical Geographic Information System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
+  
+  Documentation for NHGIS datasets is available here.
+  Research using NHGIS data should cite it as:
+  Steven Manson, Jonathan Schroeder, David Van Riper, Tracy Kugler, and Steven Ruggles. IPUMS National Historical Geographic Information System: Version 16.0 [dataset]. Minneapolis, MN: IPUMS. 2021. http://doi.org/10.18128/D050.V16.0
+  For policy briefs or articles in the popular press, we recommend that you cite the use of NHGIS data as follows:
+    IPUMS NHGIS, University of Minnesota, www.nhgis.org
 }
 \examples{
  

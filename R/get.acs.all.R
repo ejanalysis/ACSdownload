@@ -19,7 +19,8 @@ get.acs.all <- function(tables="B01001", end.year=2020, dataset='5', sumlevel=15
   # makes it easier to get one table for every blockgroup in the US
   
   # table_for_sumlevel
-  ejscreentables <- c("B01001", "B03002", "B15002", "B16002", "C17002", "B25034", 'B23025') # all are in NHGIS except: b16004 not 16002 ?. and added B23025 unemployement 
+  ejscreentables <- c("B01001", "B03002", "B15002", "C16002", "C17002", "B25034", 'B23025') # added B23025 unemployement 
+  # C16002 replaced B16004 that was older ACS source for what had been called linguistic isolation, now called limited English speaking households.
   # if tables equals or contains 'ejscreen' then replace the 'ejscreen' part with the default tables as follows, leaving any other tables specified in addition to ejscreen tables:
   if (any(tolower(tables) == 'ejscreen')) {
     tables <- c(ejscreentables, tables[tolower(tables) != 'ejscreen'])

@@ -13,7 +13,8 @@ download.lookup.acs(
 \arguments{
 \item{end.year}{Character, optional, like '2020', which specifies the 2016-2020 dataset.
 Defines which 5-year summary file to use, based on end-year.
-Can be acsfirstyearavailablehere or later. Data for end.year='2019' were released in December 2020, for example.}
+Can be acsfirstyearavailablehere or later. Data for end.year='2019' were released in December 2020, for example.
+The 2017-2021 American Community Survey 5-year estimates are scheduled to be released on Thursday, December 8, 2022.}
 
 \item{folder}{Optional path to where to download file to, defaults to current working directory.}
 
