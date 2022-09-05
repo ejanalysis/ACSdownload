@@ -215,6 +215,16 @@ AGE BY LANGUAGE SPOKEN AT HOME BY ABILITY TO SPEAK ENGLISH FOR THE POPULATION 5 
  myurl <- paste0('https://data.census.gov/cedsci/table?q=acs\%20', paste(mytables, collapse= '\%20'), '&g=', geos, '&y=', yr)
  # browseURL(myurl)
  
+1    B03002    1 B03002.001                                                       Total:
+2    B03002    2 B03002.002     Not Hispanic or Latino:
+  3    B03002    3 B03002.003                                                  White alone
+  4    B03002    4 B03002.004                              Black or African American alone
+  5    B03002    5 B03002.005                      American Indian and Alaska Native alone
+  6    B03002    6 B03002.006                                                  Asian alone
+  7    B03002    7 B03002.007             Native Hawaiian and Other Pacific Islander alone
+  8    B03002    8 B03002.008                                        Some other race alone
+  9    B03002    9 B03002.009                                           Two or more races
+  12   B03002   12 B03002.012   Hispanic or Latino
   
  \dontrun{
   t( get.table.info('B01001', end.year = acsdefaultendyearhere_func()) )

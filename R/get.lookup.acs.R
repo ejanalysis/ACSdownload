@@ -57,11 +57,11 @@ get.lookup.acs <- function(end.year = acsdefaultendyearhere_func()) {
     # yr2015 = lookup.acs2015,
     # yr2016 = lookup.acs2016,
     # yr2017 = lookup.acs2017,
-    yr2018 = lookup.acs2018,
-    yr2019 = lookup.acs2019,
-    yr2020 = lookup.acs2020,
-    yr2021 = lookup.acs2021,
-    yr2022 = lookup.acs2022
+    yr2018 = lookup.acs2018,  # for ACS 2016-2020
+    yr2019 = lookup.acs2019,  # for EJScreen ver.2.0; ACS 2015-2019, released Dec. 2020. In EJScreen ver.2.0
+    yr2020 = lookup.acs2020 #,  # for EJScreen ver.2.1; ACS 2016-2020, plan was Dec. 2021 released, but delayed to 3/17/22.
+   # yr2021 = lookup.acs2021   #,  #  ACS 2017-2021, planned released Dec. 2022
+    # yr2022 = lookup.acs2022
   )
   force(my.lookup)
   # old data source was this (and that is how these were obtained and cleaned up):

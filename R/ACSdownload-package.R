@@ -10,7 +10,7 @@
 #'     for one or more tables.
 #'   Key function is \code{\link{get.acs}}, and 
 #'     also see \code{\link{set.needed}}, \code{\link{nhgis}},
-#'   and also see data(\link{lookup.acs2019})
+#'   and also see data(\link{lookup.acs2020})
 #'   HOWEVER, DATA FORMAT IS CHANGING FOR SUMMARY FILE ACS DATA:
 #'   SEE \url{https://www.census.gov/programs-surveys/acs/data/summary-file/updates-to-acs-summary-file.Overview.html}
 #' @details Typically the Census Bureau makes it easy to obtain data from one state at a time,
