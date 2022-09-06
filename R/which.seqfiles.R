@@ -66,9 +66,9 @@ which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere_
           # '2017' = 2280, 
           '2018' = 2308, 
           '2019' = 2310, 
-          '2020' = 2324,  
-          '2021' = sum(is.na(lookup.acs2021$Line.Number)),  # to add
-          '2022' = sum(is.na(lookup.acs2022$Line.Number))  # to add
+          '2020' = 2324  #,  
+          # '2021' = sum(is.na(lookup.acs2021$Line.Number)),  # to add
+          # '2022' = sum(is.na(lookup.acs2022$Line.Number))  # to add
         )
       if (uniquetoyearlist[end.year] == 0) stop('code not yet updated in which.seqfiles.R')
       uniquetoyear <- sum(is.na(lookup.acs$Line.Number))

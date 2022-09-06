@@ -1,6 +1,9 @@
 #' @title Download Tables from American Community Survey (ACS) 5-year Summary File
 #'
 #' @description
+#'   Also see newer get.acs.all() that will try to use new format for 5yr summary file ACS
+#'   that makes it easier to get one table for every blockgroup in the US.
+#'   
 #'   This function will download and parse 1 or more tables of data from the American Community Survey's
 #'   5-year Summary File FTP site, for all Census tracts and/or block groups in specified State(s).
 #'   Estimates and margins of error are obtained, as well as long and short names for the variables,
@@ -252,7 +255,7 @@ get.acs <-
     if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
 
     # check if base.path seems to be a valid folder
-    if (!file.exists(base.path)) {
+    if (!dir.exists(base.path)) {
       stop(paste('base.path', base.path, 'does not exist'))
     }
 
@@ -265,7 +268,7 @@ get.acs <-
 
     starttime <- Sys.time()
 
-    if (!file.exists(output.path)) {
+    if (!dir.exists(output.path)) {
       diroutcome <- try(dir.create(output.path), silent = TRUE)
       if ( 'try-error' %in% as.character(class(diroutcome)) ) {
         stop('output.path not found and could not be created\n')
