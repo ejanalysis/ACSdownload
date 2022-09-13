@@ -12,6 +12,10 @@
 ##############################################
 #
 #***via Census FTP site
+#*
+#* # *The most recent source as of 2022 is discussed here:* 
+#*  [https://www.census.gov/programs-surveys/acs/data/summary-file.html] 
+#*  
 #  # * Provides immediate -- and fully automated -- access to block group and tract data for entire US, for multiple tables.
 #  # x- Not for US/State/County data, just tract and block group. Significant extra work to code for US/State/County totals (different URLs and formats).
 #  # x- Lacks friendly interface to help browse and select tables and variables.
