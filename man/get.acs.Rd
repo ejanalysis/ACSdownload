@@ -115,7 +115,10 @@ By default, returns a list of ACS data tables and information about them, with t
  }
 }
 \description{
-This function will download and parse 1 or more tables of data from the American Community Survey's
+Also see newer get.acs.all() that will try to use new format for 5yr summary file ACS
+  that makes it easier to get one table for every blockgroup in the US.
+  
+  This function will download and parse 1 or more tables of data from the American Community Survey's
   5-year Summary File FTP site, for all Census tracts and/or block groups in specified State(s).
   Estimates and margins of error are obtained, as well as long and short names for the variables,
   which can be specified if only parts of a table are needed. \cr\cr
