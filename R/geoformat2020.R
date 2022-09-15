@@ -7,8 +7,9 @@
 #'   is typically available by December of the year X+1, so 2016-2020 was available by Dec 2021.
 #' @details  
 #'  geoformat2020 <- geoformat2019 # if they are assumed to be the same.
-#'  # metadata <- list(ejscreen_releasedate = 'late 2022', ejscreen_version = '2.1', ACS_version = '2016-2020', ACS_releasedate = '3/17/2022')
-#'  # attributes(geoformat2020) <- c(attributes(geoformat2020), metadata)
+#' metadata <- list(ejscreen_releasedate = 'late 2022', ejscreen_version = '2.1', ACS_version = '2016-2020', ACS_releasedate = '3/17/2022')
+#' # attributes(geoformat2020) <- c(attributes(geoformat2020), metadata)
+#' # OR... try   attr(x, which=names(metadata[n])) <- metadata[n] 
 #'  attr(geoformat2020, which = 'ejscreen_releasedate') <- 'late 2022'
 #'  attr(geoformat2020, which = 'ejscreen_version') <- '2.1'
 #'  attr(geoformat2020, which = 'ACS_version') <- '2016-2020'

@@ -1,6 +1,7 @@
 #' @title Download Tables from American Community Survey (ACS) 5-year Summary File
 #'
 #' @description
+#'   NOTE: Census formats changed a lot, and some of the info below is obsolete. 
 #'   Also see newer get.acs.all() that will try to use new format for 5yr summary file ACS
 #'   that makes it easier to get one table for every blockgroup in the US.
 #'   

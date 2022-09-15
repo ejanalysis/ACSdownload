@@ -2,6 +2,7 @@
 #'
 #' Uses Census Bureau new format files that offer the full USA in 1 file per table,
 #'   via FTP or https. 
+#'   Does not get Puerto Rico (PR) as coded
 #'   
 #'   note API provides better list of variable names, in order as found on summary files, than documentation does.
 #'   
