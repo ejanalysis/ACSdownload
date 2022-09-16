@@ -115,7 +115,8 @@ By default, returns a list of ACS data tables and information about them, with t
  }
 }
 \description{
-Also see newer get.acs.all() that will try to use new format for 5yr summary file ACS
+NOTE: Census formats changed a lot, and some of the info below is obsolete. 
+  Also see newer get.acs.all() that will try to use new format for 5yr summary file ACS
   that makes it easier to get one table for every blockgroup in the US.
   
   This function will download and parse 1 or more tables of data from the American Community Survey's
