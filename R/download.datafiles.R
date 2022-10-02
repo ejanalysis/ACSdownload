@@ -21,42 +21,42 @@ download.datafiles <-
            testing = FALSE,
            attempts = 5,
            silent = FALSE) {
-    
+
     if (length(end.year) != 1) {stop('end.year must be a single value')}
     thisyear <- data.table::year(Sys.Date())
     if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
-    
+
     # FUNCTION TO DOWNLOAD ZIP FILES WITH DATA (ESTIMATES AND MOE)
-    
+
     #stateinfo <- ejanalysis::get.state.info()
     # or could use
     data(lookup.states, package = 'proxistat', envir = environment())
     stateinfo <- lookup.states
-    
+
     # VALIDATE STATES
     mystates <- clean.mystates(mystates)
     mystates <- unique(mystates[mystates != 'US'])
-    
+
     seqfilelistnums <- which.seqfiles(tables, end.year = end.year)
     zipfile.prefix    <- get.zipfile.prefix(end.year)
-    
+
     ################################################################# #
     #   OBTAIN ZIP FILES AND DATA FILES FROM INSIDE ZIP FILES
     ################################################################# #
-    
+
     #	WILL DOWNLOAD ZIP FILE(S) with estimates data file and margin of error data file, one zip per state-seqfile combo
-    
+
     ################################ #
     #	download zip files with data (estimates and margins of error)
     ################################ #
-    
+
     ################# #
     #	SPECIFY URL AND ZIPFILE NAME
     # based on
     # seqfilelistnums (could recode to limit to specified seqfiles)
     # stateabbs ( recoded to limit to specified states)
     ################# #
-    
+
     ################### #
     # to create a single list with all the zip file names:
     #	****  requires "seqfilelistnums" in memory, zipfile(), & mystates
@@ -76,23 +76,23 @@ download.datafiles <-
     enames 	<- enames[-1]
     mnames	<- mnames[-1]
     ################### #
-    
+
     # download them one at a time just in case - but note download.file is vectorized
-    
+
     for (statenum  in 1:length(mystates)) {
       state.abbrev <- tolower(mystates[statenum])
       state.abbrev <-
         tolower(stateinfo$ST[tolower(state.abbrev) == tolower(stateinfo$ST)])
-      
+
       # US zip files are empty - the moe and est files in them are size zero
       if (tolower(state.abbrev) == 'us') {
         next
       }
-      
+
       state.name 	<-
         stateinfo$ftpname[tolower(state.abbrev) == tolower(stateinfo$ST)]
       #print(seqfilelistnums)
-      
+
       for (seqfilenum in seqfilelistnums) {
         zipfile.fullpath <-
           file.path(
@@ -113,7 +113,7 @@ download.datafiles <-
         if (!silent) {
           cat(state.abbrev, ' ')
         }
-        
+
         # The US estimates and MOE files inside the US zips are empty & size zero.
         # Just in case any zip files are size zero here, delete them to avoid confusion.
         if (file.exists(file.path(
@@ -154,6 +154,10 @@ download.datafiles <-
                      )))) {
           # IF PROBLEM DOWNLOADING, provide a warning message & retry a few times.
           # Note: if (file.exists(zipfile.fullpath) seems to fail at trying to check an FTP site.
+
+          # also, might need this:
+          # options(download.file.method="libcurl", url.method="libcurl")
+          # according to https://stackoverflow.com/questions/22721819/download-file-fails-in-rstudio
           ok <- FALSE
           attempt <- 1
           while (!ok) {
@@ -164,7 +168,7 @@ download.datafiles <-
                                    ),
                                    quiet = !testing),
                      silent = !testing)
-            
+
             ok <- TRUE
             attempt <- attempt + 1
             if (class(x) == "try-error") {
@@ -181,12 +185,12 @@ download.datafiles <-
                 cat('Downloaded. ')
               }
             }
-            
+
             # *** Some zip downloads give warnings that zip file size is
             # WRONG AND THEY ARE CORRUPT. Not clear how to check for and fix that.
-            
+
             # might need to pause here to allow download to start so file size is not zero when checked below???
-            
+
             # Also it is the US estimates and MOE files inside the US zips that are empty & size zero.
             if (file.info(file.path(
               folder,
@@ -217,7 +221,7 @@ download.datafiles <-
             }
           }
         } # end of if
-        
+
       } # end of for loop over sequence files
       if (!silent) {
         cat(' \n')
@@ -226,12 +230,12 @@ download.datafiles <-
     # if (!silent) {
     #   cat(' \n')
     # }
-    
+
     ################# #
     # VERIFY ALL FILES WERE DOWNLOADED
     # BUT THIS DOESN'T CHECK IF ZIP FILE IS CORRUPT/VALID (other than checking for size 0 above)
     ################# #
-    
+
     #zipsinfolder <- dir(pattern="zip", path=folder)
     #if ( any(!(zipnames %in% zipsinfolder)) ) {
     if (any(!((
@@ -255,5 +259,5 @@ download.datafiles <-
     # length(stateabbs) * length(seqfilelistnums)
     # e.g. 318
     #if (length(stateabbs) * length(seqfilelistnums) > length(dir(pattern="zip")) ) { print("please check count of zip files downloaded") }
-    
+
   }	# end of download.datafiles()
