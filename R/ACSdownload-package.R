@@ -3,12 +3,19 @@
 #' @name ACSdownload
 #' @aliases ACSdownload-package
 #' @description
+#'   THIS PACKAGE MAY BE MOSTLY OBSOLETE NOW THAT SOME CRAN PACKAGES OFFER
+#'   MOST OF THESE TOOLS, ESPECIALLY SEE THE PACKAGE
+#'   totalcensus (https://cran.r-project.org/web/packages/totalcensus/index.html)
+#'   which helps download Census data from the Census FTP site.
+#'   As of 10/2022, only the github (development) version has info for ACS 2016-2020.
+#'   devtools::install_github("GL-Li/totalcensus")
+#'   \cr\cr
 #'   This R package helps you download and parse (huge) raw data from the
 #'   Census Bureau American Community Survey 5-year Summary Files,
 #'   providing demographic data at the block and tract levels of resolution.
-#'   You can obtain data from the entire USA all at once using this package, 
+#'   You can obtain data from the entire USA all at once using this package,
 #'     for one or more tables.
-#'   Key function is \code{\link{get.acs}}, and 
+#'   Key function is \code{\link{get.acs}}, and
 #'     also see \code{\link{set.needed}}, \code{\link{nhgis}},
 #'   and also see data(\link{lookup.acs2020})
 #'   HOWEVER, DATA FORMAT IS CHANGING FOR SUMMARY FILE ACS DATA:
@@ -20,13 +27,13 @@
 #'   For ACS documentation, see \url{http://www.census.gov/programs-surveys/acs.html} \cr
 #'   Several options for obtaining Census ACS data are now listed here: \cr
 #'   \url{http://www.census.gov/programs-surveys/acs/data.html} \cr
-#'   Limits on downloads via American Fact Finder (not all US tracts at once) 
+#'   Limits on downloads via American Fact Finder (not all US tracts at once)
 #'     are noted here: \url{https://ask.census.gov/faq.php?id=5000&faqId=1653} \cr
 #'   Other data sources that may be relevant include Census geodatabases at \cr
 #'   \url{http://www.census.gov/geo/maps-data/data/tiger-data.html} and data at \cr
-#'   \url{http://www.census.gov/geo/maps-data/data/gazetteer.html}. 
+#'   \url{http://www.census.gov/geo/maps-data/data/gazetteer.html}.
 #'     Also see the help for \code{\link{get.acs}} \cr\cr
-#' @seealso \pkg{\link[tidycensus]{tidycensus}} to use a key to request ACS 
+#' @seealso \pkg{\link[tidycensus]{tidycensus}} to use a key to request ACS
 #'   or Decennial Census data, but is slow if you want all blockgroups in a state or nationwide.
 #'   \pkg{proxistat} package for block group points (lat lon), or
 #'   \pkg{acs} package (\url{http://cran.r-project.org/web/packages/acs/index.html})

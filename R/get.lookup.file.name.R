@@ -1,5 +1,3 @@
-
-
 #' @title Get name of Census file with Sequence and Table Numbers for ACS 5-year summary file data
 #'
 #' @description Returns name of text file provided by US Census Bureau,
@@ -13,7 +11,7 @@ get.lookup.file.name	<- function(end.year = acsdefaultendyearhere_func()) {
   if (length(end.year) != 1) {stop('end.year must be a single value')}
   thisyear <- data.table::year(Sys.Date())
   if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
-  
+
   if (end.year > 2009) {
     if (end.year == 2014) {
       return('ACS_5yr_Seq_Table_Number_Lookup.txt')
@@ -25,7 +23,7 @@ get.lookup.file.name	<- function(end.year = acsdefaultendyearhere_func()) {
     return('ACS_5yr_Seq_Table_Number_Lookup.txt')
     # return("Sequence_Number_and_Table_Number_Lookup.xls")
   }
-  
+
   #	For other end years (and possibly 1 or 3 year files at some point? those lack block groups):
   # 2009 ftp://ftp.census.gov//acs2009_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.xls ******
   # 2010 ftp://ftp.census.gov//acs2010_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt
@@ -37,5 +35,5 @@ get.lookup.file.name	<- function(end.year = acsdefaultendyearhere_func()) {
   #  not on ftp site yet as of early Dec 3, 2015.
   #
   # 2015 expected December 2016
-  
+
 }
