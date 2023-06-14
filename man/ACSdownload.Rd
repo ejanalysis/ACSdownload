@@ -22,7 +22,8 @@ THIS PACKAGE MAY BE MOSTLY OBSOLETE NOW THAT SOME CRAN PACKAGES OFFER
     also see \code{\link{set.needed}}, \code{\link{nhgis}},
   and also see data(\link{lookup.acs2020})
   HOWEVER, DATA FORMAT IS CHANGING FOR SUMMARY FILE ACS DATA:
-  SEE \url{https://www.census.gov/programs-surveys/acs/data/summary-file/updates-to-acs-summary-file.Overview.html}
+  https://www.census.gov/programs-surveys/acs/data/summary-file/
+  updates-to-acs-summary-file.Overview.html
 }
 \details{
 Typically the Census Bureau makes it easy to obtain data from one state at a time,
