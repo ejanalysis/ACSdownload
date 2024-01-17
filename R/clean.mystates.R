@@ -52,7 +52,7 @@ clean.mystates <- function(mystates = 'all', testing = FALSE) {
   #stateinfo	<- ejanalysis::get.state.info()
   # or could use this:
   # data(lookup.states, envir = environment(), package = 'proxistat')
-  stateinfo <- proxistat::lookup.states
+  stateinfo <- lookup.states # available in the proxistat package
   # or state.abb from base datasets but that lacks DC PR VI GU etc.
   # also,
   #statenames	<- stateinfo$ftpname
