@@ -1,4 +1,4 @@
-#' @title Reformat ACS Data Obtained by \code{\link{get.acs}} for Import to the acs Package
+#' @title Reformat ACS Data Obtained by [get.acs()] for Import to the acs Package
 #' @description  Work in progress ***** \cr\cr
 #'  Currently only works for 5-year summary file data from ACS.
 #'  Use same format as American Fact Finder uses for downloaded csv of tract data, for example.
@@ -37,14 +37,14 @@
 #' Actually starting with 2009-2013 ACS, block groups are available via AFF, but only by specifying one (or each) county in a State.\cr
 #'  ###############################################################################\cr
 #'
-#' @param x Required list of tables from earlier steps in \code{\link{get.acs}}
+#' @param x Required list of tables from earlier steps in [get.acs()]
 #' @param end.year Optional, text to use in filename if savefile=TRUE. The acs package
-#' needs this in the filename to infer the year, or that can be specified as the \code{endyear} parameter in \code{\link[acs]{read.acs}}
+#' needs this in the filename to infer the year, or that can be specified as the `endyear` parameter in [acs::read.acs()]
 #' @param tableid Used to name any saved file. Should be a string such as 'B01001'. Default is ''
 #' @param savefile Default is TRUE which means save a csv file to folder
 #' @param folder Default is getwd() and specifies where to save csv if savefile=TRUE
-#' @return Data.frame for use in \link[acs]{acs} package.
-#' @seealso \code{\link{get.acs}} to obtain acs data for use in this function, and then \code{\link[acs]{read.acs}} to read csv created by this function
+#' @return Data.frame for use in [acs][acs::acs] package.
+#' @seealso [get.acs()] to obtain acs data for use in this function, and then [acs::read.acs()] to read csv created by this function
 #' @export
 format_for_acs_package <-
   function(x,

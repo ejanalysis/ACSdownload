@@ -10,7 +10,7 @@
 #'   It only reads one set of files at a time, meaning the data and codebook files all have to be for the same set of ACS tables (a single NHGIS query)
 #'   (but can be a separate data & codebook file pair for each spatial resolution like county, state, etc.)
 #'   Obtaining NHGIS.org data requires an account at
-#'   \url{https://data2.nhgis.org/main}, \url{https://www.nhgis.org}
+#'   <https://data2.nhgis.org/main>, <https://www.nhgis.org>
 #'   Data can be downloaded by selecting, for example, \cr
 #'   tracts and block groups, all in US, acs2007-2011, and specifying the desired ACS Table(s). \cr
 #'   Research using NHGIS data should cite it as: \cr
@@ -30,7 +30,7 @@
 #' @return Returns a named list, one element per summary level found (names are, e.g., 'us', 'states', etc.).
 #'   Each summary level has a list of the following: data, contextfields, fields, tables, geolevel, years, dataset \cr
 #'   For example: \cr
-#'   \code{
+#'   `
 #'   summary(x[['us']])
 #'                 Length Class      Mode
 #'   data          279    data.frame list
@@ -40,8 +40,8 @@
 #'   geolevel        1    -none-     character
 #'   years           1    -none-     character
 #'   dataset         1    -none-     character
-#'   }
-#' @seealso \code{\link{nhgisread}} used by this function. Also, for other ways to obtain ACS data see \code{\link{get.acs}}
+#'   `
+#' @seealso [nhgisread()] used by this function. Also, for other ways to obtain ACS data see [get.acs()]
 #' @examples  
 #'   \dontrun{
 #'   x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')

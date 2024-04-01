@@ -1,7 +1,7 @@
 #' @title Find Which Sequence Files Contain Given ACS Table(s)
 #' @description
 #'   The US Census Bureau provides 5-year summary file data from the American Community Survey in sequence files on their FTP site.
-#'   This function reports which sequence files contain the specified tables. Used by \code{\link{get.acs}}
+#'   This function reports which sequence files contain the specified tables. Used by [get.acs()]
 #' @param tables character vector, required. Defines which ACS table(s) to check, such as 'B01001'
 #' @param lookup.acs data.frame, optional (if not provided then it is downloaded from Census).
 #'   Specifies what variables are in which tables and which tables are in which sequence files on the FTP site.
@@ -9,10 +9,10 @@
 #'   Valid years are limited.
 #'   Ignored if lookup.acs is specified, however. If they imply different years, the function stops with an error message.
 #' @return Returns a vector of one or more numbers stored as characters, each defining one sequence file, such as "0001".
-#' @seealso \code{\link{get.acs}} and \code{\link[acs]{acs.lookup}} from the \pkg{acs} package, which does something related but is more flexible & robust. Also see \code{\link{get.acs}} which uses this.
+#' @seealso [get.acs()] and [acs::acs.lookup()] from the \pkg{acs} package, which does something related but is more flexible & robust. Also see [get.acs()] which uses this.
 #' @export
 which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere_func()) {
-
+  
   if (length(end.year) != 1) {stop('end.year must be a single value')}
   thisyear <- data.table::year(Sys.Date())
   if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a recent year')}
@@ -66,10 +66,11 @@ which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere_
           # '2017' = 2280, 
           '2018' = 2308, 
           '2019' = 2310, 
-          '2020' = 2324  #,  
-          # '2021' = sum(is.na(lookup.acs2021$Line.Number)),  # to add
-          # '2022' = sum(is.na(lookup.acs2022$Line.Number))  # to add
+          '2020' = 2324,  
+          '2021' = sum(is.na(lookup.acs2021$Line.Number)) 
+          ## but 2022 format is new and not sequence files
         )
+      end.year <- as.character(end.year)
       if (uniquetoyearlist[end.year] == 0) stop('code not yet updated in which.seqfiles.R')
       uniquetoyear <- sum(is.na(lookup.acs$Line.Number))
       if (uniquetoyearlist[end.year] != uniquetoyear) {

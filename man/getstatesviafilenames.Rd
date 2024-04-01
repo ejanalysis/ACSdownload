@@ -14,9 +14,9 @@ Returns a vector of unique upper case US State abbreviations
 }
 \description{
 Helper function to look for unzipped csv files of estimates for American Community Survey (ACS)
-  5-year summary file data obtained from US Census FTP site, based on pattern matching, and infer State abbreviations
-  based on those filenames.
+5-year summary file data obtained from US Census FTP site, based on pattern matching, and infer State abbreviations
+based on those filenames.
 }
 \seealso{
-\code{\link{read.concat.states}} which uses this
+\code{\link[=read.concat.states]{read.concat.states()}} which uses this
 }

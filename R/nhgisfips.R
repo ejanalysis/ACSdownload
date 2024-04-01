@@ -10,7 +10,7 @@
 #' @param leadz Optional, default is based on default for validfields parameter: c(2, 3, 6, 1)
 #'   Defines total number of characters in correctly formatted portions of FIPS, such as 2 for State FIPS (e.g., "01").
 #' @return A 1-column data.frame with same number of rows as x. Provides assembled FIPS for each row.
-#' @seealso \code{\link{nhgis}}, \code{\link{nhgisread}}, \code{\link[ejanalysis]{clean.fips}}
+#' @seealso [nhgis()], [nhgisread()], [ejanalysis::clean.fips()]
 #' @examples \dontrun{
 #' x <- structure(list(STATEA = structure(c(2L, 3L, 1L),
 #' .Label = c("10", "8", "9"), class = "factor"),

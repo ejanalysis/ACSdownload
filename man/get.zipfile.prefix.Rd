@@ -13,5 +13,5 @@ get.zipfile.prefix(end.year = acsdefaultendyearhere_func())
 Get the first part of the zipfile name for the ACS 5-year summary file datafiles on the US Census Bureau FTP site.
 }
 \seealso{
-\code{\link{get.acs}}, \code{\link{get.datafile.prefix}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
+\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.datafile.prefix]{get.datafile.prefix()}}, \code{\link[=datafile]{datafile()}}, \code{\link[=geofile]{geofile()}}, \code{\link[=get.zipfile.prefix]{get.zipfile.prefix()}}
 }

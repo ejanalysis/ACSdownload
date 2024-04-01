@@ -6,31 +6,31 @@
 #'   NOTE: This is largely obsolete now that data(lookup.acs2013) and similar files for other years are in this package.
 #' @details
 #'   The URL scheme for lookup tables or datasets varies by year, for example,  \cr
-#'   For 2012 it is  \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}  \cr
-#'   and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
-#'   and for 2016 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+#'   For 2012 it is  <ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt>  \cr
+#'   and for 2014 is <http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt>  \cr
+#'   and for 2016 is <http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt>  \cr
 #'  \cr
 #'   The 2013-2017 dataset is here...  \cr
 #'  \cr
 #'     Data tables by state by seqfile were here:  \cr
 #'  \cr
-#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/}  \cr
+#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/>  \cr
 #'   such as  \cr
-#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/20175al0001000.zip}  \cr
+#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/20175al0001000.zip>  \cr
 #'  \cr
 #'     Geographies in Excel spreadsheets were here:  \cr
 #'  \cr
-#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/}  \cr
+#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/>  \cr
 #'   such as  \cr
-#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/ak.xlsx}  \cr
+#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/ak.xlsx>  \cr
 #'  \cr
 #'     Lookup table of sequence files and variables was here:  \cr
 #'  \cr
-#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt>  \cr
 #'  \cr\cr
 #'   The 2014-2018 folders are here:  \cr
-#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/}  \cr
-#'   \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/}  \cr
+#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/>  \cr
+#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/>  \cr
 #'  \cr
 #' @param end.year Character, optional, like '2020', which specifies the 2016-2020 dataset.
 #'   Defines which 5-year summary file to use, based on end-year.
@@ -56,10 +56,10 @@
 #'   names(my.lookup)\cr
 #'   [1] "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position"\cr
 #'   [6] "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"\cr
-#' @seealso \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
-#'   Also see \code{\link{get.lookup.acs}} which does the same without downloading file -- uses the copy in data()
-#'   Also see \code{data(lookup.acs2013)} and similar data for other years.
-#'   Also see \code{\link{get.acs}}, \code{\link{get.lookup.file.name}}, \code{\link{get.url.prefix.lookup.table}}
+#' @seealso [acs::acs.lookup()] which does something similar but is more flexible & robust.
+#'   Also see [get.lookup.acs()] which does the same without downloading file -- uses the copy in data()
+#'   Also see `data(lookup.acs2013)` and similar data for other years.
+#'   Also see [get.acs()], [get.lookup.file.name()], [get.url.prefix.lookup.table()]
 #' @examples
 #'  \dontrun{
 #'  lookup.acs <- download.lookup.acs()

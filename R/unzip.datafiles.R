@@ -10,7 +10,7 @@
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
 #' @param silent Default is FALSE. Whether to send progress info to standard output.
 #' @return Side effect is unzipping file on disk (unless testing=TRUE)
-#' @seealso \code{\link{get.acs}}
+#' @seealso [get.acs()]
 #' @export
 unzip.datafiles <-
   function(tables,

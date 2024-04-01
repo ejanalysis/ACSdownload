@@ -1,36 +1,54 @@
-#' @title Get Information about ACS 5-Year Summary File Tables
+#' Get Information about ACS 5-Year Summary File Tables
 #' @description
 #'   Get lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
 #'   namely which sequence files on the FTP site contain which tables and which variables.
 #'   NOTE: This uses lazy loading from datasets in the package.
-#' @details
-#'   Now folders are or were like:
-#'   https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
-#'   https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
-#'
-#' @param end.year Character, optional, like '2020', which specifies the 2016-2020 dataset.
+#' @param end.year Character, optional, like "2020", which specifies the 2016-2020 dataset.
 #'   Defines which 5-year summary file to use, based on end-year.
 #'   Note: Function stops with error if given end.year is not yet added to this package or is too old.
 #' @return returns a data.frame  
-#'   \code{
+#'   ```
 #'   dim(lookup.acs2020)
 #'   [1] 30326     9
 #'   names(lookup.acs2020)
 #'   [1] "File.ID"                 "Table.ID"                "Sequence.Number"        
 #'   [4] "Line.Number"             "Start.Position"          "Total.Cells.in.Table"   
 #'   [7] "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"           
-#'   }
-#' @seealso \code{\link{get.table.info}} and \code{\link{get.field.info}}. \cr
-#'   Also see \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
-#'   Also see \code{\link{download.lookup.acs}} to download the file from the Census FTP site.
-#'   Also see \code{data(lookup.acs2020)} and similar data for other years.
-#'   Also see \code{\link{get.acs}}, \code{\link{get.lookup.file.name}}, \code{\link{get.url.prefix.lookup.table}}
+#'   ```
+#' @seealso [get.table.info()] and [get.field.info()]. \cr
+#'   Also see [acs::acs.lookup()] which does something similar but is more flexible & robust.
+#'   Also see [download.lookup.acs()] to download the file from the Census FTP site.
+#'   Also see `data(lookup.acs2020)` and similar data for other years.
+#'   Also see [get.acs()], [get.lookup.file.name()], [get.url.prefix.lookup.table()]
 #' @examples
+#'  names(lookup.acs2021)
+#'  names(lookup.acs2022)
 #'  \dontrun{
 #'  lookup.acs <- get.lookup.acs()
 #'  }
+#'  
 #' @export
+#' 
 get.lookup.acs <- function(end.year = acsdefaultendyearhere_func()) {
+  
+  # Note
+  
+  
+   #  [https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/]
+   #
+   #  [https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/]
+   #
+   #  data is at different URLs for different years, like:
+   #
+   # browseURL("https://www2.census.gov/programs-surveys/acs/summary_file/2019/data/5_year_seq_by_state/UnitedStates/Tracts_Block_Groups_Only/")
+   # "https://www2.census.gov/programs-surveys/acs/summary_file/2019/data/5_year_seq_by_state/UnitedStates/Tracts_Block_Groups_Only/g20195us.txt"
+   # browseURL("https://www2.census.gov/programs-surveys/acs/summary_file/2020/data/5_year_seq_by_state/UnitedStates/Tracts_Block_Groups_Only/")
+   # browseURL("https://www2.census.gov/programs-surveys/acs/summary_file/2021/sequence-based-SF/data/5_year_seq_by_state/UnitedStates/Tracts_Block_Groups_Only/")
+   # browseURL("https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/data/5YRData/")
+   # browseURL("https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/documentation/ACS20225YR_Table_Shells.txt")
+   # For information on this new Summary File format visit: "https://www.census.gov/programs-surveys/acs/data/summary-file.html"
+  
+  
   if (length(end.year) != 1) {stop('end.year must be a single value')}
   thisyear <- data.table::year(Sys.Date())
   if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a recent year')}
@@ -59,9 +77,9 @@ get.lookup.acs <- function(end.year = acsdefaultendyearhere_func()) {
     # yr2017 = lookup.acs2017,
     yr2018 = lookup.acs2018,  # for ACS 2016-2020
     yr2019 = lookup.acs2019,  # for EJScreen ver.2.0; ACS 2015-2019, released Dec. 2020. In EJScreen ver.2.0
-    yr2020 = lookup.acs2020 #,  # for EJScreen ver.2.1; ACS 2016-2020, plan was Dec. 2021 released, but delayed to 3/17/22.
-   # yr2021 = lookup.acs2021   #,  #  ACS 2017-2021, planned released Dec. 2022
-    # yr2022 = lookup.acs2022
+    yr2020 = lookup.acs2020,  # for EJScreen ver.2.1; ACS 2016-2020, plan was Dec. 2021 released, but delayed to 3/17/22.
+    yr2021 = lookup.acs2021,   #,  #  ACS 2017-2021,  release of Dec. 2022
+    yr2022 = lookup.acs2022
   )
   force(my.lookup)
   # old data source was this (and that is how these were obtained and cleaned up):

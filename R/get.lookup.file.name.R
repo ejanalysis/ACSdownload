@@ -5,7 +5,7 @@
 #'   sequence numbers (file numbers) and table numbers for data in the American Community Survey (ACS) 5-year summary file.
 #' @param end.year Not yet implemented, but will be optional end year for 5-year summary file, as character
 #' @return Returns character element that is name of file such as "Sequence_Number_and_Table_Number_Lookup.txt"
-#' @seealso \code{\link{get.acs}}, \code{\link{get.lookup.acs}}, \code{\link{get.url.prefix.lookup.table}}. Also see \code{data(lookup.acs)}.
+#' @seealso [get.acs()], [get.lookup.acs()], [get.url.prefix.lookup.table()]. Also see `data(lookup.acs)`.
 #' @export
 get.lookup.file.name	<- function(end.year = acsdefaultendyearhere_func()) {
   if (length(end.year) != 1) {stop('end.year must be a single value')}

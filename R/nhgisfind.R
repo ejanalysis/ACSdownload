@@ -5,7 +5,7 @@
 #' @details This is designed to get a list of filenames that match the format of csv and txt files
 #'   obtained from NHGIS.org and already unzipped in a local folder.
 #'   Obtaining NHGIS.org data requires an account at
-#'   \url{https://data2.nhgis.org/main}, \url{https://www.nhgis.org}
+#'   <https://data2.nhgis.org/main>, <https://www.nhgis.org>
 #'   Data can be downloaded by selecting, for example, \cr
 #'   block groups, all in US, acs2007-2011, and specifying the desired ACS Table(s).
 #'   Research using NHGIS data should cite it as: \cr
@@ -14,7 +14,7 @@
 #' @param silent Optional, default is FALSE. Prints filenames if TRUE.
 #' @return A named list with datafiles= a vector of one or more filenames (estimates and also MOE files) and
 #'   codebooks= a vector of one or more filenames. The function also prints the information unless silent=TRUE.
-#' @seealso \code{\link{nhgis}}, \code{\link{nhgisread}}
+#' @seealso [nhgis()], [nhgisread()]
 #' @export
 nhgisfind <- function(folder = getwd(), silent = FALSE) {
   datafiles 		<- list.files(path = folder, pattern = "^nhgis.*csv$")

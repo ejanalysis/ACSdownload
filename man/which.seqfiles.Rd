@@ -21,8 +21,8 @@ Returns a vector of one or more numbers stored as characters, each defining one 
 }
 \description{
 The US Census Bureau provides 5-year summary file data from the American Community Survey in sequence files on their FTP site.
-  This function reports which sequence files contain the specified tables. Used by \code{\link{get.acs}}
+This function reports which sequence files contain the specified tables. Used by \code{\link[=get.acs]{get.acs()}}
 }
 \seealso{
-\code{\link{get.acs}} and \code{\link[acs]{acs.lookup}} from the \pkg{acs} package, which does something related but is more flexible & robust. Also see \code{\link{get.acs}} which uses this.
+\code{\link[=get.acs]{get.acs()}} and \code{\link[acs:acs.lookup]{acs::acs.lookup()}} from the \pkg{acs} package, which does something related but is more flexible & robust. Also see \code{\link[=get.acs]{get.acs()}} which uses this.
 }

@@ -2,9 +2,9 @@
 #' @description
 #'  Start with a table that has all the estimates columns together, followed by all the MOEs columns,
 #'  and create a new column sort order so that estimates will be interspersed with (next to) their MOE values, as FactFinder format provides.
-#' @param my.list.of.tables Required list of tables from earlier steps in \code{\link{get.acs}}
+#' @param my.list.of.tables Required list of tables from earlier steps in [get.acs()]
 #' @return List of tables like input but with columns sorted in a new order.
-#' @seealso \code{\link{get.acs}} and \code{\link[analyze.stuff]{intersperse}}
+#' @seealso [get.acs()] and [analyze.stuff::intersperse()]
 #' @export
 format_est_moe <- function(my.list.of.tables) {
   for (i in 1:length(my.list.of.tables)) {

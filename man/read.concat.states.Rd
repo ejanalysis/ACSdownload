@@ -25,10 +25,10 @@ read.concat.states(
 \item{mystates}{Optional character vector of 2-character state abbreviations. Default is all states for which matching filenames are found in folder.}
 
 \item{geo}{Optional table of geographic identifiers that elsewhere would be merged with data here.
-If provided, it is used here to look up data file length, based on state abbrev's list. See \code{\link{get.read.geo}}
+If provided, it is used here to look up data file length, based on state abbrev's list. See \code{\link[=get.read.geo]{get.read.geo()}}
 If geo is not provided, the function still reads each file whatever its length.}
 
-\item{needed}{Optional data.frame specifying which variables to keep from each table. Default is to keep all. See \code{\link{set.needed}} and \code{\link{get.acs}}}
+\item{needed}{Optional data.frame specifying which variables to keep from each table. Default is to keep all. See \code{\link[=set.needed]{set.needed()}} and \code{\link[=get.acs]{get.acs()}}}
 
 \item{folder}{Default is current working directory. Specifies where the csv files are to be found.}
 
@@ -51,13 +51,13 @@ Returns a list of data.frames, where each element of the list is one ACS table, 
 }
 \description{
 Read the unzipped csv files of estimates and MOE (margin of error) for American Community Survey (ACS)
-  5-year summary file data obtained from US Census FTP site.
-  These State-specific csv files are combined into a single national result for each Census data table.
+5-year summary file data obtained from US Census FTP site.
+These State-specific csv files are combined into a single national result for each Census data table.
 }
 \details{
 This can use read.csv (takes about 1 minute total for one table, all states, est and moe).
-  It can use data.table::fread (default method), which is faster.
+It can use data.table::fread (default method), which is faster.
 }
 \seealso{
-\code{\link{get.acs}}
+\code{\link[=get.acs]{get.acs()}}
 }

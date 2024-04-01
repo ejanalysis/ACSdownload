@@ -1,7 +1,7 @@
 #' @title Read and concatenate state geo files from Census ACS
 #'
 #' @description Reads and merges geo files that have been obtained from the US Census Bureau FTP site for American Community Survey (ACS) data.
-#'   It uses read.fwf() at least for older years. 2018 or 2019 might have csv not just txt format now?
+#'   It uses read.fwf() at least for older years. 
 #'   
 #' @details
 #'   Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
@@ -10,7 +10,7 @@
 #'   (name is very long and not essential)\cr
 #'   Error in substring(x, first, last) : \cr
 #'   invalid multibyte string at '<f1>onc<69>to Chapter; Navajo Nation Reservation and Off-Reservation Trust Land, AZ--NM--UT \cr
-#'   Format of files is here: \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf}
+#'   Format of files is here: <ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf>
 #' @param mystates Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.
 #' @param folder Optional path to where files are stored, defaults to getwd()
 #' @param end.year End year of 5-year data, like "2018"
@@ -22,7 +22,7 @@
 #'  \dontrun{
 #'   geo <- read.geo( c("dc", "de") )
 #'  }
-#' @seealso \code{\link{get.acs}}, \code{\link{download.geo}}
+#' @seealso [get.acs()], [download.geo()]
 #' @export
 read.geo <-
   function(mystates,

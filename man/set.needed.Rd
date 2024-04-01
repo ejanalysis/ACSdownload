@@ -19,7 +19,7 @@ set.needed(
 \arguments{
 \item{tables}{Character vector, required. Specifies which ACS tables.}
 
-\item{lookup.acs}{Data.frame, optional. Defines which variables are in which tables. Output of \code{\link{get.lookup.acs}}}
+\item{lookup.acs}{Data.frame, optional. Defines which variables are in which tables. Output of \code{\link[=get.lookup.acs]{get.lookup.acs()}}}
 
 \item{vars}{Optional default is all, which means all fields from table unless varsfile specified.
 Specifies what variables to use from specified tables, and how to determine that.
@@ -34,7 +34,7 @@ The format of that file should be the same as is found in the file "variables ne
 If the filename (e.g., "variables needed.csv" file) is not found, it looks for and uses the file called "variables needed template.csv"
 which is written by this function and specifies all of the variables from each table.
 The column called "keep" should have an upper or lowercase letter Y to indicate that row (variable) should be kept.
-  Blanks or other values (even the word "yes") indicate the variable is not needed from that data table and it will be dropped.}
+Blanks or other values (even the word "yes") indicate the variable is not needed from that data table and it will be dropped.}
 
 \item{folder}{Optional path, default is getwd(), specifying where to save the csv files that define needed variables.}
 
@@ -51,9 +51,9 @@ Returns data.frame of info on which variables are needed from each table, much l
 }
 \description{
 Utility used by get.acs to help user specify which variables are needed.
-  User can specify this in a file in the working directory, modifying "variables needed template.csv"
-  that this function can create based on tables parameter, to create user-defined "variables needed.csv"
+User can specify this in a file in the working directory, modifying "variables needed template.csv"
+that this function can create based on tables parameter, to create user-defined "variables needed.csv"
 }
 \seealso{
-\code{\link{get.acs}} which uses this
+\code{\link[=get.acs]{get.acs()}} which uses this
 }

@@ -25,43 +25,33 @@ nhgis(
 }
 \value{
 Returns a named list, one element per summary level found (names are, e.g., 'us', 'states', etc.).
-  Each summary level has a list of the following: data, contextfields, fields, tables, geolevel, years, dataset \cr
-  For example: \cr
-  \code{
-  summary(x[['us']])
-                Length Class      Mode
-  data          279    data.frame list
-  contextfields   3    data.frame list
-  fields          4    data.frame list
-  tables          4    data.frame list
-  geolevel        1    -none-     character
-  years           1    -none-     character
-  dataset         1    -none-     character
-  }
+Each summary level has a list of the following: data, contextfields, fields, tables, geolevel, years, dataset \cr
+For example: \cr
+\verb{summary(x[['us']]) Length Class      Mode data          279    data.frame list contextfields   3    data.frame list fields          4    data.frame list tables          4    data.frame list geolevel        1    -none-     character years           1    -none-     character dataset         1    -none-     character}
 }
 \description{
 Read downloaded and unzipped csv and txt files obtained from NHGIS.org,
-  with US Census Bureau data from the American Community Survey (ACS). 
-  
-  Needs to be updated for 2022 formats, etc.
+with US Census Bureau data from the American Community Survey (ACS).
+
+Needs to be updated for 2022 formats, etc.
 }
 \details{
 This was designed to read and parse csv and txt files
-  obtained from NHGIS.org and already unzipped in a local folder.
-  It only reads one set of files at a time, meaning the data and codebook files all have to be for the same set of ACS tables (a single NHGIS query)
-  (but can be a separate data & codebook file pair for each spatial resolution like county, state, etc.)
-  Obtaining NHGIS.org data requires an account at
-  \url{https://data2.nhgis.org/main}, \url{https://www.nhgis.org}
-  Data can be downloaded by selecting, for example, \cr
-  tracts and block groups, all in US, acs2007-2011, and specifying the desired ACS Table(s). \cr
-  Research using NHGIS data should cite it as: \cr
-  Minnesota Population Center. National Historical Geographic Information System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
-  
-  Documentation for NHGIS datasets is available here.
-  Research using NHGIS data should cite it as:
-  Steven Manson, Jonathan Schroeder, David Van Riper, Tracy Kugler, and Steven Ruggles. IPUMS National Historical Geographic Information System: Version 16.0 [dataset]. Minneapolis, MN: IPUMS. 2021. http://doi.org/10.18128/D050.V16.0
-  For policy briefs or articles in the popular press, we recommend that you cite the use of NHGIS data as follows:
-    IPUMS NHGIS, University of Minnesota, www.nhgis.org
+obtained from NHGIS.org and already unzipped in a local folder.
+It only reads one set of files at a time, meaning the data and codebook files all have to be for the same set of ACS tables (a single NHGIS query)
+(but can be a separate data & codebook file pair for each spatial resolution like county, state, etc.)
+Obtaining NHGIS.org data requires an account at
+\url{https://data2.nhgis.org/main}, \url{https://www.nhgis.org}
+Data can be downloaded by selecting, for example, \cr
+tracts and block groups, all in US, acs2007-2011, and specifying the desired ACS Table(s). \cr
+Research using NHGIS data should cite it as: \cr
+Minnesota Population Center. National Historical Geographic Information System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
+
+Documentation for NHGIS datasets is available here.
+Research using NHGIS data should cite it as:
+Steven Manson, Jonathan Schroeder, David Van Riper, Tracy Kugler, and Steven Ruggles. IPUMS National Historical Geographic Information System: Version 16.0 \link{dataset}. Minneapolis, MN: IPUMS. 2021. http://doi.org/10.18128/D050.V16.0
+For policy briefs or articles in the popular press, we recommend that you cite the use of NHGIS data as follows:
+IPUMS NHGIS, University of Minnesota, www.nhgis.org
 }
 \examples{
  
@@ -85,5 +75,5 @@ This was designed to read and parse csv and txt files
   }
 }
 \seealso{
-\code{\link{nhgisread}} used by this function. Also, for other ways to obtain ACS data see \code{\link{get.acs}}
+\code{\link[=nhgisread]{nhgisread()}} used by this function. Also, for other ways to obtain ACS data see \code{\link[=get.acs]{get.acs()}}
 }

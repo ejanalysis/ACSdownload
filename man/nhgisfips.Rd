@@ -51,5 +51,5 @@ nhgisfips(x)
 }
 }
 \seealso{
-\code{\link{nhgis}}, \code{\link{nhgisread}}, \code{\link[ejanalysis]{clean.fips}}
+\code{\link[=nhgis]{nhgis()}}, \code{\link[=nhgisread]{nhgisread()}}, \code{\link[ejanalysis:clean.fips]{ejanalysis::clean.fips()}}
 }

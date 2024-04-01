@@ -5,7 +5,7 @@
 #' @param seqfilenum Required sequence file number(s) used by ACS 5-year summary file (can be a single value like "0022" or a vector)
 #' @param end.year Optional end year for 5-year summary file, as character or number
 #' @return Returns character element that is name of data file such as e20105de0017000 or m20105de0017000
-#' @seealso \code{\link{get.acs}}
+#' @seealso [get.acs()]
 #' @export
 datafile <- function(state.abbrev, seqfilenum, end.year = acsdefaultendyearhere_func()) {
   # datafile name examples:

@@ -22,21 +22,21 @@ read.geo(
 }
 \value{
 Returns a large data.frame of selected geographic information on
-  all block groups and tracts in the specified states/DC/PR, with just these fields:\cr
-  "STUSAB", "SUMLEVEL", "LOGRECNO", "STATE", "COUNTY", "TRACT", "BLKGRP", "GEOID"
+all block groups and tracts in the specified states/DC/PR, with just these fields:\cr
+"STUSAB", "SUMLEVEL", "LOGRECNO", "STATE", "COUNTY", "TRACT", "BLKGRP", "GEOID"
 }
 \description{
 Reads and merges geo files that have been obtained from the US Census Bureau FTP site for American Community Survey (ACS) data.
-  It uses read.fwf() at least for older years. 2018 or 2019 might have csv not just txt format now?
+It uses read.fwf() at least for older years.
 }
 \details{
 Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
-  Extracts just block group (SUMLEVEL=150) and tract (SUMLEVEL=140) geo information (not county info., since data files used in this package lack county info.)
-  The NAME field works on pc but mac can hit an error if trying to read the NAME field. Due to encoding? specifying encoding didn't help.\cr
-  (name is very long and not essential)\cr
-  Error in substring(x, first, last) : \cr
-  invalid multibyte string at '<f1>onc<69>to Chapter; Navajo Nation Reservation and Off-Reservation Trust Land, AZ--NM--UT \cr
-  Format of files is here: \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf}
+Extracts just block group (SUMLEVEL=150) and tract (SUMLEVEL=140) geo information (not county info., since data files used in this package lack county info.)
+The NAME field works on pc but mac can hit an error if trying to read the NAME field. Due to encoding? specifying encoding didn't help.\cr
+(name is very long and not essential)\cr
+Error in substring(x, first, last) : \cr
+invalid multibyte string at '\if{html}{\out{<f1>}}onc<69>to Chapter; Navajo Nation Reservation and Off-Reservation Trust Land, AZ--NM--UT \cr
+Format of files is here: \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf}
 }
 \examples{
  \dontrun{
@@ -44,5 +44,5 @@ Note that if this finds the geographic file in folder already, it will not downl
  }
 }
 \seealso{
-\code{\link{get.acs}}, \code{\link{download.geo}}
+\code{\link[=get.acs]{get.acs()}}, \code{\link[=download.geo]{download.geo()}}
 }

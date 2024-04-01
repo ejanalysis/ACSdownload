@@ -1,7 +1,7 @@
 #' @title Utility to Clean Names of States for get.acs
 #'
 #' @description
-#'  Utility function used by \code{\link{get.acs}} and \code{\link{download.datafiles}}
+#'  Utility function used by [get.acs()] and [download.datafiles()]
 #'
 #' @details
 #'  Not in FTP ACS Summary files and not returned by this function's default: \cr
@@ -15,7 +15,8 @@
 #'  but it returns only those excluding these five above, so an invalid state like 'ZQ' causes an error but an invalid state like 'VI' is silently removed without any error.
 #'
 #'  Puerto Rico (PR, FIPS 72), the District of Columbia (DC, 11), and the 50 States are in ACS 2016-2020 and Census 2020.
-#'  For info on Island Areas, see https://www.census.gov/programs-surveys/decennial-census/technical-documentation/island-areas-censuses.html
+#'  For info on Island Areas, see 
+#'  [https://www.census.gov/programs-surveys/decennial-census/technical-documentation/island-areas-censuses.html]
 #'  The 2020 Island Areas Censuses (IAC) include data for American Samoa (AS, FIPS 60), Guam (GU, 66),
 #'  the Commonwealth of the Northern Mariana Islands (MP, 69), and the U.S. Virgin Islands (VI. 78),
 #'  but not U.S. Minor Outlying Islands (UM, 74).
@@ -29,9 +30,9 @@
 #'  The 2020 IAC Demographic Profile Summary File data are available through
 #'  the Census Bureau’s data exploration platform, data.census.gov.
 #'  The 2020 IAC Demographic Profile Summary File is located on the U.S. Census Bureau’s file transfer protocol
-#'  (FTP) server at <https://www2.census.gov/programs-surveys/decennial/2020/data/island-areas/.
+#'  (FTP) server at [https://www2.census.gov/programs-surveys/decennial/2020/data/island-areas/].
 #'  The easiest way is to start at the 2020 Island Areas Censuses Data Products webpage at
-#'  www.census.gov/programs-surveys/decennial-census/decade/2020/planning-management/release/2020-islandareas-data-products.html
+#'  [www.census.gov/programs-surveys/decennial-census/decade/2020/planning-management/release/2020-islandareas-data-products.html]
 #'
 #' @param mystates Character vector, optional.
 #'   Defines which states, using 2-character abbreviations (case-insensitive), or 'all' for all available.
@@ -46,13 +47,13 @@
 #'
 #' @param testing Logical value, optional, FALSE by default. LIMITS STATES TO DC AND DE if TRUE.
 #' @return Returns character vector of 2-character State abbreviations, lower case.
-#' @seealso \code{\link{get.acs}} and \code{\link{download.datafiles}} which use this, and \code{\link[ejanalysis]{get.state.info}} (from \pkg{ejanalysis} package) based on \code{\link[proxistat]{lookup.states}} or \code{data(lookup.states, package=proxistat)} using \pkg{proxistat} package
+#' @seealso [get.acs()] and [download.datafiles()] which use this, and [ejanalysis::get.state.info()] (from \pkg{ejanalysis} package) based on [proxistat::lookup.states()] or `data(lookup.states, package=proxistat)` using \pkg{proxistat} package
 #' @export
 clean.mystates <- function(mystates = 'all', testing = FALSE) {
   #stateinfo	<- ejanalysis::get.state.info()
   # or could use this:
   # data(lookup.states, envir = environment(), package = 'proxistat')
-  stateinfo <- lookup.states # available in the proxistat package
+  stateinfo <- proxistat::lookup.states # available in the proxistat package
   # or state.abb from base datasets but that lacks DC PR VI GU etc.
   # also,
   #statenames	<- stateinfo$ftpname

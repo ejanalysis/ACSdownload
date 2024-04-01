@@ -2,7 +2,7 @@
 % Please edit documentation in R/get.url.prefix.R
 \name{get.url.prefix}
 \alias{get.url.prefix}
-\title{Get URL prefix for FTP site folder(s) with ACS 5-year summary file data}
+\title{Get URL prefix for folder(s) with ACS 5-year summary file data}
 \usage{
 get.url.prefix(end.year = acsdefaultendyearhere_func())
 }
@@ -10,11 +10,14 @@ get.url.prefix(end.year = acsdefaultendyearhere_func())
 \item{end.year}{Optional end year for 5-year summary file, as character, but ignored if url.prefix is specified}
 }
 \value{
-Returns character vector that is first part of URL such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset"
+Returns character vector that is first part of URL such as
+# \link{1} "https://www2.census.gov/programs-surveys/acs/summary_file/2021/data/5_year_seq_by_state/2020/Tracts_Block_Groups_Only"
+https://www2.census.gov/programs-surveys/acs/summary_file/2021/sequence-based-SF/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only
+"ftp://ftp.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset"
 }
 \description{
-Returns part of URL of folders (on Census Bureau FTP site) with zip file(s) based on end year.
+Returns part of URL of folders (on Census Bureau site) with zip file(s) based on end year.
 }
 \seealso{
-\code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}
+\code{\link[=get.acs]{get.acs()}}, \code{\link[=url.to.find.zipfile]{url.to.find.zipfile()}}, \code{\link[=download.geo]{download.geo()}}
 }

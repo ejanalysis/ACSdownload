@@ -1,12 +1,12 @@
 #' @title Read NHGIS.org ACS Data Files and Codebooks
-#' @description Helper function used by \code{\link{nhgis}} to read downloaded and unzipped csv and txt files obtained from NHGIS.org,
+#' @description Helper function used by [nhgis()] to read downloaded and unzipped csv and txt files obtained from NHGIS.org,
 #'   with US Census Bureau data from the American Community Survey (ACS).
 #' @param datafile Names of files
 #' @param codebookfile Optional name(s) of codebook files. Default is to infer from datafile
 #' @param folder Optional path where files are found. Default is getwd()
 #' @return Returns a named list: data, contextfields, fields, tables, geolevel, years, dataset
-#' @seealso  \code{\link{nhgis}} which uses this, \code{\link{nhgisreadcodebook}} for reading codebook files,
-#'   \code{\link{get.acs}}, \code{\link{get.datafile.prefix}}, \code{\link{datafile}}, \code{\link{geofile}}, \code{\link{get.zipfile.prefix}}
+#' @seealso  [nhgis()] which uses this, [nhgisreadcodebook()] for reading codebook files,
+#'   [get.acs()], [get.datafile.prefix()], [datafile()], [geofile()], [get.zipfile.prefix()]
 #' @export
 nhgisread <-
   function(datafile,

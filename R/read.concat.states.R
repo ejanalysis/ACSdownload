@@ -6,20 +6,20 @@
 #'   It can use data.table::fread (default method), which is faster.
 #' @param folder Default is current working directory. Specifies where the csv files are to be found.
 #' @param tables Optional character vector of table numbers needed such as 'B01001', but default is all tables from each sequence file found.
-#' @param needed Optional data.frame specifying which variables to keep from each table. Default is to keep all. See \code{\link{set.needed}} and \code{\link{get.acs}}
+#' @param needed Optional data.frame specifying which variables to keep from each table. Default is to keep all. See [set.needed()] and [get.acs()]
 #' @param mystates Optional character vector of 2-character state abbreviations. Default is all states for which matching filenames are found in folder.
 #' @param end.year Optional, specifies end year of 5-year summary file.
 #' @param save.files Default is TRUE, in which case it saves each resulting table/ data file on disk.
 #' @param testing Default is FALSE. If TRUE, prints filenames but does not unzip them, and prints more messages.
 #' @param silent Default is FALSE. Whether to send progress info to standard output.
 #' @param sumlevel Default is "both". Specifies if "tracts" or "blockgroups" or "both" should be returned.
-#' @param output.path Default is whatever the parameter \code{folder} is set to. Results as .RData files are saved here if save.files=TRUE.
+#' @param output.path Default is whatever the parameter `folder` is set to. Results as .RData files are saved here if save.files=TRUE.
 #' @param geo Optional table of geographic identifiers that elsewhere would be merged with data here.
-#'   If provided, it is used here to look up data file length, based on state abbrev's list. See \code{\link{get.read.geo}}
+#'   If provided, it is used here to look up data file length, based on state abbrev's list. See [get.read.geo()]
 #'   If geo is not provided, the function still reads each file whatever its length.
 #' @param dt Optional logical, TRUE by default, specifies whether data.table::fread should be used instead of read.csv
 #' @return Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.
-#' @seealso \code{\link{get.acs}}
+#' @seealso [get.acs()]
 #' @export
 read.concat.states <-
   function(tables,

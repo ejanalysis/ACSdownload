@@ -19,7 +19,7 @@ download.datafiles(
 
 \item{end.year}{Character element, optional, like "2012". Defines last of five years of summary file dataset.}
 
-\item{mystates}{Character vector, now optional - Default is 50 states + DC + PR here, but otherwise relies on \code{\link{clean.mystates}}}
+\item{mystates}{Character vector, now optional - Default is 50 states + DC + PR here, but otherwise relies on \code{\link[=clean.mystates]{clean.mystates()}}}
 
 \item{folder}{Default is getwd()}
 
@@ -34,8 +34,8 @@ Effect is to download and save locally a number of data files.
 }
 \description{
 Attempts to download data files (estimates and margins of error) for specified states and tables,
-  from the US Census Bureau's FTP site for American Community Survey (ACS) 5-year summary file data.
+from the US Census Bureau's FTP site for American Community Survey (ACS) 5-year summary file data.
 }
 \seealso{
-\code{\link[proxistat]{get.distances}} which allows you to get distances between all points.
+\code{\link[proxistat:get.distances]{proxistat::get.distances()}} which allows you to get distances between all points.
 }

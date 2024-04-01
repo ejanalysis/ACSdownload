@@ -1,7 +1,7 @@
 #' @title Get short and long field names etc for ACS tables
 #' @description
 #'  Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
-#' @details Uses \code{\link{get.lookup.acs}} but for latest version could just use \code{data(lookup.acs)}
+#' @details Uses [get.lookup.acs()] but for latest version could just use `data(lookup.acs)`
 #' @param tables Required vector of tables such as "B01001"
 #' @param end.year Last year of 5-year summary file such as '2018' 
 #' @param table.info.only FALSE by default. If TRUE, only return info about the table(s), not variables in table(s).
@@ -13,7 +13,7 @@
 #' @return data.frame of information about each table and each variable in table: \cr
 #'   Value returned is data.frame of info about each table and also each variable in the table\cr
 #'   e.g., longname2 which is version where no spaces or colons or escaped quotation marks etc. \cr
-#' @seealso \code{\link{get.acs}}, \code{\link{get.table.info}}, and \code{\link{get.field.info}}
+#' @seealso [get.acs()], [get.table.info()], and [get.field.info()]
 #' @examples
 #' \dontrun{
 #'   finfo <- get.field.info(c('B17020A', 'B17020H'))

@@ -10,6 +10,7 @@
 #' @param output.path folder / path where to save the downloaded files
 #'
 #' @return list of data.frames, one per table requested
+#' 
 #' @export
 #'
 get.acs.all <- function(tables="B01001", end.year=2020, dataset='5', sumlevel=150, output.path = file.path('~', 'acsoutput') ) {

@@ -6,7 +6,7 @@
 #' @param end.year Optional end year for 5-year summary file, as character, like '2018'
 #' @param zipfile.prefix Optional character element, defaults to value looked up based on end.year.
 #' @return Returns character element that is name of zip file such as "20115dc0113000.zip"
-#' @seealso \code{\link{get.acs}}
+#' @seealso [get.acs()]
 #' @export
 zipfile <-
   function(mystates,

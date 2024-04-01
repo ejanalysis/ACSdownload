@@ -13,12 +13,12 @@ geofile(mystates, end.year = acsdefaultendyearhere_func())
 }
 \value{
 Character vector of file names, example: "g20105md.txt"
-  Note this is only needed once per state, not once per seqfile. (It might even be available as a single US file?)
+Note this is only needed once per state, not once per seqfile. (It might even be available as a single US file?)
 }
 \description{
 Get name of text file used by US Census Bureau with geographic information for American Community Survey.
- That geo file can be used to join data file(s) to FIPS/GEOID/NAME/SUMLEVEL/CKEY.
+That geo file can be used to join data file(s) to FIPS/GEOID/NAME/SUMLEVEL/CKEY.
 }
 \seealso{
-\code{\link{get.acs}} and \code{\link{download.geo}} which uses this
+\code{\link[=get.acs]{get.acs()}} and \code{\link[=download.geo]{download.geo()}} which uses this
 }

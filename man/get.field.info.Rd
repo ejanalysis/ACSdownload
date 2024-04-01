@@ -30,14 +30,14 @@ but their names are identical to those of estimates fields other than being MOE 
 }
 \value{
 data.frame of information about each table and each variable in table: \cr
-  Value returned is data.frame of info about each table and also each variable in the table\cr
-  e.g., longname2 which is version where no spaces or colons or escaped quotation marks etc. \cr
+Value returned is data.frame of info about each table and also each variable in the table\cr
+e.g., longname2 which is version where no spaces or colons or escaped quotation marks etc. \cr
 }
 \description{
 Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
 }
 \details{
-Uses \code{\link{get.lookup.acs}} but for latest version could just use \code{data(lookup.acs)}
+Uses \code{\link[=get.lookup.acs]{get.lookup.acs()}} but for latest version could just use \code{data(lookup.acs)}
 }
 \examples{
 \dontrun{
@@ -52,5 +52,5 @@ Uses \code{\link{get.lookup.acs}} but for latest version could just use \code{da
 }
 }
 \seealso{
-\code{\link{get.acs}}, \code{\link{get.table.info}}, and \code{\link{get.field.info}}
+\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.table.info]{get.table.info()}}, and \code{\link[=get.field.info]{get.field.info()}}
 }

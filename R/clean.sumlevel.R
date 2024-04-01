@@ -1,7 +1,7 @@
 #' @title Utility to Clean SUMLEVEL for get.acs
 #'
 #' @description
-#'  Utility function used by \code{\link{get.acs}}.
+#'  Utility function used by [get.acs()].
 #'
 #' @details
 #'  Interprets as 'bg' any of these:    150, '150', 'blockgroup', 'block group', or 'bg' (or variants, ignoring case) \cr
@@ -9,7 +9,7 @@
 #'  Interprets as 'both' any of these: 'both' or a vector that has both of the above terms (or variants, ignoring case).
 #' @param sumlevel Character vector (1+ elements), optional, 'bg' by default. See details above.
 #' @return Returns 'both', 'tract', or 'bg' (or stops with error if cannot interpret sumlevel input)
-#' @seealso \code{\link{get.acs}} which uses this
+#' @seealso [get.acs()] which uses this
 #' @export
 clean.sumlevel <- function(sumlevel = 'bg') {
   bgfound <- 150 %in% sumlevel |

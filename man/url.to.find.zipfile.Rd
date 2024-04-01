@@ -15,34 +15,37 @@ url.to.find.zipfile(
 
 \item{end.year}{Optional end year for 5-year summary file, as character,  but ignored if url.prefix is specified}
 
-\item{url.prefix}{Optional character element that defaults to what is returned by \code{\link{get.url.prefix}(end.year)}}
+\item{url.prefix}{Optional character element that defaults to what is returned by \verb{[get.url.prefix](end.year)}}
 }
 \value{
 Returns character vector that is URL(s) such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile"
 }
 \description{
-Returns URL(s) of folders (on Census Bureau FTP site) with zip file(s) based on end year.
+Returns URLs of folders on Census Bureau FTP site with zip files based on end year.
 }
 \details{
-See help for \link{download.lookup.acs} for more details on the URLs used for the data. \cr
-  The zip files look like this for example: "20135dc0001000.zip" \cr
-  \cr
-  The 2009-2013 summary file by state-seqfile combo is in folders that look like this: \cr
-  \cr
-  \url{ftp://ftp.census.gov/acs2013_5yr/summaryfile/2009-2013_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only} \cr
-  \cr
-  The 2008-2012 summary file by state-seqfile combo is in folders that look like this: \cr
-  \cr
-	 \url{http://www2.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset/Alabama/Tracts_Block_Groups_Only} \cr
+See help for \code{\link[=download.lookup.acs]{download.lookup.acs()}} for more details on the URLs used for the data.
 
-  The 2007-2011 summary file by state-seqfile combo is in folders that look like this:\cr
- \cr
-  \url{ftp://ftp.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/} \cr
-  \url{http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/} \cr
-  URL must be the ftp site, not the http version.
-
-  But 2010-2014 was on http only, not ftp, as of mid Dec 3 2015 release day.
+The zip files look like this for example: "20135dc0001000.zip" \cr
+\cr
+The 2009-2013 summary file by state-seqfile combo is in folders that look like this: \cr
+\cr
+\link{ftp://ftp.census.gov/acs2013_5yr/summaryfile/2009-2013_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only}
 }
+\section{also see "https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/data/5YRData/"}{
+The 2008-2012 summary file by state-seqfile combo is in folders that look like this: \cr
+\cr
+\link{http://www2.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset/Alabama/Tracts_Block_Groups_Only} \cr
+
+The 2007-2011 summary file by state-seqfile combo is in folders that look like this:\cr
+\cr
+\link{ftp://ftp.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/} \cr
+URL must be the ftp site, not the http version.
+
+http version was here
+\link{http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/} \cr
+}
+
 \seealso{
-\code{\link{get.acs}}, \code{\link{url.to.find.zipfile}}, \code{\link{download.geo}}
+\code{\link[=get.acs]{get.acs()}}, \code{\link[=url.to.find.zipfile]{url.to.find.zipfile()}}, \code{\link[=download.geo]{download.geo()}}
 }

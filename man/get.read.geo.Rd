@@ -27,25 +27,16 @@ get.read.geo(
 \item{silent}{Default is FALSE.}
 }
 \value{
-Returns a data.frame of all states geo info. \cr
-  # FOR ACS 2008-2012, tract and block group counts: \cr
-  table(geo$SUMLEVEL) \cr
-    140    150  \cr
-  74001 220333  \cr
+Returns a data.frame of all states geo info.
 
- Remaining fields in geo: \cr
- "STUSAB"   "SUMLEVEL" "GEOID"    "FIPS"     "KEY" \cr
- NOTE: do not really need GEOID or KEY. \cr
- GEOID is redundant, but might be useful for joining to shapefiles/ boundaries \cr
- Also, could specify here if "NAME" field from geo files should be dropped -
- it might be useful but takes lots of RAM and encoding of Spanish characters in Puerto Rico caused a problem in Mac OSX. \cr
- NOTE FROM CENSUS:  \cr
- The ACS Summary File GEOID contains the necessary information to connect to the TIGER/Line Shapefiles,
- but it needs to be modified in order to exactly match up.
- Notice that the ACS GEOID, 05000US10001, contains the TIGER/Line GEOID string, 10001.
- In order to create an exact match of both GEOIDs, it is necessary to
- remove all of the characters before and including the letter S in the ACS Summary File.
- By removing these characters, the new GEOID in the ACS Summary File exactly matches the field GEOID in the TIGER/Line Shapefiles.
+ACS 2008-2012, tract and block group counts:
+
+table(geo$SUMLEVEL)
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{140    150  
+}\if{html}{\out{</div>}}
+
+74001 220333
 }
 \description{
 Returns a data.frame of all states merged geo info and saves geo.RData to working directory.
@@ -54,18 +45,39 @@ Returns a data.frame of all states merged geo info and saves geo.RData to workin
 Uses download.geo() then read.geo(), and then does some cleanup.
 
 Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
-Read and compile geo data for entire USA with PR DC, \cr
-This takes some time for the entire USA:  \cr
-2 minutes 48 seconds on \cr
-MacBook Pro 16 GB RAM, SSD, 2.7 GHz Intel Core i7\cr
-R version: R 3.0.2 GUI 1.62 Snow Leopard build (6558)\cr
-8 minutes 20 seconds on \cr
-R version 3.0.1 \cr
-Dell Latitude E6400, x86 Family 6 Model 23 Stepping 6 GenuineIntel ~2260 Mhz, \cr
-Total Physical Memory 4,096.00 MB, Available Physical Memory 1.97 GB, Total Virtual Memory 2.00 GB, Available Virtual Memory 1.94 GB, \cr
-Microsoft Windows XP Professional \cr
-############## \cr
+Read and compile geo data for entire USA with PR DC,
+
+This takes some time for the entire USA:
+
+2 to 10 minutes, depending.
+
+Remaining fields in geo:
+
+"STUSAB"   "SUMLEVEL" "GEOID"    "FIPS"     "KEY"
+
+NOTE: do not really need GEOID or KEY.
+
+GEOID is redundant, but might be useful for joining to shapefiles/ boundaries
+
+Also, could specify here if "NAME" field from geo files should be dropped -
+it might be useful but takes lots of RAM and encoding of S
+panish characters in Puerto Rico caused a problem in Mac OSX.
+
+NOTE FROM CENSUS:
+
+The ACS Summary File GEOID contains the necessary information to
+connect to the TIGER/Line Shapefiles,
+but it needs to be modified in order to exactly match up.
+Notice that the ACS GEOID, 05000US10001, contains
+the TIGER/Line GEOID string, 10001.
+In order to create an exact match of both GEOIDs,
+it is necessary to
+remove all of the characters before and including
+the letter S in the ACS Summary File.
+By removing these characters, the new GEOID in the
+ACS Summary File exactly matches the field GEOID in
+the TIGER/Line Shapefiles.
 }
 \seealso{
-\code{\link{get.acs}} which uses this, and \code{\link{download.geo}}
+\code{\link[=get.acs]{get.acs()}} which uses this, and \code{\link[=download.geo]{download.geo()}}
 }

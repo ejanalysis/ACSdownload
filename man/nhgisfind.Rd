@@ -13,23 +13,23 @@ nhgisfind(folder = getwd(), silent = FALSE)
 }
 \value{
 A named list with datafiles= a vector of one or more filenames (estimates and also MOE files) and
-  codebooks= a vector of one or more filenames. The function also prints the information unless silent=TRUE.
+codebooks= a vector of one or more filenames. The function also prints the information unless silent=TRUE.
 }
 \description{
 Look in specified path to find any
-  downloaded and unzipped csv and txt files from NHGIS.ORG,
-  with American Community Survey (ACS) data from the US Census Bureau.
+downloaded and unzipped csv and txt files from NHGIS.ORG,
+with American Community Survey (ACS) data from the US Census Bureau.
 }
 \details{
 This is designed to get a list of filenames that match the format of csv and txt files
-  obtained from NHGIS.org and already unzipped in a local folder.
-  Obtaining NHGIS.org data requires an account at
-  \url{https://data2.nhgis.org/main}, \url{https://www.nhgis.org}
-  Data can be downloaded by selecting, for example, \cr
-  block groups, all in US, acs2007-2011, and specifying the desired ACS Table(s).
-  Research using NHGIS data should cite it as: \cr
-  Minnesota Population Center. National Historical Geographic Information System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
+obtained from NHGIS.org and already unzipped in a local folder.
+Obtaining NHGIS.org data requires an account at
+\url{https://data2.nhgis.org/main}, \url{https://www.nhgis.org}
+Data can be downloaded by selecting, for example, \cr
+block groups, all in US, acs2007-2011, and specifying the desired ACS Table(s).
+Research using NHGIS data should cite it as: \cr
+Minnesota Population Center. National Historical Geographic Information System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
 }
 \seealso{
-\code{\link{nhgis}}, \code{\link{nhgisread}}
+\code{\link[=nhgis]{nhgis()}}, \code{\link[=nhgisread]{nhgisread()}}
 }

@@ -7,40 +7,38 @@
 get.lookup.acs(end.year = acsdefaultendyearhere_func())
 }
 \arguments{
-\item{end.year}{Character, optional, like '2020', which specifies the 2016-2020 dataset.
+\item{end.year}{Character, optional, like "2020", which specifies the 2016-2020 dataset.
 Defines which 5-year summary file to use, based on end-year.
 Note: Function stops with error if given end.year is not yet added to this package or is too old.}
 }
 \value{
-returns a data.frame  
-  \code{
-  dim(lookup.acs2020)
-  [1] 30326     9
-  names(lookup.acs2020)
-  [1] "File.ID"                 "Table.ID"                "Sequence.Number"        
-  [4] "Line.Number"             "Start.Position"          "Total.Cells.in.Table"   
-  [7] "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"           
-  }
+returns a data.frame
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{dim(lookup.acs2020)
+[1] 30326     9
+names(lookup.acs2020)
+[1] "File.ID"                 "Table.ID"                "Sequence.Number"        
+[4] "Line.Number"             "Start.Position"          "Total.Cells.in.Table"   
+[7] "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"           
+}\if{html}{\out{</div>}}
 }
 \description{
 Get lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
-  namely which sequence files on the FTP site contain which tables and which variables.
-  NOTE: This uses lazy loading from datasets in the package.
-}
-\details{
-Now folders are or were like:
-  https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
-  https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
+namely which sequence files on the FTP site contain which tables and which variables.
+NOTE: This uses lazy loading from datasets in the package.
 }
 \examples{
+ names(lookup.acs2021)
+ names(lookup.acs2022)
  \dontrun{
  lookup.acs <- get.lookup.acs()
  }
+ 
 }
 \seealso{
-\code{\link{get.table.info}} and \code{\link{get.field.info}}. \cr
-  Also see \code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
-  Also see \code{\link{download.lookup.acs}} to download the file from the Census FTP site.
-  Also see \code{data(lookup.acs2020)} and similar data for other years.
-  Also see \code{\link{get.acs}}, \code{\link{get.lookup.file.name}}, \code{\link{get.url.prefix.lookup.table}}
+\code{\link[=get.table.info]{get.table.info()}} and \code{\link[=get.field.info]{get.field.info()}}. \cr
+Also see \code{\link[acs:acs.lookup]{acs::acs.lookup()}} which does something similar but is more flexible & robust.
+Also see \code{\link[=download.lookup.acs]{download.lookup.acs()}} to download the file from the Census FTP site.
+Also see \code{data(lookup.acs2020)} and similar data for other years.
+Also see \code{\link[=get.acs]{get.acs()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}
 }

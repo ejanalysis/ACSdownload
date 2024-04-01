@@ -3,26 +3,25 @@
 #' @description
 #'  Download text file from US Census Bureau with geographic information for American Community Survey.
 #'  The geo file is used to join data file(s) to FIPS/GEOID/NAME/SUMLEVEL/CKEY.
-#'  Used by \code{\link{get.acs}}
+#'  Used by [get.acs()]
 #'
 #' @details
 #'   Downloads to the current working directory unless another folder is specified.
 #'   In contrast to the data files, the geo file is not zipped so does not have to be unzipped once downloaded.
 #'   Key functions used:
-#'  \itemize{
-#'    \item \code{\link{url.to.find.zipfile}}
-#'    \item \code{\link{geofile}}
-#'    \item \code{data(lookup.states, package='proxistat')}
-#'  }
-#'
+#' 
+#'    - [url.to.find.zipfile()]
+#'    - [geofile()]
+#'    - `data(lookup.states, package="proxistat")`
+#'  
 #' @param mystates vector of character 2-letter State abbreviations specifying which are needed
-#' @param end.year Specifies end year of 5-year summary file such as '2020' 
+#' @param end.year Specifies end year of 5-year summary file such as "2020" 
 #' @param folder folder to use for saving files - default is current working directory
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
 #' @param silent Optional, default is FALSE. Whether progress info should be sent to standard output (like the screen)
 #' @return Side effect is downloading the file.
-#' @seealso \code{\link{get.acs}} which uses this, and \code{\link{get.read.geo}}
+#' @seealso [get.acs()] which uses this, and [get.read.geo()]
 #' @examples
 #'  \dontrun{
 #'    download.geo("de")
@@ -62,6 +61,11 @@ download.geo <-
     
     statenames.mine <- statenames[match(mystates, stateabbs)]
     # cat(statenames.mine); cat('\n')
+    # https://www2.census.gov/programs-surveys/acs/summary_file/2021/sequence-based-SF/documentation/geography/5yr_year_geo/g20215us.txt
+    # browseURL("https://www2.census.gov/programs-surveys/acs/summary_file/2021/sequence-based-SF/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/g20215de.txt")
+    # > url.to.find.zipfile(2020)
+    # [1] "https://www2.census.gov/programs-surveys/acs/summary_file/2021/data/5_year_seq_by_state/2020/Tracts_Block_Groups_Only"
+    #     "https://www2.census.gov/programs-surveys/acs/summary_file/2021/sequence-based-SF/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only"
     full.geofilenames <-
       file.path(url.to.find.zipfile(statenames.mine, end.year = end.year),
                 geofilenames)

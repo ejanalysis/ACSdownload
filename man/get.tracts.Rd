@@ -7,14 +7,14 @@
 get.tracts(merged.tables.mine)
 }
 \arguments{
-\item{merged.tables.mine}{Required set of tables in format used by \code{\link{get.acs}}}
+\item{merged.tables.mine}{Required set of tables in format used by \code{\link[=get.acs]{get.acs()}}}
 }
 \value{
 subset of the inputs, same format
 }
 \description{
-Helper function to return just the tract resolution part of a dataset in \code{\link{get.acs}}
+Helper function to return just the tract resolution part of a dataset in \code{\link[=get.acs]{get.acs()}}
 }
 \seealso{
-\code{\link{get.acs}}, \code{\link{get.bg}}
+\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.bg]{get.bg()}}
 }

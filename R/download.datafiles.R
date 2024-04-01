@@ -6,12 +6,12 @@
 #' @param tables Required character vector of table numbers, such as c("B01001", "B03002")
 #' @param end.year Character element, optional, like "2012". Defines last of five years of summary file dataset.
 #' @param folder Default is getwd()
-#' @param mystates Character vector, now optional - Default is 50 states + DC + PR here, but otherwise relies on \code{\link{clean.mystates}}
+#' @param mystates Character vector, now optional - Default is 50 states + DC + PR here, but otherwise relies on [clean.mystates()]
 #' @param testing Default to FALSE. If TRUE, provides info on progress of download.
 #' @param silent Optional, default is FALSE. Whether progress info should be sent to standard output (like the screen).
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
 #' @return Effect is to download and save locally a number of data files.
-#' @seealso \code{\link[proxistat]{get.distances}} which allows you to get distances between all points.
+#' @seealso [proxistat::get.distances()] which allows you to get distances between all points.
 #' @export
 download.datafiles <-
   function(tables,
@@ -30,8 +30,8 @@ download.datafiles <-
 
     #stateinfo <- ejanalysis::get.state.info()
     # or could use
-    data(lookup.states, package = 'proxistat', envir = environment())
-    stateinfo <- lookup.states
+    # data(lookup.states, package = 'proxistat', envir = environment())
+    stateinfo <- proxistat::lookup.states
 
     # VALIDATE STATES
     mystates <- clean.mystates(mystates)

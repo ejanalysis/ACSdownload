@@ -5,7 +5,7 @@
 #'   that this function can create based on tables parameter, to create user-defined "variables needed.csv"
 #' @param tables Character vector, required. Specifies which ACS tables.
 #' @param folder Optional path, default is getwd(), specifying where to save the csv files that define needed variables.
-#' @param lookup.acs Data.frame, optional. Defines which variables are in which tables. Output of \code{\link{get.lookup.acs}}
+#' @param lookup.acs Data.frame, optional. Defines which variables are in which tables. Output of [get.lookup.acs()]
 #' @param varsfile Optional name of file that can be used to specify which variables are needed from specified tables.
 #'   If varsfile is specified, parameter vars is ignored, and the function just looks in folder for file called filename, e.g., "variables needed.csv"
 #'   that should specify which variables to keep from each table.
@@ -24,7 +24,7 @@
 #' @param silent Optional, defaults to TRUE. If FALSE, prints some indications of progress.
 #' @param writefile Optional, defaults to TRUE. If TRUE, saves template of needed variables as "variables needed template.csv" file to folder.
 #' @return Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.
-#' @seealso \code{\link{get.acs}} which uses this
+#' @seealso [get.acs()] which uses this
 #' @export
 set.needed <-
   function(tables,

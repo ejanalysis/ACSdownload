@@ -4,7 +4,7 @@
 #'   based on those filenames.
 #' @param folder Default is current working directory.
 #' @return Returns a character vector of unique sequence file numbers
-#' @seealso \code{\link{read.concat.states}} which uses this
+#' @seealso [read.concat.states()] which uses this
 #' @export
 getseqnumsviafilenames <- function(folder = getwd()) {
   # infer nums based on what filenames are found in folder

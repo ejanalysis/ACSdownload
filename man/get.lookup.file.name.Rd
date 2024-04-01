@@ -14,9 +14,9 @@ Returns character element that is name of file such as "Sequence_Number_and_Tabl
 }
 \description{
 Returns name of text file provided by US Census Bureau,
-  such as Sequence_Number_and_Table_Number_Lookup.txt, which provides the
-  sequence numbers (file numbers) and table numbers for data in the American Community Survey (ACS) 5-year summary file.
+such as Sequence_Number_and_Table_Number_Lookup.txt, which provides the
+sequence numbers (file numbers) and table numbers for data in the American Community Survey (ACS) 5-year summary file.
 }
 \seealso{
-\code{\link{get.acs}}, \code{\link{get.lookup.acs}}, \code{\link{get.url.prefix.lookup.table}}. Also see \code{data(lookup.acs)}.
+\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.lookup.acs]{get.lookup.acs()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}. Also see \code{data(lookup.acs)}.
 }

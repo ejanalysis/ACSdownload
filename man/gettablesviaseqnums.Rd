@@ -17,8 +17,8 @@ Returns a character vector of table IDs such as "B01001"
 }
 \description{
 Helper function to look for which American Community Survey (ACS) tables are in given sequence files
-  as obtained from the US Census FTP site.
+as obtained from the US Census FTP site.
 }
 \seealso{
-\code{\link{read.concat.states}} which uses this, and \code{\link{get.lookup.acs}} which is used by this
+\code{\link[=read.concat.states]{read.concat.states()}} which uses this, and \code{\link[=get.lookup.acs]{get.lookup.acs()}} which is used by this
 }

@@ -22,56 +22,56 @@ The 2017-2021 American Community Survey 5-year estimates are scheduled to be rel
 }
 \value{
 By default, returns a data.frame with these fields:
-  \itemize{
-    \item $ Table.ID               : chr  "B00001" "B00001" "B00001" "B00002" ...
-    \item $ Sequence.Number        : chr  "0001" "0001" "0001" "0001" ...
-    \item $ Line.Number            : num  NA NA 1 NA NA 1 NA NA 1 2 ...
-    \item $ Start.Position         : num  7 NA NA 8 NA NA 7 NA NA NA ...
-    \item $ Total.Cells.in.Table   : chr  "1 CELL" "" "" "1 CELL" ...
-    \item $ Total.Cells.in.Sequence: num  NA NA NA 2 NA NA NA NA NA NA ...
-    \item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
-    \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
-  }
-  For ACS 2008-2012: \cr
-  length(my.lookup[,1]) \cr
-  [1] 24741\cr
-  names(my.lookup)\cr
-  [1] "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position"\cr
-  [6] "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"\cr
+\itemize{
+\item $ Table.ID               : chr  "B00001" "B00001" "B00001" "B00002" ...
+\item $ Sequence.Number        : chr  "0001" "0001" "0001" "0001" ...
+\item $ Line.Number            : num  NA NA 1 NA NA 1 NA NA 1 2 ...
+\item $ Start.Position         : num  7 NA NA 8 NA NA 7 NA NA NA ...
+\item $ Total.Cells.in.Table   : chr  "1 CELL" "" "" "1 CELL" ...
+\item $ Total.Cells.in.Sequence: num  NA NA NA 2 NA NA NA NA NA NA ...
+\item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
+\item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
+}
+For ACS 2008-2012: \cr
+length(my.lookup\link{,1}) \cr
+\link{1} 24741\cr
+names(my.lookup)\cr
+\link{1} "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position"\cr
+\link{6} "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"\cr
 }
 \description{
 Download and read lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
-  namely which sequence files on the FTP site contain which tables and which variables.
-  NOTE: This is largely obsolete now that data(lookup.acs2013) and similar files for other years are in this package.
+namely which sequence files on the FTP site contain which tables and which variables.
+NOTE: This is largely obsolete now that data(lookup.acs2013) and similar files for other years are in this package.
 }
 \details{
 The URL scheme for lookup tables or datasets varies by year, for example,  \cr
-  For 2012 it is  \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}  \cr
-  and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
-  and for 2016 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
- \cr
-  The 2013-2017 dataset is here...  \cr
- \cr
-    Data tables by state by seqfile were here:  \cr
- \cr
-  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/}  \cr
-  such as  \cr
-  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/20175al0001000.zip}  \cr
- \cr
-    Geographies in Excel spreadsheets were here:  \cr
- \cr
-  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/}  \cr
-  such as  \cr
-  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/ak.xlsx}  \cr
- \cr
-    Lookup table of sequence files and variables was here:  \cr
- \cr
-  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
- \cr\cr
-  The 2014-2018 folders are here:  \cr
-  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/}  \cr
-  \url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/}  \cr
- \cr
+For 2012 it is  \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}  \cr
+and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+and for 2016 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+\cr
+The 2013-2017 dataset is here...  \cr
+\cr
+Data tables by state by seqfile were here:  \cr
+\cr
+\url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/}  \cr
+such as  \cr
+\url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Alabama/Tracts_Block_Groups_Only/20175al0001000.zip}  \cr
+\cr
+Geographies in Excel spreadsheets were here:  \cr
+\cr
+\url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/}  \cr
+such as  \cr
+\url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/ak.xlsx}  \cr
+\cr
+Lookup table of sequence files and variables was here:  \cr
+\cr
+\url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+\cr\cr
+The 2014-2018 folders are here:  \cr
+\url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/}  \cr
+\url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/}  \cr
+\cr
 }
 \examples{
  \dontrun{
@@ -79,8 +79,8 @@ The URL scheme for lookup tables or datasets varies by year, for example,  \cr
  }
 }
 \seealso{
-\code{\link[acs]{acs.lookup}} which does something similar but is more flexible & robust.
-  Also see \code{\link{get.lookup.acs}} which does the same without downloading file -- uses the copy in data()
-  Also see \code{data(lookup.acs2013)} and similar data for other years.
-  Also see \code{\link{get.acs}}, \code{\link{get.lookup.file.name}}, \code{\link{get.url.prefix.lookup.table}}
+\code{\link[acs:acs.lookup]{acs::acs.lookup()}} which does something similar but is more flexible & robust.
+Also see \code{\link[=get.lookup.acs]{get.lookup.acs()}} which does the same without downloading file -- uses the copy in data()
+Also see \code{data(lookup.acs2013)} and similar data for other years.
+Also see \code{\link[=get.acs]{get.acs()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}
 }
