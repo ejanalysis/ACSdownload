@@ -3,6 +3,12 @@
 #'   via FTP or https.
 #'   Does not get Puerto Rico (PR) as coded.
 #'   Note API provides better list of variable names, in order as found on summary files, than documentation does.
+#' @details
+#'
+#' For information on this new Summary File format visit:
+#'
+#'  https://www.census.gov/programs-surveys/acs/data/summary-file.html
+#'
 #' @param tables 'ejscreen' or else one or more table codes like 'b01001' or c("B01001", "B03002")
 #' @param end.year 2020 or another available year
 #' @param dataset default is 5, for 5-year summary file data like 2016-2020 ACS
@@ -10,7 +16,7 @@
 #' @param output.path folder / path where to save the downloaded files
 #'
 #' @return list of data.frames, one per table requested
-#' 
+#'
 #' @export
 #'
 get.acs.all <- function(tables="B01001", end.year=2020, dataset='5', sumlevel=150, output.path = file.path('~', 'acsoutput') ) {
@@ -36,11 +42,9 @@ get.acs.all <- function(tables="B01001", end.year=2020, dataset='5', sumlevel=15
   #   9    B03002    9 B03002.009                                           Two or more races
   #   12   B03002   12 B03002.012   Hispanic or Latino
 
-    # end.year = acsdefaultendyearhere_func()
+  # end.year = acsdefaultendyearhere_func()
   end.year <- as.character(end.year)
-  if (length(end.year) != 1) {stop('end.year must be a single value')}
-  thisyear <- data.table::year(Sys.Date())
-  if (!(end.year %in% as.character(2016:(thisyear - 1)))) {stop('end.year must be a plausible year')}
+  validate.end.year(end.year)
 
   # python example:
   #   https://github.com/uscensusbureau/acs-summary-file/blob/master/Python/example2.py
@@ -58,7 +62,7 @@ get.acs.all <- function(tables="B01001", end.year=2020, dataset='5', sumlevel=15
   httpurl <- gsub('ftp://ftp2', 'https://www2', baseurl)
 
   files <- list_files_ftp(baseurl)
-  files <- grep(pattern = '\\.dat$', x=files, value=TRUE) # almost all the files are .dat
+  files <- grep(pattern = '\\.dat$', x = files, value = TRUE) # almost all the files are .dat
   # files provides full paths including filename
 
   if (!('*' %in% tables)) {
@@ -106,7 +110,7 @@ get.acs.all <- function(tables="B01001", end.year=2020, dataset='5', sumlevel=15
     readr::write_csv(x[[i]], file = paste0(tables[i], '.csv')) # should really ensure this is same as current table
   }
 
-# these files do include PR and DC but no Island Territories.
+  # these files do include PR and DC but no Island Territories.
 
   # assumes all were found:
   names(x) <- tolower(tables)

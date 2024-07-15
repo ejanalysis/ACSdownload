@@ -36,14 +36,12 @@ set.needed <-
            end.year = acsdefaultendyearhere_func(),
            silent = TRUE,
            writefile = TRUE) {
-    if (length(end.year) != 1) {stop('end.year must be a single value')}
-    thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
-    
+    validate.end.year(end.year)
+
     if (missing(lookup.acs)) {
       lookup.acs <- get.lookup.acs(end.year = end.year)
     }
-    
+
     needed <- data.frame(
       seq = lookup.acs$Sequence.Number,
       table = lookup.acs$Table.ID,
@@ -54,11 +52,11 @@ set.needed <-
       ),
       stringsAsFactors = FALSE
     )
-    
+
     needed$table.var <- paste(needed$table, needed$varnum, sep = ".")
     needed$varname <- lookup.acs$Table.Title
     needed$colnum <- lookup.acs$Line.Number
-    
+
     # limit the "needed" table to the needed tables (not entire sequence files necessarily)
     tablematches <- needed$table %in% tables
     if (all(tablematches == FALSE)) {stop('None of the specified tables were found in specified lookup.acs')}
@@ -71,10 +69,10 @@ set.needed <-
       paste(needed$varname[rows.to.fix], needed$varname[which(rows.to.fix) -
                                                           1])
     #  Don't need to include TABLE NAME.
-    
+
     # NOW REMOVE SPECIAL NONVARIABLE ROWS
     needed <- needed[!is.na(needed$colnum),]
-    
+
     # head(needed)
     # but seq now has leading zeroes
     #  seq  table varnum  table.var          varname colnum
@@ -82,7 +80,7 @@ set.needed <-
     #4   2 B01001    002 B01001.002            Male:      2
     #5   2 B01001    003 B01001.003    Under 5 years      3
     #6   2 B01001    004 B01001.004     5 to 9 years      4
-    
+
     #	NOTE A SINGLE SEQUENCE FILE MAY HOLD >1 TABLE:
     #
     #table(needed$table, needed$seq)
@@ -97,7 +95,7 @@ set.needed <-
     # C16002 replaced B16004 that was older ACS source for what had been called linguistic isolation, now called limited English speaking households.
     #  B25034   0   0   0   0   0  10
     #  C17002   0   0   0   0   8   0
-    
+
     ####################################################### #
     # NOTE: The long names are available like this:   needed$varname[needed$table %in% tables]
     #
@@ -116,22 +114,22 @@ set.needed <-
     # or like this:   lookup.acs$Table.Title[lookup.acs$Table.ID %in% tables]
     # or more cols and rows:  lookup.acs[lookup.acs$Table.ID %in% tables, c("Table.ID", "Line.Number", "Table.Title")]
     ####################################################### #
-    
+
     ############################################################################# #
     # Windows and possibly OSX can let user use edit() to
     # SPECIFY VARIABLES WE NEED VS. VARIABLES TO DROP FROM THOSE TABLES
     # by deleting the "Y" for rows they don't want to keep
     ############################################################################# #
-    
+
     needed$keep <-
       "Y"	# default is Yes, keep every variable in the specified tables.
-    
+
     # also let them specify user-defined friendly variable names in the varname column
     # clean up field by removing spaces and colons and escaped quotation marks etc.
     needed$varname2 <- gsub("[ :,()']", "", needed$varname)
     needed$varname2 <- gsub("\"", "", needed$varname2)
-    
-    
+
+
     ############################################################################# #
     #  save the template for user to start from (maybe don't need to if varsfile found nor if vars!="ask")
     # *** line 189 or so uses this file to read back in but could change that to just use needed from memory
@@ -147,12 +145,12 @@ set.needed <-
       }
     }
     ############################################################################# #
-    
+
     if (vars == 'all') {
       # default, unless varsfile specified and found
       #needed <- needed
     }
-    
+
     if (!missing(varsfile)) {
       if (file.exists(file.path(folder, varsfile))) {
         needed <- read.csv(file = file.path(folder, varsfile), as.is = TRUE)
@@ -160,9 +158,9 @@ set.needed <-
           cat(as.character(Sys.time()), ' ')
           cat('Finished reading', varsfile, '\n')
         }
-        
+
         # SHOULD ADD ERROR CHECKING HERE ON FORMAT OF FILE USER PROVIDED ***
-        
+
       } else {
         if (!file.exists(file.path(folder, "variables needed template.csv"))) {
           # needed <- needed
@@ -177,7 +175,7 @@ set.needed <-
         }
       }
     }
-    
+
     if (missing(varsfile) & vars != 'ask' & vars != 'all') {
       needed <- needed[needed$table.var %in% vars,]
       # ERROR CHECKING TO SEE IF AT LEAST ONE OF USERS vars WAS FOUND AMONG needed$table.var
@@ -187,15 +185,15 @@ set.needed <-
         )
       }
     }
-    
+
     os <- analyze.stuff::os()
-    
+
     # windows user could do this interactively, using edit(),
     # but Mac OSX RStudio seems to require installation of X11 / The X Window System (xquartz) for the edit() functionality.
     # Mac OSX R.app however, seems to not need X11. But you have to use command-W when you are done editing (trying to close the window by clicking the red x seems to crash it.)
     # see http://xquartz.macosforge.org and https://support.apple.com/en-us/HT201341 regarding X11 / XQuartz.
     # and https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Editor-_0028internal-and-external_0029
-    
+
     if (os != "mac" | noEditOnMac == FALSE) {
       # Used to do this only in windows but it generally works in OSX as well, so just try
       inp <- 'n'
@@ -208,11 +206,11 @@ set.needed <-
             "Press n to edit now onscreen interactively --and to use all fields then just close edit window--
             or press y if ready to import an already-saved input file from disk called 'variables needed.csv' \n"
           )
-        
+
         # NOTE: THIS WON'T STOP AND WAIT FOR INPUT IF CODE IS COPIED AND PASTED INTO R CONSOLE.
         # & the while() was an attempt to keep it here while rest of pasted text is read.
       }
-      
+
       if (vars == 'ask' &
           missing(varsfile) & tolower(substr(inp, 1, 1)) == "n") {
         needed <- edit(needed)
@@ -261,7 +259,7 @@ set.needed <-
         }
         }
   }
-    
+
     # on mac ask user to edit template and save as "variables needed.csv" which will be imported
     if (vars == 'ask' & missing(varsfile) & os == "mac" &
         noEditOnMac) {
@@ -312,7 +310,7 @@ set.needed <-
             cat('  Finished reading  variables needed template.csv\n')
           }
         }
-        
+
       } else {
         needed <-
           read.csv(file = file.path(folder, "variables needed template.csv"),
@@ -329,8 +327,8 @@ set.needed <-
       #     	    # needed <- needed;     write.csv(needed, "variables needed.csv", row.names=FALSE)
       #    	}
     }
-    
-    
+
+
     # retain only the rows with variables we want to keep.
     # remove row if keep col has NA which happens if user leaves it blank (e.g. deletes Y from template instead of replacing it with N)
     needed <- needed[!is.na(needed$keep),]

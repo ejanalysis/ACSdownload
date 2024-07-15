@@ -2,31 +2,21 @@
 #' @docType data
 #' @title ACS_5yr_Seq_Table_Number_Lookup.txt for ACS dataset
 #' @description This data set provides information about variables
-#'   in tables forming the American Community Survey (ACS) 5-year summary file.
-#' @details 
+#'   in tables from the latest American Community Survey (ACS) 5-year summary file.
+#' @details
 #'   See attributes(lookup.acs) to check vintage of dataset.
+#'
 #'   The data and documentation for the 5 years ending in year X
 #'   is typically available by December of the year X+1.
-#' \preformatted{
-#'  # example of how data was imported after download for each year
-#'  
-#' setwd('./inst/')
-#' download.file('https://www2.census.gov/programs-surveys/acs/summary_file/2020/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt', 
-#'               destfile = 'ACS_5yr_Seq_Table_Number_Lookup.txt')
-#' lookup.acs <- readr::read_csv('ACS_5yr_Seq_Table_Number_Lookup.txt')
-#' lookup.acs <- data.frame(lookup.acs, stringsAsFactors = FALSE) # so it is not a tibble
-#' 
-#' metadata <- list(ejscreen_releasedate = 'late 2022', ejscreen_version = '2.1', ACS_version = '2016-2020', ACS_releasedate = '3/17/2022')
-#' attributes(lookup.acs) <- c(attributes(lookup.acs), metadata)
-#' 
-#' # save(lookup.acs, file = './data/lookup.acs.rdata') # or 
-#' usethis::use_data(lookup.acs)
-#' }
-#' 
-#' @format A data.frame with these fields: 
-#' 
+#'
+#'  Created using a script in the source package:
+#'
+#'  ACSdownload/data-raw/datacreate_lookup.acs.R
+#'
+#' @format A data.frame with these fields:
+#'
 #'    data.frame:	> 25,000 obs. of approx 9 or 10 variables:
-#'     
+#'
 #'     - $ File.ID               : chr  "ACSSF"  ...
 #'     - $ File.ID                : chr  "ACSSF" "ACSSF" "ACSSF" "ACSSF" ...
 #'     - $ Table.ID               : chr  "B01001" "B01001" "B01001" "B01001" ...
@@ -38,14 +28,6 @@
 #'     - $ Table.Title            : chr  "SEX BY AGE" "Universe:  Total population" "Total:" "Male:" ...
 #'     - $ Subject.Area           : chr  "Age-Sex" NA NA NA ...
 #'
-#' @seealso  [acs::acs.lookup()] [tidycensus::load_variables()] [get.lookup.acs()] [get.acs()]
+#' @seealso [acs::acs.lookup()] [tidycensus::load_variables()] [get.lookup.acs()] [get.acs()]
 #'
-#' @examples
-#'  \dontrun{
-#'  data(lookup.acs, package='ACSdownload')
-#'  # or
-#'  lookup.acs <- ACSdownload::get.lookup.acs()
-#'  # or related info from
-#'  acs::acs.lookup()
-#'  }
 NULL

@@ -5,12 +5,18 @@
 #'   namely which sequence files on the FTP site contain which tables and which variables.
 #'   NOTE: This is largely obsolete now that data(lookup.acs2013) and similar files for other years are in this package.
 #' @details
-#'   The URL scheme for lookup tables or datasets varies by year, for example,  \cr
-#'   For 2012 it is  <ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt>  \cr
-#'   and for 2014 is <http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt>  \cr
-#'   and for 2016 is <http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt>  \cr
+#'
+#' For information on new Summary File format visit:
+#'
+#'  https://www.census.gov/programs-surveys/acs/data/summary-file.html
+#'
+#'     Lookup table of sequence files and variables was here:  \cr
 #'  \cr
-#'   The 2013-2017 dataset is here...  \cr
+#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt>  \cr
+#'  \cr\cr
+#'   The 2014-2018 folders are here:  \cr
+#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/>  \cr
+#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/>  \cr
 #'  \cr
 #'     Data tables by state by seqfile were here:  \cr
 #'  \cr
@@ -23,21 +29,12 @@
 #'   <https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/>  \cr
 #'   such as  \cr
 #'   <https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/ak.xlsx>  \cr
-#'  \cr
-#'     Lookup table of sequence files and variables was here:  \cr
-#'  \cr
-#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt>  \cr
-#'  \cr\cr
-#'   The 2014-2018 folders are here:  \cr
-#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/>  \cr
-#'   <https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/>  \cr
-#'  \cr
 #' @param end.year Character, optional, like '2020', which specifies the 2016-2020 dataset.
 #'   Defines which 5-year summary file to use, based on end-year.
 #'   Can be acsfirstyearavailablehere or later. Data for end.year='2019' were released in December 2020, for example.
-#'   The 2017-2021 American Community Survey 5-year estimates are scheduled to be released on Thursday, December 8, 2022.  
-#'   
-#' @param folder Optional path to where to download file to, defaults to current working directory.
+#'   The 2017-2021 American Community Survey 5-year estimates are scheduled to be released on Thursday, December 8, 2022.
+#'
+#' @param folder Optional path to where to download file to, defaults to temp folder.
 #' @param silent Optional, default is FALSE. Whether to send progress info to standard output (like the screen)
 #' @return By default, returns a data.frame with these fields:
 #'   \itemize{
@@ -62,122 +59,165 @@
 #'   Also see [get.acs()], [get.lookup.file.name()], [get.url.prefix.lookup.table()]
 #' @examples
 #'  \dontrun{
-#'  lookup.acs <- download.lookup.acs()
+#'  lookup.acs <- download.lookup.acs(2022)
 #'  }
-#' @export
-download.lookup.acs <-
-  function(end.year = acsdefaultendyearhere_func(),
-           folder = getwd(),
-           silent = FALSE) {
-    if (length(end.year) != 1) {stop('end.year must be a single value')}
-    thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
-    
-    my.url.prefix.lookup.table <-
-      get.url.prefix.lookup.table(end.year)  # paste("ftp://ftp.census.gov/acs", end.year, "_5yr/summaryfile/", sep="") # but lacking last /
-    my.lookup.file.name <- get.lookup.file.name(end.year)
-    my.lookup.file.name.dated <-
-      paste(end.year, my.lookup.file.name, sep = '')
-    print(my.lookup.file.name.dated)
-    # Use the working directory to download the file.
+#'
+download.lookup.acs <- function(end.year = acsdefaultendyearhere_func(),
+                                folder = NULL,
+                                silent = FALSE) {
+
+  ########################################################### #
+
+  # folder to download to ####
+
+  if (missing(folder)) {
+    folder = tempdir()
+    folder = file.path(folder, "acs")
+    if (!dir.exists(folder)) {
+    dir.create(folder)
+      }
+
+    # Use a temp directory to download the file.
+  }
+  oldir = getwd()
+  on.exit(setwd(oldir))
+  setwd(folder)
+
+  ######################## #
+
+  # end.year ####
+  validate.end.year(end.year)
+
+# xxxxx
+
+  # urlx = get(paste0("url", substr(end.year,3,4)))
+  # filex = paste0(end.year, "_ACS5_lookup.txt")
+  # lookx = paste0("lookup.acs", end.year)
+
+# xxxxx
+
+  my.url.prefix.lookup.table <-
+    get.url.prefix.lookup.table(end.year)
+
+  my.lookup.file.name <- get.lookup.file.name(end.year)
+  my.lookup.file.name.dated <-
+    paste(end.year, my.lookup.file.name, sep = '')
+  print(my.lookup.file.name.dated)
+
+  ########################################################### #
+
+  # download it ####
+
+  if (!file.exists(file.path(folder, my.lookup.file.name.dated)) |
+      file.size(file.path(folder, my.lookup.file.name.dated)) == 0) {
+
+    if (!silent) {
+      cat(
+        "  Downloading lookup table with table and variable names from",
+
+        # paste(my.url.prefix.lookup.table, my.lookup.file.name, sep = ""),
+        "\n"
+      )
+    }
+    try(
+      # download.file(urlx, destfile = filex)
+
+      download.file(
+        paste(my.url.prefix.lookup.table, my.lookup.file.name, sep = ""),
+        file.path(folder, my.lookup.file.name.dated)
+      )
+    )
 
     if (!file.exists(file.path(folder, my.lookup.file.name.dated)) |
         file.size(file.path(folder, my.lookup.file.name.dated)) == 0) {
-      if (!silent) {
-        cat(
-          "  Downloading lookup table with table and variable names from",
-          paste(my.url.prefix.lookup.table, my.lookup.file.name, sep = ""),
-          "\n"
-        )
-      }
-      try(download.file(
-        paste(my.url.prefix.lookup.table, my.lookup.file.name, sep = ""),
-        file.path(folder, my.lookup.file.name.dated)
-      ))
-      if (!file.exists(file.path(folder, my.lookup.file.name.dated)) |
-          file.size(file.path(folder, my.lookup.file.name.dated)) == 0) {
-        stop('Failed to download lookup table of variable names by table')
-      }
-      # could add error checking here to verify it was downloaded correctly
+      stop('Failed to download lookup table of variable names by table')
     }
-    if (!silent) {
-      cat("  Reading lookup table with table and variable names\n")
-    }
+    # could add error checking here to verify it was downloaded correctly
+  }
 
-    if (end.year == 2009) {
-      # The 2009 table was provided as xls not txt. Other years have a txt file with this info.
-      # colnames are the same but read_excel imports it differently than read.csv does
-      #2012:  [File ID,]Table ID, Sequence Number,  Line Number, Start Position,  Total Cells in Table, Total Cells in Sequence,  Table Title, Subject Area
-      #2009:  File ID,	Table ID,	Sequence Number,	Line Number, Start Position,	Total Cells in Table,	Total Cells in Sequence,	Table Title, Subject Area
-      my.lookup <- readxl::read_excel(
+  if (!silent) {
+    cat("  Reading lookup table with table and variable names\n")
+  }
+  ########################################################### #
+
+  #  clean it
+
+  ########################################################### #
+  if (end.year == 2009) {
+    # The 2009 table was provided as xls not txt. Other years have a txt file with this info.
+    # colnames are the same but read_excel imports it differently than read.csv does
+    #2012:  [File ID,]Table ID, Sequence Number,  Line Number, Start Position,  Total Cells in Table, Total Cells in Sequence,  Table Title, Subject Area
+    #2009:  File ID,	Table ID,	Sequence Number,	Line Number, Start Position,	Total Cells in Table,	Total Cells in Sequence,	Table Title, Subject Area
+    my.lookup <- readxl::read_excel(
+      file.path(folder, my.lookup.file.name.dated),
+      col_types = c(
+        "text",
+        "text",
+        "text",
+        "numeric",
+        "numeric",
+        "text",
+        "numeric",
+        "text",
+        "text"
+      )
+    )
+    # replace spaces with periods in colnames, which read.csv does automatically but read_excel does not:
+    names(my.lookup) <- gsub(' ', '.', names(my.lookup))
+    # remove the last row, which gets imported as <NA> and NA values
+    my.lookup <- my.lookup[!is.na(my.lookup$Table.ID),]
+    # The 2009 file has NA values instead of blanks in some columns
+    my.lookup$Subject.Area[is.na(my.lookup$Subject.Area)] <- ''
+    my.lookup$Total.Cells.in.Table[is.na(my.lookup$Total.Cells.in.Table)] <-
+      ''
+
+  } else {
+    if (end.year == 2011) {
+      # 2011 format was different:
+      #"fileid","Table ID","seq",   "Line Number Decimal M Lines", "position", "cells",   "total","Long Table Title","subject_area"
+      #"ACSSF","B00001","0001",   ".", "7","1 CELL",    ".", "UNWEIGHTED SAMPLE COUNT OF THE POPULATION", "Unweighted Count"
+      my.lookup <- read.csv(
         file.path(folder, my.lookup.file.name.dated),
-        col_types = c(
-          "text",
-          "text",
-          "text",
-          "numeric",
-          "numeric",
-          "text",
-          "numeric",
-          "text",
-          "text"
+        stringsAsFactors = FALSE,
+        colClasses = c(
+          "character",
+          "character",
+          "character",
+          "character",
+          "character",
+          "character",
+          "character",
+          "character",
+          "character"
         )
       )
-      # replace spaces with periods in colnames, which read.csv does automatically but read_excel does not:
+      names(my.lookup) <-
+        c(
+          'File ID',
+          'Table ID',
+          'Sequence Number',
+          'Line Number',
+          'Start Position',
+          'Total Cells in Table',
+          'Total Cells in Sequence',
+          'Table Title',
+          'Subject Area'
+        )
       names(my.lookup) <- gsub(' ', '.', names(my.lookup))
-      # remove the last row, which gets imported as <NA> and NA values
-      my.lookup <- my.lookup[!is.na(my.lookup$Table.ID),]
-      # The 2009 file has NA values instead of blanks in some columns
-      my.lookup$Subject.Area[is.na(my.lookup$Subject.Area)] <- ''
-      my.lookup$Total.Cells.in.Table[is.na(my.lookup$Total.Cells.in.Table)] <-
-        ''
+
+      my.lookup$Line.Number[my.lookup$Line.Number == '.'] <- NA
+      my.lookup$Line.Number <- as.numeric(my.lookup$Line.Number)
+      my.lookup$Total.Cells.in.Sequence[my.lookup$Total.Cells.in.Sequence ==
+                                          '.'] <- NA
+      my.lookup$Total.Cells.in.Sequence <-
+        as.numeric(my.lookup$Total.Cells.in.Sequence)
+      my.lookup$Start.Position[my.lookup$Start.Position == '.'] <-
+        NA
+      my.lookup$Start.Position <-
+        as.numeric(my.lookup$Start.Position)
 
     } else {
-      if (end.year == 2011) {
-        # 2011 format was different:
-        #"fileid","Table ID","seq",   "Line Number Decimal M Lines", "position", "cells",   "total","Long Table Title","subject_area"
-        #"ACSSF","B00001","0001",   ".", "7","1 CELL",    ".", "UNWEIGHTED SAMPLE COUNT OF THE POPULATION", "Unweighted Count"
-        my.lookup <- read.csv(
-          file.path(folder, my.lookup.file.name.dated),
-          stringsAsFactors = FALSE,
-          colClasses = c(
-            "character",
-            "character",
-            "character",
-            "character",
-            "character",
-            "character",
-            "character",
-            "character",
-            "character"
-          )
-        )
-        names(my.lookup) <-
-          c(
-            'File ID',
-            'Table ID',
-            'Sequence Number',
-            'Line Number',
-            'Start Position',
-            'Total Cells in Table',
-            'Total Cells in Sequence',
-            'Table Title',
-            'Subject Area'
-          )
-        names(my.lookup) <- gsub(' ', '.', names(my.lookup))
-
-        my.lookup$Line.Number[my.lookup$Line.Number == '.'] <- NA
-        my.lookup$Line.Number <- as.numeric(my.lookup$Line.Number)
-        my.lookup$Total.Cells.in.Sequence[my.lookup$Total.Cells.in.Sequence ==
-                                            '.'] <- NA
-        my.lookup$Total.Cells.in.Sequence <-
-          as.numeric(my.lookup$Total.Cells.in.Sequence)
-        my.lookup$Start.Position[my.lookup$Start.Position == '.'] <-
-          NA
-        my.lookup$Start.Position <-
-          as.numeric(my.lookup$Start.Position)
-
-      } else {
+      if (end.year > 2011 & end.year < 2022) {
         #e.g., 2012:  [File ID,]Table ID, Sequence Number,  Line Number, Start Position,  Total Cells in Table, Total Cells in Sequence,  Table Title, Subject Area
         my.lookup <- read.csv(
           file.path(folder, my.lookup.file.name.dated),
@@ -194,15 +234,26 @@ download.lookup.acs <-
             "character"
           )
         )
+      } else {
+        # end.year is 2022 or later
+
+        my.lookup <- read.delim(file.path(folder, my.lookup.file.name.dated), sep = "|")
+
+        # See [https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/documentation/]
+
       }
     }
+  }
+  # done cleaning it
+  ########################################################### #
 
-    my.lookup$File.ID <- NULL
-
+  if (end.year < 2021) {
     # add leading zeroes so seqnum always has 4 characters (e.g., '0001' or '0105')
-    # or could do this before saving .RData files for use via data()
+    my.lookup$File.ID <- NULL
     my.lookup$Sequence.Number <-
       analyze.stuff::lead.zeroes(floor(as.numeric(my.lookup$Sequence.Number)), 4)
-
-    return(my.lookup)
   }
+
+
+  return(my.lookup)
+}

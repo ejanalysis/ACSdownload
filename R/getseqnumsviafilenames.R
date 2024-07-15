@@ -5,10 +5,11 @@
 #' @param folder Default is current working directory.
 #' @return Returns a character vector of unique sequence file numbers
 #' @seealso [read.concat.states()] which uses this
-#' @export
+#'
 getseqnumsviafilenames <- function(folder = getwd()) {
+
   # infer nums based on what filenames are found in folder
-  
+
   is.datafilename <-
     function(x) {
       grepl(pattern = '[em]20[0-9][0-9]5[a-z][a-z][0-9]*\\.txt', x)

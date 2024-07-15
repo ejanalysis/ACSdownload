@@ -22,9 +22,7 @@ download.datafiles <-
            attempts = 5,
            silent = FALSE) {
 
-    if (length(end.year) != 1) {stop('end.year must be a single value')}
-    thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
+    validate.end.year(end.year)
 
     # FUNCTION TO DOWNLOAD ZIP FILES WITH DATA (ESTIMATES AND MOE)
 

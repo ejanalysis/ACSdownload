@@ -6,7 +6,7 @@
 \usage{
 download.lookup.acs(
   end.year = acsdefaultendyearhere_func(),
-  folder = getwd(),
+  folder = NULL,
   silent = FALSE
 )
 }
@@ -16,7 +16,7 @@ Defines which 5-year summary file to use, based on end-year.
 Can be acsfirstyearavailablehere or later. Data for end.year='2019' were released in December 2020, for example.
 The 2017-2021 American Community Survey 5-year estimates are scheduled to be released on Thursday, December 8, 2022.}
 
-\item{folder}{Optional path to where to download file to, defaults to current working directory.}
+\item{folder}{Optional path to where to download file to, defaults to temp folder.}
 
 \item{silent}{Optional, default is FALSE. Whether to send progress info to standard output (like the screen)}
 }
@@ -45,12 +45,19 @@ namely which sequence files on the FTP site contain which tables and which varia
 NOTE: This is largely obsolete now that data(lookup.acs2013) and similar files for other years are in this package.
 }
 \details{
-The URL scheme for lookup tables or datasets varies by year, for example,  \cr
-For 2012 it is  \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/Sequence_Number_and_Table_Number_Lookup.txt}  \cr
-and for 2014 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2014/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
-and for 2016 is \url{http://www2.census.gov/programs-surveys/acs/summary_file/2016/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+For information on new Summary File format visit:
+
+https://www.census.gov/programs-surveys/acs/data/summary-file.html
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Lookup table of sequence files and variables was here:  \\cr
+}\if{html}{\out{</div>}}
+
 \cr
-The 2013-2017 dataset is here...  \cr
+\url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
+\cr\cr
+The 2014-2018 folders are here:  \cr
+\url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/}  \cr
+\url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/}  \cr
 \cr
 Data tables by state by seqfile were here:  \cr
 \cr
@@ -63,20 +70,12 @@ Geographies in Excel spreadsheets were here:  \cr
 \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/}  \cr
 such as  \cr
 \url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/geography/5yr_year_geo/ak.xlsx}  \cr
-\cr
-Lookup table of sequence files and variables was here:  \cr
-\cr
-\url{https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/ACS_5yr_Seq_Table_Number_Lookup.txt}  \cr
-\cr\cr
-The 2014-2018 folders are here:  \cr
-\url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/geography/}  \cr
-\url{https://www2.census.gov/programs-surveys/acs/summary_file/2018/documentation/user_tools/}  \cr
-\cr
 }
 \examples{
  \dontrun{
- lookup.acs <- download.lookup.acs()
+ lookup.acs <- download.lookup.acs(2022)
  }
+
 }
 \seealso{
 \code{\link[acs:acs.lookup]{acs::acs.lookup()}} which does something similar but is more flexible & robust.

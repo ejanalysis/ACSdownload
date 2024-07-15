@@ -15,7 +15,8 @@
 #'  but it returns only those excluding these five above, so an invalid state like 'ZQ' causes an error but an invalid state like 'VI' is silently removed without any error.
 #'
 #'  Puerto Rico (PR, FIPS 72), the District of Columbia (DC, 11), and the 50 States are in ACS 2016-2020 and Census 2020.
-#'  For info on Island Areas, see 
+#'
+#'  For info on Island Areas, see
 #'  [https://www.census.gov/programs-surveys/decennial-census/technical-documentation/island-areas-censuses.html]
 #'  The 2020 Island Areas Censuses (IAC) include data for American Samoa (AS, FIPS 60), Guam (GU, 66),
 #'  the Commonwealth of the Northern Mariana Islands (MP, 69), and the U.S. Virgin Islands (VI. 78),
@@ -40,24 +41,42 @@
 #'   Default is 'all' which is 50 states plus DC, BUT NO LONGER PR (& not AS, GU, MP, UM, VI, US).
 #'   If mystates is not specified or is 'all' then this returns the default.
 #'   If mystates is specified, returns those defaults that match any of mystates.
-#'   If mystates includes DC, PR, or US, those are returned, but "AS" "GU" "MP" "UM" "VI" are removed.
-#'   One element of the vector can be 50, 51, or 52, where 50 represents the 50 states, 51 = 50 plus DC, or 52 = the 51 plus PR.
-#'   In other words, the default could be written as c(50,'DC','PR') or as c(51,'PR') or just 52.
+#'   If mystates includes DC, PR, or US, those are returned,
+#'      but "AS" "GU" "MP" "VI" are removed,
+#'      and "UM" is removed.
+#'   One element of the vector can be 50, 51, or 52, where 50 represents
+#'   the 50 states, 51 = 50 plus DC, or 52 = the 51 plus PR.
+#'   In other words, the default could be written as c(50,'DC','PR')
+#'   or as c(51,'PR') or just 52.
 #'   Redundant entries are dropped, e.g., c(51,'DC') becomes 51.
 #'
 #' @param testing Logical value, optional, FALSE by default. LIMITS STATES TO DC AND DE if TRUE.
 #' @return Returns character vector of 2-character State abbreviations, lower case.
-#' @seealso [get.acs()] and [download.datafiles()] which use this, and [ejanalysis::get.state.info()] (from \pkg{ejanalysis} package) based on [proxistat::lookup.states()] or `data(lookup.states, package=proxistat)` using \pkg{proxistat} package
+#' @seealso [get.acs()] and [download.datafiles()] which use this, and
+#'  [ejanalysis::get.state.info()] (from \pkg{ejanalysis} package) based on [proxistat::lookup.states()]
+#'  or `data(lookup.states, package=proxistat)` using \pkg{proxistat} package
+#'
 #' @export
+#'
 clean.mystates <- function(mystates = 'all', testing = FALSE) {
-  #stateinfo	<- ejanalysis::get.state.info()
-  # or could use this:
-  # data(lookup.states, envir = environment(), package = 'proxistat')
-  stateinfo <- proxistat::lookup.states # available in the proxistat package
+
+  mystates <- c(
+    "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL",
+    "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+    "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM",
+    "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN",
+    "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
+    "PR",
+    "VI", "AS", "GU", "MP"
+    # , "UM",
+  )
+  # , "US")
+  # stateinfo <- proxistat::lookup.states # available in the proxistat package
   # or state.abb from base datasets but that lacks DC PR VI GU etc.
   # also,
   #statenames	<- stateinfo$ftpname
-  allabbs	<- tolower(stateinfo$ST)
+
+  allabbs	<- tolower(mystates)
   stateabbs <-
     allabbs[!(allabbs %in% c("as", "gu", "mp", "um", "vi", "us"))]
   # that leaves 52 (states+dc+pr)

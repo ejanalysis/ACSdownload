@@ -35,6 +35,10 @@ The geo file is used to join data file(s) to FIPS/GEOID/NAME/SUMLEVEL/CKEY.
 Used by \code{\link[=get.acs]{get.acs()}}
 }
 \details{
+For information on this new Summary File format visit:
+
+https://www.census.gov/programs-surveys/acs/data/summary-file.html
+
 Downloads to the current working directory unless another folder is specified.
 In contrast to the data files, the geo file is not zipped so does not have to be unzipped once downloaded.
 Key functions used:
@@ -49,6 +53,7 @@ Key functions used:
    download.geo("de")
    download.geo( c("pr", "dc") )
  }
+
 }
 \seealso{
 \code{\link[=get.acs]{get.acs()}} which uses this, and \code{\link[=get.read.geo]{get.read.geo()}}

@@ -2,15 +2,16 @@
 % Please edit documentation in R/get.url.prefix.lookup.table.R
 \name{get.url.prefix.lookup.table}
 \alias{get.url.prefix.lookup.table}
-\title{Get first part of name(s) of URL(s) for ACS 5-year summary file data}
+\title{Get URL (without filename) for ACS 5-year summary file data}
 \usage{
 get.url.prefix.lookup.table(end.year = acsdefaultendyearhere_func())
 }
 \arguments{
-\item{end.year}{Optional end year for 5-year summary file, as character, like '2018'}
+\item{end.year}{Optional end year for 5-year summary file, as character, like '2022'}
 }
 \value{
-Returns character element that is first part of URL such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile/"
+Returns character element that is first part of URL such as
+"https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/documentation/"
 }
 \description{
 Returns first part of URL(s) of folders (on Census Bureau FTP site) with zip file(s) based on end year.

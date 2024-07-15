@@ -5,8 +5,9 @@
 #' @param folder Default is current working directory.
 #' @return Returns a vector of unique upper case US State abbreviations
 #' @seealso [read.concat.states()] which uses this
-#' @export
+#'
 getstatesviafilenames <- function(folder = getwd()) {
+
   # infer states based on what filenames are found in folder
   #getstatesviafilenames <- function(folder=getwd(), seqfilelistnums, end.year = acsdefaultendyearhere_func() ) {
   is.datafilename <-
@@ -21,7 +22,7 @@ getstatesviafilenames <- function(folder = getwd()) {
     gsub('US', '', ejanalysis::get.state.info(fields = 'ST'))
   mystates <- mystates[mystates %in% allstates.no.us]
   return(mystates)
-  
+
   # older version that gave more exact check based on supplied year and sequence file numbers:
   #       allstates.no.us <- gsub('US', '', ejanalysis::get.state.info(fields = 'ST'))
   #       all.efiles.not.us <- datafile(allstates.no.us, seqfilelistnums[1], end.year = end.year)

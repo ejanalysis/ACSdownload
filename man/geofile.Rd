@@ -9,10 +9,10 @@ geofile(mystates, end.year = acsdefaultendyearhere_func())
 \arguments{
 \item{mystates}{vector of character 2-letter State abbreviations specifying which are needed}
 
-\item{end.year}{end.year of 5-year summary file such as '2020'}
+\item{end.year}{end.year of 5-year summary file such as '2021'}
 }
 \value{
-Character vector of file names, example: "g20105md.txt"
+Character vector of file names, example: "g20215md.txt"
 Note this is only needed once per state, not once per seqfile. (It might even be available as a single US file?)
 }
 \description{

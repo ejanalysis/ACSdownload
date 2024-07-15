@@ -12,15 +12,9 @@
 #' @seealso [get.acs()] and [acs::acs.lookup()] from the \pkg{acs} package, which does something related but is more flexible & robust. Also see [get.acs()] which uses this.
 #' @export
 which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere_func()) {
-  
-  if (length(end.year) != 1) {stop('end.year must be a single value')}
-  thisyear <- data.table::year(Sys.Date())
-  if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a recent year')}
-  # validyears <- 2009:2022
-  # if (!(end.year %in% validyears)) {
-  #   stop('invalid end.year')
-  # }
-  
+
+  validate.end.year(end.year)
+
   if (missing(lookup.acs)) {
     lookup.acs <- get.lookup.acs(end.year = end.year)
   } else {
@@ -52,7 +46,7 @@ which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere_
       # [1] 2308
       # > sum(is.na(lookup.acs2019$Line.Number))
       # [1] 2310
-      # > 
+      # >
       uniquetoyearlist <-
         list(
           # '2009' = 2018,
@@ -61,13 +55,13 @@ which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere_
           # '2012' = 2080,
           # '2013' = 2110,
           # '2014' = 2114,
-          # '2015' = 2114, 
-          # '2016' = 2116, 
-          # '2017' = 2280, 
-          '2018' = 2308, 
-          '2019' = 2310, 
-          '2020' = 2324,  
-          '2021' = sum(is.na(lookup.acs2021$Line.Number)) 
+          # '2015' = 2114,
+          # '2016' = 2116,
+          # '2017' = 2280,
+          '2018' = 2308,
+          '2019' = 2310,
+          '2020' = 2324,
+          '2021' = sum(is.na(lookup.acs2021$Line.Number))
           ## but 2022 format is new and not sequence files
         )
       end.year <- as.character(end.year)

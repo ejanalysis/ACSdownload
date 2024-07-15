@@ -2,7 +2,7 @@
 % Please edit documentation in R/get.lookup.acs.R
 \name{get.lookup.acs}
 \alias{get.lookup.acs}
-\title{Get Information about ACS 5-Year Summary File Tables}
+\title{Pick a year-specific table from among lookup.acs2022, etc.}
 \usage{
 get.lookup.acs(end.year = acsdefaultendyearhere_func())
 }
@@ -13,32 +13,21 @@ Note: Function stops with error if given end.year is not yet added to this packa
 }
 \value{
 returns a data.frame
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{dim(lookup.acs2020)
-[1] 30326     9
-names(lookup.acs2020)
-[1] "File.ID"                 "Table.ID"                "Sequence.Number"        
-[4] "Line.Number"             "Start.Position"          "Total.Cells.in.Table"   
-[7] "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"           
-}\if{html}{\out{</div>}}
 }
 \description{
-Get lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
+Pick a year-specific lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
 namely which sequence files on the FTP site contain which tables and which variables.
-NOTE: This uses lazy loading from datasets in the package.
 }
 \examples{
- names(lookup.acs2021)
  names(lookup.acs2022)
- \dontrun{
- lookup.acs <- get.lookup.acs()
- }
- 
+ names(lookup.acs)
+
 }
 \seealso{
 \code{\link[=get.table.info]{get.table.info()}} and \code{\link[=get.field.info]{get.field.info()}}. \cr
 Also see \code{\link[acs:acs.lookup]{acs::acs.lookup()}} which does something similar but is more flexible & robust.
 Also see \code{\link[=download.lookup.acs]{download.lookup.acs()}} to download the file from the Census FTP site.
-Also see \code{data(lookup.acs2020)} and similar data for other years.
+Also see \link{lookup.acs} \link{lookup.acs2022} and similar data for other years.
 Also see \code{\link[=get.acs]{get.acs()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}
+\code{\link[tidycensus:load_variables]{tidycensus::load_variables()}}
 }

@@ -11,12 +11,10 @@ datafile <- function(state.abbrev, seqfilenum, end.year = acsdefaultendyearhere_
   # datafile name examples:
   #	e20105de0017000
   #	m20105de0017000
-  if (length(end.year) != 1) {stop('end.year must be a single value')}
-  thisyear <- data.table::year(Sys.Date())
-  if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
-  
+  validate.end.year(end.year)
+
   datafile.prefix 	<- get.datafile.prefix(end.year = end.year)
-  
+
   datafile.prefix.e <- paste("e", datafile.prefix, sep = "")
   datafile.states <- tolower(state.abbrev)
   datafile.seqfilenum <- analyze.stuff::lead.zeroes(seqfilenum, 4)

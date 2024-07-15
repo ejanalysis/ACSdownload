@@ -3,21 +3,33 @@
 #'  Get name of text file used by US Census Bureau with geographic information for American Community Survey.
 #'  That geo file can be used to join data file(s) to FIPS/GEOID/NAME/SUMLEVEL/CKEY.
 #' @param mystates vector of character 2-letter State abbreviations specifying which are needed
-#' @param end.year end.year of 5-year summary file such as '2020'
-#' @return Character vector of file names, example: "g20105md.txt"
+#' @param end.year end.year of 5-year summary file such as '2021'
+#' @return Character vector of file names, example: "g20215md.txt"
 #'   Note this is only needed once per state, not once per seqfile. (It might even be available as a single US file?)
 #' @seealso [get.acs()] and [download.geo()] which uses this
-#' @export
+#'
 geofile <- function(mystates, end.year = acsdefaultendyearhere_func()) {
-  if (length(end.year) != 1) {stop('end.year must be a single value')}
-  thisyear <- data.table::year(Sys.Date())
-  if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
-  
+
+  validate.end.year(end.year)
+
   if (missing(mystates)) {
-    #mystates <- ejanalysis::get.state.info(fields='ST')
-    data(lookup.states, package = 'proxistat', envir = environment())
-    mystates <- lookup.states$ST
+    # mystates <- proxistat::lookup.states$ST
+    mystates <- c(
+      "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL",
+      "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+      "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM",
+      "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN",
+      "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
+      "PR",
+      "VI", "AS", "GU", "MP"
+      # , "UM",
+      )
+    # , "US")
   }
+
+  #
+  # "https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/documentation/Geos20225YR.txt"
+
   datafile.prefix <- get.datafile.prefix(end.year = end.year)
   geofile.prefix =	paste("g", datafile.prefix, sep = "")
   geofile.states = 	tolower(mystates)

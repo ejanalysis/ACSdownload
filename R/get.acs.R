@@ -1,21 +1,25 @@
 #' @title Download Tables from American Community Survey (ACS) 5-year Summary File
 #'
 #' @description
-#'   NOTE: Census formats changed a lot, and some of the info below is obsolete. 
+#'   NOTE: Census formats changed a lot, and some of the info below is obsolete.
 #'   Also see newer get.acs.all() that will try to use new format for 5yr summary file ACS
 #'   that makes it easier to get one table for every blockgroup in the US.
-#'   
+#'
 #'   This function will download and parse 1 or more tables of data from the American Community Survey's
 #'   5-year Summary File FTP site, for all Census tracts and/or block groups in specified State(s).
 #'   Estimates and margins of error are obtained, as well as long and short names for the variables,
 #'   which can be specified if only parts of a table are needed. \cr\cr
 #'   It is especially useful if you want a lot of data such as all the blockgroups in the USA,
 #'   which may take a long time to obtain using the Census API and a package like [tidycensus::tidycensus]
-#'   
-#'   
+#'
 #'   Release schedule for ACS 5-year data is here: <https://www.census.gov/programs-surveys/acs/news/data-releases.html>
-#'   The 2016-2020 ACS 5-year estimates release date is December 9, 2021.
+#'   The 2018-2022 ACS 5-year estimates release date was December, 2023.
 #' @details
+#'
+#' For information on new Summary File format visit:
+#'
+#'  https://www.census.gov/programs-surveys/acs/data/summary-file.html
+#'
 #'   The United States Census Bureau provides detailed demographic data by US Census tract and block group
 #'   in the American Community Survey (ACS) 5-year summary file via their FTP site. For those interested in block group or tract data,
 #'   Census Bureau tools tend to focus on obtaining data one state at a time rather than for the entire US at once.
@@ -26,7 +30,7 @@
 #'   <http://www.census.gov/programs-surveys/acs.html> \cr
 #' @param tables Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
 #'   NOTE: If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
-#'   Those tables in EJScreen 2.0 are  
+#'   Those tables in EJScreen 2.0 are
 #'   c("B01001", "B03002", "B15002", 'C16002', "C17002", "B25034", 'B23025')
 #    # C16002 replaced B16004 that was older ACS source for what had been called linguistic isolation.
 #' @param base.path Character, optional, getwd() by default. Defines a base folder to start from, in case
@@ -97,11 +101,11 @@
 #' @seealso [acs::acs] package, which allows you to download and work with ACS data (using the API and your own key).
 #'    To get the tables and variables used in EJSCREEN, see [ejscreen.download][ejscreen::ejscreen.download].
 #'    Also see [nhgis()] which parses any files manually downloaded from <NHGIS.org>
-#' @examples 
+#' @examples
 #'  \dontrun{
 #'   ##### Basic info on ACS tables:
 #'    cbind(table(lookup.acs2020$Subject.Area))
-#'    
+#'
 #'  # from the census website, see USA ACS tables:
 #'    mytables <- c("B01001", "B03002", "B15002", "B23025",
 #'                      "B25034", "C16002", "C17002") # EJScreen-related
@@ -111,33 +115,33 @@
 #'  # https://data.census.gov/cedsci/table
 #'  # ?q=acs%20B01001%20B03002%20B15002%20B23025%20B25034%20C16002%20C17002
 #'  # &g=0100000US_0400000US72&y=2020
-#'  myurl <- paste0("https://data.census.gov/cedsci/table?q=acs%20", 
+#'  myurl <- paste0("https://data.census.gov/cedsci/table?q=acs%20",
 #'             paste(mytables, collapse= "%20"), "&g=", geos, "&y=", yr)
 #'     # browseURL(myurl)
-#'  
+#'
 #'   t( get.table.info("B01001", end.year = acsdefaultendyearhere_func()) )
 #'   t( get.table.info(c("B17001", "C17002") ) )
 #'   get.field.info("C17002")
 #'   ##### Data for just DC & DE, just two tables:
 #'   outsmall <- get.acs(tables = c("B01001", "C17002"), mystates=c("dc","de"),
-#'    end.year = acsdefaultendyearhere_func(), base.path = "~/Downloads", 
+#'    end.year = acsdefaultendyearhere_func(), base.path = "~/Downloads",
 #'    write.files = T, new.geo = FALSE)
 #'   summary(outsmall)
 #'   t(outsmall$info[1, ])
 #'   t(outsmall$bg[1, ])
 #'
-#'    ## ENTIRE USA -- DOWNLOAD AND PARSE -- 
+#'    ## ENTIRE USA -- DOWNLOAD AND PARSE --
 #'    # TAKES A COUPLE OF MINUTES for one table:
 #'    acs_2014_2018_B01001_vars_bg_and_tract <- get.acs(
-#'      base.path="~/Downloads", end.year="2018", write.files = TRUE, 
+#'      base.path="~/Downloads", end.year="2018", write.files = TRUE,
 #'      new.geo = FALSE)
 #'
 #'   ####################################################################### #
 #'   ##### Data for just DC & DE, just the default pop count table:
-#'   out <- get.acs(mystates=c("dc","de"), 
+#'   out <- get.acs(mystates=c("dc","de"),
 #'     end.year = acsdefaultendyearhere_func(), new.geo = FALSE)
 #'   names(out$bg); cat("\n\n"); head(out$info)
-#'   head(t(rbind(id=out$headers$table.ID, long=out$headers$longname, 
+#'   head(t(rbind(id=out$headers$table.ID, long=out$headers$longname,
 #'      univ=out$headers$universe,
 #'      subj=out$headers$subject,  out$bg[1:2,]) ), 15)
 #'   cbind(longname=out$info$longname,
@@ -150,19 +154,19 @@
 #'   out <- get.acs(mystates="de", tables=c("B01001", "C17002"))
 #'   summary(out); head(out$info); head(out$bg)
 #'   ##### uses all EJSCREEN defaults and the specified folders:
-#'   out <- get.acs(base.path="~", data.path="~/ACStemp",  
+#'   out <- get.acs(base.path="~", data.path="~/ACStemp",
 #'     output.path="~/ACSresults")
 #'   summary(out); head(out$info); head(out$bg)
-#'   ##### all tables needed for EJSCREEN, plus "B16001", 
+#'   ##### all tables needed for EJSCREEN, plus "B16001",
 #'   # b16001 has more details on specific languages spoken
 #'     with variables specified in "variables needed.csv", all states, DC, PR:
 #'   out <- get.acs(tables=c("ejscreen", "B16001"))
 #'   summary(out); head(out$info); head(out$bg)
 #'  }
 #'
-#' @details 
+#' @details
 #'  #####################################	ADDITIONAL NOTES ######################################
-#'  
+#'
 #' 	SEE CENSUS ACS DOCUMENTATION ON NON-NUMERIC FIELDS IN ESTIMATE AND MOE FILES.\cr \cr
 #'  Note relevant sequence numbers change over time. \cr
 #' ############# \cr \cr
@@ -203,14 +207,14 @@
 #'
 #' also, data for entire US for one seq file at a time, but not tract/bg -- just county and larger? -- is here, e.g.:
 #' [ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/20111us0001000.zip]
-#' 
+#'
 #' GEO files:
-#' 
+#'
 #' Note the US file is not bg/tract level:  geo for whole US at once doesn't have tracts and BGs
-#' [ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/g20111us.csv] 
-#' 
+#' [ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/g20111us.csv]
+#'
 #' OTHER SOURCES include
-#' 
+#'
 #'  - [tidycensus::tidycensus()] package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
 #'  - [acs::acs()] package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
 #'  - [http://www.NHGIS.org] - (and see [nhgis()]) very useful for block group (or tract/county/state/US) datasets
@@ -219,9 +223,9 @@
 #'  - ESRI - commercial
 #'  - Geolytics - commercial
 #'  - etc.
-#'  
+#'
 #' @export
-#' 
+#'
 get.acs <-
   function(tables = 'B01001',
            mystates = 'all',
@@ -245,11 +249,9 @@ get.acs <-
       # c("B01001", "B03002", "B15002", "B16004", "C17002", "B25034", 'B23025')
       c("B01001", "B03002", "B15002", "C16002", "C17002", 'B23025', "B25034")
       # C16002 replaced B16004 that was older ACS source for what had been called linguistic isolation, now called limited English speaking households.
-      
+
     end.year <- as.character(end.year)
-    if (length(end.year) != 1) {stop('end.year must be a single value')}
-    thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
+    validate.end.year(end.year)
 
     # check if base.path seems to be a valid folder
     if (!dir.exists(base.path)) {

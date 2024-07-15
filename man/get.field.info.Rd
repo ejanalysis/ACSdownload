@@ -50,7 +50,8 @@ Uses \code{\link[=get.lookup.acs]{get.lookup.acs()}} but for latest version coul
     foundnames, substr(finfo$longname.unique[match(foundnames, finfo$shortname)], 1, 100)
   )
 }
+
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.table.info]{get.table.info()}}, and \code{\link[=get.field.info]{get.field.info()}}
+\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.table.info]{get.table.info()}}
 }

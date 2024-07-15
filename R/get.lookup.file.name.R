@@ -6,11 +6,16 @@
 #' @param end.year Not yet implemented, but will be optional end year for 5-year summary file, as character
 #' @return Returns character element that is name of file such as "Sequence_Number_and_Table_Number_Lookup.txt"
 #' @seealso [get.acs()], [get.lookup.acs()], [get.url.prefix.lookup.table()]. Also see `data(lookup.acs)`.
+#'
 #' @export
+#'
 get.lookup.file.name	<- function(end.year = acsdefaultendyearhere_func()) {
-  if (length(end.year) != 1) {stop('end.year must be a single value')}
-  thisyear <- data.table::year(Sys.Date())
-  if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
+
+  validate.end.year(end.year)
+
+  if (end.year >= 2021) {
+    return(paste0("ACS", end.year,"5YR_Table_Shells.txt"))
+  }
 
   if (end.year > 2009) {
     if (end.year == 2014) {
@@ -20,8 +25,7 @@ get.lookup.file.name	<- function(end.year = acsdefaultendyearhere_func()) {
       # return("Sequence_Number_and_Table_Number_Lookup.txt")
     }
   } else {
-    return('ACS_5yr_Seq_Table_Number_Lookup.txt')
-    # return("Sequence_Number_and_Table_Number_Lookup.xls")
+    stop('invalid end.year')
   }
 
   #	For other end years (and possibly 1 or 3 year files at some point? those lack block groups):

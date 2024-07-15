@@ -18,6 +18,10 @@ https://www2.census.gov/programs-surveys/acs/summary_file/2021/sequence-based-SF
 \description{
 Returns part of URL of folders (on Census Bureau site) with zip file(s) based on end year.
 }
+\examples{
+browseURL(get.url.prefix(2022))
+
+}
 \seealso{
 \code{\link[=get.acs]{get.acs()}}, \code{\link[=url.to.find.zipfile]{url.to.find.zipfile()}}, \code{\link[=download.geo]{download.geo()}}
 }

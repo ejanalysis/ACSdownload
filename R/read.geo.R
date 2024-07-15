@@ -1,8 +1,8 @@
 #' @title Read and concatenate state geo files from Census ACS
 #'
 #' @description Reads and merges geo files that have been obtained from the US Census Bureau FTP site for American Community Survey (ACS) data.
-#'   It uses read.fwf() at least for older years. 
-#'   
+#'   It uses read.fwf() at least for older years.
+#'
 #' @details
 #'   Note that if this finds the geographic file in folder already, it will not download it again even if that file was corrupt.
 #'   Extracts just block group (SUMLEVEL=150) and tract (SUMLEVEL=140) geo information (not county info., since data files used in this package lack county info.)
@@ -32,7 +32,7 @@ read.geo <-
     ############# #
     # concatenate geos over all states
     ############# #
-    
+
     ##################################################################### #
     # created geoformat20xx.RData files like this:
     ############## THE FORMAT IS NOT CSV - IT IS FIXED FORMAT ***** widths taken from PDF technical documentation
@@ -152,12 +152,10 @@ read.geo <-
     #     save(geoformat2013, file = 'geoformat2013.RData')
     #     geoformat2014 <- geoformat
     #     save(geoformat2014, file = 'geoformat2014.RData')
-    
+
     ################################################################### #
-    if (length(end.year) != 1) {stop('end.year must be a single value')}
-    thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
-    
+    validate.end.year(end.year)
+
     geoformat <- switch(
       paste('x', end.year, sep = ''),
       x2009 = geoformat2009,
@@ -175,15 +173,15 @@ read.geo <-
       x2021 = geoformat2021,
       x2022 = geoformat2022
       )
-    
+
     # just import these:
     #	(name is very long and not essential)
     # 	LOGRECNO IS ESSENTIAL FOR JOIN TO DATA FILES OR TIGER SHAPEFILES
-    
+
     #	geofields <- c(
     #		"SUMLEVEL", "LOGRECNO", "STATE", "COUNTY", "TRACT", "BLKGRP", "GEOID", "NAME"
     #	)
-    
+
     #	THE NAME FIELD IS PROBLEMATIC / ENCODING PROBLEM? ON MAC OSX, AND NOT ESSENTIAL SO DROP IT:
     geofields <- c("STUSAB",
                    "SUMLEVEL",
@@ -193,10 +191,10 @@ read.geo <-
                    "TRACT",
                    "BLKGRP",
                    "GEOID")
-    
+
     #  THESE COULD BE DROPPED ALSO AT LEAST AFTER THE KEY FIELD IS CREATED:
     #  LOGRECNO STATE COUNTY  TRACT BLKGRP
-    
+
     getwidths <- function(geofields, geoformat) {
       mygeoformat <-
         geoformat[which(geoformat$varname %in% geofields), c("start", "size")]
@@ -230,16 +228,16 @@ read.geo <-
       mywidths <- c(mywidths, -1 * (lastcell - sum(abs(mywidths))))
       return(mywidths)
     }
-    
-    
+
+
     gfiles.not.us <- geofile(mystates, end.year = end.year)
     # REMOVE THE US NATIONWIDE GEO FILE IN CASE THE USER SPECIFIED IT (SINCE IT DOESN'T ACTUALLY HAVE BLOCK GROUPS AND TRACTS)
     gfiles.not.us <-
       gfiles.not.us[gfiles.not.us != geofile("us", end.year = end.year)]
-    
+
     bigtable.g <- data.frame()
     #cat('  Parsing geo files:\n')
-    
+
     i <- 1
     for (this.file in gfiles.not.us) {
       #cat(this.file)
@@ -247,12 +245,12 @@ read.geo <-
         cat(mystates[mystates != 'us'][i], ' ')
       }
       i <- i + 1
-      
-      
+
+
       # NOTE: SPECIAL CHARACTERS IN THIS FILE ARE A PROBLEM FOR MAC OSX:
       # It seems to be Latin1 encoding, but OSX had trouble reading NAME field despite specifying encoding
       # also tried  fileEncoding="latin1"
-      
+
       this.data <- read.fwf(
         file.path(folder, this.file),
         widths = getwidths(geofields, geoformat),
@@ -265,22 +263,22 @@ read.geo <-
         comment.char = "",
         colClasses = rep("character", length(geofields))
       )
-      
+
       if (length(this.data[, 1]) == 0) {
         stop(paste('Problem reading file', this.file))
       }
-      
+
       names(this.data) <- geofields  # only for imported fields
-      
+
       # Drop all rows except for tract and block group, from this geo table. Block group is SUMLEVEL 150.
       this.data <-
         this.data[this.data$SUMLEVEL == "140" |
                     this.data$SUMLEVEL == "150" ,]
-      
+
       if (length(this.data[, 1]) == 0) {
         stop(paste('Problem reading file', this.file))
       }
-      
+
       # Append this state to the others imported so far
       bigtable.g <- rbind(bigtable.g, this.data)
     }

@@ -13,9 +13,13 @@ Defines which states, using 2-character abbreviations (case-insensitive), or 'al
 Default is 'all' which is 50 states plus DC, BUT NO LONGER PR (& not AS, GU, MP, UM, VI, US).
 If mystates is not specified or is 'all' then this returns the default.
 If mystates is specified, returns those defaults that match any of mystates.
-If mystates includes DC, PR, or US, those are returned, but "AS" "GU" "MP" "UM" "VI" are removed.
-One element of the vector can be 50, 51, or 52, where 50 represents the 50 states, 51 = 50 plus DC, or 52 = the 51 plus PR.
-In other words, the default could be written as c(50,'DC','PR') or as c(51,'PR') or just 52.
+If mystates includes DC, PR, or US, those are returned,
+but "AS" "GU" "MP" "VI" are removed,
+and "UM" is removed.
+One element of the vector can be 50, 51, or 52, where 50 represents
+the 50 states, 51 = 50 plus DC, or 52 = the 51 plus PR.
+In other words, the default could be written as c(50,'DC','PR')
+or as c(51,'PR') or just 52.
 Redundant entries are dropped, e.g., c(51,'DC') becomes 51.}
 
 \item{testing}{Logical value, optional, FALSE by default. LIMITS STATES TO DC AND DE if TRUE.}
@@ -38,6 +42,7 @@ Note: The function stops if any of mystates is not found in the full list that i
 but it returns only those excluding these five above, so an invalid state like 'ZQ' causes an error but an invalid state like 'VI' is silently removed without any error.
 
 Puerto Rico (PR, FIPS 72), the District of Columbia (DC, 11), and the 50 States are in ACS 2016-2020 and Census 2020.
+
 For info on Island Areas, see
 \link{https://www.census.gov/programs-surveys/decennial-census/technical-documentation/island-areas-censuses.html}
 The 2020 Island Areas Censuses (IAC) include data for American Samoa (AS, FIPS 60), Guam (GU, 66),
@@ -58,5 +63,7 @@ The easiest way is to start at the 2020 Island Areas Censuses Data Products webp
 \link{www.census.gov/programs-surveys/decennial-census/decade/2020/planning-management/release/2020-islandareas-data-products.html}
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}} and \code{\link[=download.datafiles]{download.datafiles()}} which use this, and \code{\link[ejanalysis:get.state.info]{ejanalysis::get.state.info()}} (from \pkg{ejanalysis} package) based on \code{\link[proxistat:lookup.states]{proxistat::lookup.states()}} or \code{data(lookup.states, package=proxistat)} using \pkg{proxistat} package
+\code{\link[=get.acs]{get.acs()}} and \code{\link[=download.datafiles]{download.datafiles()}} which use this, and
+\code{\link[ejanalysis:get.state.info]{ejanalysis::get.state.info()}} (from \pkg{ejanalysis} package) based on \code{\link[proxistat:lookup.states]{proxistat::lookup.states()}}
+or \code{data(lookup.states, package=proxistat)} using \pkg{proxistat} package
 }

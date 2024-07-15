@@ -33,7 +33,7 @@ ACS 2008-2012, tract and block group counts:
 
 table(geo$SUMLEVEL)
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{140    150  
+\if{html}{\out{<div class="sourceCode">}}\preformatted{140    150
 }\if{html}{\out{</div>}}
 
 74001 220333

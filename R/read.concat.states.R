@@ -37,16 +37,14 @@ read.concat.states <-
     if (missing(output.path)) {
       output.path <- folder
     }
-    if (length(end.year) != 1) {stop('end.year must be a single value')}
-    thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
-    
+    validate.end.year(end.year)
+
     #if (!exists('lookup.acs')) {
       lookup.acs <- get.lookup.acs(end.year = end.year)
     #}
     # lookup.acs (the table of all ACS variables/tables/seqfiles and which columns of seqfile and table have each)
     # stateabbs  (so the default will work, a vector of 2-letter state abbreviations for the US)
-    
+
     # *** ACTUALLY, WE COULD JUST IGNORE OR INFER TABLE NUMBERS AND JUST READ ALL FILES FOUND AND HOPE THEY ARE FOR TABLES THAT MATCH WHAT IS IN needed
     # There is a problem when needed has only the tables
     # e.g. tables <- c("C17002", "B01001")
@@ -64,7 +62,7 @@ read.concat.states <-
       seqfilelistnums.mine <-
         analyze.stuff::lead.zeroes(seqfilelistnums.mine, 4)
     }
-    
+
     if (missing(needed)) {
       needed <-
         suppressMessages(
@@ -78,13 +76,13 @@ read.concat.states <-
           )
         )
     }
-    
+
     if (missing(mystates)) {
       mystates <- getstatesviafilenames(folder = folder)
     }
-    
+
     mystates.no.us <- mystates[mystates != "us"]
-    
+
     if (!dt) {
       if (missing(geo)) {
         # If geo is not provided, the function won't try to use geo to get length of datafile (nrow).
@@ -103,17 +101,17 @@ read.concat.states <-
         names(states.num.places) <- c("STUSAB", "count")
       }
     }
-    
+
     if (testing) {
       cat(as.character(Sys.time()),
           "Started concatenating states.\n")
     }
-    
+
     alltables <- list()
     gc()
-    
+
     # These are the basic 6 columns that start every data file:
-    
+
     keycols <-
       c("FILEID",
         "FILETYPE",
@@ -121,26 +119,26 @@ read.concat.states <-
         "CHARITER",
         "SEQUENCE",
         "LOGRECNO")
-    
+
     count.keycols <- length(keycols)
     # ACSSF,2012m5,wy,000,0104,0000900, ...
-    
+
     needed.keycols <- c("STUSAB", "LOGRECNO")
-    
+
     # dropcols <- c("FILEID", "FILETYPE", "CHARITER")
     #colnums.needed.keycols <- which(keycols %in% needed.keycols)
     count.needed.keycols <- length(needed.keycols)
     colnums.drop.keycols <- which(!(keycols %in% needed.keycols))
-    
+
     #	LOOP THROUGH THE SEQUENCE FILES ************************
-    
+
     for (this.seq in seqfilelistnums.mine) {
       if (!silent) {
         cat(as.character(Sys.time()), ' ')
         cat("Now working on sequence file ", this.seq, " ----\n")
       }
       # e.g. # this.seq <- "0044"
-      
+
       # note datafile() is now vectorized over states and sequence file numbers
       efiles.not.us <-
         datafile(mystates.no.us, this.seq, end.year = end.year)
@@ -153,12 +151,12 @@ read.concat.states <-
         cat("Looking for this type of file: \n")
         print(head(cbind(efiles.not.us, mfiles.not.us)))
       }
-      
+
       #	datafile name examples:
       #	e20105de0017000.txt
       #	m20105de0017000.txt
       #################################### #
-      
+
       if (!dt) {
         # assume every state has same number of columns to the given csv sequence file of estimates or moe
         cols.in.csv <-
@@ -174,38 +172,38 @@ read.concat.states <-
             nrows = 1
           ))
       }
-      
+
       ##################  LOOP THROUGH THE (specified) tables IN THIS SEQ FILE (TO GET COLUMNS RIGHT) ##################### #
       # ( just the specified ones in the variable  "tables" passed to this function ) *****
       # BUT NOTE THAT tables AND needed MIGHT DISAGREE! so use lookup not needed to see if in this.seq
       # Also,
-      
+
       mytables.in.this.seq <-
         gettablesviaseqnums(this.seq, end.year = end.year)
       if (!missing(tables)) {
         mytables.in.this.seq <-
           mytables.in.this.seq[mytables.in.this.seq %in% tables]
       }
-      
+
       for (this.tab in mytables.in.this.seq) {
         if (!silent) {
           cat("---- Now working on table ", this.tab, " ----\n")
         }
         # e.g.  this.tab <- "B16001"
-        
+
         # Will drop the un-needed columns of data from the data files
         # So must find out which columns in the SEQUENCE FILE are needed for a given table
         # 1st obtain the column numbers of the desired variables in units of 1=the first col in the table, not in the seq file
-        
+
         datacolnums 	<- needed$colnum[needed$table == this.tab]
         needed.varnames	<-
           needed$table.var[needed$table == this.tab]  # e.g.,  B17020A.001
         # NOTE: that might be an empty set, if no vars are needed from this table.
         #count.datacols <- length(datacolnums)
-        
+
         # Now convert to units of which column in the sequence file, not within the individual table
         # start at starting point of this table within the sequence file (but retain the key columns like LOGRECNO)
-        
+
         #allcolnums <- 1:cols.in.csv
         start.col <-
           lookup.acs$Start.Position[lookup.acs$Table.ID == this.tab][1]
@@ -217,33 +215,33 @@ read.concat.states <-
         my.colClasses[colnums] <- "numeric"
         my.colClasses[1:count.keycols] <- "character"
         my.colClasses[colnums.drop.keycols] <- "NULL"
-        
+
         # *************** Assume numeric for all except key columns like STUSAB, LOGRECNO, etc. **********
         # *************** but MOE files have "." sometimes!! ***********
         # And in many or all cases data are integer, which would be more efficient to store, but how to check that?
-        
+
         if (!dt) {
           bigtable.e <- data.frame()
           bigtable.m <- data.frame()
         }
-        
+
         #################################### #
         # READ AND CONCATENATE ALL STATES (FOR DATA)
         #################################### #
         # (& later elsewhere will merge with nationwide concatenated geo file)
-        
-        
-        
-        
+
+
+
+
         #) ###################### LOOP THROUGH STATES (FOR THIS TABLE) (IN THIS SEQUENCE FILE) ##################### #
         # FOR ESTIMATES FILES NOT MOE
-        
+
         if (!silent) {
           cat(as.character(Sys.time()),
               "Estimates files       -- Appending States  \n")
         }
         state.num <- 0
-        
+
         if (dt) {
           fileNames <- efiles.not.us
           #print(cbind(fileNames))
@@ -267,10 +265,10 @@ read.concat.states <-
             # WHICH MAY BE SLOW/INEFFICIENT BUT KEEPS THE CODE A BIT SIMPLER
             # the read.csv is not a bottleneck anyway.
             # could use data.table::fread() if needed faster import
-            
+
             state.num <- state.num + 1
             this.ST <- toupper(mystates.no.us[state.num])
-            
+
             #           if (dt) {
             #             this.data <- data.table::fread(input=file.path(folder, this.file), stringsAsFactors=FALSE, header=FALSE,
             #                                            colClasses=my.colClasses,
@@ -291,12 +289,12 @@ read.concat.states <-
               )
             ##################### #
             # }
-            
+
             # this is likely a problem when "." appears instead of a number in the MOE files.
             # since if col class is numeric then na.strings="." may not work.
-            
+
             # Filter to keep only desired columns by using colClasses set to NULL for those to be dropped
-            
+
             # Append this state table to the running compilation concatenating all states specified, for this table in the sequence file
             # Note rbind is slow for data frames
             #	if (testing) {
@@ -312,16 +310,16 @@ read.concat.states <-
             cat('\n')
           }
         }
-        
+
         #) ###################### LOOP THROUGH STATES (FOR THIS TABLE) (IN THIS SEQUENCE FILE) ##################### #
         # FOR MARGIN OF ERROR FILES
-        
+
         if (!silent) {
           cat(as.character(Sys.time()),
               "Margin of Error files -- Appending States  \n")
         }
         state.num <- 0
-        
+
         if (dt) {
           fileNames <- mfiles.not.us
           bigtable.m <- data.table::rbindlist(lapply(file.path(folder, fileNames),
@@ -334,12 +332,12 @@ read.concat.states <-
                                                          na.strings = "."
                                                        )
                                                      }))
-          
+
         } else {
           for (this.file in mfiles.not.us) {
             state.num <- state.num + 1
             this.ST <- toupper(mystates.no.us[state.num])
-            
+
             #         if (dt) {
             #           this.data <- data.table::fread(input=file.path(folder, this.file), stringsAsFactors=FALSE, header=FALSE,
             #                                          colClasses=my.colClasses,
@@ -360,18 +358,18 @@ read.concat.states <-
               )
             ##################### #
             # }
-            
+
             # this is likely a problem when "." appears instead of a number in the MOE files.
             # since if col class is numeric then na.strings="." may not work.??
-            
+
             # Filter to keep only desired columns by using colClasses set to NULL for those to be dropped
             #this.data <- this.data[ , colnums]
-            
+
             # Append this state table to the running compilation concatenating all states specified, for this sequence file
             # Note rbind is slow for data frames, but rbind works in data.table as well and is faster.
             # and you can read all and rbind them all at once without a loop, like this:
             # bigtable.m <- rbindlist(lapply(fileNames, fread))
-            
+
             if (!silent) {
               cat(toupper(this.ST), "")
             }
@@ -382,11 +380,11 @@ read.concat.states <-
           if (!silent) {
             cat('\n')
           }
-          
+
         }
-        
+
         ####################### #
-        
+
         if (dt) {
           data.table::setnames(bigtable.e,
                                names(bigtable.e),
@@ -398,7 +396,7 @@ read.concat.states <-
           names(bigtable.e) <- c(needed.keycols, needed.varnames)
           names(bigtable.m) <- c(needed.keycols, needed.varnames)
         }
-        
+
         # append .m to each field name to signify MOE margin of error not estimates data
         # BUT NOT TO THE NON-DATA FIELDS LIKE LOGRECNO !
         datacolnums.here <-
@@ -421,14 +419,14 @@ read.concat.states <-
           names(bigtable.m)[datacolnums.here] <-
             paste(names(bigtable.m)[datacolnums.here], ".m", sep = "")
         }
-        
+
         # UNIQUE ID FOR MERGE/JOIN OF GEO TO DATA/MOE WILL BE FORMED FROM COMBINATION OF
         #  LOGRECNO & STATE FIPS
         # in geo file KEY is created using lower case version of STUSAB.
         # SAME FOR MERGE/JOIN OF DATA TO MOE TABLE.
         # geo has FIPS
         # Data table lacks FIPS
-        
+
         bigtable.e$KEY <-
           paste(tolower(bigtable.e$STUSAB), bigtable.e$LOGRECNO, sep = "")
         bigtable.m$KEY <-
@@ -437,18 +435,18 @@ read.concat.states <-
           data.table::setkey(bigtable.m, KEY)
           data.table::setkey(bigtable.m, KEY)
         }
-        
+
         # MERGE DATA AND MOE TABLES NOW
         # but drop extra copy of 3 key cols (STUSAB, SEQUENCE, LOGRECNO) from MOE file
         # (Those are not actually essential overall  & could be cut from estimates file also)
         bigtable.m <-
           bigtable.m[, (c("KEY", names(bigtable.m)[datacolnums.here]))]
-        
+
         if (!silent) {
           cat(as.character(Sys.time()),
               "Started merging estimates and MOE information \n")
         }
-        
+
         # NOTE plyr::join is much faster than merge (& data.table merge is faster also) according to
         # http://stackoverflow.com/questions/1299871/how-to-join-data-frames-in-r-inner-outer-left-right/1300618#1300618
         #
@@ -463,17 +461,17 @@ read.concat.states <-
           stop("Estimates and MOE table rows don't match!\n")
         }
         # }
-        
+
         rm(bigtable.e, bigtable.m)
         if (dt) {
           bigtable <- data.frame(bigtable, stringsAsFactors = FALSE)
         }
-        
+
         if (!silent) {
           cat(as.character(Sys.time()), "Finished merging")
         }
         ############# #
-        
+
         if (save.files) {
           # save each table as a data file
           datafile.prefix <- get.datafile.prefix(end.year = end.year)
@@ -490,23 +488,23 @@ read.concat.states <-
               )
             )
           }
-          
+
           #fname <- paste("ACS-", datafile.prefix, "-", this.tab, ".csv", sep="")
           #write.csv(bigtable, file=fname, row.names=FALSE)
           # if (!silent) {cat(paste("  Saved as file (tracts / block groups but no geo info): ", fname,"\n")) }
         }
-        
+
         ################### #
         # 	MEMORY LIMITATIONS ON WINDOWS MAKE IT HARD TO COMBINE ALL STATES ALL TABLES MOE/ESTIMATES IN ONE LARGE LIST IN MEMORY:
         #  170 MB used for alltables if all states but only 2 short tables read.
         alltables[[this.tab]] <- bigtable
         #alltables <- bigtable
         ################### #
-        
+
         rm(bigtable)
         # ready to work on next table ... save this bigtable as one of several
         gc()
-        
+
         if (testing) {
           #	NOTE THESE DON'T HAVE GEO INFO YET !
           # write.csv WOULD BE A SLOW STEP AND ISN'T ESSENTIAL.
@@ -516,9 +514,9 @@ read.concat.states <-
           #  write.csv(bigtable.e, file=paste("eUS",this.tab,".csv",sep=""), row.names=FALSE)
           #  write.csv(bigtable.m, file=paste("mUS",this.tab,".csv",sep=""), row.names=FALSE)
         }	#end of testing
-        
+
       } # end of loop over tables	in this seqfile
-      
+
       if (length(mytables.in.this.seq) > 1 &
           this.tab != mytables.in.this.seq[length(mytables.in.this.seq)]) {
         # if there are 2+ seqfiles, then after each but the last one, print a divider line:
@@ -526,19 +524,19 @@ read.concat.states <-
           cat("--------------------------\n")
         }
       }
-      
+
     } # end of loop over sequence files
     if (!silent) {
       cat(" \n")
     }
-    
+
     # function returns a list of tables, one or more per sequence file (for all states specified merged)
     # NOTE THAT ONE SEQUENCE FILE MAY HAVE MORE THAN ONE CENSUS DATA TABLE IN IT
     if (testing) {
       cat(as.character(Sys.time()),
           "Finished concatenating states.\n")
     }
-    
+
     return(alltables)
   } #end of function
 

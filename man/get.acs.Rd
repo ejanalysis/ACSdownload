@@ -127,9 +127,13 @@ It is especially useful if you want a lot of data such as all the blockgroups in
 which may take a long time to obtain using the Census API and a package like \link[tidycensus:tidycensus]{tidycensus::tidycensus}
 
 Release schedule for ACS 5-year data is here: \url{https://www.census.gov/programs-surveys/acs/news/data-releases.html}
-The 2016-2020 ACS 5-year estimates release date is December 9, 2021.
+The 2018-2022 ACS 5-year estimates release date was December, 2023.
 }
 \details{
+For information on new Summary File format visit:
+
+https://www.census.gov/programs-surveys/acs/data/summary-file.html
+
 The United States Census Bureau provides detailed demographic data by US Census tract and block group
 in the American Community Survey (ACS) 5-year summary file via their FTP site. For those interested in block group or tract data,
 Census Bureau tools tend to focus on obtaining data one state at a time rather than for the entire US at once.
@@ -205,7 +209,7 @@ OTHER SOURCES include
  \dontrun{
   ##### Basic info on ACS tables:
    cbind(table(lookup.acs2020$Subject.Area))
-   
+
  # from the census website, see USA ACS tables:
    mytables <- c("B01001", "B03002", "B15002", "B23025",
                      "B25034", "C16002", "C17002") # EJScreen-related
@@ -215,33 +219,33 @@ OTHER SOURCES include
  # https://data.census.gov/cedsci/table
  # ?q=acs\%20B01001\%20B03002\%20B15002\%20B23025\%20B25034\%20C16002\%20C17002
  # &g=0100000US_0400000US72&y=2020
- myurl <- paste0("https://data.census.gov/cedsci/table?q=acs\%20", 
+ myurl <- paste0("https://data.census.gov/cedsci/table?q=acs\%20",
             paste(mytables, collapse= "\%20"), "&g=", geos, "&y=", yr)
     # browseURL(myurl)
- 
+
   t( get.table.info("B01001", end.year = acsdefaultendyearhere_func()) )
   t( get.table.info(c("B17001", "C17002") ) )
   get.field.info("C17002")
   ##### Data for just DC & DE, just two tables:
   outsmall <- get.acs(tables = c("B01001", "C17002"), mystates=c("dc","de"),
-   end.year = acsdefaultendyearhere_func(), base.path = "~/Downloads", 
+   end.year = acsdefaultendyearhere_func(), base.path = "~/Downloads",
    write.files = T, new.geo = FALSE)
   summary(outsmall)
   t(outsmall$info[1, ])
   t(outsmall$bg[1, ])
 
-   ## ENTIRE USA -- DOWNLOAD AND PARSE -- 
+   ## ENTIRE USA -- DOWNLOAD AND PARSE --
    # TAKES A COUPLE OF MINUTES for one table:
    acs_2014_2018_B01001_vars_bg_and_tract <- get.acs(
-     base.path="~/Downloads", end.year="2018", write.files = TRUE, 
+     base.path="~/Downloads", end.year="2018", write.files = TRUE,
      new.geo = FALSE)
 
   ####################################################################### #
   ##### Data for just DC & DE, just the default pop count table:
-  out <- get.acs(mystates=c("dc","de"), 
+  out <- get.acs(mystates=c("dc","de"),
     end.year = acsdefaultendyearhere_func(), new.geo = FALSE)
   names(out$bg); cat("\n\n"); head(out$info)
-  head(t(rbind(id=out$headers$table.ID, long=out$headers$longname, 
+  head(t(rbind(id=out$headers$table.ID, long=out$headers$longname,
      univ=out$headers$universe,
      subj=out$headers$subject,  out$bg[1:2,]) ), 15)
   cbind(longname=out$info$longname,
@@ -254,10 +258,10 @@ OTHER SOURCES include
   out <- get.acs(mystates="de", tables=c("B01001", "C17002"))
   summary(out); head(out$info); head(out$bg)
   ##### uses all EJSCREEN defaults and the specified folders:
-  out <- get.acs(base.path="~", data.path="~/ACStemp",  
+  out <- get.acs(base.path="~", data.path="~/ACStemp",
     output.path="~/ACSresults")
   summary(out); head(out$info); head(out$bg)
-  ##### all tables needed for EJSCREEN, plus "B16001", 
+  ##### all tables needed for EJSCREEN, plus "B16001",
   # b16001 has more details on specific languages spoken
     with variables specified in "variables needed.csv", all states, DC, PR:
   out <- get.acs(tables=c("ejscreen", "B16001"))

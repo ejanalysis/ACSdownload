@@ -8,28 +8,25 @@
 #' @return Returns character element that is name of zip file such as "20115dc0113000.zip"
 #' @seealso [get.acs()]
 #' @export
-zipfile <-
-  function(mystates,
-           seqfilenum,
-           zipfile.prefix,
-           end.year = acsdefaultendyearhere_func()) {
-    # zip FILENAME example
-    # 	20115dc0113000.zip
-    if (length(end.year) != 1) {stop('end.year must be a single value')}
-    thisyear <- data.table::year(Sys.Date())
-    if (!(end.year %in% as.character(acsfirstyearavailablehere:(thisyear - 1)))) {stop('end.year must be a plausible year')}
-    
-    if (missing(zipfile.prefix)) {
-      zipfile.prefix    <- get.zipfile.prefix(end.year)
-    }
-    zipfile.states <- tolower(mystates)
-    zipfile.seqfilenum <- analyze.stuff::lead.zeroes(seqfilenum,4)
-    zipfile.suffix <- "000.zip"
-    zipfile <-
-      paste(zipfile.prefix,
-            zipfile.states,
-            zipfile.seqfilenum,
-            zipfile.suffix,
-            sep = "")
-    return(zipfile)
+zipfile <-  function(mystates,
+                     seqfilenum,
+                     zipfile.prefix,
+                     end.year = acsdefaultendyearhere_func()) {
+  # zip FILENAME example
+  # 	20115dc0113000.zip
+  validate.end.year(end.year)
+
+  if (missing(zipfile.prefix)) {
+    zipfile.prefix    <- get.zipfile.prefix(end.year)
   }
+  zipfile.states <- tolower(mystates)
+  zipfile.seqfilenum <- analyze.stuff::lead.zeroes(seqfilenum,4)
+  zipfile.suffix <- "000.zip"
+  zipfile <-
+    paste(zipfile.prefix,
+          zipfile.states,
+          zipfile.seqfilenum,
+          zipfile.suffix,
+          sep = "")
+  return(zipfile)
+}

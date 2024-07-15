@@ -7,7 +7,6 @@
 #' @param verbose FALSE
 #'
 #' @return file names
-#' @export
 #'
 list_files_ftp <- function(url, credentials = "", sleep = NA, sort = FALSE, verbose = FALSE) {
   require(magrittr)
@@ -40,7 +39,6 @@ list_files_ftp <- function(url, credentials = "", sleep = NA, sort = FALSE, verb
 #' @param verbose ?
 #'
 #' @return list of file names
-#' @export
 #'
 list_files_ftp_worker <- function(url, credentials, sleep, verbose) {
 
