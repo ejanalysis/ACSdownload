@@ -9,20 +9,13 @@ Description: This R package helps you download and parse raw data from the
 Version: 2.2.0
 Imports:
     magrittr
-Suggests:
-  census2020download,
-  UScensus2010blocks,
-  analyze.stuff,
-  ejanalysis
-BugReports: https://github.com/ejanalysis/ACSdownload/issues
 Depends: R (>= 3.1.0)
 RoxygenNote: 7.3.2
 License: MIT + file LICENSE
-Repository: GitHub
 Author: info@ejanalysis.com
 Maintainer: info@ejanalysis.com <info@ejanalysis.com>
 NeedsCompilation: no
 LazyData: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-URL: https://ejanalysis.github.io/ACSdownload/, https://github.com/ejanalysis/ACSdownload
+URL: https://github.com/ejanalysis/ACSdownload, https://ejanalysis.github.io/ACSdownload/
