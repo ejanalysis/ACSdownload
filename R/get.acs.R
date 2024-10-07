@@ -102,6 +102,8 @@
 #'    To get the tables and variables used in EJSCREEN, see [ejscreen.download][ejscreen::ejscreen.download].
 #'    Also see [nhgis()] which parses any files manually downloaded from <NHGIS.org>
 #' @examples
+#'    ## ENTIRE USA -- DOWNLOAD AND PARSE --
+#'    # TAKES A COUPLE OF MINUTES for one table
 #'  \dontrun{
 #'   ##### Basic info on ACS tables:
 #'    cbind(table(lookup.acs2020$Subject.Area))

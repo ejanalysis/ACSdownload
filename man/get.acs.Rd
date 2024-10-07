@@ -206,6 +206,8 @@ OTHER SOURCES include
 }
 }
 \examples{
+   ## ENTIRE USA -- DOWNLOAD AND PARSE --
+   # TAKES A COUPLE OF MINUTES for one table
  \dontrun{
   ##### Basic info on ACS tables:
    cbind(table(lookup.acs2020$Subject.Area))
