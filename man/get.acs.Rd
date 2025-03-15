@@ -124,7 +124,7 @@ This function will download and parse 1 or more tables of data from the American
 Estimates and margins of error are obtained, as well as long and short names for the variables,
 which can be specified if only parts of a table are needed. \cr\cr
 It is especially useful if you want a lot of data such as all the blockgroups in the USA,
-which may take a long time to obtain using the Census API and a package like \link[tidycensus:tidycensus]{tidycensus::tidycensus}
+which may take a long time to obtain using the Census API and a package like \link[tidycensus:tidycensus-package]{tidycensus::tidycensus}
 
 Release schedule for ACS 5-year data is here: \url{https://www.census.gov/programs-surveys/acs/news/data-releases.html}
 The 2018-2022 ACS 5-year estimates release date was December, 2023.
@@ -195,7 +195,7 @@ Note the US file is not bg/tract level:  geo for whole US at once doesn't have t
 
 OTHER SOURCES include
 \itemize{
-\item \code{\link[tidycensus:tidycensus]{tidycensus::tidycensus()}} package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
+\item \code{\link[tidycensus:tidycensus-package]{tidycensus::tidycensus()}} package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
 \item \code{\link[acs:acs-package]{acs::acs()}} package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
 \item \link{http://www.NHGIS.org} - (and see \code{\link[=nhgis]{nhgis()}}) very useful for block group (or tract/county/state/US) datasets
 \item \href{DataFerrett}{http://dataferrett.census.gov/AboutDatasets/ACS.html} -- not all tracts in US at once
