@@ -3,74 +3,48 @@
 #' @name ACSdownload
 #' @aliases ACSdownload-package
 #' @description
-#'   THIS PACKAGE MAY BE MOSTLY OBSOLETE NOW THAT SOME CRAN PACKAGES OFFER
-#'   MOST OF THESE TOOLS.
+#'   THIS PACKAGE MAY BE MOSTLY OBSOLETE NOW THAT SOME CRAN PACKAGES OFFER MOST OF THESE TOOLS.
 #' @import data.table
 #' @details
-#'   The (tidycensus package)[https://walker-data.com/tidycensus/index.html]
-#'   makes it easy to download some ACS or decennial census or other data,
-#'   (once you get a Census Bureau API key to request the data), but
-#'   downloading via API is slow/awkward if you want all blockgroups nationwide.
 #'
-#'   There is a package called totalcensus that tries to
-#'   offer tools to download ACS5yr tables,
-#'   but at least the late 2023 version did not work out of the box.
-#'     totalcensus [https://cran.r-project.org/web/packages/totalcensus/index.html]
-#'    see   devtools::install_github("GL-Li/totalcensus")
-#'
-#'   ACSdownload is an R package that helps you download and
-#'   parse huge raw data from the
-#'   Census Bureau American Community Survey 5-year Summary Files,
-#'   providing demographic data at the block and tract levels of resolution.
-#'
-#'   You can obtain data from the entire USA all at once using this package,
-#'     for one or more tables.
-#'
-#'   Typically the Census Bureau makes it easy to obtain data from one
-#'   state at a time, not every block group in the US. There are roughly 220,000
-#'   block groups in the US, and around 74,000 tracts
-#'
-#'   Some options for obtaining Census ACS data are listed here:
-#'     [http://www.census.gov/programs-surveys/acs/data.html]
-#'     Other data sources that may be relevant include Census geodatabases
-#'     at [http://www.census.gov/geo/maps-data/data/tiger-data.html] and data at
-#'     [http://www.census.gov/geo/maps-data/data/gazetteer.html]
-#'     For any imported/suggested packages not on CRAN, see [https://ejanalysis.github.io]
-#'
-#'   Key function is [get.acs()], and
-#'     also see [set.needed()], [nhgis()],
-#'   and also see data([lookup.acs2020])
-#'   HOWEVER, DATA FORMAT IS CHANGING FOR SUMMARY FILE ACS DATA:
-#'   [https://www.census.gov/programs-surveys/acs/data/summary-file/]
-#'   updates-to-acs-summary-file.Overview.html
-#'
-#'   Typically the Census Bureau makes it easy to obtain data from one state at a time,
-#'   not every block group in the US. There are roughly 220,000 block groups in the US,
-#'   and around 74,000 tracts.
-#'   The key function in this package is [get.acs()] \cr\cr
-#'   For ACS documentation, see [http://www.census.gov/programs-surveys/acs.html] \cr
-#'
-#'   Several options for obtaining Census ACS data are now listed here: \cr
-#'
+#'  * ACSdownload is an R package that helps you download and
+#'  parse huge raw data from the
+#'  Census Bureau American Community Survey 5-year Summary Files,
+#'  providing demographic data at the block and tract levels of resolution.
+#'  You can obtain data from the entire USA all at once using this package,
+#'  for one or more tables. Some key functions are [get.acs()], [set.needed()], and [nhgis()].
+#'  Also see data([lookup.acs2022]).
+#'  \cr\cr
+#'  * The (tidycensus package)[https://walker-data.com/tidycensus/index.html]
+#'  makes it easy to download some ACS or decennial census or other data,
+#'  (once you get a Census Bureau API key to request the data), but
+#'  downloading via API is slow/awkward if you want all blockgroups nationwide.
+#'  \cr\cr
+#'  * Also, there was a package called totalcensus that tried to
+#'  offer tools to download ACS5yr tables,
+#'  but as of 8/2025 that package had not been updated since 12/2023,
+#'  and the late 2023 version did not work out of the box.
+#'  The [CRAN version of totalcensus](https://cran.r-project.org/web/packages/totalcensus/index.html)
+#'  was older than the [github version of totalcensus](https://github.com/GL-Li/totalcensus)
+#'  `devtools::install_github("GL-Li/totalcensus")`
+#'  \cr\cr
+#'  * The Census Bureau makes it easy to obtain data from one
+#'  state at a time, not every block group in the US.
+#'  There are over 240,000 block groups and over 85,000 tracts in the U.S. \cr
+#'  \cr
+#'  HOWEVER, THE DATA FORMAT HAS CHANGED FOR SUMMARY FILE ACS DATA: \cr
+#'  [https://www.census.gov/programs-surveys/acs/data/summary-file/updates-to-acs-summary-file.Overview.html] \cr
+#'  \cr
+#'  Several options for obtaining Census ACS data are now listed here: \cr
 #'   [http://www.census.gov/programs-surveys/acs/data.html] \cr
 #'   Limits on downloads via American Fact Finder, not all US tracts at once
-#'     are noted here: [https://ask.census.gov/faq.php?id=5000&faqId=1653] \cr
-#'
+#'   are noted here: [https://ask.census.gov/faq.php?id=5000&faqId=1653] \cr
 #'   Other data sources that may be relevant include Census geodatabases at \cr
 #'   [http://www.census.gov/geo/maps-data/data/tiger-data.html] and data at \cr
 #'   [http://www.census.gov/geo/maps-data/data/gazetteer.html].
 #'
-#'     Also see the help for [get.acs()] \cr\cr
-#'
-#' @seealso \pkg{[tidycensus][tidycensus::tidycensus]} to use a key to request ACS
-#'   or Decennial Census data, but is slow if you want all blockgroups in a state or nationwide.
-#'   \pkg{proxistat} package for block group points as lat lon, or
-#'   \pkg{acs} package [http://cran.r-project.org/web/packages/acs/index.html]
-#'   which lets one obtain more limited amounts of ACS data
-#'   but provides better tools for working with the data once obtained.
 #' @author info@@ejanalysis.com
 #' @references
-#'  [http://ejanalysis.github.io] \cr
-#'  [http://www.ejanalysis.com] \cr
+#'  [https://ejanalysis.org] \cr
 "_PACKAGE"
 NULL

@@ -54,7 +54,6 @@
 #' @return Returns character vector of 2-character State abbreviations, lower case.
 #' @seealso [get.acs()] and [download.datafiles()] which use this, and
 #'  [ejanalysis::get.state.info()] (from \pkg{ejanalysis} package) based on [proxistat::lookup.states()]
-#'  or `data(lookup.states, package=proxistat)` using \pkg{proxistat} package
 #'
 #' @export
 #'
@@ -71,10 +70,7 @@ clean.mystates <- function(mystates = 'all', testing = FALSE) {
     # , "UM",
   )
   # , "US")
-  # stateinfo <- proxistat::lookup.states # available in the proxistat package
-  # or state.abb from base datasets but that lacks DC PR VI GU etc.
-  # also,
-  #statenames	<- stateinfo$ftpname
+  # state.abb is in base datasets but that lacks DC PR VI GU etc.
 
   allabbs	<- tolower(mystates)
   stateabbs <-

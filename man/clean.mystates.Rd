@@ -65,5 +65,4 @@ The easiest way is to start at the 2020 Island Areas Censuses Data Products webp
 \seealso{
 \code{\link[=get.acs]{get.acs()}} and \code{\link[=download.datafiles]{download.datafiles()}} which use this, and
 \code{\link[ejanalysis:get.state.info]{ejanalysis::get.state.info()}} (from \pkg{ejanalysis} package) based on \code{\link[proxistat:lookup.states]{proxistat::lookup.states()}}
-or \code{data(lookup.states, package=proxistat)} using \pkg{proxistat} package
 }

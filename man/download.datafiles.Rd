@@ -36,6 +36,3 @@ Effect is to download and save locally a number of data files.
 Attempts to download data files (estimates and margins of error) for specified states and tables,
 from the US Census Bureau's FTP site for American Community Survey (ACS) 5-year summary file data.
 }
-\seealso{
-\code{\link[proxistat:get.distances]{proxistat::get.distances()}} which allows you to get distances between all points.
-}

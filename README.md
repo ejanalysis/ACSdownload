@@ -15,7 +15,7 @@ devtools::install_github('ejanalysis/ACSdownload')
 
 ## Documentation
 
-See the [package documentation / function reference](http://ejanalysis.github.io/ACSdownload/).
+See the [package documentation / function reference](https://ejanalysis.github.io/ACSdownload/reference/index.html).
 
 
 ## Github R package repository

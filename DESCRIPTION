@@ -6,7 +6,7 @@ Description: This R package helps you download and parse raw data from the
     demographic data at the block and tract levels of resolution. You can obtain
     data from the entire USA all at once using this package, for one or more
     tables.
-Version: 2.2.0
+Version: 2.2.1
 Imports:
     magrittr
 Depends: R (>= 3.1.0)
@@ -18,4 +18,4 @@ NeedsCompilation: no
 LazyData: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/ejanalysis/ACSdownload, https://ejanalysis.github.io/ACSdownload/
+URL: https://github.com/ejanalysis/ACSdownload, https://ejanalysis.github.io/ACSdownload/, https://ejanalysis.org
