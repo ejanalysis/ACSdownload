@@ -208,10 +208,9 @@ OTHER SOURCES include
 \examples{
    ## ENTIRE USA -- DOWNLOAD AND PARSE --
    # TAKES A COUPLE OF MINUTES for one table
- \dontrun{
   ##### Basic info on ACS tables:
    cbind(table(lookup.acs2020$Subject.Area))
-
+ \dontrun{
  # from the census website, see USA ACS tables:
    mytables <- c("B01001", "B03002", "B15002", "B23025",
                      "B25034", "C16002", "C17002") # EJScreen-related
