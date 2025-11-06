@@ -207,20 +207,20 @@
 #' Estimates & margin of error (MOE), (ONCE UNZIPPED), and GEOgraphies (not zipped) are in 3 separate files. \cr \cr
 #'
 #' also, data for entire US for one seq file at a time, but not tract/bg -- just county and larger? -- is here, e.g.:
-#' [ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/20111us0001000.zip]
+#' (ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/20111us0001000.zip)
 #'
 #' GEO files:
 #'
 #' Note the US file is not bg/tract level:  geo for whole US at once doesn't have tracts and BGs
-#' [ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/g20111us.csv]
+#' (ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/g20111us.csv)
 #'
 #' OTHER SOURCES include
 #'
 #'  - [tidycensus::tidycensus()] package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
 #'  - [acs::acs()] package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
-#'  - [http://www.NHGIS.org] - (and see [nhgis()]) very useful for block group (or tract/county/state/US) datasets
-#'  - [http://dataferrett.census.gov/AboutDatasets/ACS.html](DataFerrett) -- not all tracts in US at once
-#'  - [http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/](American Fact Finder) (not block groups for ACS SF, and the tracts are not for the whole US at once)
+#'  - http://www.NHGIS.org - (and see [nhgis()]) very useful for block group (or tract/county/state/US) datasets
+#'  - [DataFerrett](http://dataferrett.census.gov/AboutDatasets/ACS.html) -- not all tracts in US at once
+#'  - [American Fact Finder](http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/) (not block groups for ACS SF, and the tracts are not for the whole US at once)
 #'  - ESRI - commercial
 #'  - Geolytics - commercial
 #'  - etc.

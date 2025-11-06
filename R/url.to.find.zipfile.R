@@ -8,21 +8,21 @@
 #'   \cr
 #'   The 2009-2013 summary file by state-seqfile combo is in folders that look like this: \cr
 #'   \cr
-#'   [ftp://ftp.census.gov/acs2013_5yr/summaryfile/2009-2013_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only]
+#'   (ftp://ftp.census.gov/acs2013_5yr/summaryfile/2009-2013_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only)
 #'
 #'   # also see "https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/data/5YRData/"
 #'
 #'   The 2008-2012 summary file by state-seqfile combo is in folders that look like this: \cr
 #'   \cr
-#' 	 [http://www2.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset/Alabama/Tracts_Block_Groups_Only] \cr
+#' 	 (http://www2.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset/Alabama/Tracts_Block_Groups_Only) \cr
 #'
 #'   The 2007-2011 summary file by state-seqfile combo is in folders that look like this:\cr
 #'  \cr
-#'   [ftp://ftp.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/] \cr
+#'   (ftp://ftp.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/) \cr
 #'   URL must be the ftp site, not the http version.
 #'
 #'   http version was here
-#'   [http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/] \cr
+#'   (http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/) \cr
 #'
 #' @param mystates Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.
 #' @param url.prefix Optional character element that defaults to what is returned by `[get.url.prefix](end.year)`

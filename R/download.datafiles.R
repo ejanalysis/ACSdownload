@@ -2,6 +2,9 @@
 #' @description
 #'   Attempts to download data files (estimates and margins of error) for specified states and tables,
 #'   from the US Census Bureau's FTP site for American Community Survey (ACS) 5-year summary file data.
+#' @details
+#' In 2022, the formats of files changed, and now there is one file per ACS Table.
+#'  The old format used sequence file information, with each State in a separate folder.
 #'
 #' @param tables Required character vector of table numbers, such as c("B01001", "B03002")
 #' @param end.year Character element, optional, like "2012". Defines last of five years of summary file dataset.

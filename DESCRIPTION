@@ -9,7 +9,8 @@ Description: This R package helps you download and parse raw data from the
 Version: 2.2.1
 Imports:
     magrittr
-Depends: R (>= 3.1.0)
+Depends: 
+    R (>= 3.5)
 RoxygenNote: 7.3.3
 License: MIT + file LICENSE
 Author: info@ejanalysis.com

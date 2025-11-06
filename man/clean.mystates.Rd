@@ -44,7 +44,7 @@ but it returns only those excluding these five above, so an invalid state like '
 Puerto Rico (PR, FIPS 72), the District of Columbia (DC, 11), and the 50 States are in ACS 2016-2020 and Census 2020.
 
 For info on Island Areas, see
-\link{https://www.census.gov/programs-surveys/decennial-census/technical-documentation/island-areas-censuses.html}
+\url{https://www.census.gov/programs-surveys/decennial-census/technical-documentation/island-areas-censuses.html}
 The 2020 Island Areas Censuses (IAC) include data for American Samoa (AS, FIPS 60), Guam (GU, 66),
 the Commonwealth of the Northern Mariana Islands (MP, 69), and the U.S. Virgin Islands (VI. 78),
 but not U.S. Minor Outlying Islands (UM, 74).
@@ -58,11 +58,10 @@ It provides data down to the place, county subdivision, and estate (USVI only) l
 The 2020 IAC Demographic Profile Summary File data are available through
 the Census Bureau’s data exploration platform, data.census.gov.
 The 2020 IAC Demographic Profile Summary File is located on the U.S. Census Bureau’s file transfer protocol
-(FTP) server at \link{https://www2.census.gov/programs-surveys/decennial/2020/data/island-areas/}.
-The easiest way is to start at the 2020 Island Areas Censuses Data Products webpage at
-\link{www.census.gov/programs-surveys/decennial-census/decade/2020/planning-management/release/2020-islandareas-data-products.html}
+(FTP) server at \url{https://www2.census.gov/programs-surveys/decennial/2020/data/island-areas/}
+
+You can start at the \href{https://www.census.gov/programs-surveys/decennial-census/decade/2020/planning-management/release/island-area-data-products-faqs.html}{2020 Island Areas Censuses Data Products FAQ}
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}} and \code{\link[=download.datafiles]{download.datafiles()}} which use this, and
-\code{\link[ejanalysis:get.state.info]{ejanalysis::get.state.info()}} (from \pkg{ejanalysis} package) based on \code{\link[proxistat:lookup.states]{proxistat::lookup.states()}}
+\code{\link[=get.acs]{get.acs()}} and \code{\link[=download.datafiles]{download.datafiles()}} which use this
 }

@@ -47,12 +47,15 @@
 #'     \item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
 #'     \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
 #'   }
-#'   For ACS 2008-2012: \cr
-#'   length(my.lookup[,1]) \cr
-#'   [1] 24741\cr
-#'   names(my.lookup)\cr
-#'   [1] "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position"\cr
-#'   [6] "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"\cr
+#'   For ACS 2008-2012:
+#'   ```
+#'   length(my.lookup[,1])
+#'   #   24741
+#'   names(my.lookup)
+#'   #  "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position" \cr
+#'   #  "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"
+#'   ```
+#'
 #' @seealso [acs::acs.lookup()] which does something similar but is more flexible & robust.
 #'   Also see [get.lookup.acs()] which does the same without downloading file -- uses the copy in data()
 #'   Also see `data(lookup.acs2013)` and similar data for other years.
@@ -239,7 +242,7 @@ download.lookup.acs <- function(end.year = acsdefaultendyearhere_func(),
 
         my.lookup <- read.delim(file.path(folder, my.lookup.file.name.dated), sep = "|")
 
-        # See [https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/documentation/]
+        # See https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/documentation/
 
       }
     }

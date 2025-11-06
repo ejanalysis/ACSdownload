@@ -186,20 +186,20 @@ BUT NOT one file per sequence file FOR ALL STATES AT ONCE. \cr
 Estimates & margin of error (MOE), (ONCE UNZIPPED), and GEOgraphies (not zipped) are in 3 separate files. \cr \cr
 
 also, data for entire US for one seq file at a time, but not tract/bg -- just county and larger? -- is here, e.g.:
-\link{ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/20111us0001000.zip}
+(ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/20111us0001000.zip)
 
 GEO files:
 
 Note the US file is not bg/tract level:  geo for whole US at once doesn't have tracts and BGs
-\link{ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/g20111us.csv}
+(ftp://ftp.census.gov/acs2011_1yr/summaryfile//2011_ACSSF_By_State_By_Sequence_Table_Subset/UnitedStates/g20111us.csv)
 
 OTHER SOURCES include
 \itemize{
 \item \code{\link[tidycensus:tidycensus-package]{tidycensus::tidycensus()}} package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
 \item \code{\link[acs:acs-package]{acs::acs()}} package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
-\item \link{http://www.NHGIS.org} - (and see \code{\link[=nhgis]{nhgis()}}) very useful for block group (or tract/county/state/US) datasets
-\item \href{DataFerrett}{http://dataferrett.census.gov/AboutDatasets/ACS.html} -- not all tracts in US at once
-\item \link{http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/}(American Fact Finder) (not block groups for ACS SF, and the tracts are not for the whole US at once)
+\item http://www.NHGIS.org - (and see \code{\link[=nhgis]{nhgis()}}) very useful for block group (or tract/county/state/US) datasets
+\item \href{http://dataferrett.census.gov/AboutDatasets/ACS.html}{DataFerrett} -- not all tracts in US at once
+\item \href{http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/}{American Fact Finder} (not block groups for ACS SF, and the tracts are not for the whole US at once)
 \item ESRI - commercial
 \item Geolytics - commercial
 \item etc.

@@ -18,7 +18,7 @@ You can obtain data from the entire USA all at once using this package,
 for one or more tables. Some key functions are \code{\link[=get.acs]{get.acs()}}, \code{\link[=set.needed]{set.needed()}}, and \code{\link[=nhgis]{nhgis()}}.
 Also see data(\link{lookup.acs2022}).
 \cr\cr
-\item The (tidycensus package)\link{https://walker-data.com/tidycensus/index.html}
+\item The \href{https://walker-data.com/tidycensus/index.html}{tidycensus package}
 makes it easy to download some ACS or decennial census or other data,
 (once you get a Census Bureau API key to request the data), but
 downloading via API is slow/awkward if you want all blockgroups nationwide.
@@ -36,19 +36,19 @@ state at a time, not every block group in the US.
 There are over 240,000 block groups and over 85,000 tracts in the U.S. \cr
 \cr
 HOWEVER, THE DATA FORMAT HAS CHANGED FOR SUMMARY FILE ACS DATA: \cr
-\link{https://www.census.gov/programs-surveys/acs/data/summary-file/updates-to-acs-summary-file.Overview.html} \cr
+(https://www.census.gov/programs-surveys/acs/data/summary-file/updates-to-acs-summary-file.Overview.html) \cr
 \cr
 Several options for obtaining Census ACS data are now listed here: \cr
-\link{http://www.census.gov/programs-surveys/acs/data.html} \cr
+(http://www.census.gov/programs-surveys/acs/data.html) \cr
 Limits on downloads via American Fact Finder, not all US tracts at once
-are noted here: \link{https://ask.census.gov/faq.php?id=5000&faqId=1653} \cr
+are noted here: (https://ask.census.gov/faq.php?id=5000&faqId=1653) \cr
 Other data sources that may be relevant include Census geodatabases at \cr
-\link{http://www.census.gov/geo/maps-data/data/tiger-data.html} and data at \cr
-\link{http://www.census.gov/geo/maps-data/data/gazetteer.html}.
+(http://www.census.gov/geo/maps-data/data/tiger-data.html) and data at \cr
+(http://www.census.gov/geo/maps-data/data/gazetteer.html).
 }
 }
 \references{
-\link{https://ejanalysis.org} \cr
+(https://ejanalysis.org) \cr
 }
 \seealso{
 Useful links:

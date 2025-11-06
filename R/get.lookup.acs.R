@@ -21,9 +21,9 @@
 get.lookup.acs <- function(end.year = acsdefaultendyearhere_func()) {
 
   # Note
-   #  [https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/]
+   #  https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/
    #
-   #  [https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/]
+   #  https://www2.census.gov/programs-surveys/acs/summary_file/2017/documentation/user_tools/
    #
    #  data is at different URLs for different years, like:
    #

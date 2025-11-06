@@ -32,12 +32,14 @@ By default, returns a data.frame with these fields:
 \item $ Table.Title            : chr  "UNWEIGHTED SAMPLE COUNT OF THE POPULATION" "Universe:  Total population" "Total" "UNWEIGHTED SAMPLE HOUSING UNITS" ...
 \item $ Subject.Area           : chr  "Unweighted Count" "" "" "Unweighted Count" ...
 }
-For ACS 2008-2012: \cr
-length(my.lookup\link{,1}) \cr
-\link{1} 24741\cr
-names(my.lookup)\cr
-\link{1} "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position"\cr
-\link{6} "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"\cr
+For ACS 2008-2012:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{length(my.lookup[,1])
+#   24741
+names(my.lookup)
+#  "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position" \\cr
+#  "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"
+}\if{html}{\out{</div>}}
 }
 \description{
 Download and read lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,

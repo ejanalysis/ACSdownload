@@ -49,12 +49,11 @@ Minnesota Population Center. National Historical Geographic Information System: 
 
 Documentation for NHGIS datasets is available here.
 Research using NHGIS data should cite it as:
-Steven Manson, Jonathan Schroeder, David Van Riper, Tracy Kugler, and Steven Ruggles. IPUMS National Historical Geographic Information System: Version 16.0 \link{dataset}. Minneapolis, MN: IPUMS. 2021. http://doi.org/10.18128/D050.V16.0
+Steven Manson, Jonathan Schroeder, David Van Riper, Tracy Kugler, and Steven Ruggles. IPUMS National Historical Geographic Information System: Version 16.0 dataset. Minneapolis, MN: IPUMS. 2021. http://doi.org/10.18128/D050.V16.0
 For policy briefs or articles in the popular press, we recommend that you cite the use of NHGIS data as follows:
 IPUMS NHGIS, University of Minnesota, www.nhgis.org
 }
 \examples{
- 
   \dontrun{
   x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')
   # save state data as csv

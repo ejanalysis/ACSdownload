@@ -1,10 +1,10 @@
 #' @title Read and Parse NHGIS.org ACS Data Files and Codebooks - not tested or updated
-#' 
+#'
 #' @description Read downloaded and unzipped csv and txt files obtained from NHGIS.org,
-#'   with US Census Bureau data from the American Community Survey (ACS). 
-#'   
-#'   Needs to be updated for 2022 formats, etc. 
-#'   
+#'   with US Census Bureau data from the American Community Survey (ACS).
+#'
+#'   Needs to be updated for 2022 formats, etc.
+#'
 #' @details This was designed to read and parse csv and txt files
 #'   obtained from NHGIS.org and already unzipped in a local folder.
 #'   It only reads one set of files at a time, meaning the data and codebook files all have to be for the same set of ACS tables (a single NHGIS query)
@@ -15,13 +15,13 @@
 #'   tracts and block groups, all in US, acs2007-2011, and specifying the desired ACS Table(s). \cr
 #'   Research using NHGIS data should cite it as: \cr
 #'   Minnesota Population Center. National Historical Geographic Information System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
-#'   
+#'
 #'   Documentation for NHGIS datasets is available here.
 #'   Research using NHGIS data should cite it as:
-#'   Steven Manson, Jonathan Schroeder, David Van Riper, Tracy Kugler, and Steven Ruggles. IPUMS National Historical Geographic Information System: Version 16.0 [dataset]. Minneapolis, MN: IPUMS. 2021. http://doi.org/10.18128/D050.V16.0
+#'   Steven Manson, Jonathan Schroeder, David Van Riper, Tracy Kugler, and Steven Ruggles. IPUMS National Historical Geographic Information System: Version 16.0 dataset. Minneapolis, MN: IPUMS. 2021. http://doi.org/10.18128/D050.V16.0
 #'   For policy briefs or articles in the popular press, we recommend that you cite the use of NHGIS data as follows:
 #'     IPUMS NHGIS, University of Minnesota, www.nhgis.org
-#'     
+#'
 #' @param base.path Optional base path, default is getwd()
 #' @param data.dir Optional path where data files are stored and output could be saved. Default is nhgiscode folder under base.path
 #' @param code.dir Optional path where extra code is. Not used.
@@ -42,7 +42,7 @@
 #'   dataset         1    -none-     character
 #'   `
 #' @seealso [nhgisread()] used by this function. Also, for other ways to obtain ACS data see [get.acs()]
-#' @examples  
+#' @examples
 #'   \dontrun{
 #'   x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')
 #'   # save state data as csv
@@ -67,10 +67,10 @@ nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'),
   warning('work in progress - not fully tested')
 
   # to do:
-  # update to 2022 formats and tables etc. 
-  # ejscreentables <- c("B01001", "B03002", "B15002", "C16002", "C17002", "B25034", 'B23025') 
+  # update to 2022 formats and tables etc.
+  # ejscreentables <- c("B01001", "B03002", "B15002", "C16002", "C17002", "B25034", 'B23025')
   # # C16002 replaced B16004 that was older ACS source for what had been called linguistic isolation, now called limited English speaking households.
-  
+
   # I don't think this works for more than one table at a time (it can read all resolutions like state, county, etc files for one table, but not 2+ tables at once)
   # could fix 2 cases below that crash.
   # could add allfields df as an output of nhgisread()
