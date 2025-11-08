@@ -4,7 +4,7 @@
 #' @param codebookfile Name(s) of codebook file(s).
 #' @param folder Optional path where files are found. Default is getwd()
 #' @return Returns a named list: data, contextfields, fields, tables, geolevel, years, dataset
-#' @seealso  [nhgis()] which uses this, [nhgisread()] for reading datafiles, [get.acs()], [get.datafile.prefix()], [datafile()], [geofile()], [get.zipfile.prefix()]
+#' @seealso  [nhgis()] which uses this, [nhgisread()] for reading datafiles, [get_acs_old()], [get.datafile.prefix()], [datafile()], [geofile()], [get.zipfile.prefix()]
 #' @export
 nhgisreadcodebook <- function(codebookfile, folder = getwd()) {
   ############### #

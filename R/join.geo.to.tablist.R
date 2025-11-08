@@ -1,15 +1,15 @@
 #' @title Join US ACS data and US geo files on FIPS
 #' @description Read the processed csv files of estimates and MOE (margin of error) for American Community Survey (ACS)
 #'   5-year summary file data obtained from US Census FTP site, and join with geographic information from geo file.
-#' @param mygeo Required geo file. See [get.acs()] and [get.read.geo()]
-#' @param my.list.of.tables List of data tables resulting from prior steps in [get.acs()]
+#' @param mygeo Required geo file. See [get_acs_old()] and [get.read.geo()]
+#' @param my.list.of.tables List of data tables resulting from prior steps in [get_acs_old()]
 #' @param folder Default is current working directory.
 #' @param save.csv FALSE by default. Specifies whether to save each data table as csv format file.
 #' @param testing Default is FALSE. If TRUE, prints more information.
 #' @param sumlevel Default is "both", specifies if "tracts" or "blockgroups" or "both" should be used.
 #' @param end.year Default is "" -- used in naming file if save.csv=TRUE
 #' @return Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.
-#' @seealso [get.acs()] and [get.read.geo()]
+#' @seealso [get_acs_old()] and [get.read.geo()]
 #' @export
 join.geo.to.tablist <-
   function(mygeo,

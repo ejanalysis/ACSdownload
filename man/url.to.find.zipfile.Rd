@@ -47,5 +47,5 @@ http version was here
 }
 
 \seealso{
-\code{\link[=get.acs]{get.acs()}}, \code{\link[=url.to.find.zipfile]{url.to.find.zipfile()}}, \code{\link[=download.geo]{download.geo()}}
+\code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=url.to.find.zipfile]{url.to.find.zipfile()}}, \code{\link[=download.geo]{download.geo()}}
 }

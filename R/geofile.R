@@ -6,7 +6,7 @@
 #' @param end.year end.year of 5-year summary file such as '2021'
 #' @return Character vector of file names, example: "g20215md.txt"
 #'   Note this is only needed once per state, not once per seqfile. (It might even be available as a single US file?)
-#' @seealso [get.acs()] and [download.geo()] which uses this
+#' @seealso [get_acs_old()] and [download.geo()] which uses this
 #'
 geofile <- function(mystates, end.year = acsdefaultendyearhere_func()) {
 

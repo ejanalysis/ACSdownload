@@ -1,33 +1,38 @@
-#' @title Download Tables from American Community Survey (ACS) 5-year Summary File
+
+#' @title Older function to download Tables from American Community Survey (ACS) 5-year Summary File (before the acs2022 5yr data)
 #'
-#' @description
+#' @description Now see newer get_acs_new() that will try to use new format for 5yr summary file ACS
+#'
+#' @details
+#'
 #'   NOTE: Census formats changed a lot, and some of the info below is obsolete.
-#'   Also see newer get.acs.all() that will try to use new format for 5yr summary file ACS
-#'   that makes it easier to get one table for every blockgroup in the US.
+#'   New format since 2022 acs makes it easier to get one table for every blockgroup in the US.
 #'
-#'   This function will download and parse 1 or more tables of data from the American Community Survey's
+#'   This older function downloaded and parsed 1 or more tables of data from the American Community Survey's
 #'   5-year Summary File FTP site, for all Census tracts and/or block groups in specified State(s).
 #'   Estimates and margins of error are obtained, as well as long and short names for the variables,
-#'   which can be specified if only parts of a table are needed. \cr\cr
+#'   which can be specified if only parts of a table are needed.
+#'
 #'   It is especially useful if you want a lot of data such as all the blockgroups in the USA,
 #'   which may take a long time to obtain using the Census API and a package like [tidycensus::tidycensus]
 #'
 #'   Release schedule for ACS 5-year data is here: <https://www.census.gov/programs-surveys/acs/news/data-releases.html>
 #'   The 2018-2022 ACS 5-year estimates release date was December, 2023.
-#' @details
 #'
-#' For information on new Summary File format visit:
-#'
-#'  https://www.census.gov/programs-surveys/acs/data/summary-file.html
+#' For information on new Summary File format visit <https://www.census.gov/programs-surveys/acs/data/summary-file.html>
 #'
 #'   The United States Census Bureau provides detailed demographic data by US Census tract and block group
 #'   in the American Community Survey (ACS) 5-year summary file via their FTP site. For those interested in block group or tract data,
 #'   Census Bureau tools tend to focus on obtaining data one state at a time rather than for the entire US at once.
 #'   This function lets a user specify (tables and) variables needed. This will look up what sequence files
 #'   contain those tables. Using a table of variables for those selected tables, a user can specify variables
-#'   or tables to drop by putting x or anything other than "Y" in the column specifying needed variables. \cr\cr
-#'   For ACS documentation, see for example:\cr\cr
-#'   <http://www.census.gov/programs-surveys/acs.html> \cr
+#'   or tables to drop by putting x or anything other than "Y" in the column specifying needed variables.
+#'
+#'   For ACS documentation, see for example:
+#'
+#'
+#'   <http://www.census.gov/programs-surveys/acs.html>
+#'
 #' @param tables Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
 #'   NOTE: If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
 #'   Those tables in EJScreen 2.0 are
@@ -62,9 +67,9 @@
 #'   must specify which variables to keep from each table.
 #'   The format of that file should be the same as is found in the file "variables needed template.csv" created by this function --
 #'   keeping the letter "Y" in the column named "keep" indicates the given variable is needed.
-#'   A blank or "N" or other non-Y specifies the variable should be dropped and not returned by get.acs().
+#'   A blank or "N" or other non-Y specifies the variable should be dropped and not returned by get_acs_old().
 #'   If the "variables needed.csv" file is not found, however, this function looks for and uses the file called "variables needed template.csv"
-#'   which is written by this function and specifies all of the variables from each table, so all variables will be retained and returned by get.acs().
+#'   which is written by this function and specifies all of the variables from each table, so all variables will be retained and returned by get_acs_old().
 #' @param varsfile See help for [set.needed()] for details. Optional name of file that can be used to specify which variables are needed from specified tables.
 #'   If varsfile is specified, parameter vars is ignored, and the function just looks in folder for file called filename, e.g., "variables needed.csv"
 #'   that should specify which variables to keep from each table.
@@ -101,6 +106,7 @@
 #' @seealso [acs::acs] package, which allows you to download and work with ACS data (using the API and your own key).
 #'    To get the tables and variables used in EJSCREEN, see [ejscreen.download][ejscreen::ejscreen.download].
 #'    Also see [nhgis()] which parses any files manually downloaded from <NHGIS.org>
+#'
 #' @examples
 #'    ## ENTIRE USA -- DOWNLOAD AND PARSE --
 #'    # TAKES A COUPLE OF MINUTES for one table
@@ -124,7 +130,7 @@
 #'   t( get.table.info(c("B17001", "C17002") ) )
 #'   get.field.info("C17002")
 #'   ##### Data for just DC & DE, just two tables:
-#'   outsmall <- get.acs(tables = c("B01001", "C17002"), mystates=c("dc","de"),
+#'   outsmall <- get_acs_old(tables = c("B01001", "C17002"), mystates=c("dc","de"),
 #'    end.year = acsdefaultendyearhere_func(), base.path = "~/Downloads",
 #'    write.files = T, new.geo = FALSE)
 #'   summary(outsmall)
@@ -133,13 +139,13 @@
 #'
 #'    ## ENTIRE USA -- DOWNLOAD AND PARSE --
 #'    # TAKES A COUPLE OF MINUTES for one table:
-#'    acs_2014_2018_B01001_vars_bg_and_tract <- get.acs(
+#'    acs_2014_2018_B01001_vars_bg_and_tract <- get_acs_old(
 #'      base.path="~/Downloads", end.year="2018", write.files = TRUE,
 #'      new.geo = FALSE)
 #'
 #'   ####################################################################### #
 #'   ##### Data for just DC & DE, just the default pop count table:
-#'   out <- get.acs(mystates=c("dc","de"),
+#'   out <- get_acs_old(mystates=c("dc","de"),
 #'     end.year = acsdefaultendyearhere_func(), new.geo = FALSE)
 #'   names(out$bg); cat("\n\n"); head(out$info)
 #'   head(t(rbind(id=out$headers$table.ID, long=out$headers$longname,
@@ -152,16 +158,16 @@
 #'   ### to see 7 places, 1 per row, with short and long field name as header
 #'   head( rbind(out$headers$longname, out$bg) )[,1:7]
 #'   ##### just 2 tables for just Delaware
-#'   out <- get.acs(mystates="de", tables=c("B01001", "C17002"))
+#'   out <- get_acs_old(mystates="de", tables=c("B01001", "C17002"))
 #'   summary(out); head(out$info); head(out$bg)
 #'   ##### uses all EJSCREEN defaults and the specified folders:
-#'   out <- get.acs(base.path="~", data.path="~/ACStemp",
+#'   out <- get_acs_old(base.path="~", data.path="~/ACStemp",
 #'     output.path="~/ACSresults")
 #'   summary(out); head(out$info); head(out$bg)
 #'   ##### all tables needed for EJSCREEN, plus "B16001",
 #'   # b16001 has more details on specific languages spoken
 #'     with variables specified in "variables needed.csv", all states, DC, PR:
-#'   out <- get.acs(tables=c("ejscreen", "B16001"))
+#'   out <- get_acs_old(tables=c("ejscreen", "B16001"))
 #'   summary(out); head(out$info); head(out$bg)
 #'  }
 #'
@@ -227,8 +233,7 @@
 #'
 #' @export
 #'
-get.acs <-
-  function(tables = 'B01001',
+get_acs_old <- function(tables = 'B01001',
            mystates = 'all',
            end.year = acsdefaultendyearhere_func(),
            base.path = getwd(),
@@ -765,7 +770,7 @@ get.acs <-
     }
 
     if (testing) {
-      # These are big so probably do not want them even if write.files=TRUE since they can be saved as .RData and are returned by function get.acs() already
+      # These are big so probably do not want them even if write.files=TRUE since they can be saved as .RData and are returned by function get_acs_old() already
       if (write.files) {
         write.csv(bg,
                   file = file.path(output.path, "bg all tables.csv"),

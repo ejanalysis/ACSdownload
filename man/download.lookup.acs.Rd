@@ -83,5 +83,5 @@ such as  \cr
 \code{\link[acs:acs.lookup]{acs::acs.lookup()}} which does something similar but is more flexible & robust.
 Also see \code{\link[=get.lookup.acs]{get.lookup.acs()}} which does the same without downloading file -- uses the copy in data()
 Also see \code{data(lookup.acs2013)} and similar data for other years.
-Also see \code{\link[=get.acs]{get.acs()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}
+Also see \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}
 }

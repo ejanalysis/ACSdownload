@@ -7,14 +7,14 @@
 get.bg(merged.tables.mine)
 }
 \arguments{
-\item{merged.tables.mine}{Required set of tables in format used by \code{\link[=get.acs]{get.acs()}}}
+\item{merged.tables.mine}{Required set of tables in format used by \code{\link[=get_acs_old]{get_acs_old()}}}
 }
 \value{
 subset of the inputs, same format
 }
 \description{
-Helper function to return just the block group resolution part of a dataset in \code{\link[=get.acs]{get.acs()}}
+Helper function to return just the block group resolution part of a dataset in \code{\link[=get_acs_old]{get_acs_old()}}
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.tracts]{get.tracts()}}
+\code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.tracts]{get.tracts()}}
 }

@@ -26,5 +26,5 @@ with US Census Bureau data from the American Community Survey (ACS).
 }
 \seealso{
 \code{\link[=nhgis]{nhgis()}} which uses this, \code{\link[=nhgisreadcodebook]{nhgisreadcodebook()}} for reading codebook files,
-\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.datafile.prefix]{get.datafile.prefix()}}, \code{\link[=datafile]{datafile()}}, \code{\link[=geofile]{geofile()}}, \code{\link[=get.zipfile.prefix]{get.zipfile.prefix()}}
+\code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.datafile.prefix]{get.datafile.prefix()}}, \code{\link[=datafile]{datafile()}}, \code{\link[=geofile]{geofile()}}, \code{\link[=get.zipfile.prefix]{get.zipfile.prefix()}}
 }

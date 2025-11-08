@@ -40,5 +40,5 @@ Get info on tables from US Census Bureau for American Community Survey 5-year su
 Wrapper for \code{\link[=get.table.info2]{get.table.info2()}} which is a wrapper for \code{\link[=get.field.info]{get.field.info()}}
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.table.info]{get.table.info()}}, and \code{\link[=get.field.info]{get.field.info()}}
+\code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.table.info]{get.table.info()}}, and \code{\link[=get.field.info]{get.field.info()}}
 }

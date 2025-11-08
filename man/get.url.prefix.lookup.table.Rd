@@ -17,5 +17,5 @@ Returns character element that is first part of URL such as
 Returns first part of URL(s) of folders (on Census Bureau FTP site) with zip file(s) based on end year.
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.lookup.acs]{get.lookup.acs()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}
+\code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.lookup.acs]{get.lookup.acs()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}
 }

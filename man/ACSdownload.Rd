@@ -15,8 +15,7 @@ parse huge raw data from the
 Census Bureau American Community Survey 5-year Summary Files,
 providing demographic data at the block and tract levels of resolution.
 You can obtain data from the entire USA all at once using this package,
-for one or more tables. Some key functions are \code{\link[=get.acs]{get.acs()}}, \code{\link[=set.needed]{set.needed()}}, and \code{\link[=nhgis]{nhgis()}}.
-Also see data(\link{lookup.acs2022}).
+for one or more tables. Some key functions are \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=set.needed]{set.needed()}}, and \code{\link[=nhgis]{nhgis()}}.
 \cr\cr
 \item The \href{https://walker-data.com/tidycensus/index.html}{tidycensus package}
 makes it easy to download some ACS or decennial census or other data,

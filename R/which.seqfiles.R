@@ -1,7 +1,7 @@
 #' @title Find Which Sequence Files Contain Given ACS Table(s)
 #' @description
 #'   The US Census Bureau provides 5-year summary file data from the American Community Survey in sequence files on their FTP site.
-#'   This function reports which sequence files contain the specified tables. Used by [get.acs()]
+#'   This function reports which sequence files contain the specified tables. Used by [get_acs_old()]
 #' @param tables character vector, required. Defines which ACS table(s) to check, such as 'B01001'
 #' @param lookup.acs data.frame, optional (if not provided then it is downloaded from Census).
 #'   Specifies what variables are in which tables and which tables are in which sequence files on the FTP site.
@@ -9,7 +9,7 @@
 #'   Valid years are limited.
 #'   Ignored if lookup.acs is specified, however. If they imply different years, the function stops with an error message.
 #' @return Returns a vector of one or more numbers stored as characters, each defining one sequence file, such as "0001".
-#' @seealso [get.acs()] and [acs::acs.lookup()] from the \pkg{acs} package, which does something related but is more flexible & robust. Also see [get.acs()] which uses this.
+#' @seealso [get_acs_old()] and [acs::acs.lookup()] from the \pkg{acs} package, which does something related but is more flexible & robust. Also see [get_acs_old()] which uses this.
 #' @export
 which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere_func()) {
 

@@ -1,7 +1,8 @@
 ##################### ###################### #
 
-# script to update datasets each year
+# this was an OLDER script to update acs lookup table object each year
 # info on ACS variable names and ACS tables
+# note formats have changed, though. also note the tidycensus package has the same kind of info already
 ##################### ###################### #
 
 # Starting with the 2022 data release, the Table-Based Format is the only format available.
@@ -47,26 +48,8 @@ set_metadata = function(lookup.this, end.this = end.year) {
 
 # YEAR ####
 
-## specify end.year for 5year ACS data
-### generally this will be correct:
-lastyear <- as.numeric(substr(as.character(Sys.Date()), 1, 4)) - 1
-end.year <- lastyear - 1 # published Dec 2023 means survey end date was 2022
-###################### #
-# check if url/year available yet:
-cat("end.year will be", end.year, "\n")
-validate.end.year(end.year)
-browseURL(dirname(paste0(get.url.prefix.lookup.table(end.year), get.lookup.file.name(end.year))))
-###################### #
+end.year <- acsdefaultendyearhere_func()
 
-## acsdefaultendyearhere (save in package) ####
-
-acsdefaultendyearhere <- end.year
-acsdefaultendyearhere <- set_metadata(acsdefaultendyearhere)
-cbind(attributes(acsdefaultendyearhere))
-usethis::use_data(acsdefaultendyearhere, overwrite = TRUE)
-
-acsfirstyearavailablehere <- 2018
-usethis::use_data(acsfirstyearavailablehere, overwrite = TRUE)
 ############################################################## #
 
 # DOWNLOAD ####
@@ -104,7 +87,7 @@ eval(parse(text = text_to_do))
 
 ##################### ###################### #
 
-rm(text_to_do, newname, lookup.acs, i, met, end.year, lastyear)
+rm(text_to_do, newname, lookup.acs, i, met, end.year)
 
  ############################################## #
 

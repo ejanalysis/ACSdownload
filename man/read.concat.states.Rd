@@ -28,7 +28,7 @@ read.concat.states(
 If provided, it is used here to look up data file length, based on state abbrev's list. See \code{\link[=get.read.geo]{get.read.geo()}}
 If geo is not provided, the function still reads each file whatever its length.}
 
-\item{needed}{Optional data.frame specifying which variables to keep from each table. Default is to keep all. See \code{\link[=set.needed]{set.needed()}} and \code{\link[=get.acs]{get.acs()}}}
+\item{needed}{Optional data.frame specifying which variables to keep from each table. Default is to keep all. See \code{\link[=set.needed]{set.needed()}} and \code{\link[=get_acs_old]{get_acs_old()}}}
 
 \item{folder}{Default is current working directory. Specifies where the csv files are to be found.}
 
@@ -59,5 +59,5 @@ This can use read.csv (takes about 1 minute total for one table, all states, est
 It can use data.table::fread (default method), which is faster.
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}}
+\code{\link[=get_acs_old]{get_acs_old()}}
 }

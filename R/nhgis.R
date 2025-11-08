@@ -41,7 +41,7 @@
 #'   years           1    -none-     character
 #'   dataset         1    -none-     character
 #'   `
-#' @seealso [nhgisread()] used by this function. Also, for other ways to obtain ACS data see [get.acs()]
+#' @seealso [nhgisread()] used by this function. Also, for other ways to obtain ACS data see [get_acs_old()]
 #' @examples
 #'   \dontrun{
 #'   x <- nhgis(data.dir = '~/Desktop/nhgis0009_csv')

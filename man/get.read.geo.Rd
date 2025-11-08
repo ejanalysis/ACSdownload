@@ -79,5 +79,5 @@ ACS Summary File exactly matches the field GEOID in
 the TIGER/Line Shapefiles.
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}} which uses this, and \code{\link[=download.geo]{download.geo()}}
+\code{\link[=get_acs_old]{get_acs_old()}} which uses this, and \code{\link[=download.geo]{download.geo()}}
 }

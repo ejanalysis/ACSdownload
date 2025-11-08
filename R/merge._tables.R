@@ -1,9 +1,9 @@
 #' @title Concatenate several ACS data tables into one big table
 #'
 #' @description Concatenate several ACS data tables into one big table
-#' @param my.list.of.tables Required list of data tables from prior steps in [get.acs()]
+#' @param my.list.of.tables Required list of data tables from prior steps in [get_acs_old()]
 #' @return Returns one big data.frame with all columns of all input tables
-#' @seealso [get.acs()]
+#' @seealso [get_acs_old()]
 #' @export
 merge_tables <- function(my.list.of.tables) {
   # fields already removed:

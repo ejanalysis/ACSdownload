@@ -50,10 +50,10 @@ Blanks or other values (even the word "yes") indicate the variable is not needed
 Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.
 }
 \description{
-Utility used by get.acs to help user specify which variables are needed.
+Utility used by \code{\link[=get_acs_old]{get_acs_old()}} to help user specify which variables are needed.
 User can specify this in a file in the working directory, modifying "variables needed template.csv"
 that this function can create based on tables parameter, to create user-defined "variables needed.csv"
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}} which uses this
+\code{\link[=get_acs_old]{get_acs_old()}} which uses this
 }

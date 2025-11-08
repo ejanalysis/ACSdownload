@@ -53,5 +53,5 @@ Uses \code{\link[=get.lookup.acs]{get.lookup.acs()}} but for latest version coul
 
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}}, \code{\link[=get.table.info]{get.table.info()}}
+\code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.table.info]{get.table.info()}}
 }

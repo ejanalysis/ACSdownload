@@ -36,5 +36,5 @@ Side effect is unzipping file on disk (unless testing=TRUE)
 Unzip ACS datafile for each specified US State, extracting specified table(s), downloading missing zip files first.
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}}
+\code{\link[=get_acs_old]{get_acs_old()}}
 }

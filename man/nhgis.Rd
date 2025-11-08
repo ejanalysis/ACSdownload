@@ -74,5 +74,5 @@ IPUMS NHGIS, University of Minnesota, www.nhgis.org
   }
 }
 \seealso{
-\code{\link[=nhgisread]{nhgisread()}} used by this function. Also, for other ways to obtain ACS data see \code{\link[=get.acs]{get.acs()}}
+\code{\link[=nhgisread]{nhgisread()}} used by this function. Also, for other ways to obtain ACS data see \code{\link[=get_acs_old]{get_acs_old()}}
 }

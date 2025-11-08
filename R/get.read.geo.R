@@ -57,7 +57,7 @@
 #'  By removing these characters, the new GEOID in the
 #'  ACS Summary File exactly matches the field GEOID in
 #'  the TIGER/Line Shapefiles.
-#' @seealso [get.acs()] which uses this, and [download.geo()]
+#' @seealso [get_acs_old()] which uses this, and [download.geo()]
 #'
 #' @export
 #'
@@ -192,7 +192,7 @@ get.read.geo <- function(mystates,
     }
 
     # if (save.files) {
-    #  save this .RData file, so that restarting interrupted get.acs() will look for it and not recreate it once it is on disk.
+    #  save this .RData file, so that restarting interrupted get_acs_old() will look for it and not recreate it once it is on disk.
     # Would save lots of time to avoid parsing geo files more than once - don't need to do that usually..?
     # unless first run on a few places and then expanded to more states? *** problem if sees small geo and doesn't make bigger one!
     if (!silent) {

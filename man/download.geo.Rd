@@ -32,7 +32,7 @@ Side effect is downloading the file.
 \description{
 Download text file from US Census Bureau with geographic information for American Community Survey.
 The geo file is used to join data file(s) to FIPS/GEOID/NAME/SUMLEVEL/CKEY.
-Used by \code{\link[=get.acs]{get.acs()}}
+Used by \code{\link[=get_acs_old]{get_acs_old()}}
 }
 \details{
 For information on this new Summary File format visit:
@@ -56,5 +56,5 @@ Key functions used:
 
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}} which uses this, and \code{\link[=get.read.geo]{get.read.geo()}}
+\code{\link[=get_acs_old]{get_acs_old()}} which uses this, and \code{\link[=get.read.geo]{get.read.geo()}}
 }

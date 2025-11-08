@@ -44,5 +44,5 @@ Format of files is here: \url{ftp://ftp.census.gov/acs2012_5yr/summaryfile/ACS_2
  }
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}}, \code{\link[=download.geo]{download.geo()}}
+\code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=download.geo]{download.geo()}}
 }

@@ -22,7 +22,7 @@
 #'  \dontrun{
 #'   geo <- read.geo( c("dc", "de") )
 #'  }
-#' @seealso [get.acs()], [download.geo()]
+#' @seealso [get_acs_old()], [download.geo()]
 #' @export
 read.geo <-
   function(mystates,

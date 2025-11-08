@@ -56,5 +56,5 @@
 #'  $ start      : num  1 7 9 12 14 21 22 23 24 26 ...
 #'  $ type       : chr  "Record" "Record" "Record" "Record" ...
 #'   }
-#' @seealso  [get.acs()]
+#' @seealso  [get_acs_old()]
 NULL

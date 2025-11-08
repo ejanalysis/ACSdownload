@@ -1,7 +1,7 @@
-#' @title Utility to Clean Names of States for get.acs
+#' @title Utility to Clean Names of States for get_acs_old
 #'
 #' @description
-#'  Utility function used by [get.acs()] and [download.datafiles()]
+#'  Utility function used by [get_acs_old()] and [download.datafiles()]
 #'
 #' @details
 #'  Not in FTP ACS Summary files and not returned by this function's default: \cr
@@ -51,7 +51,7 @@
 #'
 #' @param testing Logical value, optional, FALSE by default. LIMITS STATES TO DC AND DE if TRUE.
 #' @return Returns character vector of 2-character State abbreviations, lower case.
-#' @seealso [get.acs()] and [download.datafiles()] which use this
+#' @seealso [get_acs_old()] and [download.datafiles()] which use this
 #'
 #' @export
 #'

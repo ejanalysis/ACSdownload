@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean.sumlevel.R
 \name{clean.sumlevel}
 \alias{clean.sumlevel}
-\title{Utility to Clean SUMLEVEL for get.acs}
+\title{Utility to Clean SUMLEVEL for get_acs_old}
 \usage{
 clean.sumlevel(sumlevel = "bg")
 }
@@ -13,7 +13,7 @@ clean.sumlevel(sumlevel = "bg")
 Returns 'both', 'tract', or 'bg' (or stops with error if cannot interpret sumlevel input)
 }
 \description{
-Utility function used by \code{\link[=get.acs]{get.acs()}}.
+Utility function used by \code{\link[=get_acs_old]{get_acs_old()}}.
 }
 \details{
 Interprets as 'bg' any of these:    150, '150', 'blockgroup', 'block group', or 'bg' (or variants, ignoring case) \cr
@@ -21,5 +21,5 @@ Interprets as 'tract' any of these: 140, '140', or 'tract' (or variants, ignorin
 Interprets as 'both' any of these: 'both' or a vector that has both of the above terms (or variants, ignoring case).
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}} which uses this
+\code{\link[=get_acs_old]{get_acs_old()}} which uses this
 }

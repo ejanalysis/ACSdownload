@@ -15,9 +15,9 @@ join.geo.to.tablist(
 )
 }
 \arguments{
-\item{mygeo}{Required geo file. See \code{\link[=get.acs]{get.acs()}} and \code{\link[=get.read.geo]{get.read.geo()}}}
+\item{mygeo}{Required geo file. See \code{\link[=get_acs_old]{get_acs_old()}} and \code{\link[=get.read.geo]{get.read.geo()}}}
 
-\item{my.list.of.tables}{List of data tables resulting from prior steps in \code{\link[=get.acs]{get.acs()}}}
+\item{my.list.of.tables}{List of data tables resulting from prior steps in \code{\link[=get_acs_old]{get_acs_old()}}}
 
 \item{save.csv}{FALSE by default. Specifies whether to save each data table as csv format file.}
 
@@ -37,5 +37,5 @@ Read the processed csv files of estimates and MOE (margin of error) for American
 5-year summary file data obtained from US Census FTP site, and join with geographic information from geo file.
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}} and \code{\link[=get.read.geo]{get.read.geo()}}
+\code{\link[=get_acs_old]{get_acs_old()}} and \code{\link[=get.read.geo]{get.read.geo()}}
 }

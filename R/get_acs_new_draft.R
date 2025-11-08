@@ -1,9 +1,15 @@
-#' @title get ACS summaryfile specified tables for entire USA, all blockgroups or all tracts
-#' @description Uses Census Bureau new format files that offer the full USA in 1 file per table,
-#'   via FTP or https.
-#'   Does not get Puerto Rico (PR) as coded.
-#'   Note API provides better list of variable names, in order as found on summary files, than documentation does.
+
+
+#' @title New draft function to get ACS summaryfile specified tables for entire USA, all blockgroups or all tracts
+#' @description Uses Census Bureau new format files that offer the full USA in 1 file per table
+#'
 #' @details
+#'
+#'   Also see [get_acs_new()] - A new version of this using data.table pkg to read directly from url
+#'
+#'   Does get Puerto Rico (PR) ?
+#'
+#'   Note API provides better list of variable names, in order as found on summary files, than documentation does.
 #'
 #' For information on this new Summary File format visit:
 #'
@@ -19,7 +25,7 @@
 #'
 #' @export
 #'
-get.acs.all <- function(tables="B01001", end.year=2020, dataset='5', sumlevel=150, output.path = file.path('~', 'acsoutput') ) {
+get_acs_new_draft <- function(tables="B01001", end.year=2020, dataset='5', sumlevel=150, output.path = file.path('~', 'acsoutput') ) {
   # new format for 5yr summary file ACS
   # makes it easier to get one table for every blockgroup in the US
 

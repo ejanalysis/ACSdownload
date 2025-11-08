@@ -27,5 +27,5 @@ Returns character element that is name of zip file such as "20115dc0113000.zip"
 Returns name(s) of zip file(s) based on state(s), a sequence file number, a prefix, and end year.
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}}
+\code{\link[=get_acs_old]{get_acs_old()}}
 }

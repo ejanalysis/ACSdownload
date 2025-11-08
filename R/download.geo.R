@@ -3,7 +3,7 @@
 #' @description
 #'  Download text file from US Census Bureau with geographic information for American Community Survey.
 #'  The geo file is used to join data file(s) to FIPS/GEOID/NAME/SUMLEVEL/CKEY.
-#'  Used by [get.acs()]
+#'  Used by [get_acs_old()]
 #'
 #' @details
 #'
@@ -26,7 +26,7 @@
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
 #' @param silent Optional, default is FALSE. Whether progress info should be sent to standard output (like the screen)
 #' @return Side effect is downloading the file.
-#' @seealso [get.acs()] which uses this, and [get.read.geo()]
+#' @seealso [get_acs_old()] which uses this, and [get.read.geo()]
 #' @examples
 #'  \dontrun{
 #'    download.geo("de")

@@ -28,6 +28,6 @@
 #'     - $ Table.Title            : chr  "SEX BY AGE" "Universe:  Total population" "Total:" "Male:" ...
 #'     - $ Subject.Area           : chr  "Age-Sex" NA NA NA ...
 #'
-#' @seealso [acs::acs.lookup()] [tidycensus::load_variables()] [get.lookup.acs()] [get.acs()]
+#' @seealso [acs::acs.lookup()] [tidycensus::load_variables()] [get.lookup.acs()] [get_acs_old()]
 #'
 NULL

@@ -20,5 +20,5 @@ Returns character element that is name of data file such as e20105de0017000 or m
 Returns name(s) of data file(s) based on state(s), a sequence file number, and end year.
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}}
+\code{\link[=get_acs_old]{get_acs_old()}}
 }

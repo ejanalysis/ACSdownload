@@ -13,7 +13,7 @@
 #' @return data.frame of information about each table and each variable in table: \cr
 #'   Value returned is data.frame of info about each table and also each variable in the table\cr
 #'   e.g., longname2 which is version where no spaces or colons or escaped quotation marks etc. \cr
-#' @seealso [get.acs()], [get.table.info()]
+#' @seealso [get_acs_old()], [get.table.info()]
 #' @examples
 #' \dontrun{
 #'   finfo <- get.field.info(c('B17020A', 'B17020H'))

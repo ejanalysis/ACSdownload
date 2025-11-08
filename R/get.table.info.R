@@ -15,7 +15,7 @@
 #'   8       B01001          NA                                 Universe:  Total population       <NA>                            UniverseTotalpopulation\cr
 #'   9       B01001           1                                                      Total: B01001.001                                              Total\cr
 #'   10      B01001           2                                                       Male: B01001.002                                               Male\cr
-#' @seealso [get.acs()], [get.table.info()], and [get.field.info()]
+#' @seealso [get_acs_old()], [get.table.info()], and [get.field.info()]
 #'
 #' @export
 #'

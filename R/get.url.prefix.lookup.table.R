@@ -4,7 +4,7 @@
 #' @param end.year Optional end year for 5-year summary file, as character, like '2022'
 #' @return Returns character element that is first part of URL such as
 #'   "https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/documentation/"
-#' @seealso [get.acs()], [get.lookup.acs()], [get.lookup.file.name()]
+#' @seealso [get_acs_old()], [get.lookup.acs()], [get.lookup.file.name()]
 #'
 get.url.prefix.lookup.table	<- function(end.year = acsdefaultendyearhere_func()) {
 

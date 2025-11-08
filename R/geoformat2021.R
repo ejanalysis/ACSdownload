@@ -13,5 +13,5 @@
 #'  <https://www2.census.gov/programs-surveys/acs/summary_file/2020/data/5_year_entire_sf/2020_ACS_Geography_Files.zip>
 #'
 #' @keywords datasets
-#' @seealso  [get.acs()]
+#' @seealso  [get_acs_old()]
 NULL

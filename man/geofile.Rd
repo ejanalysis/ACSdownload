@@ -20,5 +20,5 @@ Get name of text file used by US Census Bureau with geographic information for A
 That geo file can be used to join data file(s) to FIPS/GEOID/NAME/SUMLEVEL/CKEY.
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}} and \code{\link[=download.geo]{download.geo()}} which uses this
+\code{\link[=get_acs_old]{get_acs_old()}} and \code{\link[=download.geo]{download.geo()}} which uses this
 }

@@ -28,7 +28,7 @@
 #' @param url.prefix Optional character element that defaults to what is returned by `[get.url.prefix](end.year)`
 #' @param end.year Optional end year for 5-year summary file, as character,  but ignored if url.prefix is specified
 #' @return Returns character vector that is URL(s) such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile"
-#' @seealso [get.acs()], [url.to.find.zipfile()], [download.geo()]
+#' @seealso [get_acs_old()], [url.to.find.zipfile()], [download.geo()]
 #'
 #' @export
 #'

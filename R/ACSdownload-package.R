@@ -12,8 +12,7 @@
 #'  Census Bureau American Community Survey 5-year Summary Files,
 #'  providing demographic data at the block and tract levels of resolution.
 #'  You can obtain data from the entire USA all at once using this package,
-#'  for one or more tables. Some key functions are [get.acs()], [set.needed()], and [nhgis()].
-#'  Also see data([lookup.acs2022]).
+#'  for one or more tables. Some key functions are [get_acs_old()], [set.needed()], and [nhgis()].
 #'  \cr\cr
 #'  * The [tidycensus package](https://walker-data.com/tidycensus/index.html)
 #'  makes it easy to download some ACS or decennial census or other data,

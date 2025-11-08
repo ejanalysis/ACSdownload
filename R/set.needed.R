@@ -1,6 +1,6 @@
 #' @title Specify which ACS Variables are Needed
 #' @description
-#'   Utility used by get.acs to help user specify which variables are needed.
+#'   Utility used by [get_acs_old()] to help user specify which variables are needed.
 #'   User can specify this in a file in the working directory, modifying "variables needed template.csv"
 #'   that this function can create based on tables parameter, to create user-defined "variables needed.csv"
 #' @param tables Character vector, required. Specifies which ACS tables.
@@ -24,10 +24,11 @@
 #' @param silent Optional, defaults to TRUE. If FALSE, prints some indications of progress.
 #' @param writefile Optional, defaults to TRUE. If TRUE, saves template of needed variables as "variables needed template.csv" file to folder.
 #' @return Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.
-#' @seealso [get.acs()] which uses this
+#' @seealso [get_acs_old()] which uses this
+#'
 #' @export
-set.needed <-
-  function(tables,
+#'
+set.needed <- function(tables,
            lookup.acs,
            vars = 'all',
            varsfile,

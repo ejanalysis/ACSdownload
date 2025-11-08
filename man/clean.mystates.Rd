@@ -2,7 +2,7 @@
 % Please edit documentation in R/clean.mystates.R
 \name{clean.mystates}
 \alias{clean.mystates}
-\title{Utility to Clean Names of States for get.acs}
+\title{Utility to Clean Names of States for get_acs_old}
 \usage{
 clean.mystates(mystates = "all", testing = FALSE)
 }
@@ -28,7 +28,7 @@ Redundant entries are dropped, e.g., c(51,'DC') becomes 51.}
 Returns character vector of 2-character State abbreviations, lower case.
 }
 \description{
-Utility function used by \code{\link[=get.acs]{get.acs()}} and \code{\link[=download.datafiles]{download.datafiles()}}
+Utility function used by \code{\link[=get_acs_old]{get_acs_old()}} and \code{\link[=download.datafiles]{download.datafiles()}}
 }
 \details{
 Not in FTP ACS Summary files and not returned by this function's default: \cr
@@ -63,5 +63,5 @@ The 2020 IAC Demographic Profile Summary File is located on the U.S. Census Bure
 You can start at the \href{https://www.census.gov/programs-surveys/decennial-census/decade/2020/planning-management/release/island-area-data-products-faqs.html}{2020 Island Areas Censuses Data Products FAQ}
 }
 \seealso{
-\code{\link[=get.acs]{get.acs()}} and \code{\link[=download.datafiles]{download.datafiles()}} which use this
+\code{\link[=get_acs_old]{get_acs_old()}} and \code{\link[=download.datafiles]{download.datafiles()}} which use this
 }
