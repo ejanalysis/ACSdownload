@@ -1,12 +1,11 @@
 Package: ACSdownload
-Title: Obtain American Community Survey Summary File Data Tables from Census
-    Bureau FTP Site (for EJ analysis, etc.)
-Description: This R package helps you download and parse raw data from the
-    Census Bureau American Community Survey 5-year Summary Files, providing
-    demographic data at the block and tract levels of resolution. You can obtain
-    data from the entire USA all at once using this package, for one or more
-    tables.
-Version: 2.2.1
+Title: Download American Community Survey (ACS) 5-year Data Tables from Census Bureau nationwide in bulk
+Description: Download and parse raw data from the
+    Census Bureau American Community Survey (ACS) 5-year survey, to get
+    demographic data in bulk (without relying on the API).
+    You can obtain data from the entire USA all at once (or selected FIPS), for one or more tables.
+    This package is focused on blockgroup and tract levels of resolution.
+Version: 2.3.0
 Imports:
     magrittr
 Depends: 

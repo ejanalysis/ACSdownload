@@ -5,7 +5,7 @@ if (FALSE) {
   library(data.table)
 
   acsdata <- list()
-  x <- get_acs_new_dat()
+  x <- get_acs_new()
 
   #  can just use cbind to combine or join all these tables, and confirmed that:
   # all.equal(x[[1]]$fips, x[[1]]$fips)
@@ -112,6 +112,103 @@ if (FALSE) {
 
 ####################################### ######################################## #
 
+# DATA ####
+
+# to download/read the ACS 5year data for selected tables and selected fips or fipstype
+
+#' newer way to get full USA ACS data by table and fips
+#' get the ACS 5year data for selected tables and fips or fipstype
+#'
+#' @param yr end year of 5 year ACS summary file data, such as 2023 for the 2019-2023 survey
+#' @param fips "blockgroups" for all US bg, or a vector of fips codes.
+#'   can also be "county", "state", "tract", or vector of one of those fips code types
+#' @param acstabs vector of ACS data table numbers like "B01001" etc.
+#'
+#' @returns table with estimates and margins of error and fips and SUMELEVEL
+#'
+#' @export
+#'
+get_acs_new = function(
+    acstabs = c("B01001", # sex and age / basic population counts
+                 "B03002", # race with hispanic ethnicity
+                 "B02001", # race without hispanic ethnicity
+                 "B15002", # education
+                 "C16002", # language/ lingiso
+                 "C17002", # low income, poor, etc.
+                 "B25034", # pre1960, for lead paint indicator
+                 "B23025", # unemployed
+              ##   # "B18101", # disability -- at tract resolution only ########### #
+                 "B25032", # owned units vs rented units
+                 "B28003", # no broadband
+                 "B27010"  # no health insurance
+    ),
+                       fips = "blockgroup", # note it has no space in it, unlike in tidycensus variable info table
+    yr = 2023)  {
+
+  #oldtimeout = options("timeout")
+  #options("timeout") <- 120
+  #on.exit({options("timeout") <- oldtimeout})
+
+  # also see # EJAM:::acs_bybg()
+
+  ## file name examples
+  # [   ]	acsdt5y2022-b06004bpr.dat	2023-10-30 12:34	184K
+  # [   ]	acsdt5y2022-b06004c.dat	2023-10-30 12:34	13M
+  # [   ]	acsdt5y2022-b06004cpr.dat	2023-10-30 12:34	166K
+  # [   ]	acsdt5y2022-b06004d.dat	2023-10-30 12:34	14M
+  # [   ]	acsdt5y2022-b06004dpr.dat	2023-10-30 12:34	166K
+  # [   ]	acsdt5y2022-b06004e.dat	2023-10-30 12:34	13M
+  # [   ]	acsdt5y2022-b06004epr.dat	2023-10-30 12:34	163K
+  acstabs = tolower(acstabs)
+  # url_dat = "https://www2.census.gov/programs-surveys/acs/summary_file/2023/table-based-SF/data/5YRData/"
+  url_dat = paste0("https://www2.census.gov/programs-surveys/acs/summary_file/", yr, "/table-based-SF/data/5YRData/")
+  dfiles = paste0("acsdt5y", yr, "-", acstabs, ".dat")
+  tablist = list()
+  for (i in seq_along(dfiles)) {
+    dpath = paste0(url_dat, dfiles[i])
+
+    ## download to tempdir() and read ####
+
+    tablist[[i]] <- data.table::fread(dpath, showProgress = TRUE)
+
+    tablist[[i]]$fips <- fips_from_geoid(tablist[[i]]$GEO_ID)
+    tablist[[i]]$SUMLEVEL <- sumlevel_from_geoid(tablist[[i]]$GEO_ID)
+  }
+
+  # could join all the tables to get 1 column per variable all in 1 table, or even use cbind if we know GEOIDS are identical across tables but they are not if resolution available varies
+
+  # could filter to just selected variables in each table here or elsewhere
+
+  if (is.null(fips)) {
+    # no fips filtering
+  } else {
+    ###################### #
+    # could filter to just selected rows/geographies, either by type of fips or  vector of specific fips
+    if (fips[1] %in% c("block", "blockgroup", "tract", "city", "county", "state")) {
+      if (length(fips) > 1) {stop("can get only 1 type of geography / sumlevel at a time, such as 'blockgroup' ")}
+      sumlevel = sumlevel_from_fipstype(fips)
+      for (i in seq_along(dfiles)) {
+        tablist[[i]] <- tablist[[i]][SUMLEVEL %in% sumlevel, ]
+      }
+    } else {
+      fipscodes_requested <- fips
+      for (i in seq_along(dfiles)) {
+        tablist[[i]] <- tablist[[i]][fips %in% fipscodes_requested, ]
+        ## but do we want to retain order of fips requested?
+
+      }
+    } # end of fips filter
+    ###################### #
+  }
+  # rename variables to work well with formulas_ejscreen_acs$formulas
+  for (i in 1:length(tablist))  {
+    names(tablist[[i]]) <- gsub("_E", "_", names(tablist[[i]] ))
+  }
+  return(tablist)
+}
+####################################### ######################################## #
+####################################### ######################################## #
+
 # to get the geography names AND also get the ACS 5year data for selected tables and fips or fipstype
 
 #' newer way to get full USA ACS data by table and fips
@@ -126,14 +223,14 @@ if (FALSE) {
 #'
 #' @export
 #'
-get_acs_new = function(yr = 2023, # or acsdefaultendyearhere
+get_acs_new_both = function(yr = 2023, # or acsdefaultendyearhere
                             fips = "blockgroups",
                             acstabs = c("B01001", "B03002", "B15002", "C16002", "C17002", "B25034", "B23025")) {
 
   # and    "B18101"  # disability at tract resolution only
 
   geos <- get_acs_new_geos(fips = fips, yr = yr)
-  dat  <- get_acs_new_dat(acstabs = acstabs, yr = yr)
+  dat  <- get_acs_new(acstabs = acstabs, yr = yr)
 
   # length(dat)
   # sapply(dat, NROW)
@@ -340,76 +437,3 @@ fips_from_geoid = function(geoid) {
 }
 ####################################### ######################################## #
 
-# DATA ####
-
-# to download/read the ACS 5year data for selected tables and selected fips or fipstype
-
-#' newer way to get full USA ACS data by table and fips
-#' get the ACS 5year data for selected tables and fips or fipstype
-#'
-#' @param yr end year of 5 year ACS summary file data, such as 2023 for the 2019-2023 survey
-#' @param fips "blockgroups" for all US bg, or a vector of fips codes.
-#'   can also be "county", "state", "tract", or vector of one of those fips code types
-#' @param acstabs vector of ACS data table numbers like "B01001" etc.
-#'
-#' @returns table with estimates and margins of error and fips and SUMELEVEL
-#'
-#' @export
-#'
-get_acs_new_dat = function(acstabs = c("B01001", "B03002", "B15002", "C16002", "C17002", "B25034", "B23025"),
-                                fips = "blockgroup", yr = 2023)  {
-
-  # also see # EJAM:::acs_bybg()
-
-  ## file name examples
-  # [   ]	acsdt5y2022-b06004bpr.dat	2023-10-30 12:34	184K
-  # [   ]	acsdt5y2022-b06004c.dat	2023-10-30 12:34	13M
-  # [   ]	acsdt5y2022-b06004cpr.dat	2023-10-30 12:34	166K
-  # [   ]	acsdt5y2022-b06004d.dat	2023-10-30 12:34	14M
-  # [   ]	acsdt5y2022-b06004dpr.dat	2023-10-30 12:34	166K
-  # [   ]	acsdt5y2022-b06004e.dat	2023-10-30 12:34	13M
-  # [   ]	acsdt5y2022-b06004epr.dat	2023-10-30 12:34	163K
-  acstabs = tolower(acstabs)
-  # url_dat = "https://www2.census.gov/programs-surveys/acs/summary_file/2023/table-based-SF/data/5YRData/"
-  url_dat = paste0("https://www2.census.gov/programs-surveys/acs/summary_file/", yr, "/table-based-SF/data/5YRData/")
-  dfiles = paste0("acsdt5y", yr, "-", acstabs, ".dat")
-  tablist = list()
-  for (i in seq_along(dfiles)) {
-    dpath = paste0(url_dat, dfiles[i])
-    tablist[[i]] <- data.table::fread(dpath)
-    tablist[[i]]$fips <- fips_from_geoid(tablist[[i]]$GEO_ID)
-    tablist[[i]]$SUMLEVEL <- sumlevel_from_geoid(tablist[[i]]$GEO_ID)
-  }
-
-  # could join all the tables to get 1 column per variable all in 1 table, or even use cbind if we know GEOIDS are identical across tables but they are not if resolution available varies
-
-  # could filter to just selected variables in each table here or elsewhere
-
-  if (is.null(fips)) {
-    # no fips filtering
-  } else {
-    ###################### #
-    # could filter to just selected rows/geographies, either by type of fips or  vector of specific fips
-    if (fips[1] %in% c("block", "blockgroup", "tract", "city", "county", "state")) {
-      if (length(fips) > 1) {stop("can get only 1 type of geography / sumlevel at a time, such as 'blockgroup' ")}
-      sumlevel = sumlevel_from_fipstype(fips)
-      for (i in seq_along(dfiles)) {
-        tablist[[i]] <- tablist[[i]][SUMLEVEL %in% sumlevel, ]
-      }
-    } else {
-      fipscodes_requested <- fips
-      for (i in seq_along(dfiles)) {
-        tablist[[i]] <- tablist[[i]][fips %in% fipscodes_requested, ]
-        ## but do we want to retain order of fips requested?
-
-      }
-    } # end of fips filter
-    ###################### #
-  }
-  # rename variables to work well with formulas_ejscreen_acs$formulas
-  for (i in 1:length(tablist))  {
-    names(tablist[[i]]) <- gsub("_E", "_", names(tablist[[i]] ))
-  }
-  return(tablist)
-}
-####################################### ######################################## #

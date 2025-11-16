@@ -16,22 +16,23 @@ acsdefaultendyearhere_func <- function() {
 }
 ############
 
-guess_end_year = function() {
+guess_end_year = function(guess_as_of = Sys.Date()) {
 
-  # note there is better, related code in EJAM::acsendyear() that can estimate latest acs version based on likely release date and also when ejscreen might get updated using that
-
-  ## specify end.year for 5year ACS data
-  ### generally this will be correct:
-  lastyear <- as.numeric(substr(as.character(Sys.Date()), 1, 4)) - 1
-  end.year <- lastyear - 1 # published Dec 2023 means survey end date was 2022, e.g.
-  # in other words, year now minus 2 years gives endyear of acs that is latest published.
-
-  # check if url/year available yet:
-  if (validate.end.year(end.year)) {
-    cat("end.year will be", end.year, "\n")
-    return(end.year)
-  } else {
-    stop("cannot infer valid end.year for 5yr ACS data")
-  }
+  # there is better, related code in EJAM:::acsendyear() NOW that can estimate latest acs version based on likely release date and also when ejscreen might get updated using that:
+  end.year <- EJAM:::acsendyear(guess_always = T, guess_census_has_published = T, guess_as_of = guess_as_of)
+  return(end.year)
+  # ## specify end.year for 5year ACS data
+  # ### generally this will be correct:
+  # lastyear <- as.numeric(substr(as.character(Sys.Date()), 1, 4)) - 1
+  # end.year <- lastyear - 1 # published Dec 2023 means survey end date was 2022, e.g.
+  # # in other words, year now minus 2 years gives endyear of acs that is latest published.
+  #
+  # # check if url/year available yet:
+  # if (validate.end.year(end.year)) {
+  #   cat("end.year will be", end.year, "\n")
+  #   return(end.year)
+  # } else {
+  #   stop("cannot infer valid end.year for 5yr ACS data")
+  # }
 }
 ############
