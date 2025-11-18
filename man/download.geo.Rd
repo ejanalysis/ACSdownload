@@ -6,7 +6,7 @@
 \usage{
 download.geo(
   mystates,
-  end.year = acsdefaultendyearhere_func(),
+  end.year = acsdefaultendyearhere,
   folder = getwd(),
   testing = FALSE,
   attempts = 5,

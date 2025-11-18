@@ -4,7 +4,7 @@
 \alias{get.lookup.file.name}
 \title{Get name of Census file with Sequence and Table Numbers for ACS 5-year summary file data}
 \usage{
-get.lookup.file.name(end.year = acsdefaultendyearhere_func())
+get.lookup.file.name(end.year = acsdefaultendyearhere)
 }
 \arguments{
 \item{end.year}{Not yet implemented, but will be optional end year for 5-year summary file, as character}

@@ -4,7 +4,7 @@
 \alias{geofile}
 \title{Get name(s) of GEO txt file(s) with geo information for ACS}
 \usage{
-geofile(mystates, end.year = acsdefaultendyearhere_func())
+geofile(mystates, end.year = acsdefaultendyearhere)
 }
 \arguments{
 \item{mystates}{vector of character 2-letter State abbreviations specifying which are needed}

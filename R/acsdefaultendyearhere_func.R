@@ -1,7 +1,7 @@
-#' Earliest end.year of ACS 5 year survey data available (according to this package, or best guess)
-#'
-#' @export
-#'
+
+# Earliest end.year of ACS 5 year survey data available
+# (according to this package, or best guess)
+
 acsdefaultendyearhere_func <- function() {
 
   if (exists("acsdefaultendyearhere")) {
@@ -12,27 +12,27 @@ acsdefaultendyearhere_func <- function() {
   } else {
     yr <- guess_end_year() # does validate.end.year
   }
-  return(yr)
+  return(as.numeric(yr))
 }
 ############
 
 guess_end_year = function(guess_as_of = Sys.Date()) {
 
-  # there is better, related code in EJAM:::acsendyear() NOW that can estimate latest acs version based on likely release date and also when ejscreen might get updated using that:
-  end.year <- EJAM:::acsendyear(guess_always = T, guess_census_has_published = T, guess_as_of = guess_as_of)
-  return(end.year)
-  # ## specify end.year for 5year ACS data
-  # ### generally this will be correct:
-  # lastyear <- as.numeric(substr(as.character(Sys.Date()), 1, 4)) - 1
-  # end.year <- lastyear - 1 # published Dec 2023 means survey end date was 2022, e.g.
-  # # in other words, year now minus 2 years gives endyear of acs that is latest published.
-  #
-  # # check if url/year available yet:
-  # if (validate.end.year(end.year)) {
-  #   cat("end.year will be", end.year, "\n")
-  #   return(end.year)
-  # } else {
-  #   stop("cannot infer valid end.year for 5yr ACS data")
-  # }
+  end.year <- try( EJAM:::acsendyear(
+
+    # guess_always = TRUE,
+    guess_census_has_published = TRUE,
+    guess_as_of = guess_as_of))
+
+  if (inherits(end.year, "try-error")) {
+    warning("To be accurate, guess_end_year() or  acsdefaultendyearhere_  func() requires the EJAM package be installed. See https://ejanalysis.com for info on the EJAM pkg")
+    lag_yrs_endyr_to_census_publishes <- 0.9452055 # 1- 20/365 # like EJAM:::acsendyear(), based on typical 12/11/20xx release date approx.
+    return(
+      as.numeric(
+      substr(  guess_as_of - 365 * lag_yrs_endyr_to_census_publishes, 1, 4)
+    )
+    )
+  }
+  return(as.numeric(end.year))
 }
 ############

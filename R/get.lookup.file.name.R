@@ -9,7 +9,7 @@
 #'
 #' @export
 #'
-get.lookup.file.name	<- function(end.year = acsdefaultendyearhere_func()) {
+get.lookup.file.name	<- function(end.year = acsdefaultendyearhere) {
 
   validate.end.year(end.year)
 

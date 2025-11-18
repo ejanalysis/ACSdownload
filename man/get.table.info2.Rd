@@ -6,7 +6,7 @@
 \usage{
 get.table.info2(
   tables,
-  end.year = acsdefaultendyearhere_func(),
+  end.year = acsdefaultendyearhere,
   table.info.only = TRUE,
   moe = FALSE
 )

@@ -18,7 +18,7 @@
 #' @export
 #'
 download.datafiles <- function(tables,
-                               end.year = acsdefaultendyearhere_func(),
+                               end.year = acsdefaultendyearhere,
                                mystates = 52,
                                folder = getwd(),
                                testing = FALSE,

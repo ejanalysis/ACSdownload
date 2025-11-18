@@ -18,7 +18,7 @@ join.geo.to.tablist <-
            sumlevel = 'both',
            folder = getwd(),
            testing = FALSE,
-           end.year = acsdefaultendyearhere_func()) {
+           end.year = acsdefaultendyearhere) {
     #	FUNCTION TO join (merge) US data and US geo files on FIPS
 
     # Do geo join for one seqfile at a time, or actually one table at a time.

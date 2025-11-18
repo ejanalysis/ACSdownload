@@ -4,12 +4,7 @@
 \alias{zipfile}
 \title{Get name(s) of zip file(s) for ACS 5-year summary file data}
 \usage{
-zipfile(
-  mystates,
-  seqfilenum,
-  zipfile.prefix,
-  end.year = acsdefaultendyearhere_func()
-)
+zipfile(mystates, seqfilenum, zipfile.prefix, end.year = acsdefaultendyearhere)
 }
 \arguments{
 \item{mystates}{Required vector of 2-character state abbreviation(s)}

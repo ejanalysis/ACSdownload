@@ -11,7 +11,7 @@
 #' @return Returns a vector of one or more numbers stored as characters, each defining one sequence file, such as "0001".
 #' @seealso [get_acs_old()] and [acs::acs.lookup()] from the \pkg{acs} package, which does something related but is more flexible & robust. Also see [get_acs_old()] which uses this.
 #' @export
-which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere_func()) {
+which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere) {
 
   validate.end.year(end.year)
 

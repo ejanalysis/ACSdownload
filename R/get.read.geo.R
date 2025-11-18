@@ -64,7 +64,7 @@
 get.read.geo <- function(mystates,
                          new.geo = FALSE,
                          folder = getwd(),
-                         end.year = acsdefaultendyearhere_func(),
+                         end.year = acsdefaultendyearhere,
                          testing = FALSE,
                          silent = FALSE) {
 

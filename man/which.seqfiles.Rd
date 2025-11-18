@@ -4,7 +4,7 @@
 \alias{which.seqfiles}
 \title{Find Which Sequence Files Contain Given ACS Table(s)}
 \usage{
-which.seqfiles(tables, lookup.acs, end.year = acsdefaultendyearhere_func())
+which.seqfiles(tables, lookup.acs, end.year = acsdefaultendyearhere)
 }
 \arguments{
 \item{tables}{character vector, required. Defines which ACS table(s) to check, such as 'B01001'}
