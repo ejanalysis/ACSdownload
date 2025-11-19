@@ -27,11 +27,8 @@ ejscreen_acs_tables <- c(
   # B18101 is at tract resolution only ########### #
   "B18101" # disability -- at tract resolution only ########### #
 )
-######################### #
-url_acs_table_info <- function(tables = ejscreen_acs_tables, yr = acsdefaultendyearhere, fiveorone=5) {
-  paste0("https://data.census.gov/table/ACSDT", fiveorone,"Y", yr, ".", tables)
-}
-url_acs_table_info()
+#### #
+url_acs_table(ejscreen_acs_tables)
 ######################### #
 
 # see ACSdownload::acsdefaultendyearhere
@@ -61,5 +58,9 @@ for (i in 1:length(metadata_here)) {
   attr(ejscreen_acs_tables, names(metadata_here)[i]) <- metadata_here[[i]]
 }
 
-
 usethis::use_data(ejscreen_acs_tables, overwrite = TRUE)
+
+  EJAM:::dataset_documenter(
+    "ejscreen_acs_tables",
+    "tables needed for EJSCREEN ACS-based indicators as of EJSCREEN version 2.32 released 2024 and also for EJAM version 2.32.003 released 11/2025"
+    )
