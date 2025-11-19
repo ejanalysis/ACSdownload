@@ -6,17 +6,11 @@ if (FALSE) {
 
   acsdata <- list()
   x <- get_acs_new()
-  # C16001 is at tract resolution only ########### #
-  # B18101 is at tract resolution only ########### #
 
-  #  can just use cbind to combine or join all these tables, and confirmed that:
-  # all.equal(x[[1]]$fips, x[[1]]$fips)
+  # if only one resolution like blockgroup,
+  # can just use cbind to combine or join all these tables, and confirmed that:
   # all.equal(x[[1]]$fips, x[[2]]$fips)
-  # all.equal(x[[1]]$fips, x[[3]]$fips)
-  # all.equal(x[[1]]$fips, x[[4]]$fips)
-  # all.equal(x[[1]]$fips, x[[5]]$fips)
-  # all.equal(x[[1]]$fips, x[[6]]$fips)
-  # all.equal(x[[1]]$fips, x[[7]]$fips)
+  # all.equal(x[[1]]$fips, x[[3]]$fips) etc. etc.
   y <- cbind(x[[1]], x[[2]], x[[3]], x[[4]], x[[5]], x[[6]], x[[7]])
   y <- y[, .SD, .SDcols = !duplicated(names(y))]
 
@@ -111,29 +105,8 @@ if (FALSE) {
 # DATA ####
 ####################################### ######################################## #
 
-#' get URL(s) of ACS 5-year table(s) for 1 or more FIPS codes (blockgroup or tract) at census.gov
-#'
-#' @param tables "C16002" for example
-#' @param fips "34023001419" for example
-#' @param yr 2022 for example
-#'
-#' @returns one or more urls, character vector
-#'
-#' @export
-#'
-url_acs_table = function(tables, fips, yr = 2022) {
 
-  ftype = fipstype(fips)
-  sumlevel <- ftype
-  sumlevel[ftype %in% "blockgroup"] <- 150
-  sumlevel[ftype %in% "tract"] <- 140
-  # if (ftype == "tract") {sumlevel <- 140}
-  paste0("https://data.census.gov/table?q=", tables,"&g=", sumlevel,"0000US", fips,"&y=2022")
-}
-####################################### ######################################## #
-
-
-# to download/read the ACS 5year data for selected tables and selected fips or fipstype
+# to download/read the ACS 5year data (2018-2022 survey or later) for selected tables and selected fips or fipstype
 
 #' newer way to get full USA ACS data by table and fips
 #' get the ACS 5year data for selected tables and fips or fipstype
@@ -149,8 +122,9 @@ url_acs_table = function(tables, fips, yr = 2022) {
 #'   If a fips type (e.g., "tract"), defines the SUMLEVEL variable in the ACS data (e.g., "140").
 #' @param yr end year of 5 year ACS summary file data, such as 2023 for the 2019-2023 survey released by Census Bureau Dec. 2024.
 #' @param fiveorone optional 1 or 5, where 5 is the 5-year sample - only 5-yr tested here
-#'
-#' @returns table with estimates and margins of error and fips and SUMLEVEL
+#' @param return_list_not_merged set to FALSE means return a single merged table from all the requested ACS tables, and
+#'   otherwise a list of data.tables.
+#' @returns list of tables or merged single table, with estimates and margins of error and fips and SUMLEVEL
 #'
 #' @export
 #'
@@ -158,7 +132,8 @@ get_acs_new = function(
     tables = ejscreen_acs_tables,
     fips = "blockgroup", # related to sumlevel. note it has no space in it, unlike in tidycensus variable info table
     yr = acsdefaultendyearhere, # e.g., 2023 until 12/2025, then 2024
-    fiveorone = '5'
+    fiveorone = '5',
+    return_list_not_merged = TRUE
 )  {
 
   stopifnot(length(fiveorone) == 1, nchar(fiveorone) == 1, as.character(fiveorone) %in% c("1", "5"))
@@ -192,14 +167,17 @@ get_acs_new = function(
 
     tablist[[i]]$fips <- fips_from_geoid(tablist[[i]]$GEO_ID)
     tablist[[i]]$SUMLEVEL <- sumlevel_from_geoid(tablist[[i]]$GEO_ID)
+    # put these columns first:
+    data.table::setcolorder(tablist[[i]], c('GEO_ID', 'fips', 'SUMLEVEL'))
   }
-
-  # could join all the tables to get 1 column per variable all in 1 table, or even use cbind if we know GEOIDS are identical across tables but they are not if resolution available varies
+  if (length(tables) != length(tablist)) {
+    warning("Not all requested tables were obtained.")
+  }
 
   # could filter to just selected variables in each table here or elsewhere
 
   if (is.null(fips)) {
-    # no fips filtering
+    # no fips filtering, but user would have to have passed fips=NULL since default is not NULL
   } else {
     ###################### #
     # sumlevel[ftype %in% "REGION"] <- "20"
@@ -234,7 +212,23 @@ get_acs_new = function(
   for (i in 1:length(tablist))  {
     names(tablist[[i]]) <- gsub("_E", "_", names(tablist[[i]] ))
   }
-  return(tablist)
+
+  if (return_list_not_merged) {
+    return(tablist)
+  } else {
+    # try join all the tables to get 1 column per variable all in 1 table, or
+    # perhaps could even use cbind if we know GEOIDS are identical across tables but they are not if resolution available varies like if fips=NULL
+    # but if we did filter to limit based on fips that will result in all being the same sumlevel, so should be same length and probably identical geoids, but do join to be safe
+    tabmerged <- tablist[[1]]
+    if (length(tablist) > 1) {
+      for (i in 2:length(tablist)) {
+        tabmerged <- merge(tabmerged, tablist[[i]], on = "fips")
+      }
+      # with a merge, unlike cbind, don't need to remove duplicated column names, like "GEO_ID"   "fips"     "SUMLEVEL"
+      # tabmerged <- tabmerged[, .SD, .SDcols = !duplicated(names(tabmerged))]
+    }
+    return(tabmerged)
+  }
 }
 ####################################### ######################################## #
 ####################################### ######################################## #
