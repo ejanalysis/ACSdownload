@@ -6,6 +6,8 @@ if (FALSE) {
 
   acsdata <- list()
   x <- get_acs_new()
+  # C16001 is at tract resolution only ########### #
+  # B18101 is at tract resolution only ########### #
 
   #  can just use cbind to combine or join all these tables, and confirmed that:
   # all.equal(x[[1]]$fips, x[[1]]$fips)
@@ -26,17 +28,7 @@ if (FALSE) {
   data.table::setnames(acsdata, "fips", "bgfips")
 
   #   dput(setdiff(names(acsdata) , names(blockgroupstats)) )
-  # drop <- c("ageunder5m", "age5to9m", "age10to14m", "age15to17m", "age65to66m",
-  #   "age6769m", "age7074m", "age7579m", "age8084m", "age85upm", "ageunder5f",
-  #   "age5to9f", "age10to14f", "age15to17f", "age65to66f", "age6769f",
-  #   "age7074f", "age7579f", "age8084f", "age85upf", "pop3002", "nonhisp",
-  #   "pov50", "pov99", "pov124", "pov149", "pov184", "pov199", "pov2plus",
-  #   "m0", "m4", "m6", "m8", "m9", "m10", "m11", "m12", "f0", "f4",
-  #   "f6", "f8", "f9", "f10", "f11", "f12", "lingisospanish", "lingisoeuro",
-  #   "lingisoasian", "lingisoother", "built1950to1959", "built1940to1949",
-  #   "builtpre1940", "nonmins", "num1pov", "num15pov", "num2pov",
-  #   "num2pov.alt", "pct1pov", "pct15pov", "pct2pov", "pct2pov.alt"
-  # )
+
   keep <- intersect(names(acsdata), names(EJAM::blockgroupstats))
   acsdata <- acsdata[ , .SD, .SDcols = keep]
 
@@ -117,6 +109,29 @@ if (FALSE) {
 ####################################### ######################################## #
 
 # DATA ####
+####################################### ######################################## #
+
+#' get URL(s) of ACS 5-year table(s) for 1 or more FIPS codes (blockgroup or tract) at census.gov
+#'
+#' @param tables "C16002" for example
+#' @param fips "34023001419" for example
+#' @param yr 2022 for example
+#'
+#' @returns one or more urls, character vector
+#'
+#' @export
+#'
+url_acs_table = function(tables, fips, yr = 2022) {
+
+  ftype = fipstype(fips)
+  sumlevel <- ftype
+  sumlevel[ftype %in% "blockgroup"] <- 150
+  sumlevel[ftype %in% "tract"] <- 140
+  # if (ftype == "tract") {sumlevel <- 140}
+  paste0("https://data.census.gov/table?q=", tables,"&g=", sumlevel,"0000US", fips,"&y=2022")
+}
+####################################### ######################################## #
+
 
 # to download/read the ACS 5year data for selected tables and selected fips or fipstype
 
@@ -124,6 +139,9 @@ if (FALSE) {
 #' get the ACS 5year data for selected tables and fips or fipstype
 #'
 #' @param tables vector of ACS data table numbers like "B01001" etc.
+#'   Note some tables used by EJSCREEN are only available at tract resolution, namely
+#'   C16001 for detailed specific languages as % of residents, and B18101 for % with disability
+#'
 #' @param fips "blockgroups" for all US bg, or a vector of fips codes.
 #'   can also be "county", "state", "tract", or vector of one of those fips code types.
 #'   May support these but untested: "REGION", "American Indian Area/Alaska Native Area/Hawaiian Home Land",

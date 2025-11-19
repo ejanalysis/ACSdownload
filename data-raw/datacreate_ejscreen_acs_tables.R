@@ -21,8 +21,10 @@ ejscreen_acs_tables <- c(
   "B27010", # no health insurance
   "C16002", # (language category and) % of households limited English speaking (lingiso) "https://data.census.gov/table/ACSDT5Y2023.C16002"
   "B16004", # (language category and) % of residents (not hhlds) speak no English at all "https://data.census.gov/table/ACSDT5Y2023.B16004"
-  "C16001", # languages detailed list: % of residents (not hhlds) speak Chinese, etc.  "https://data.census.gov/table/ACSDT5Y2023.C16001"
 
+  "C16001", # languages detailed list: % of residents (not hhlds) speak Chinese, etc.  "https://data.census.gov/table/ACSDT5Y2023.C16001"
+  # C16001 is at tract resolution only ########### #
+  # B18101 is at tract resolution only ########### #
   "B18101" # disability -- at tract resolution only ########### #
 )
 ######################### #
