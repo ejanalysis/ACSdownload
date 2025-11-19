@@ -4,7 +4,7 @@
 \alias{datafile}
 \title{Get name(s) of data file(s) for ACS 5-year summary file data}
 \usage{
-datafile(state.abbrev, seqfilenum, end.year = acsdefaultendyearhere_func())
+datafile(state.abbrev, seqfilenum, end.year = acsdefaultendyearhere)
 }
 \arguments{
 \item{state.abbrev}{Required vector of one or more 2-character state abbreviations like "DC"}

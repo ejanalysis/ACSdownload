@@ -3,6 +3,6 @@
 #' @param end.year Optional character, specifying last year of 5-year summary file data.
 #' @seealso [get_acs_old()], [get.datafile.prefix()], [datafile()], [geofile()], [get.zipfile.prefix()]
 #'
-get.zipfile.prefix	<- function(end.year = acsdefaultendyearhere_func()) {
+get.zipfile.prefix	<- function(end.year = acsdefaultendyearhere) {
   return(get.datafile.prefix(end.year = end.year))
 }

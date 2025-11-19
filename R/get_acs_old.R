@@ -35,9 +35,6 @@
 #'
 #' @param tables Character vector, optional. Defines tables to obtain, such as 'B01001' (the default).
 #'   NOTE: If the user specifies a table called 'ejscreen' then a set of tables used by that tool are included.
-#'   Those tables in EJScreen 2.0 are
-#'   c("B01001", "B03002", "B15002", 'C16002', "C17002", "B25034", 'B23025')
-#    # C16002 replaced B16004 that was older ACS source for what had been called linguistic isolation.
 #' @param base.path Character, optional, getwd() by default. Defines a base folder to start from, in case
 #'   data.path and/or output.path are not specified, in which case a subfolder under base.path,
 #'   called acsdata or acsoutput respectively, will be created and used for downloads or outputs of the function.
@@ -115,7 +112,7 @@
 #'  \dontrun{
 #'  # from the census website, see USA ACS tables:
 #'    mytables <- c("B01001", "B03002", "B15002", "B23025",
-#'                      "B25034", "C16002", "C17002") # EJScreen-related
+#'                      "B25034", "C16002", "C17002") # old EJScreen-related tables
 #'    yr <- 2020 # ACS 5YR Summary File 2016-2020
 #'    geos <- "0100000US_0400000US72" # US (just 50 States and DC) and PR:
 #'
@@ -126,12 +123,12 @@
 #'             paste(mytables, collapse= "%20"), "&g=", geos, "&y=", yr)
 #'     # browseURL(myurl)
 #'
-#'   t( get.table.info("B01001", end.year = acsdefaultendyearhere_func()) )
+#'   t( get.table.info("B01001", end.year = acsdefaultendyearhere) )
 #'   t( get.table.info(c("B17001", "C17002") ) )
 #'   get.field.info("C17002")
 #'   ##### Data for just DC & DE, just two tables:
 #'   outsmall <- get_acs_old(tables = c("B01001", "C17002"), mystates=c("dc","de"),
-#'    end.year = acsdefaultendyearhere_func(), base.path = "~/Downloads",
+#'    end.year = acsdefaultendyearhere, base.path = "~/Downloads",
 #'    write.files = T, new.geo = FALSE)
 #'   summary(outsmall)
 #'   t(outsmall$info[1, ])
@@ -146,7 +143,7 @@
 #'   ####################################################################### #
 #'   ##### Data for just DC & DE, just the default pop count table:
 #'   out <- get_acs_old(mystates=c("dc","de"),
-#'     end.year = acsdefaultendyearhere_func(), new.geo = FALSE)
+#'     end.year = acsdefaultendyearhere, new.geo = FALSE)
 #'   names(out$bg); cat("\n\n"); head(out$info)
 #'   head(t(rbind(id=out$headers$table.ID, long=out$headers$longname,
 #'      univ=out$headers$universe,
@@ -235,7 +232,7 @@
 #'
 get_acs_old <- function(tables = 'B01001',
            mystates = 'all',
-           end.year = acsdefaultendyearhere_func(),
+           end.year = acsdefaultendyearhere,
            base.path = getwd(),
            data.path = file.path(base.path, 'acsdata'),
            output.path = file.path(base.path, 'acsoutput'),
@@ -251,10 +248,8 @@ get_acs_old <- function(tables = 'B01001',
            silent = FALSE,
            save.log = TRUE,
            filename.log = 'log') {
-    ejscreentables <-
-      # c("B01001", "B03002", "B15002", "B16004", "C17002", "B25034", 'B23025')
+    ejscreentables_old <-
       c("B01001", "B03002", "B15002", "C16002", "C17002", 'B23025', "B25034")
-      # C16002 replaced B16004 that was older ACS source for what had been called linguistic isolation, now called limited English speaking households.
 
     end.year <- as.character(end.year)
     validate.end.year(end.year)
@@ -336,7 +331,7 @@ get_acs_old <- function(tables = 'B01001',
 
     # if tables equals or contains 'ejscreen' then replace the 'ejscreen' part with the default tables as follows, leaving any other tables specified in addition to ejscreen tables:
     if (any(tolower(tables) == 'ejscreen')) {
-      tables <- c(ejscreentables, tables[tolower(tables) != 'ejscreen'])
+      tables <- c(ejscreentables_old, tables[tolower(tables) != 'ejscreen'])
     }
     # note b16001 is tract only and not in core set of EJSCREEN variables
     # or e.g.,   mystates <- c("dc", "de")

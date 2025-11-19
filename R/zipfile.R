@@ -11,7 +11,7 @@
 zipfile <-  function(mystates,
                      seqfilenum,
                      zipfile.prefix,
-                     end.year = acsdefaultendyearhere_func()) {
+                     end.year = acsdefaultendyearhere) {
   # zip FILENAME example
   # 	20115dc0113000.zip
   validate.end.year(end.year)

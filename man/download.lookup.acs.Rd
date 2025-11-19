@@ -5,7 +5,7 @@
 \title{Download File with Information about ACS 5-Year Summary File Tables}
 \usage{
 download.lookup.acs(
-  end.year = acsdefaultendyearhere_func(),
+  end.year = acsdefaultendyearhere,
   folder = NULL,
   silent = FALSE
 )

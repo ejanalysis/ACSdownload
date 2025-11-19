@@ -4,7 +4,7 @@
 \alias{get.lookup.acs}
 \title{Pick a year-specific table from among lookup.acs20xx objects}
 \usage{
-get.lookup.acs(end.year = acsdefaultendyearhere_func())
+get.lookup.acs(end.year = acsdefaultendyearhere)
 }
 \arguments{
 \item{end.year}{Character, optional, like "2021", which specifies the 2016-2021 dataset.

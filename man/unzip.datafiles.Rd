@@ -8,7 +8,7 @@ unzip.datafiles(
   tables,
   mystates,
   folder = getwd(),
-  end.year = acsdefaultendyearhere_func(),
+  end.year = acsdefaultendyearhere,
   testing = FALSE,
   attempts = 5,
   silent = FALSE

@@ -33,7 +33,7 @@
 #' @export
 #'
 url.to.find.zipfile <-
-  function(mystates, end.year = acsdefaultendyearhere_func(), url.prefix) {
+  function(mystates, end.year = acsdefaultendyearhere, url.prefix) {
     validate.end.year(end.year)
 
     if (missing(mystates)) {

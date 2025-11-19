@@ -18,7 +18,7 @@
 #'
 #' @export
 #'
-get.lookup.acs <- function(end.year = acsdefaultendyearhere_func()) {
+get.lookup.acs <- function(end.year = acsdefaultendyearhere) {
 
   # Note
    #  https://www2.census.gov/programs-surveys/acs/summary_file/2017/data/5_year_seq_by_state/Delaware/Tracts_Block_Groups_Only/

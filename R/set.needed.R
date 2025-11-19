@@ -34,7 +34,7 @@ set.needed <- function(tables,
            varsfile,
            folder = getwd(),
            noEditOnMac = FALSE,
-           end.year = acsdefaultendyearhere_func(),
+           end.year = acsdefaultendyearhere,
            silent = TRUE,
            writefile = TRUE) {
     validate.end.year(end.year)

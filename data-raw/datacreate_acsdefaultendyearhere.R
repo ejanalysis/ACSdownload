@@ -6,8 +6,8 @@
 
 # cat("may need to do  devtools::load_all() first \n")
 
-acsdefaultendyearhere <- ACSdownload:::guess_end_year() # not exported
-attr(acsdefaultendyearhere, "date_saved_in_package") <- as.character(Sys.Date())
+acsdefaultendyearhere <- 2023 #  ACSdownload:::guess_end_year() # not exported
+#attr(acsdefaultendyearhere, "date_saved_in_package") <- as.character(Sys.Date()) # do not add attributes - leave it as a simple numeric year
 usethis::use_data(acsdefaultendyearhere, overwrite = TRUE)
 
 

@@ -65,7 +65,7 @@
 #'  lookup.acs <- download.lookup.acs(2022)
 #'  }
 #'
-download.lookup.acs <- function(end.year = acsdefaultendyearhere_func(),
+download.lookup.acs <- function(end.year = acsdefaultendyearhere,
                                 folder = NULL,
                                 silent = FALSE) {
 

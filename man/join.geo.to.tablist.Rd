@@ -11,7 +11,7 @@ join.geo.to.tablist(
   sumlevel = "both",
   folder = getwd(),
   testing = FALSE,
-  end.year = acsdefaultendyearhere_func()
+  end.year = acsdefaultendyearhere
 )
 }
 \arguments{

@@ -27,7 +27,7 @@
 #' }
 #'
 get.field.info <-  function(tables,
-                            end.year = acsdefaultendyearhere_func(),
+                            end.year = acsdefaultendyearhere,
                             table.info.only = FALSE,
                             moe = FALSE,
                             basic = FALSE,

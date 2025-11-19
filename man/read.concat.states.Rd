@@ -11,7 +11,7 @@ read.concat.states(
   needed,
   folder = getwd(),
   output.path,
-  end.year = acsdefaultendyearhere_func(),
+  end.year = acsdefaultendyearhere,
   save.files = TRUE,
   sumlevel = "both",
   testing = FALSE,

@@ -8,7 +8,7 @@
 #'   Note this is only needed once per state, not once per seqfile. (It might even be available as a single US file?)
 #' @seealso [get_acs_old()] and [download.geo()] which uses this
 #'
-geofile <- function(mystates, end.year = acsdefaultendyearhere_func()) {
+geofile <- function(mystates, end.year = acsdefaultendyearhere) {
 
   validate.end.year(end.year)
 

@@ -4,11 +4,7 @@
 \alias{url.to.find.zipfile}
 \title{Get URL(s) for FTP site folder(s) with ACS 5-year summary file data}
 \usage{
-url.to.find.zipfile(
-  mystates,
-  end.year = acsdefaultendyearhere_func(),
-  url.prefix
-)
+url.to.find.zipfile(mystates, end.year = acsdefaultendyearhere, url.prefix)
 }
 \arguments{
 \item{mystates}{Character vector of one or more states/DC/PR, as 2-character state abbreviations. Default is all states/DC/PR.}
