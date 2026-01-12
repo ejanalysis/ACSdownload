@@ -30,7 +30,7 @@
 #' @return Returns character vector that is URL(s) such as "ftp://ftp.census.gov/acs2012_5yr/summaryfile"
 #' @seealso [get_acs_old()], [url.to.find.zipfile()], [download.geo()]
 #'
-#' @export
+#' @keywords internal
 #'
 url.to.find.zipfile <-
   function(mystates, end.year = acsdefaultendyearhere, url.prefix) {

@@ -15,7 +15,7 @@
 #' @param attempts Default is 5, specifies how many tries (maximum) for unzipping before trying to redownload and then give up.
 #' @return Effect is to download and save locally a number of data files.
 #'
-#' @export
+#' @keywords internal
 #'
 download.datafiles <- function(tables,
                                end.year = acsdefaultendyearhere,

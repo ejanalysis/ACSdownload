@@ -23,3 +23,4 @@ Interprets as 'both' any of these: 'both' or a vector that has both of the above
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}} which uses this
 }
+\keyword{internal}

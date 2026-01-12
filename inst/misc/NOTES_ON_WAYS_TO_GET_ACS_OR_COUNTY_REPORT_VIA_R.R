@@ -1,5 +1,5 @@
 ############################################################
-#LIST OF WAYS TO GET ACS, CENSUS, OR A COUNTY REPORT USING R
+#LIST OF WAYS TO GET ACS, CENSUS, OR A COUNTY REPORT USING R - BUT THESE NOTES ARE LIKELY OUTDATED NOW
 ############################################################
 
 # Several options for obtaining Census ACS data are now listed here:
@@ -21,7 +21,6 @@
 #  # x- Not for US/State/County data, just tract and block group. Significant extra work to code for US/State/County totals (different URLs and formats).
 #  # x- Lacks friendly interface to help browse and select tables and variables.
 #  # x- Code may be less robust to various tables, years, etc. Not for Census 2010 as written now (just ACS).
-#  # Then could convert to acs package format if desired.
 #  # Also could use Excel tools on Census FTP site to obtain small subsets of block group or tract data.
 #  CODE: ACSdownload package
 #
@@ -32,18 +31,11 @@
 #  # x- Requires manual login to account on NHGIS.org and download of dataset once ready (can be minutes to >1 hour). Not automated.
 #  # x- Lag of approx. 6 weeks after Census releases ACS data: "We aim to add data from each new ACS release within six weeks of the Census Bureau release date."
 #  # The 2008-2012 ACS came out from Census 12/12-12/17/2013, and was on the NHGIS.org site by February 17, 2014. Lag was just 2 months.
-#  # Then could convert to acs package format if desired.
 #  CODE: ...R analysis\ACS - download and parse\CODE FOR ACS VIA NHGIS\IMPORT ACS FROM NHGIS FILE.R
 #
-#*via Census API and acs package
+#*via Census API and tidycensus package
 #  # Requires obtaining an individual API Key from Census.
-#  # Entire USA may not be practical -- Loop takes ~5 minutes to get all BG in Maryland, 1 table, for example, so maybe 3 hours per table for USA?
-#  CODE:  ...R analysis\ACS - download and parse\CODE FOR acs package and API\CODE TO GET ACS IN ALL BG IN ALL COUNTIES VIA API.R
-#
-#via Census API but WITHOUT acs package:
-#  # Hard to parse results without the acs package, so probably not worthwhile. Could check on speed, but likely still slow.
-#  # Requires obtaining an individual API Key from Census.
-#  CODE: ...R analysis\ACS - download and parse\CODE FOR acs package and API\CODE TO GET ACS DATA VIA API WITHOUT acs package.R
+#  # Entire USA may not be practical
 #
 #gdb from contractor
 #
@@ -81,11 +73,6 @@
 #  # You have selected 220333 geographies.
 #  # You will need to go back and reduce the number of geographies."
 #
-#via acs package by reading downloads of AFF data (which can be tract level, but not all tracts nationwide at once):
-#  #  ** cannot be used to obtain even all tracts in the US at once, but probably could get all tracts in one Region.
-#  # (no code written, but might use FTP code to save BG and other data in acs package's format, and not need limited AFF site anyway)
-#  # See example in "Spatial Demography 2013 1(1): 132-139." Shows how to use acs package to read aff downloaded csv file & graph counties.
-#
 #via AMERICAN FACT FINDER (AFF) - CANNOT GET ALL TRACTS AT ONCE, AND CANNOT GET BLOCK GROUPS.
 #  #  ** cannot be used to obtain even all tracts in the US at once, but probably could get all tracts in one Region.
 #  #  American FactFinder: What are the limits for downloading tables?
@@ -115,6 +102,3 @@
 #  # see URL schemes examples:
 #  ...R analysis\ACS - download and parse\CODE FOR URL OF 1 AFF TABLE
 #
-#TO GET A SINGLE STATISTIC FROM THE CENSUS API
-#  # see URL schemes examples:
-#  ...R analysis\ACS - download and parse\CODE FOR acs package and API

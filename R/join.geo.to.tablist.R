@@ -10,7 +10,9 @@
 #' @param end.year Default is "" -- used in naming file if save.csv=TRUE
 #' @return Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.
 #' @seealso [get_acs_old()] and [get.read.geo()]
-#' @export
+#'
+#' @keywords internal
+#'
 join.geo.to.tablist <-
   function(mygeo,
            my.list.of.tables,

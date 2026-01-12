@@ -40,6 +40,10 @@ names(my.lookup)
 #  "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position" \\cr
 #  "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"
 }\if{html}{\out{</div>}}
+
+Also see \code{\link[=get.lookup.acs]{get.lookup.acs()}} which does the same without downloading file -- uses the copy in data()
+Also see \code{data(lookup.acs2013)} and similar data for other years.
+Also see \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}
 }
 \description{
 Download and read lookup table of information on American Community Survey (ACS) tables, from the Census Bureau,
@@ -79,9 +83,4 @@ such as  \cr
  }
 
 }
-\seealso{
-\code{\link[acs:acs.lookup]{acs::acs.lookup()}} which does something similar but is more flexible & robust.
-Also see \code{\link[=get.lookup.acs]{get.lookup.acs()}} which does the same without downloading file -- uses the copy in data()
-Also see \code{data(lookup.acs2013)} and similar data for other years.
-Also see \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}
-}
+\keyword{internal}

@@ -61,3 +61,4 @@ It can use data.table::fread (default method), which is faster.
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}}
 }
+\keyword{internal}

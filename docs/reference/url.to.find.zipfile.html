@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ACSdownload</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,11 +38,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">url.to.find.zipfile</span><span class="op">(</span></span>
-<span>  <span class="va">mystates</span>,</span>
-<span>  end.year <span class="op">=</span> <span class="fu"><a href="acsdefaultendyearhere_func.html">acsdefaultendyearhere_func</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  <span class="va">url.prefix</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">url.to.find.zipfile</span><span class="op">(</span><span class="va">mystates</span>, end.year <span class="op">=</span> <span class="va">acsdefaultendyearhere</span>, <span class="va">url.prefix</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -70,21 +66,21 @@
     <p>See help for <code><a href="download.lookup.acs.html">download.lookup.acs()</a></code> for more details on the URLs used for the data.</p>
 <p>The zip files look like this for example: "20135dc0001000.zip" <br><br>
 The 2009-2013 summary file by state-seqfile combo is in folders that look like this: <br><br>
-ftp://ftp.census.gov/acs2013_5yr/summaryfile/2009-2013_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only</p>
+(ftp://ftp.census.gov/acs2013_5yr/summaryfile/2009-2013_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only)</p>
     </div>
     <div class="section level2">
     <h2 id="also-see-https-www-census-gov-programs-surveys-acs-summary-file-table-based-sf-data-yrdata-">also see "https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/data/5YRData/"<a class="anchor" aria-label="anchor" href="#also-see-https-www-census-gov-programs-surveys-acs-summary-file-table-based-sf-data-yrdata-"></a></h2>
     <p>The 2008-2012 summary file by state-seqfile combo is in folders that look like this: <br><br>
-http://www2.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset/Alabama/Tracts_Block_Groups_Only <br></p>
+(http://www2.census.gov/acs2012_5yr/summaryfile/2008-2012_ACSSF_By_State_By_Sequence_Table_Subset/Alabama/Tracts_Block_Groups_Only) <br></p>
 <p>The 2007-2011 summary file by state-seqfile combo is in folders that look like this:<br><br>
-ftp://ftp.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/ <br>
+(ftp://ftp.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/) <br>
 URL must be the ftp site, not the http version.</p>
 <p>http version was here
-http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/ <br></p>
+(http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Sequence_Table_Subset/DistrictOfColumbia/Tracts_Block_Groups_Only/) <br></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="get.acs.html">get.acs()</a></code>, <code>url.to.find.zipfile()</code>, <code><a href="download.geo.html">download.geo()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="get_acs_old.html">get_acs_old()</a></code>, <code>url.to.find.zipfile()</code>, <code><a href="download.geo.html">download.geo()</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -96,7 +92,7 @@ http://www2.census.gov/acs2011_5yr/summaryfile/2007-2011_ACSSF_By_State_By_Seque
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

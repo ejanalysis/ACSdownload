@@ -18,3 +18,4 @@ Helper function to return just the block group resolution part of a dataset in \
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.tracts]{get.tracts()}}
 }
+\keyword{internal}

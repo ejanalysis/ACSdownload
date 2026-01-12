@@ -38,3 +38,4 @@ Unzip ACS datafile for each specified US State, extracting specified table(s), d
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}}
 }
+\keyword{internal}

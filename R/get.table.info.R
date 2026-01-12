@@ -1,4 +1,4 @@
-#' @title Get field names etc for ACS tables
+#' @title Get field names etc for ACS tables - somewhat obsolete/not updated
 #' @description
 #'  Get info on tables from US Census Bureau for American Community Survey 5-year summary file.
 #' @details Wrapper for [get.table.info2()] which is a wrapper for [get.field.info()]
@@ -15,9 +15,9 @@
 #'   8       B01001          NA                                 Universe:  Total population       <NA>                            UniverseTotalpopulation\cr
 #'   9       B01001           1                                                      Total: B01001.001                                              Total\cr
 #'   10      B01001           2                                                       Male: B01001.002                                               Male\cr
-#' @seealso [get_acs_old()], [get.table.info()], and [get.field.info()]
+#' @seealso [tidycensus package](https://walker-data.com/tidycensus/index.html)  [get_acs_old()], [get.table.info()], and [get.field.info()]
 #'
-#' @export
+#' @keywords internal
 #'
 get.table.info  <-  function(tables,
                              end.year = acsdefaultendyearhere,

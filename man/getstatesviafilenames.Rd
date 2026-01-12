@@ -20,3 +20,4 @@ based on those filenames.
 \seealso{
 \code{\link[=read.concat.states]{read.concat.states()}} which uses this
 }
+\keyword{internal}

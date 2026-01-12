@@ -18,7 +18,7 @@ acsdefaultendyearhere_func <- function() {
 
 guess_end_year = function(guess_as_of = Sys.Date()) {
 
-  end.year <- try( EJAM:::acsendyear(
+  end.year <- try( EJAM:::acs_endyear(
 
     # guess_always = TRUE,
     guess_census_has_published = TRUE,
@@ -26,7 +26,7 @@ guess_end_year = function(guess_as_of = Sys.Date()) {
 
   if (inherits(end.year, "try-error")) {
     warning("To be accurate, guess_end_year() or  acsdefaultendyearhere_  func() requires the EJAM package be installed. See https://ejanalysis.com for info on the EJAM pkg")
-    lag_yrs_endyr_to_census_publishes <- 0.9452055 # 1- 20/365 # like EJAM:::acsendyear(), based on typical 12/11/20xx release date approx.
+    lag_yrs_endyr_to_census_publishes <- 0.9452055 # 1- 20/365 # like EJAM:::acs_endyear(), based on typical 12/11/20xx release date approx.
     return(
       as.numeric(
       substr(  guess_as_of - 365 * lag_yrs_endyr_to_census_publishes, 1, 4)

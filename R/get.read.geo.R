@@ -59,7 +59,7 @@
 #'  the TIGER/Line Shapefiles.
 #' @seealso [get_acs_old()] which uses this, and [download.geo()]
 #'
-#' @export
+#' @keywords internal
 #'
 get.read.geo <- function(mystates,
                          new.geo = FALSE,

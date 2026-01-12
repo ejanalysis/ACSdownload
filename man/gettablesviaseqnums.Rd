@@ -22,3 +22,4 @@ as obtained from the US Census FTP site.
 \seealso{
 \code{\link[=read.concat.states]{read.concat.states()}} which uses this, and \code{\link[=get.lookup.acs]{get.lookup.acs()}} which is used by this
 }
+\keyword{internal}

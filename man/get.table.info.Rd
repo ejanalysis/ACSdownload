@@ -2,7 +2,7 @@
 % Please edit documentation in R/get.table.info.R
 \name{get.table.info}
 \alias{get.table.info}
-\title{Get field names etc for ACS tables}
+\title{Get field names etc for ACS tables - somewhat obsolete/not updated}
 \usage{
 get.table.info(
   tables,
@@ -40,5 +40,6 @@ Get info on tables from US Census Bureau for American Community Survey 5-year su
 Wrapper for \code{\link[=get.table.info2]{get.table.info2()}} which is a wrapper for \code{\link[=get.field.info]{get.field.info()}}
 }
 \seealso{
-\code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.table.info]{get.table.info()}}, and \code{\link[=get.field.info]{get.field.info()}}
+\href{https://walker-data.com/tidycensus/index.html}{tidycensus package}  \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.table.info]{get.table.info()}}, and \code{\link[=get.field.info]{get.field.info()}}
 }
+\keyword{internal}

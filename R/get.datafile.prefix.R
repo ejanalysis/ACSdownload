@@ -3,6 +3,8 @@
 #' @param end.year Optional character, such as "2012", specifying last year of 5-year summary file data.
 #' @seealso [get_acs_old()], [datafile()], [geofile()], [get.zipfile.prefix()]
 #'
+#' @keywords internal
+#'
 get.datafile.prefix	<- function(end.year = acsdefaultendyearhere) {
   validate.end.year(end.year)
   return(paste(end.year, "5", sep = ""))

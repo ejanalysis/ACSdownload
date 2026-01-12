@@ -18,3 +18,4 @@ Helper function to return just the tract resolution part of a dataset in \code{\
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.bg]{get.bg()}}
 }
+\keyword{internal}

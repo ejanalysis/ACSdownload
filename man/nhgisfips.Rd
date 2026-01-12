@@ -49,7 +49,6 @@ nhgisfips(x[ , 1:3])
 nhgisfips(x[ , 1:4])
 nhgisfips(x)
 }
+
 }
-\seealso{
-\code{\link[=nhgis]{nhgis()}}, \code{\link[=nhgisread]{nhgisread()}}, \code{\link[ejanalysis:clean.fips]{ejanalysis::clean.fips()}}
-}
+\keyword{internal}

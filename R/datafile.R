@@ -6,7 +6,9 @@
 #' @param end.year Optional end year for 5-year summary file, as character or number
 #' @return Returns character element that is name of data file such as e20105de0017000 or m20105de0017000
 #' @seealso [get_acs_old()]
-#' @export
+#'
+#' @keywords internal
+#'
 datafile <- function(state.abbrev, seqfilenum, end.year = acsdefaultendyearhere) {
   # datafile name examples:
   #	e20105de0017000

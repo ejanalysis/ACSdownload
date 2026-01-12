@@ -1,106 +1,6 @@
-if (FALSE) {
-  ##### EXAMPLE OF GETTING ACS DATA FOR ALL US BLOCKGROUPS AND CALCULATING INDICATORS
-
-  library(EJAM)
-  library(data.table)
-
-  acsdata <- list()
-  x <- get_acs_new()
-
-  # if only one resolution like blockgroup,
-  # can just use cbind to combine or join all these tables, and confirmed that:
-  # all.equal(x[[1]]$fips, x[[2]]$fips)
-  # all.equal(x[[1]]$fips, x[[3]]$fips) etc. etc.
-  y <- cbind(x[[1]], x[[2]], x[[3]], x[[4]], x[[5]], x[[6]], x[[7]])
-  y <- y[, .SD, .SDcols = !duplicated(names(y))]
-
-  acsdata <- EJAM::calc_ejam(
-    y,
-    formulas = EJAM::formulas_ejscreen_acs$formula,
-    keep.old = c("fips", "pop")
-  )
-  data.table::setnames(acsdata, "fips", "bgfips")
-
-  #   dput(setdiff(names(acsdata) , names(blockgroupstats)) )
-
-  keep <- intersect(names(acsdata), names(EJAM::blockgroupstats))
-  acsdata <- acsdata[ , .SD, .SDcols = keep]
-
-  t(acsdata[1:2,])
-  # save(acsdata, file = "~/Downloads/acs2023.rda")
-}
-####################################### ######################################## #
-
-## WHAT OTHER ACS VARIABLES ARE STILL MISSING FROM THIS EXAMPLE?
-# # need to add formulas for these, in  EJAM::formulas_ejscreen_acs
-#
-# e.g., this example lacks disability indicator and pctunder18 that are available via ACS
-# setdiff(setdiff(names(blockgroupstats), c(names_geo, names_e)), names(acsdata))
-#
-# [1] "bgid"                   "Demog.Index"            "Demog.Index.Supp"
-# [4] "pctlingiso"             "hhlds"                  "disab_universe"
-# [7] "disability"             "pctdisability"          "lowlifex"
-# [10] "count.NPL"              "count.TSDF"             "count.ej.80up"
-# [13] "count.ej.80up.supp"     "Demog.Index.State"      "Demog.Index.Supp.State"
-# [16] "wa"                     "pctwa"                  "ba"
-# [19] "pctba"                  "aa"                     "pctaa"
-# [22] "aiana"                  "pctaiana"               "nhpia"
-# [25] "pctnhpia"               "otheralone"             "pctotheralone"
-# [28] "multi"                  "pctmulti"               "under18"
-# [31] "pctunder18"             "over17"                 "pctover17"
-# [34] "male"                   "pctmale"                "female"
-# [37] "pctfemale"              "percapincome"           "poor"
-# [40] "pctpoor"                "lan_universe"           "lan_nonenglish"
-# [43] "pctlan_nonenglish"      "lan_eng_na"             "lan_spanish"
-# [46] "pctlan_spanish"         "lan_ie"                 "pctlan_ie"
-# [49] "lan_api"                "pctlan_api"             "lan_other"
-# [52] "pctlan_other"           "spanish_li"             "pctspanish_li"
-# [55] "ie_li"                  "pctie_li"               "api_li"
-# [58] "pctapi_li"              "other_li"               "pctother_li"
-# [61] "occupiedunits"          "ownedunits"             "pctownedunits"
-# [64] "pctnobroadband"         "lifexyears"             "pctnohealthinsurance"
-# [67] "rateheartdisease"       "rateasthma"             "ratecancer"
-# [70] "pctflood30"             "pctfire30"              "num_waterdis"
-# [73] "num_airpoll"            "num_brownfield"         "num_tri"
-# [76] "num_school"             "num_hospital"           "num_church"
-# [79] "yesno_tribal"           "yesno_cejstdis"         "yesno_iradis"
-# [82] "yesno_airnonatt"        "yesno_impwaters"        "yesno_houseburden"
-# [85] "yesno_transdis"         "yesno_fooddesert"       "pctlan_english"
-# [88] "pctlan_french"          "pctlan_rus_pol_slav"    "pctlan_other_ie"
-# [91] "pctlan_vietnamese"      "pctlan_other_asian"     "pctlan_arabic"
-# > dput(setdiff(setdiff(names(blockgroupstats), names_e), names(acsdata)))
-#
-# acs2add <- c("bgid", "statename", "ST", "countyname", "REGION",
-#   "Demog.Index", "Demog.Index.Supp", "Demog.Index.State", "Demog.Index.Supp.State",
-#   "pctlingiso", "hhlds", "disab_universe", "disability", "pctdisability",
-#   "lowlifex",
-#   "wa", "pctwa", "ba", "pctba", "aa", "pctaa", "aiana",
-#   "pctaiana", "nhpia", "pctnhpia", "otheralone", "pctotheralone",
-#   "multi", "pctmulti", "under18", "pctunder18", "over17", "pctover17",
-#   "male", "pctmale", "female", "pctfemale", "percapincome", "poor",
-#   "pctpoor",
-#   "lan_universe", "lan_nonenglish", "pctlan_nonenglish",
-#   "lan_eng_na", "lan_spanish", "pctlan_spanish", "lan_ie", "pctlan_ie",
-#   "lan_api", "pctlan_api", "lan_other", "pctlan_other", "spanish_li",
-#   "pctspanish_li", "ie_li", "pctie_li", "api_li", "pctapi_li",
-#   "other_li", "pctother_li",
-#   "occupiedunits", "ownedunits", "pctownedunits",
-#   "pctnobroadband", "lifexyears", "pctnohealthinsurance",
-#
-#   "arealand", "areawater", "Shape_Length", "area",
-#   "count.NPL", "count.TSDF", "count.ej.80up", "count.ej.80up.supp",
-#   "rateheartdisease", "rateasthma", "ratecancer",
-#   "pctflood30", "pctfire30",
-#   "num_waterdis", "num_airpoll", "num_brownfield", "num_tri", "num_school", "num_hospital", "num_church",
-#   "yesno_tribal", "yesno_cejstdis", "yesno_iradis",
-#   "yesno_airnonatt", "yesno_impwaters", "yesno_houseburden", "yesno_transdis", "yesno_fooddesert",
-#   "pctlan_english", "pctlan_french", "pctlan_rus_pol_slav",
-#   "pctlan_other_ie", "pctlan_vietnamese", "pctlan_other_asian", "pctlan_arabic")
-
-# intersect(acs2add,   formulas_ejscreen_acs$rname)
-# [1] "pctlingiso" "hhlds"
 
 ####################################### ######################################## #
+
 
 # DATA ####
 ####################################### ######################################## #
@@ -113,7 +13,9 @@ if (FALSE) {
 #'
 #' @param tables vector of ACS data table numbers like "B01001" etc.
 #'   Note some tables used by EJSCREEN are only available at tract resolution, namely
-#'   C16001 for detailed specific languages as % of residents, and B18101 for % with disability
+#'   "C16001" for detailed specific languages as % of residents, and "B18101" for % with disability.
+#'   All resolutions get returned if return_list_not_merged=TRUE, but not if FALSE,
+#'   since those tables would prevent clearcut merging to a single table of places based on fips.
 #'
 #' @param fips "blockgroups" for all US bg, or a vector of fips codes.
 #'   can also be "county", "state", "tract", or vector of one of those fips code types.
@@ -123,8 +25,50 @@ if (FALSE) {
 #' @param yr end year of 5 year ACS summary file data, such as 2023 for the 2019-2023 survey released by Census Bureau Dec. 2024.
 #' @param fiveorone optional 1 or 5, where 5 is the 5-year sample - only 5-yr tested here
 #' @param return_list_not_merged set to FALSE means return a single merged table from all the requested ACS tables, and
-#'   otherwise a list of data.tables.
+#'   otherwise a list of data.tables. See "tables" parameter for more.
+#'
 #' @returns list of tables or merged single table, with estimates and margins of error and fips and SUMLEVEL
+#' @examples
+#'  x = get_acs_new(yr=2022, tables = ejscreen_acs_tables[1],
+#'    fips="county")
+#'  x[[1]]
+#'
+#'  # acs22 = get_acs_new(yr=2022, tables = ejscreen_acs_tables )
+#'  # acs23 = get_acs_new(yr = 2023, return_list_not_merged = FALSE)
+#'
+#'  \dontrun{
+#'    ##### EXAMPLE OF GETTING ACS DATA
+#'    ##### FOR ALL US BLOCKGROUPS AND CALCULATING INDICATORS
+#'
+#'    ### See more complete code for this in the EJAM package!
+#'    ## -- below is just a very simplified look:
+#'
+#'    library(EJAM)
+#'    library(data.table)
+#'
+#'    # x <- get_acs_new() # has problem where not all tables have same number of rows
+#'    # even for the blockgroup ones, and last 2 tables are tract resolution
+#'    ## so this is easier for getting the bg part:
+#'
+#'    bg     <- get_acs_new(tables = ejscreen_acs_tables[1:13], return_list_not_merged = FALSE)
+#'
+#'    acsdata <- list()
+#'    acsdata <- EJAM::calc_ejam(
+#'      bg,
+#'      formulas = EJAM::formulas_ejscreen_acs$formula,
+#'          keep.old = c("fips", "pop")
+#'    )
+#'    data.table::setnames(acsdata, "fips", "bgfips")
+#'
+#'    #  dput(setdiff(names(acsdata) , names(blockgroupstats)) )
+#'
+#'    keep <- intersect(names(acsdata), names(EJAM::blockgroupstats))
+#'    acsdata <- acsdata[ , .SD, .SDcols = keep]
+#'
+#'    t(acsdata[1:2,])
+#'
+#'    # save(acsdata, file = "~/Downloads/acs2023 bg via just ACSdownload pkg example.rda")
+#'  }
 #'
 #' @export
 #'
@@ -213,20 +157,60 @@ get_acs_new = function(
     names(tablist[[i]]) <- gsub("_E", "_", names(tablist[[i]] ))
   }
 
+  names(tablist) <- toupper(as.vector(tables))
+
+  rowcounts <- sapply(tablist, NROW)
+  sumlevels <- unlist(sapply(tablist, function(z) unique(z$SUMLEVEL)))
+
+
   if (return_list_not_merged) {
+    if (length(unique(sumlevels)) > 1) {warning("tables are at differing spatial resolutions like block group vs tract")}
+    if (any(rowcounts %in% 0)) {
+      warning("Some tables had zero rows")
+      cat("These tables had zero rows: ", paste0(names(tablist)[rowcounts %in% 0], collapse = ", "), "\n")
+    }
+    if (length(unique(rowcounts)) > 1) {
+      warning("note: not every table had the same number of rows (places)")
+      cat("Row counts of tables: \n")
+      print(data.frame(table = names(tablist), rowcount = rowcounts, note = ifelse(rowcounts != rowcounts[1], "**", "")))
+    }
     return(tablist)
+
   } else {
+
     # try join all the tables to get 1 column per variable all in 1 table, or
     # perhaps could even use cbind if we know GEOIDS are identical across tables but they are not if resolution available varies like if fips=NULL
     # but if we did filter to limit based on fips that will result in all being the same sumlevel, so should be same length and probably identical geoids, but do join to be safe
+
+    if (length(unique(sumlevels)) > 1) {stop("this function will not merge tables that are at differing spatial resolutions like block group vs tract")}
+    if (any(rowcounts %in% 0)) {
+      warning("Some tables had zero rows - omitting those")
+      cat("These tables had zero rows: ", paste0(names(tablist)[rowcounts %in% 0], collapse = ", "), "\n")
+      tablist = tablist[rowcounts > 0]
+      rowcounts <- sapply(tablist, NROW)
+      sumlevels <- unlist(sapply(tablist, function(z) unique(z$SUMLEVEL)))
+    }
+    if (length(tablist) == 0) {
+      stop("No tables to merge after removing zero-row tables")
+    }
+    if (length(unique(rowcounts)) > 1) {
+      warning("caution: not every table being merged had the same number of rows (places)")
+      cat("Row counts of tables: \n")
+      print(data.frame(table = names(tablist), rowcount = rowcounts, note = ifelse(rowcounts != rowcounts[1], "**", "")))
+    }
+
     tabmerged <- tablist[[1]]
+
     if (length(tablist) > 1) {
       for (i in 2:length(tablist)) {
-        tabmerged <- merge(tabmerged, tablist[[i]], on = "fips")
+        x <- tablist[[i]]
+        # avoid duplicating shared columns not used as merge key
+        x[, GEO_ID := NULL]
+        x[, SUMLEVEL := NULL]
+        tabmerged <- merge(tabmerged, x, by = "fips")
       }
-      # with a merge, unlike cbind, don't need to remove duplicated column names, like "GEO_ID"   "fips"     "SUMLEVEL"
-      # tabmerged <- tabmerged[, .SD, .SDcols = !duplicated(names(tabmerged))]
     }
+
     return(tabmerged)
   }
 }
@@ -247,7 +231,7 @@ get_acs_new = function(
 #'
 #' @returns list of geos + dat, estimates and margins of error and fips and SUMELEVEL
 #'
-#' @export
+#' @keywords internal
 #'
 get_acs_new_both = function(
     tables = NULL,
@@ -287,7 +271,7 @@ if (is.null(tables)) {
 #'
 #' @returns table with geographies - names and fips and SUMLEVEL
 #'
-#' @export
+#' @keywords internal
 #'
 get_acs_new_geos = function(
     yr = acsdefaultendyearhere, # e.g., 2023 until 12/2025, then 2024
@@ -341,6 +325,8 @@ sumlevel_from_geoid = function(geoid) {
 }
 ####################################### ######################################## #
 
+# see  EJAM::fips_lead_zero()
+
 fips_lead_zero_acs = function (fips, quiet = TRUE) {
 
   just_numerals = function(x) {
@@ -383,24 +369,29 @@ fips_lead_zero_acs = function (fips, quiet = TRUE) {
 }
 ####################################### ######################################## #
 
+# convert fips to a string designating the Census unit type, like "block" or "blockgroup"
+# see EJAM::fipstype()
+
 fipstype_acs = function (fips) {
 
   if (length(fips) == 0 || !is.vector(fips) || !is.atomic(fips)) {
     return(NULL)
   }
   ftype <- rep(NA, length(fips))
+  suppressWarnings({ # suppress warnings about how ambiguous if 11 digits before leading zero added
   fips <- fips_lead_zero_acs(fips = fips)
+  })
   n <- nchar(fips, keepNA = FALSE)
   ftype[n == 15] <- "block"
   ftype[n == 12] <- "blockgroup"
   ftype[n == 11] <- "tract"
   ftype[n == 7] <- "city"
-  ftype[n == 5] <- "county"
+  ftype[n == 5] <- "county"  ## cannot distinguish from ZCTA/zip code just based on 5 digit length !
   ftype[!is.na(fips) & nchar(fips) == 2] <- "state"
 
   # Note zip code or ZCTA actually, has 5 digits like county and we cannot disambiguate here. assumes county.
 
-  # Could add detection of other types like REGION, MSA, CSA, ZCTA, etc. ***
+  # Could add detection of other types like REGION, MSA, CSA, but not ZCTA, etc. ***
 
 
 
@@ -414,11 +405,22 @@ fipstype_acs = function (fips) {
 }
 ####################################### ######################################## #
 
+#' Get the SUMLEVEL code like "040" or "150" from the fipstype string like "state" or "blockgroup"
+#'
+#' @param ftype ignores case, vector of fipstype strings like "state", "county", "city", "tract", "blockgroup",
+#'
+#' @returns vector of summary levels
+#' @seealso [fipstype_from_sumlevel()]
+#'
+#' @export
+#'
 sumlevel_from_fipstype = function(ftype) {
 
   ## see https://www.census.gov/programs-surveys/acs/geography-acs/reference-materials.2023.html#list-tab-2123892609
   # ACS_2023_5-Year_Geocount file
   # https://www2.census.gov/programs-surveys/acs/geography/areas_published/ACS_2023_5-Year_Geocount.xlsx
+
+  ftype = tolower(ftype)
 
   sumlevel = rep(NA, length(ftype))
 
@@ -428,13 +430,13 @@ sumlevel_from_fipstype = function(ftype) {
   sumlevel[ftype %in% "tract"] <- "140"
   sumlevel[ftype %in% "blockgroup"] <- "150"
 
-  sumlevel[ftype %in% "REGION"] <- "20"
-  sumlevel[ftype %in% "American Indian Area/Alaska Native Area/Hawaiian Home Land"] <- "250"
-  sumlevel[ftype %in% "MSA"] <- "310"
-  sumlevel[ftype %in% "CSA"] <- "330"
-  sumlevel[ftype %in% "Urban Area"] <- "400"
-  sumlevel[ftype %in% "Congressional District"] <- "500"
-  sumlevel[ftype %in% "ZCTA"] <- "860"
+  sumlevel[ftype %in% tolower("REGION")] <- "20"
+  sumlevel[ftype %in% tolower("American Indian Area/Alaska Native Area/Hawaiian Home Land")] <- "250"
+  sumlevel[ftype %in% tolower("MSA")] <- "310"
+  sumlevel[ftype %in% tolower("CSA")] <- "330"
+  sumlevel[ftype %in% tolower("Urban Area")] <- "400"
+  sumlevel[ftype %in% tolower("Congressional District")] <- "500"
+  sumlevel[ftype %in% tolower("ZCTA")] <- "860"
   sumlevel[ftype %in% "block"] <- NA
 
   # 20 "REGION"
@@ -451,6 +453,15 @@ sumlevel_from_fipstype = function(ftype) {
 }
 ####################################### ######################################## #
 
+#' Convert SUMLEVEL codes like "040" or "150" to fipstype strings like "state" or "blockgroup"
+#'
+#' @param sumlevel vector of codes like "040" or "150" for state or blockgroup
+#'
+#' @returns vector of character strings like "state" or "county" corresponding to the sumlevel codes
+#' @seealso [sumlevel_from_fipstype()]
+#'
+#' @export
+#'
 fipstype_from_sumlevel = function(sumlevel) {
 
   x = rep(NA, length(sumlevel))

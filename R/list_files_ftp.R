@@ -8,6 +8,8 @@
 #'
 #' @return file names
 #'
+#' @keywords internal
+#'
 list_files_ftp <- function(url, credentials = "", sleep = NA, sort = FALSE, verbose = FALSE) {
   require(magrittr)
   # Do
@@ -39,6 +41,8 @@ list_files_ftp <- function(url, credentials = "", sleep = NA, sort = FALSE, verb
 #' @param verbose ?
 #'
 #' @return list of file names
+#'
+#' @keywords internal
 #'
 list_files_ftp_worker <- function(url, credentials, sleep, verbose) {
 

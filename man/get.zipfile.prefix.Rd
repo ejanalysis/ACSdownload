@@ -15,3 +15,4 @@ Get the first part of the zipfile name for the ACS 5-year summary file datafiles
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.datafile.prefix]{get.datafile.prefix()}}, \code{\link[=datafile]{datafile()}}, \code{\link[=geofile]{geofile()}}, \code{\link[=get.zipfile.prefix]{get.zipfile.prefix()}}
 }
+\keyword{internal}

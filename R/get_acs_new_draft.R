@@ -21,7 +21,7 @@
 #' @param output.path folder / path where to save the downloaded files
 #' @return list of data.frames, one per table requested
 #'
-#' @export
+#' @keywords internal
 #'
 get_acs_new_draft <- function(tables="B01001", end.year=2020, dataset='5', sumlevel=150, output.path = file.path('~', 'acsoutput') ) {
   # new format for 5yr summary file ACS

@@ -9,8 +9,10 @@
 #'   Valid years are limited.
 #'   Ignored if lookup.acs is specified, however. If they imply different years, the function stops with an error message.
 #' @return Returns a vector of one or more numbers stored as characters, each defining one sequence file, such as "0001".
-#' @seealso [get_acs_old()] and [acs::acs.lookup()] from the \pkg{acs} package, which does something related but is more flexible & robust. Also see [get_acs_old()] which uses this.
-#' @export
+#' @seealso [get_acs_old()] and  from the \pkg{acs} package, which does something related but is more flexible & robust. Also see [get_acs_old()] which uses this.
+#'
+#' @keywords internal
+#'
 which.seqfiles <- function(tables, lookup.acs, end.year = acsdefaultendyearhere) {
 
   validate.end.year(end.year)

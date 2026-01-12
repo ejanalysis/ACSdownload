@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ACSdownload</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,8 +35,7 @@
 
 
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -46,337 +45,56 @@
           <code><a href="ACSdownload.html">ACSdownload</a></code> <code><a href="ACSdownload.html">ACSdownload-package</a></code>
 
         </dt>
-        <dd>Obtain American Community Survey Summary File Data Tables from Census Bureau FTP Site</dd>
-      </dl><dl><dt>
+        <dd>Download American Community Survey (ACS) 5-year Data Tables from Census Bureau nationwide in bulk</dd>
+
+        <dt>
 
           <code><a href="acsdefaultendyearhere.html">acsdefaultendyearhere</a></code>
 
         </dt>
         <dd>The default end.year of 5yr ACS datasets this package uses in functions</dd>
-      </dl><dl><dt>
 
-          <code><a href="acsdefaultendyearhere_func.html">acsdefaultendyearhere_func()</a></code>
+        <dt>
 
-        </dt>
-        <dd>Earliest end.year available via this package</dd>
-      </dl><dl><dt>
-
-          <code><a href="acsfirstyearavailablehere.html">acsfirstyearavailablehere</a></code>
+          <code><a href="ejscreen_acs_tables.html">ejscreen_acs_tables</a></code>
 
         </dt>
-        <dd>The earliest end.year of 5yr ACS datasets this package handles</dd>
-      </dl><dl><dt>
+        <dd>tables needed for EJSCREEN ACS-based indicators as of EJSCREEN version 2.32 released 2024 and also for EJAM version 2.32.6.003 released 11/2025</dd>
 
-          <code><a href="clean.mystates.html">clean.mystates()</a></code>
+        <dt>
 
-        </dt>
-        <dd>Utility to Clean Names of States for get.acs</dd>
-      </dl><dl><dt>
-
-          <code><a href="clean.sumlevel.html">clean.sumlevel()</a></code>
+          <code><a href="fipstype_from_sumlevel.html">fipstype_from_sumlevel()</a></code>
 
         </dt>
-        <dd>Utility to Clean SUMLEVEL for get.acs</dd>
-      </dl><dl><dt>
+        <dd>Convert SUMLEVEL codes like "040" or "150" to fipstype strings like "state" or "blockgroup"</dd>
 
-          <code><a href="datafile.html">datafile()</a></code>
+        <dt>
 
-        </dt>
-        <dd>Get name(s) of data file(s) for ACS 5-year summary file data</dd>
-      </dl><dl><dt>
-
-          <code><a href="download.datafiles.html">download.datafiles()</a></code>
+          <code><a href="get_acs_new.html">get_acs_new()</a></code>
 
         </dt>
-        <dd>Download American Community Survey 5-yr data files</dd>
-      </dl><dl><dt>
+        <dd>newer way to get full USA ACS data by table and fips get the ACS 5year data for selected tables and fips or fipstype</dd>
 
-          <code><a href="download.geo.html">download.geo()</a></code>
+        <dt>
 
-        </dt>
-        <dd>Download GEO txt file(s) with geo information for ACS</dd>
-      </dl><dl><dt>
-
-          <code><a href="download.lookup.acs.html">download.lookup.acs()</a></code>
+          <code><a href="get_acs_old.html">get_acs_old()</a></code>
 
         </dt>
-        <dd>Download File with Information about ACS 5-Year Summary File Tables</dd>
-      </dl><dl><dt>
+        <dd>Older function to download Tables from American Community Survey (ACS) 5-year Summary File (before the acs2022 5yr data)</dd>
 
-          <code><a href="format_est_moe.html">format_est_moe()</a></code>
+        <dt>
 
-        </dt>
-        <dd>Reorder cols of estimates and MOE table</dd>
-      </dl><dl><dt>
-
-          <code><a href="format_for_acs_package.html">format_for_acs_package()</a></code>
+          <code><a href="sumlevel_from_fipstype.html">sumlevel_from_fipstype()</a></code>
 
         </dt>
-        <dd>Reformat ACS Data Obtained by <code><a href="../reference/get.acs.html">get.acs()</a></code> for Import to the acs Package</dd>
-      </dl><dl><dt>
+        <dd>Get the SUMLEVEL code like "040" or "150" from the fipstype string like "state" or "blockgroup"</dd>
 
-          <code><a href="geo.html">geo</a></code>
+        <dt>
 
-        </dt>
-        <dd>downloaded saved geographic information for 5-year summary file ACS dataset ending in given year</dd>
-      </dl><dl><dt>
-
-          <code><a href="geofile.html">geofile()</a></code>
+          <code><a href="url_acs_table.html">url_acs_table()</a></code>
 
         </dt>
-        <dd>Get name(s) of GEO txt file(s) with geo information for ACS</dd>
-      </dl><dl><dt>
-
-          <code><a href="geoformat2018.html">geoformat2018</a></code>
-
-        </dt>
-        <dd>geographic information for ACS dataset</dd>
-      </dl><dl><dt>
-
-          <code><a href="geoformat2019.html">geoformat2019</a></code>
-
-        </dt>
-        <dd>geographic information for ACS dataset</dd>
-      </dl><dl><dt>
-
-          <code><a href="geoformat2020.html">geoformat2020</a></code>
-
-        </dt>
-        <dd>geographic information for ACS dataset</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.acs.html">get.acs()</a></code>
-
-        </dt>
-        <dd>Download Tables from American Community Survey (ACS) 5-year Summary File</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.acs.all.html">get.acs.all()</a></code>
-
-        </dt>
-        <dd>get ACS summaryfile specified tables for entire USA, all blockgroups or all tracts</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.bg.html">get.bg()</a></code>
-
-        </dt>
-        <dd>Get just the Census block group part of existing ACS data</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.datafile.prefix.html">get.datafile.prefix()</a></code>
-
-        </dt>
-        <dd>Get first part of ACS datafile name.</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.field.info.html">get.field.info()</a></code>
-
-        </dt>
-        <dd>Get short and long field names etc for ACS tables</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.lookup.acs.html">get.lookup.acs()</a></code>
-
-        </dt>
-        <dd>Pick a year-specific table from among lookup.acs2022, etc.</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.lookup.file.name.html">get.lookup.file.name()</a></code>
-
-        </dt>
-        <dd>Get name of Census file with Sequence and Table Numbers for ACS 5-year summary file data</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.read.geo.html">get.read.geo()</a></code>
-
-        </dt>
-        <dd>Download (if necessary) and merge GEO files for ACS</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.table.info.html">get.table.info()</a></code>
-
-        </dt>
-        <dd>Get field names etc for ACS tables</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.table.info2.html">get.table.info2()</a></code>
-
-        </dt>
-        <dd>Get field names etc for ACS tables</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.tracts.html">get.tracts()</a></code>
-
-        </dt>
-        <dd>Get just the Census tracts part of existing ACS data</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.url.prefix.html">get.url.prefix()</a></code>
-
-        </dt>
-        <dd>Get URL prefix for folder(s) with ACS 5-year summary file data</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.url.prefix.lookup.table.html">get.url.prefix.lookup.table()</a></code>
-
-        </dt>
-        <dd>Get URL (without filename) for ACS 5-year summary file data</dd>
-      </dl><dl><dt>
-
-          <code><a href="get.zipfile.prefix.html">get.zipfile.prefix()</a></code>
-
-        </dt>
-        <dd>Get first part of ACS zip file name.</dd>
-      </dl><dl><dt>
-
-          <code><a href="getseqnumsviafilenames.html">getseqnumsviafilenames()</a></code>
-
-        </dt>
-        <dd>Infer Sequence file numbers based on ACS 5-yr filenames in folder</dd>
-      </dl><dl><dt>
-
-          <code><a href="getstatesviafilenames.html">getstatesviafilenames()</a></code>
-
-        </dt>
-        <dd>Infer US States based on ACS 5-yr filenames in folder</dd>
-      </dl><dl><dt>
-
-          <code><a href="gettablesviaseqnums.html">gettablesviaseqnums()</a></code>
-
-        </dt>
-        <dd>Look up ACS table IDs of tables in given sequence number files</dd>
-      </dl><dl><dt>
-
-          <code><a href="join.geo.to.tablist.html">join.geo.to.tablist()</a></code>
-
-        </dt>
-        <dd>Join US ACS data and US geo files on FIPS</dd>
-      </dl><dl><dt>
-
-          <code><a href="list_files_ftp.html">list_files_ftp()</a></code>
-
-        </dt>
-        <dd>list_files_ftp Attempt to get list of filenames on an FTP site</dd>
-      </dl><dl><dt>
-
-          <code><a href="list_files_ftp_worker.html">list_files_ftp_worker()</a></code>
-
-        </dt>
-        <dd>list_files_ftp_worker Attempt to get list of filenames on an FTP site. See list_files_ftp() Uses RCurl::getURL(url, dirlistonly = TRUE)</dd>
-      </dl><dl><dt>
-
-          <code><a href="lookup.acs.html">lookup.acs</a></code>
-
-        </dt>
-        <dd>ACS_5yr_Seq_Table_Number_Lookup.txt for ACS dataset</dd>
-      </dl><dl><dt>
-
-          <code><a href="lookup.acs2018.html">lookup.acs2018</a></code>
-
-        </dt>
-        <dd>ACS_5yr_Seq_Table_Number_Lookup.txt for ACS dataset</dd>
-      </dl><dl><dt>
-
-          <code><a href="lookup.acs2019.html">lookup.acs2019</a></code>
-
-        </dt>
-        <dd>ACS_5yr_Seq_Table_Number_Lookup.txt for ACS dataset</dd>
-      </dl><dl><dt>
-
-          <code><a href="lookup.acs2020.html">lookup.acs2020</a></code>
-
-        </dt>
-        <dd>ACS_5yr_Seq_Table_Number_Lookup.txt for ACS dataset</dd>
-      </dl><dl><dt>
-
-          <code><a href="lookup.acs2021.html">lookup.acs2021</a></code>
-
-        </dt>
-        <dd>ACS_5yr_Seq_Table_Number_Lookup.txt for ACS dataset</dd>
-      </dl><dl><dt>
-
-          <code><a href="lookup.acs2022.html">lookup.acs2022</a></code>
-
-        </dt>
-        <dd>ACS_5yr_Seq_Table_Number_Lookup.txt for ACS dataset</dd>
-      </dl><dl><dt>
-
-          <code><a href="merge_tables.html">merge_tables()</a></code>
-
-        </dt>
-        <dd>Concatenate several ACS data tables into one big table</dd>
-      </dl><dl><dt>
-
-          <code><a href="nhgis.html">nhgis()</a></code>
-
-        </dt>
-        <dd>Read and Parse NHGIS.org ACS Data Files and Codebooks - not tested or updated</dd>
-      </dl><dl><dt>
-
-          <code><a href="nhgisfind.html">nhgisfind()</a></code>
-
-        </dt>
-        <dd>Find NHGIS ACS Files on Disk</dd>
-      </dl><dl><dt>
-
-          <code><a href="nhgisfips.html">nhgisfips()</a></code>
-
-        </dt>
-        <dd>Assemble FIPS Code from State, County, Tract, Blockgroup Portions</dd>
-      </dl><dl><dt>
-
-          <code><a href="nhgisread.html">nhgisread()</a></code>
-
-        </dt>
-        <dd>Read NHGIS.org ACS Data Files and Codebooks</dd>
-      </dl><dl><dt>
-
-          <code><a href="nhgisreadcodebook.html">nhgisreadcodebook()</a></code>
-
-        </dt>
-        <dd>Read NHGIS.org ACS Codebook File</dd>
-      </dl><dl><dt>
-
-          <code><a href="read.concat.states.html">read.concat.states()</a></code>
-
-        </dt>
-        <dd>Read and concatenate State files of ACS data</dd>
-      </dl><dl><dt>
-
-          <code><a href="read.geo.html">read.geo()</a></code>
-
-        </dt>
-        <dd>Read and concatenate state geo files from Census ACS</dd>
-      </dl><dl><dt>
-
-          <code><a href="set.needed.html">set.needed()</a></code>
-
-        </dt>
-        <dd>Specify which ACS Variables are Needed</dd>
-      </dl><dl><dt>
-
-          <code><a href="unzip.datafiles.html">unzip.datafiles()</a></code>
-
-        </dt>
-        <dd>Unzip ACS datafile per state, downloading missing ones first</dd>
-      </dl><dl><dt>
-
-          <code><a href="url.to.find.zipfile.html">url.to.find.zipfile()</a></code>
-
-        </dt>
-        <dd>Get URL(s) for FTP site folder(s) with ACS 5-year summary file data</dd>
-      </dl><dl><dt>
-
-          <code><a href="which.seqfiles.html">which.seqfiles()</a></code>
-
-        </dt>
-        <dd>Find Which Sequence Files Contain Given ACS Table(s)</dd>
-      </dl><dl><dt>
-
-          <code><a href="zipfile.html">zipfile()</a></code>
-
-        </dt>
-        <dd>Get name(s) of zip file(s) for ACS 5-year summary file data</dd>
+        <dd>get URL(s) of ACS 5-year table(s) for general info or for FIPS code(s) (blockgroup or tract) at census.gov See <code><a href="https://ejanalysis.github.io/EJAM/reference/url_acs_table_info.html" class="external-link">EJAM::url_acs_table_info()</a></code> for a more likely to be updated version</dd>
       </dl></div>
   </main></div>
 
@@ -386,7 +104,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

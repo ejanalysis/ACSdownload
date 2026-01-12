@@ -4,7 +4,9 @@
 #' @param my.list.of.tables Required list of data tables from prior steps in [get_acs_old()]
 #' @return Returns one big data.frame with all columns of all input tables
 #' @seealso [get_acs_old()]
-#' @export
+#'
+#' @keywords internal
+#'
 merge_tables <- function(my.list.of.tables) {
   # fields already removed:
   # "STATE", "COUNTY", "TRACT", "BLKGRP", "LOGRECNO"
@@ -15,7 +17,7 @@ merge_tables <- function(my.list.of.tables) {
   merged.tables <-
     my.list.of.tables[[1]][order(my.list.of.tables[[1]]$KEY), dupecols]
   keycount <- length(merged.tables$KEY)
-  
+
   for (i in 1:length(my.list.of.tables)) {
     if (length(my.list.of.tables[[i]]$KEY) != keycount) {
       stop("Table lengths don't match")

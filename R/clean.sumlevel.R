@@ -10,7 +10,10 @@
 #' @param sumlevel Character vector (1+ elements), optional, 'bg' by default. See details above.
 #' @return Returns 'both', 'tract', or 'bg' (or stops with error if cannot interpret sumlevel input)
 #' @seealso [get_acs_old()] which uses this
-#' @export
+#'
+#' @keywords internal
+#'
+#'
 clean.sumlevel <- function(sumlevel = 'bg') {
   bgfound <- 150 %in% sumlevel |
     any(grepl(
@@ -28,7 +31,7 @@ clean.sumlevel <- function(sumlevel = 'bg') {
       x = sumlevel,
       ignore.case = TRUE
     ))
-  
+
   tractfound <-
     140 %in% sumlevel |
     any(grepl(
@@ -36,7 +39,7 @@ clean.sumlevel <- function(sumlevel = 'bg') {
       x = sumlevel,
       ignore.case = TRUE
     ))
-  
+
   if (any(grepl(
     pattern = 'both',
     x = sumlevel,
@@ -45,7 +48,7 @@ clean.sumlevel <- function(sumlevel = 'bg') {
     bgfound <- TRUE
     tractfound <- TRUE
   }
-  
+
   if (tractfound &  bgfound) {
     sumlevel <- 'both'
   }
@@ -59,6 +62,6 @@ clean.sumlevel <- function(sumlevel = 'bg') {
       !bgfound) {
     stop('Invalid sumlevel specifying resolution needed is tract, bg, or both')
   }
-  
+
   return(sumlevel)
 }

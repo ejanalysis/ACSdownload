@@ -25,3 +25,4 @@ browseURL(get.url.prefix(2022))
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=url.to.find.zipfile]{url.to.find.zipfile()}}, \code{\link[=download.geo]{download.geo()}}
 }
+\keyword{internal}

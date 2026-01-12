@@ -1,13 +1,13 @@
 #' @name geo
 #' @docType data
 #' @title downloaded saved geographic information for 5-year summary file ACS dataset ending in given year
-#' @description See [get.read.geo()]. This data set is a 
+#' @description See [get.read.geo()]. This data set is a
 #'   geographic identifier file from the American Community Survey (ACS) 5-year summary file.
 #' @source <http://www2.census.gov/programs-surveys/acs>
-#' @keywords datasets
+#' @keywords datasets internal
 #' @format A data.frame
 #' `
-#' 'data.frame':	e.g., maybe 294334 obs. of 5  variables: 
+#' 'data.frame':	e.g., maybe 294334 obs. of 5  variables:
 #'  $ STUSAB  : chr  "AL" "AL" "AL" "AL" ...
 #'  $ SUMLEVEL: chr  "140" "140" "140" "140" ...
 #'  $ GEOID   : chr  "14000US01001020100" "14000US01001020200" "14000US01001020300" "14000US01001020400" ...

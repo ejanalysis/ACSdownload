@@ -56,7 +56,6 @@
 #'   #  "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"
 #'   ```
 #'
-#' @seealso [acs::acs.lookup()] which does something similar but is more flexible & robust.
 #'   Also see [get.lookup.acs()] which does the same without downloading file -- uses the copy in data()
 #'   Also see `data(lookup.acs2013)` and similar data for other years.
 #'   Also see [get_acs_old()], [get.lookup.file.name()], [get.url.prefix.lookup.table()]
@@ -64,6 +63,8 @@
 #'  \dontrun{
 #'  lookup.acs <- download.lookup.acs(2022)
 #'  }
+#'
+#' @keywords internal
 #'
 download.lookup.acs <- function(end.year = acsdefaultendyearhere,
                                 folder = NULL,

@@ -1,10 +1,10 @@
-pandoc: '3.4'
-pkgdown: 2.1.3
+pandoc: 3.6.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-08-20T03:14Z
+last_built: 2026-01-12T04:31Z
 urls:
-  reference: https://ejanalysis.github.io/ACSdownload/, https://github.com/ejanalysis/ACSdownload,
+  reference: https://github.com/ejanalysis/ACSdownload, https://ejanalysis.github.io/ACSdownload/,
     https://ejanalysis.org/reference
-  article: https://ejanalysis.github.io/ACSdownload/, https://github.com/ejanalysis/ACSdownload,
+  article: https://github.com/ejanalysis/ACSdownload, https://ejanalysis.github.io/ACSdownload/,
     https://ejanalysis.org/articles

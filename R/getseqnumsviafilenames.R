@@ -6,6 +6,8 @@
 #' @return Returns a character vector of unique sequence file numbers
 #' @seealso [read.concat.states()] which uses this
 #'
+#' @keywords internal
+#'
 getseqnumsviafilenames <- function(folder = getwd()) {
 
   # infer nums based on what filenames are found in folder

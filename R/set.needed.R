@@ -26,7 +26,7 @@
 #' @return Returns data.frame of info on which variables are needed from each table, much like annotated version of lookup.acs.
 #' @seealso [get_acs_old()] which uses this
 #'
-#' @export
+#' @keywords internal
 #'
 set.needed <- function(tables,
            lookup.acs,

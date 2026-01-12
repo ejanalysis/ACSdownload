@@ -9,6 +9,8 @@
 #' @seealso [get_acs_old()], [url.to.find.zipfile()], [download.geo()]
 #' @examples browseURL(get.url.prefix(2022))
 #'
+#' @keywords internal
+#'
 get.url.prefix <- function(end.year = acsdefaultendyearhere) {
 
   validate.end.year(end.year)

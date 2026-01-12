@@ -4,5 +4,5 @@
 
 #' @name ejscreen_acs_tables
 #' @docType data
-#' @title tables needed for EJSCREEN ACS-based indicators as of EJSCREEN version 2.32 released 2024 and also for EJAM version 2.32.003 released 11/2025
+#' @title tables needed for EJSCREEN ACS-based indicators as of EJSCREEN version 2.32 released 2024 and also for EJAM version 2.32.6.003 released 11/2025
 'ejscreen_acs_tables'

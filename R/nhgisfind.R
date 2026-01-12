@@ -15,12 +15,14 @@
 #' @return A named list with datafiles= a vector of one or more filenames (estimates and also MOE files) and
 #'   codebooks= a vector of one or more filenames. The function also prints the information unless silent=TRUE.
 #' @seealso [nhgis()], [nhgisread()]
-#' @export
+#'
+#' @keywords internal
+#'
 nhgisfind <- function(folder = getwd(), silent = FALSE) {
   datafiles 		<- list.files(path = folder, pattern = "^nhgis.*csv$")
   codebookfiles <-
     list.files(path = folder, pattern = "^nhgis.*codebook\\.txt$")
-  
+
   if (!silent) {
     cat("-----------------------\n")
     cat("Looking for NHGIS files in \n")
@@ -50,6 +52,6 @@ nhgisfind <- function(folder = getwd(), silent = FALSE) {
       cat("-----------------------\n")
     }
   }
-  
+
   return(list(datafiles = datafiles, codebooks = codebookfiles))
 }

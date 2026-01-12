@@ -12,6 +12,8 @@
 #' @return Side effect is unzipping file on disk (unless testing=TRUE)
 #' @seealso [get_acs_old()]
 #'
+#' @keywords internal
+#'
 unzip.datafiles <- function(tables,
                             mystates,
                             folder = getwd(),

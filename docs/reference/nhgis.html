@@ -11,7 +11,7 @@ Needs to be updated for 2022 formats, etc."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">ACSdownload</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -103,13 +103,12 @@ IPUMS NHGIS, University of Minnesota, www.nhgis.org</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="nhgisread.html">nhgisread()</a></code> used by this function. Also, for other ways to obtain ACS data see <code><a href="get.acs.html">get.acs()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="nhgisread.html">nhgisread()</a></code> used by this function. Also, for other ways to obtain ACS data see <code><a href="get_acs_old.html">get_acs_old()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span> </span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span>  <span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span>
 <span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">nhgis</span><span class="op">(</span>data.dir <span class="op">=</span> <span class="st">'~/Desktop/nhgis0009_csv'</span><span class="op">)</span></span>
 <span>  <span class="co"># save state data as csv</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">states</span><span class="op">$</span><span class="va">data</span>, file<span class="op">=</span><span class="st">'statedata.csv'</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -126,7 +125,8 @@ IPUMS NHGIS, University of Minnesota, www.nhgis.org</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">STATE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="co"># How many counties have population &gt; 1 million, for each State?</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">dat</span><span class="op">$</span><span class="va">STATE</span><span class="op">[</span><span class="va">dat</span><span class="op">$</span><span class="va">B01001.001</span> <span class="op">&gt;</span> <span class="fl">1E6</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="co"># }</span></span></code></pre></div>
+<span>  <span class="op">}</span> <span class="co"># }</span></span>
+<span></span></code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
@@ -137,7 +137,7 @@ IPUMS NHGIS, University of Minnesota, www.nhgis.org</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

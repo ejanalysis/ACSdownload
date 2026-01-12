@@ -81,3 +81,4 @@ the TIGER/Line Shapefiles.
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}} which uses this, and \code{\link[=download.geo]{download.geo()}}
 }
+\keyword{internal}

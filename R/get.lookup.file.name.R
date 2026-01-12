@@ -7,7 +7,7 @@
 #' @return Returns character element that is name of file such as "Sequence_Number_and_Table_Number_Lookup.txt"
 #' @seealso [get_acs_old()], [get.lookup.acs()], [get.url.prefix.lookup.table()]. Also see `data(lookup.acs)`.
 #'
-#' @export
+#' @keywords internal
 #'
 get.lookup.file.name	<- function(end.year = acsdefaultendyearhere) {
 

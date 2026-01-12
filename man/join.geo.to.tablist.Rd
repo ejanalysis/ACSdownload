@@ -39,3 +39,4 @@ Read the processed csv files of estimates and MOE (margin of error) for American
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}} and \code{\link[=get.read.geo]{get.read.geo()}}
 }
+\keyword{internal}

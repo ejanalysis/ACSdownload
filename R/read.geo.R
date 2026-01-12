@@ -23,7 +23,9 @@
 #'   geo <- read.geo( c("dc", "de") )
 #'  }
 #' @seealso [get_acs_old()], [download.geo()]
-#' @export
+#'
+#' @keywords internal
+#'
 read.geo <-
   function(mystates,
            folder = getwd(),

@@ -17,6 +17,7 @@
 #'   10      B01001           2                                                       Male: B01001.002                                               Male\cr
 #' @seealso [get_acs_old()], [get.table.info()]
 #'
+#' @keywords internal
 #'
 get.table.info2 <-  function(tables,
            end.year = acsdefaultendyearhere,

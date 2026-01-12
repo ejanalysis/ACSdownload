@@ -61,7 +61,9 @@
 #'   # How many counties have population > 1 million, for each State?
 #'   cbind(sort(table(dat$STATE[dat$B01001.001 > 1E6])))
 #'   }
-#' @export
+#'
+#' @keywords internal
+#'
 nhgis <- function(base.path=getwd(), code.dir=file.path(base.path, 'nhgiscode'), data.dir=file.path(base.path, 'nhgisdata'), silent=FALSE, savefiles=FALSE) {
 
   warning('work in progress - not fully tested')

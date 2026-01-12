@@ -33,3 +33,4 @@ Minnesota Population Center. National Historical Geographic Information System: 
 \seealso{
 \code{\link[=nhgis]{nhgis()}}, \code{\link[=nhgisread]{nhgisread()}}
 }
+\keyword{internal}

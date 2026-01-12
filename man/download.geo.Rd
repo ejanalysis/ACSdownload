@@ -58,3 +58,4 @@ Key functions used:
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}} which uses this, and \code{\link[=get.read.geo]{get.read.geo()}}
 }
+\keyword{internal}

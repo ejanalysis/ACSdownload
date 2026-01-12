@@ -22,3 +22,4 @@ Returns name(s) of data file(s) based on state(s), a sequence file number, and e
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}}
 }
+\keyword{internal}

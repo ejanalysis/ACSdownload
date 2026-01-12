@@ -24,10 +24,12 @@ namely which sequence files on the FTP site contain which tables and which varia
 
 }
 \seealso{
-\code{\link[=get.table.info]{get.table.info()}} and \code{\link[=get.field.info]{get.field.info()}}. \cr
-Also see \code{\link[acs:acs.lookup]{acs::acs.lookup()}} which does something similar but is more flexible & robust.
-Also see \code{\link[=download.lookup.acs]{download.lookup.acs()}} to download the file from the Census FTP site.
-Also see \link{lookup.acs} \link{lookup.acs2021} and similar data for other years.
-Also see \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}
-\code{\link[tidycensus:load_variables]{tidycensus::load_variables()}}
+\itemize{
+\item \code{\link[=get.table.info]{get.table.info()}} and \code{\link[=get.field.info]{get.field.info()}}.
+\item Also see \code{\link[tidycensus:load_variables]{tidycensus::load_variables()}} from the \href{https://walker-data.com/tidycensus/}{tidycensus package} for an alternative way to get ACS data and variable info.
+\item Also see \code{\link[=download.lookup.acs]{download.lookup.acs()}} to download the file from the Census FTP site.
+\item Also see \link{lookup.acs} \link{lookup.acs2021} and similar data for other years.
+\item Also see \code{\link[=get_acs_new]{get_acs_new()}}, \code{\link[=get.lookup.file.name]{get.lookup.file.name()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}
 }
+}
+\keyword{internal}

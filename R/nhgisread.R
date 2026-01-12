@@ -7,7 +7,9 @@
 #' @return Returns a named list: data, contextfields, fields, tables, geolevel, years, dataset
 #' @seealso  [nhgis()] which uses this, [nhgisreadcodebook()] for reading codebook files,
 #'   [get_acs_old()], [get.datafile.prefix()], [datafile()], [geofile()], [get.zipfile.prefix()]
-#' @export
+#'
+#' @keywords internal
+#'
 nhgisread <-
   function(datafile,
            codebookfile = gsub("\\.csv", "_codebook.txt", datafile),
@@ -15,7 +17,7 @@ nhgisread <-
     ################################### #
     #	FUNCTION TO READ NHGIS ACS FILE
     ################################### #
-    
+
     ############### #
     #	R CODE TO PARSE ACS BLOCKGROUP DATA FILES DOWNLOADED FROM NHGIS.ORG
     #	Log in with an account at
@@ -26,7 +28,7 @@ nhgisread <-
     # Research using NHGIS data should cite it as:
     # Minnesota Population Center. National Historical Geographic Information System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
     ############### #
-    
+
     # NOTE THAT A BLANK ENTRY IS A JAM VALUE, and that will be read here as NA.
     #Users should be aware that NHGIS has modfied the original format of the ACS data
     #to replace "." jam values with blanks for files in the comma delimited (.csv)
@@ -35,7 +37,7 @@ nhgisread <-
     #Users interested in obtaining the original "." values should request data in
     #the fixed width format when finalizing their data extracts.
     #Additional information on jam values can be found within the 2012 ACS technical documentation.
-    
+
     ################################### #
     #	NOT IMPLEMENTED:
     #	Interactive selection of directory only works on windows, (or need x11 for mac to do this)
@@ -46,12 +48,12 @@ nhgisread <-
     #	setwd(datadir)
     #}
     ################################### #
-    
+
     #This function is not vectorized -- could later recode to handle multiple estimates files in one function call.
     #for (datafile in datafiles) {
     # but it can handle datafile that is vector of 2 matching files, estimates and MOE
-    
-    
+
+
     # The 20105 ACS summary file data provided by NHGIS had estimates and MOEs combined into a single file
     #	(per selected resolution like tract, or block group).
     # The 20115 or 20135 ACS summary file data provided by NHGIS has estimates and MOEs in 2 separate files
@@ -60,8 +62,8 @@ nhgisread <-
     # nhgis function passes what nhgisfind found, one summarylevel at a time (e.g. county), so
     # nhgisread has been passed a datafile name that might be one file (combined E and M in 1 file, or just one of those if other is missing)
     # or might be two files, the E file and the M file.
-    
-    
+
+
     datafile.E <- grep("E\\.csv", datafile, value = TRUE)
     datafile.M <- grep("M\\.csv", datafile, value = TRUE)
     # presume any other filename passed here is a combination file with E and M in one file
@@ -71,11 +73,11 @@ nhgisread <-
     codebookfile.M <-  grep('M_codebook', codebookfile, value = TRUE)
     codebookfile.combo <-
       codebookfile[!(codebookfile %in% c(codebookfile.E, codebookfile.M))]
-    
+
     ################################### #
     #	CHECK FOR MISSING/BAD FOLDER OR FILENAMES, etc.
     ################################### #
-    
+
     if (!file.exists(folder)) {
       stop("Folder ", folder, " not found")
     }
@@ -85,7 +87,7 @@ nhgisread <-
     if (any(!file.exists(file.path(folder, codebookfile)))) {
       stop(paste("Codebook file(s) ", codebookfile, " not found in ", folder))
     }
-    
+
     if (length(datafile.E) > 1) {
       stop('Cannot read more than one estimates file at a time - nhgisread is not vectorized')
     }
@@ -110,7 +112,7 @@ nhgisread <-
         'Cannot read more than one combined Est/MOE codebook file at a time - nhgisread is not vectorized'
       )
     }
-    
+
     if (length(datafile.E) > 0) {
       Efile <-
         TRUE # an Estimates-only file exists and name was passed here (was passed here with or without MOE filename also)
@@ -123,7 +125,7 @@ nhgisread <-
     } else {
       Efile <- FALSE
     }
-    
+
     if (length(datafile.M) > 0) {
       Mfile <-
         TRUE # an MOE-only file exists and name was passed here (with or without its Estimates filename as well)
@@ -136,7 +138,7 @@ nhgisread <-
     } else {
       Mfile <- FALSE
     }
-    
+
     if (Efile & Mfile) {
       # ensure the two filenames are for the same dataset
       if (!(datafile.E == gsub("M\\.csv", "E\\.csv", datafile.E))) {
@@ -148,20 +150,20 @@ nhgisread <-
     } else {
       getting.EM <- FALSE
     }
-    
+
     if (length(datafile.combo) > 0) {
       # there seems to be a combined Estimates/MOE file here
       getting.combo <- TRUE
     } else {
       getting.combo <- FALSE
     }
-    
+
     # Warnings about other combinations are at end of function.
-    
+
     ############## #
     #	START READING FILES
     ############## #
-    
+
     cat("Trying to read these specified files:")
     cat("\n")
     cat(paste("Datafile: ", datafile.E, datafile.M, datafile.combo, sep =
@@ -179,25 +181,25 @@ nhgisread <-
     cat("\n")
     #print(Sys.time())
     cat("Reading datafile...\n")
-    
+
     ############### #
     #	IMPORT ACS DATA FROM DOWNLOADED CSV FILE(S)
     ############### #
-    
+
     # Load R package Hmisc if using csv.get() to retain labels on fields
     # require(Hmisc)
     # acs <- csv.get(datafile, as.is=TRUE)
     # or just use read.csv()
-    
+
     if (Efile) {
       acs <- read.csv(file.path(folder, datafile.E), as.is = TRUE)
     }
-    
+
     if (Mfile & !getting.EM) {
       # may not ever hit this case - MOE but not estimates
       acs <- read.csv(file.path(folder, datafile.M), as.is = TRUE)
     }
-    
+
     if (getting.EM)  {
       # Read the corresponding Margin of Error file and add its unique columns to the Estimates file.
       cat("and also reading the matching MOE file\n")
@@ -211,15 +213,15 @@ nhgisread <-
       acs <-
         acs[match(acs$GISJOIN, orig.order),] # put back in original order just in case merge caused problems
     }
-    
+
     #print(Sys.time())
     cat("Done reading datafile(s)")
     cat("\n")
     cat("----------------------")
     cat("\n")
-    
+
     ############################################################################################### #
-    
+
     ############### #
     #	READ CODEBOOK -- Don't care which codebook file is used?
     cat('filename of codebook to read now: ', codebookfile[1])
@@ -229,10 +231,10 @@ nhgisread <-
     }
     # will return table called varnames that has old, new, and long versions of estimate and MOE fields
     varnames <- x$fields
-    
+
     # **** assumes they are in the correct sequence & uses new names (e.g., C01001.001) *****
     names(acs)[names(acs) %in% varnames$old] <- varnames$new
-    
+
     #  also return  the geo/other columns not just estimates and MOE fields, and other info from nhgisreadcodebook
     tables <- x$tables
     contextfields <- x$contextfields
@@ -240,13 +242,13 @@ nhgisread <-
       x$geolevel  # this assumes a file has only one geolevel in it ******
     years		<- x$years
     dataset		<- x$dataset
-    
+
     ############################################################################################### #
-    
+
     ########### #
     #	PRINT SUMMARY RESULTS
     ########### #
-    
+
     cat("----------------------")
     cat("\n")
     #cat("Variables found in codebook:\n")
@@ -271,12 +273,12 @@ nhgisread <-
     #cbind(table(acs$STATE))
     cat("----------------------")
     cat("\n")
-    
+
     #	Note one datafile and one codebook may contain >1 Census table.
-    
+
     #could later recode to handle multiple estimates files in one function call, etc.
     #} # end loop over multiple datafiles (if >1)
-    
+
     #	CORRESPONDS TO WHAT nhgisreadcodebook() RETURNS
     return(
       list(
@@ -289,6 +291,6 @@ nhgisread <-
         dataset = dataset
       )
     )
-    
+
     #unique(gsub(".[[:digit:]]+$", "", varnames$new))
   }

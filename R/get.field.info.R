@@ -26,6 +26,8 @@
 #'   )
 #' }
 #'
+#' @keywords internal
+#'
 get.field.info <-  function(tables,
                             end.year = acsdefaultendyearhere,
                             table.info.only = FALSE,

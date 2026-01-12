@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Obtain American Community Survey Summary File Data Tables from Census Bureau FTP Site (for EJ analysis, etc.) • ACSdownload</title>
+<title>Download American Community Survey (ACS) 5-year Data Tables from Census Bureau nationwide in bulk • ACSdownload</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Obtain American Community Survey Summary File Data Tables from Census Bureau FTP Site (for EJ analysis, etc.)">
-<meta name="description" content="This R package helps you download and parse raw data from the Census Bureau American Community Survey 5-year Summary Files, providing demographic data at the block and tract levels of resolution. You can obtain data from the entire USA all at once using this package, for one or more tables.">
-<meta property="og:description" content="This R package helps you download and parse raw data from the Census Bureau American Community Survey 5-year Summary Files, providing demographic data at the block and tract levels of resolution. You can obtain data from the entire USA all at once using this package, for one or more tables.">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Download American Community Survey (ACS) 5-year Data Tables from Census Bureau nationwide in bulk">
+<meta name="description" content="Download and parse raw data from the Census Bureau American Community Survey (ACS) 5-year survey, to get demographic data in bulk (without relying on the API). You can obtain data from the entire USA all at once (or selected FIPS), for one or more tables. This package is focused on blockgroup and tract levels of resolution.">
+<meta property="og:description" content="Download and parse raw data from the Census Bureau American Community Survey (ACS) 5-year survey, to get demographic data in bulk (without relying on the API). You can obtain data from the entire USA all at once (or selected FIPS), for one or more tables. This package is focused on blockgroup and tract levels of resolution.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">ACSdownload</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,8 +48,8 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="acsdownload-r-package">ACSdownload R Package<a class="anchor" aria-label="anchor" href="#acsdownload-r-package"></a>
 </h1></div>
-<p>The ACSdownload package for R has functions helping to download and parse raw data files from the United States Census Bureau dataset called the American Community Survey (ACS) 5-year summary file. In particular, this package allows you to obtain all of the block group and tract-level data for any or all US States/DC/PR, rather than one State or one County at a time, for specified variables in specified tables. In contrast, other tools such as the acs package tend to provide more limited subsets such as one US County or State at a time, when working with block group or tract resolution tables, and/or require you obtain a key from Census.</p>
-<p>Key functions include <code><a href="reference/get.acs.html">get.acs()</a></code> to download and parse specified data, and various helper functions.</p>
+<p>The ACSdownload package for R has functions helping to download and parse raw data files from the United States Census Bureau dataset called the American Community Survey (ACS) 5-year summary file. In particular, this package allows you to obtain all of the block group and tract-level data for any or all US States/DC/PR, rather than one State or one County at a time, for specified variables in specified tables. In contrast, other tools such as the tidycensus package tend to use Census API requests and provide more limited subsets such as one US County or State at a time, when working with block group or tract resolution tables, and require you obtain a key from Census.</p>
+<p>Key functions include <code><a href="reference/get_acs_new.html">get_acs_new()</a></code> to download and parse specified data, and various helper functions.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -111,7 +111,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

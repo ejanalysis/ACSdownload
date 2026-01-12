@@ -6,6 +6,8 @@
 #'   "https://www2.census.gov/programs-surveys/acs/summary_file/2022/table-based-SF/documentation/"
 #' @seealso [get_acs_old()], [get.lookup.acs()], [get.lookup.file.name()]
 #'
+#' @keywords internal
+#'
 get.url.prefix.lookup.table	<- function(end.year) {
 
   validate.end.year(end.year)

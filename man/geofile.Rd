@@ -22,3 +22,4 @@ That geo file can be used to join data file(s) to FIPS/GEOID/NAME/SUMLEVEL/CKEY.
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}} and \code{\link[=download.geo]{download.geo()}} which uses this
 }
+\keyword{internal}

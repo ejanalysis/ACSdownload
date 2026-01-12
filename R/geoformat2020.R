@@ -46,7 +46,7 @@
 #'  <https://www.census.gov/programs-surveys/acs/library/handbooks/geography.html>
 #'  <https://www.census.gov/programs-surveys/acs/data/data-via-ftp.html>
 #'  <https://www2.census.gov/programs-surveys/acs/summary_file/2020/data/5_year_entire_sf/2020_ACS_Geography_Files.zip>
-#' @keywords datasets
+#' @keywords datasets internal
 #' @format A data.frame
 #'  \preformatted{
 #'  'data.frame':	53 obs. of  5 variables:  (at least for 2019 version)

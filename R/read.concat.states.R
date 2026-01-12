@@ -20,7 +20,9 @@
 #' @param dt Optional logical, TRUE by default, specifies whether data.table::fread should be used instead of read.csv
 #' @return Returns a list of data.frames, where each element of the list is one ACS table, such as table B01001.
 #' @seealso [get_acs_old()]
-#' @export
+#'
+#' @keywords internal
+#'
 read.concat.states <-
   function(tables,
            mystates,

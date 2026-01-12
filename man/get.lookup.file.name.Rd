@@ -20,3 +20,4 @@ sequence numbers (file numbers) and table numbers for data in the American Commu
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.lookup.acs]{get.lookup.acs()}}, \code{\link[=get.url.prefix.lookup.table]{get.url.prefix.lookup.table()}}. Also see \code{data(lookup.acs)}.
 }
+\keyword{internal}

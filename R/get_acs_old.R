@@ -1,7 +1,7 @@
 
 #' @title Older function to download Tables from American Community Survey (ACS) 5-year Summary File (before the acs2022 5yr data)
 #'
-#' @description Now see newer get_acs_new() that will try to use new format for 5yr summary file ACS
+#' @description Now see newer [get_acs_new()] that will try to use new format for 5yr summary file ACS
 #'
 #' @details
 #'
@@ -73,8 +73,6 @@
 #' @param new.geo Default is TRUE. If FALSE, just uses existing downloaded geo file if possible. If TRUE, forced to download geo file even if already done previously.
 #' @param write.files Default is FALSE, but if TRUE then data-related csv files are saved locally -- Saves longnames, full fieldnames as csv file, in working directory.
 #' @param save.files Default is FALSE, but if TRUE then various intermediate image files are saved as .RData files locally in working directory.
-#' @param write.acspkg Default is FALSE. If TRUE, saves csv file of tracts and file of block groups, for each of the `tables`,
-#'   in a format that the Census Bureau American Fact Finder provides as downloadable tables. That format can be easily read in by the very useful \pkg{acs} package.
 #' @param testing Default is FALSE, but if TRUE more information is shown on progress, using cat() and while downloading, and more files (csv) are saved in working directory. But see silent parameter.
 #' @param noEditOnMac FALSE by default. If TRUE, do not pause to allow edit() to define which variables needed from each table,
 #'   when on Mac OSX, even if vars=TRUE. Allows you to avoid problem in RStudio if X11 not installed.
@@ -100,9 +98,8 @@
 #'  $ longname2      : chr  "Total" "Male" "Under5years" "5to9years" ...
 #'  $ longname.unique: chr  "Total:|SEX BY AGE" "Male:|SEX BY AGE" "Under 5 years|SEX BY AGE" "5 to 9 years|SEX BY AGE" ...
 #'  }
-#' @seealso [acs::acs] package, which allows you to download and work with ACS data (using the API and your own key).
-#'    To get the tables and variables used in EJSCREEN, see [ejscreen.download][ejscreen::ejscreen.download].
-#'    Also see [nhgis()] which parses any files manually downloaded from <NHGIS.org>
+#' @seealso [get_acs_new()] for newer code. Also note [tidycensus package](https://walker-data.com/tidycensus/), which allows you to download and work with ACS data (using the API and your own key).
+#'    Regarding the ACS-derived variables used in EJSCREEN, see the [EJAM package](https://ejanalysis.com/ejam-code).
 #'
 #' @examples
 #'    ## ENTIRE USA -- DOWNLOAD AND PARSE --
@@ -123,9 +120,9 @@
 #'             paste(mytables, collapse= "%20"), "&g=", geos, "&y=", yr)
 #'     # browseURL(myurl)
 #'
-#'   t( get.table.info("B01001", end.year = acsdefaultendyearhere) )
-#'   t( get.table.info(c("B17001", "C17002") ) )
-#'   get.field.info("C17002")
+#'   t( ACSdownload:::get.table.info("B01001", end.year = acsdefaultendyearhere) )
+#'   t( ACSdownload:::get.table.info(c("B17001", "C17002") ) )
+#'   ACSdownload:::get.field.info("C17002")
 #'   ##### Data for just DC & DE, just two tables:
 #'   outsmall <- get_acs_old(tables = c("B01001", "C17002"), mystates=c("dc","de"),
 #'    end.year = acsdefaultendyearhere, base.path = "~/Downloads",
@@ -220,7 +217,6 @@
 #' OTHER SOURCES include
 #'
 #'  - [tidycensus::tidycensus()] package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
-#'  - [acs::acs()] package for R - uses API, requires a key, very useful for modest numbers of Census units rather than every block group in US
 #'  - http://www.NHGIS.org - (and see [nhgis()]) very useful for block group (or tract/county/state/US) datasets
 #'  - [DataFerrett](http://dataferrett.census.gov/AboutDatasets/ACS.html) -- not all tracts in US at once
 #'  - [American Fact Finder](http://www.census.gov/acs/www/data/data-tables-and-tools/american-factfinder/) (not block groups for ACS SF, and the tracts are not for the whole US at once)
@@ -242,7 +238,7 @@ get_acs_old <- function(tables = 'B01001',
            new.geo = TRUE,
            write.files = FALSE,
            save.files = FALSE,
-           write.acspkg = FALSE,
+
            testing = FALSE,
            noEditOnMac = FALSE,
            silent = FALSE,
@@ -802,45 +798,6 @@ get_acs_old <- function(tables = 'B01001',
     if (!nocat) {
       cat(as.character(Sys.time()), '\n')
       cat("################ DONE ############## \n")
-    }
-
-    # Format for acs package here:
-    #print(names(alltab))
-    #print(str(alltab))
-    if (write.acspkg) {
-      if (!nocat) {
-        cat(as.character(Sys.time()), ' ')
-        cat('Started to save tables as files formatted for use in the acs package \n')
-      }
-      for (this.tab in names(alltab)) {
-        if (!nocat) {
-          cat('      ', this.tab, '\n')
-        }
-        acs.this.tab <- format_for_acs_package(alltab[[this.tab]])
-        #         head( format_for_acs_package( alltab[[2]]) )
-        filename.tracts <-
-          paste("ACS_",
-                substr(end.year, 3, 4),
-                "_5YR_",
-                this.tab,
-                "_with_ann.csv",
-                sep = "")
-        filename.bg     <-
-          paste("ACS_",
-                substr(end.year, 3, 4),
-                "_5YR_",
-                this.tab,
-                "_with_ann_BG.csv",
-                sep = "")
-        write.csv(acs.this.tab[acs.this.tab$SUMLEVEL == "140"], row.names =
-                    FALSE, file = filename.tracts)
-        write.csv(acs.this.tab[acs.this.tab$SUMLEVEL == "150"], row.names =
-                    FALSE, file = filename.bg)
-        if (!nocat) {
-          cat(as.character(Sys.time()), ' ')
-          cat('Saved tracts files formatted for use in the acs package \n')
-        }
-      }
     }
 
     # Return block group or tracts file (or both) as list, along with table.info.best which has fieldnames etc.

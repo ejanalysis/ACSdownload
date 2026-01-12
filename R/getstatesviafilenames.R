@@ -6,6 +6,8 @@
 #' @return Returns a vector of unique upper case US State abbreviations
 #' @seealso [read.concat.states()] which uses this
 #'
+#' @keywords internal
+#'
 getstatesviafilenames <- function(folder = getwd()) {
 
   # infer states based on what filenames are found in folder

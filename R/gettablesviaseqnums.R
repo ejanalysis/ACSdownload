@@ -7,6 +7,8 @@
 #' @return Returns a character vector of table IDs such as "B01001"
 #' @seealso [read.concat.states()] which uses this, and [get.lookup.acs()] which is used by this
 #'
+#' @keywords internal
+#'
 gettablesviaseqnums <- function(x, end.year = acsdefaultendyearhere) {
 
   lookup.acs <- get.lookup.acs(end.year = end.year)

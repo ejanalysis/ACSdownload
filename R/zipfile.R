@@ -7,7 +7,9 @@
 #' @param zipfile.prefix Optional character element, defaults to value looked up based on end.year.
 #' @return Returns character element that is name of zip file such as "20115dc0113000.zip"
 #' @seealso [get_acs_old()]
-#' @export
+#'
+#' @keywords internal
+#'
 zipfile <-  function(mystates,
                      seqfilenum,
                      zipfile.prefix,

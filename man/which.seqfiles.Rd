@@ -24,5 +24,6 @@ The US Census Bureau provides 5-year summary file data from the American Communi
 This function reports which sequence files contain the specified tables. Used by \code{\link[=get_acs_old]{get_acs_old()}}
 }
 \seealso{
-\code{\link[=get_acs_old]{get_acs_old()}} and \code{\link[acs:acs.lookup]{acs::acs.lookup()}} from the \pkg{acs} package, which does something related but is more flexible & robust. Also see \code{\link[=get_acs_old]{get_acs_old()}} which uses this.
+\code{\link[=get_acs_old]{get_acs_old()}} and  from the \pkg{acs} package, which does something related but is more flexible & robust. Also see \code{\link[=get_acs_old]{get_acs_old()}} which uses this.
 }
+\keyword{internal}

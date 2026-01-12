@@ -53,7 +53,7 @@
 #' @return Returns character vector of 2-character State abbreviations, lower case.
 #' @seealso [get_acs_old()] and [download.datafiles()] which use this
 #'
-#' @export
+#' @keywords internal
 #'
 clean.mystates <- function(mystates = 'all', testing = FALSE) {
 

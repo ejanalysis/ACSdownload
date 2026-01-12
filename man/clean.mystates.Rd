@@ -65,3 +65,4 @@ You can start at the \href{https://www.census.gov/programs-surveys/decennial-cen
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}} and \code{\link[=download.datafiles]{download.datafiles()}} which use this
 }
+\keyword{internal}

@@ -6,17 +6,18 @@
 #'   Defines which 5-year summary file to use, based on end-year.
 #'   Note: Function stops with error if given end.year is not yet added to this package or is too old.
 #' @return returns a data.frame
-#' @seealso [get.table.info()] and [get.field.info()]. \cr
-#'   Also see [acs::acs.lookup()] which does something similar but is more flexible & robust.
-#'   Also see [download.lookup.acs()] to download the file from the Census FTP site.
-#'   Also see [lookup.acs] [lookup.acs2021] and similar data for other years.
-#'   Also see [get_acs_old()], [get.lookup.file.name()], [get.url.prefix.lookup.table()]
-#'   [tidycensus::load_variables()]
+#' @seealso
+#'  - [get.table.info()] and [get.field.info()].
+#'  - Also see [tidycensus::load_variables()] from the [tidycensus package](https://walker-data.com/tidycensus/) for an alternative way to get ACS data and variable info.
+#'  - Also see [download.lookup.acs()] to download the file from the Census FTP site.
+#'  - Also see [lookup.acs] [lookup.acs2021] and similar data for other years.
+#'  - Also see [get_acs_new()], [get.lookup.file.name()], [get.url.prefix.lookup.table()]
+#'
 #' @examples
 #'  names(lookup.acs2021)
 #'  names(lookup.acs)
 #'
-#' @export
+#' @keywords internal
 #'
 get.lookup.acs <- function(end.year = acsdefaultendyearhere) {
 

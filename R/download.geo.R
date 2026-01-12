@@ -33,6 +33,8 @@
 #'    download.geo( c("pr", "dc") )
 #'  }
 #'
+#' @keywords internal
+#'
 download.geo <- function(mystates,
                          end.year = acsdefaultendyearhere,
                          folder = getwd(),

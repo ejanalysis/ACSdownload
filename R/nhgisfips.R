@@ -10,7 +10,6 @@
 #' @param leadz Optional, default is based on default for validfields parameter: c(2, 3, 6, 1)
 #'   Defines total number of characters in correctly formatted portions of FIPS, such as 2 for State FIPS (e.g., "01").
 #' @return A 1-column data.frame with same number of rows as x. Provides assembled FIPS for each row.
-#' @seealso [nhgis()], [nhgisread()], [ejanalysis::clean.fips()]
 #' @examples \dontrun{
 #' x <- structure(list(STATEA = structure(c(2L, 3L, 1L),
 #' .Label = c("10", "8", "9"), class = "factor"),
@@ -26,13 +25,15 @@
 #' nhgisfips(x[ , 1:4])
 #' nhgisfips(x)
 #' }
-#' @export
+#'
+#' @keywords internal
+#'
 nhgisfips <- function(x,
                       validfields = c('STATEA', 'COUNTYA', 'TRACTA', 'BLKGRPA'),
                       fullname = c('FIPS.ST', 'FIPS.COUNTY', 'FIPS.TRACT', 'FIPS.BG'),
                       leadz = c(2, 3, 6, 1)) {
   # leadz is correct total nchar() for this portion of fips, including leading zeroes
-  
+
   ishere <- validfields %in% colnames(x)
   xfipscols <- x[, validfields[ishere], drop = FALSE]
   ishere <- !(colSums(is.na(xfipscols)) == NROW(xfipscols))
@@ -45,7 +46,7 @@ nhgisfips <- function(x,
       paste(validfields, collapse = ' ')
     )
   }
-  
+
   FIPS <-
     mapply(FUN = analyze.stuff::lead.zeroes, xfipscols, leadz[ishere])
   FIPS <- apply(

@@ -72,7 +72,9 @@ IPUMS NHGIS, University of Minnesota, www.nhgis.org
   # How many counties have population > 1 million, for each State?
   cbind(sort(table(dat$STATE[dat$B01001.001 > 1E6])))
   }
+
 }
 \seealso{
 \code{\link[=nhgisread]{nhgisread()}} used by this function. Also, for other ways to obtain ACS data see \code{\link[=get_acs_old]{get_acs_old()}}
 }
+\keyword{internal}

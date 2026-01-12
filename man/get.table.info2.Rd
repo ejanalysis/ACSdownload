@@ -42,3 +42,4 @@ Wrapper for \code{\link[=get.field.info]{get.field.info()}}
 \seealso{
 \code{\link[=get_acs_old]{get_acs_old()}}, \code{\link[=get.table.info]{get.table.info()}}
 }
+\keyword{internal}
