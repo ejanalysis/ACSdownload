@@ -8,8 +8,9 @@
 
 # to download/read the ACS 5year data (2018-2022 survey or later) for selected tables and selected fips or fipstype
 
-#' newer way to get full USA ACS data by table and fips
-#' get the ACS 5year data for selected tables and fips or fipstype
+#' Get full USA ACS data by table and fips (newer table-based summary file format)
+#'
+#' Downloads ACS 5-year data for selected tables and fips or fipstype.
 #'
 #' @param tables vector of ACS data table numbers like "B01001" etc.
 #'   Note some tables used by EJSCREEN are only available at tract resolution, namely
@@ -17,7 +18,7 @@
 #'   All resolutions get returned if return_list_not_merged=TRUE, but not if FALSE,
 #'   since those tables would prevent clearcut merging to a single table of places based on fips.
 #'
-#' @param fips "blockgroups" for all US bg, or a vector of fips codes.
+#' @param fips "blockgroup" for all US bg, or a vector of fips codes.
 #'   can also be "county", "state", "tract", or vector of one of those fips code types.
 #'   May support these but untested: "REGION", "American Indian Area/Alaska Native Area/Hawaiian Home Land",
 #'   "MSA", "CSA", "Urban Area", "Congressional District", "ZCTA".
@@ -152,9 +153,13 @@ get_acs_new = function(
     } # end of fips filter
     ###################### #
   }
-  # rename variables to work well with formulas_ejscreen_acs$formulas
-  for (i in 1:length(tablist))  {
-    names(tablist[[i]]) <- gsub("_E", "_", names(tablist[[i]] ))
+  # Rename estimate columns to work well with formulas_ejscreen_acs$formulas.
+  # Census table-based summary file columns look like "B01001_E001" (estimate)
+  # and "B01001_M001" (margin of error); strip the "E" only when it sits between
+  # the underscore and the trailing numeric variable index, to avoid touching
+  # any unrelated column names that happen to contain "_E".
+  for (i in seq_along(tablist))  {
+    names(tablist[[i]]) <- gsub("_E([0-9]+)$", "_\\1", names(tablist[[i]]))
   }
 
   names(tablist) <- toupper(as.vector(tables))
@@ -219,23 +224,22 @@ get_acs_new = function(
 
 # to get the geography names AND also get the ACS 5year data for selected tables and fips or fipstype
 
-#' newer way to get full USA ACS data by table and fips
-#' read the geography names AND also get the ACS 5year data for selected tables and fips or fipstype
+#' Get geography names and ACS 5-year data for selected tables and fips or fipstype
 #'
 #' @param tables vector of ACS data table numbers like "B01001" etc. and if NULL, uses defaults of [get_acs_new()]
-#' @param fips "blockgroups" for all US bg, or a vector of fips codes.
+#' @param fips "blockgroup" for all US bg, or a vector of fips codes.
 #'   can also be "county", "state", "tract", or vector of one of those fips code types.
-#'   If a fips type, defines the SUMLEVEL variable in the ACS data, such as 140 for
+#'   If a fips type, defines the SUMLEVEL variable in the ACS data, such as 140 for tracts.
 #' @param yr end year of 5 year ACS summary file data, such as 2023 for the 2019-2023 survey released by Census Bureau Dec. 2024.
 #' @param fiveorone optional 1 or 5, where 5 is the 5-year sample - only 5-yr tested here
 #'
-#' @returns list of geos + dat, estimates and margins of error and fips and SUMELEVEL
+#' @returns list of geos + dat, with estimates and margins of error and fips and SUMLEVEL
 #'
 #' @keywords internal
 #'
 get_acs_new_both = function(
     tables = NULL,
-    fips = "blockgroups",
+    fips = "blockgroup",
     yr = acsdefaultendyearhere, # e.g., 2023 until 12/2025, then 2024
     fiveorone = 5) {
 
@@ -263,10 +267,10 @@ if (is.null(tables)) {
 
 # to get the geography names for selected fips or fipstype
 
-#' newer way to get the geography names AND also get the ACS 5year data for selected tables and fips or fipstype
+#' Get the geography names (and fips/SUMLEVEL) for selected fips or fipstype
 #'
 #' @param yr end year of 5 year ACS summary file data, such as 2023 for the 2019-2023 survey released by Census Bureau Dec. 2024.
-#' @param fips "blockgroups" for all US bg, or a vector of fips codes.
+#' @param fips "blockgroup" for all US bg, or a vector of fips codes.
 #'   can also be "county", "state", "tract", or vector of one of those fips code types
 #'
 #' @returns table with geographies - names and fips and SUMLEVEL
@@ -281,11 +285,12 @@ get_acs_new_geos = function(
                     yr, "/table-based-SF/documentation/Geos", yr, "5YR.txt")
   geos = data.table::fread(url_geos)
 
+  # Add fips column up front so it can be referenced by the filters below.
+  geos[ , fips := fips_from_geoid(GEO_ID)]
+
   ###################### #
   # could filter to just selected rows/geographies, either by type of fips or  vector of specific fips
-  if (is.null(fips)) {
-    # no fips filtering
-  } else {
+  if (!is.null(fips)) {
     if (fips[1] %in% c("block", "blockgroup", "tract", "city", "county", "state",
                        "REGION", "American Indian Area/Alaska Native Area/Hawaiian Home Land",
                        "MSA", "CSA", "Urban Area", "Congressional District", "ZCTA"
@@ -302,9 +307,7 @@ get_acs_new_geos = function(
     ###################### #
   }
 
-  geos = geos[SUMLEVEL == sumlevel, .(STUSAB, SUMLEVEL, GEO_ID)]
-
-  geos[ , fips := fips_from_geoid(GEO_ID)]
+  geos = geos[ , .(STUSAB, SUMLEVEL, GEO_ID, fips)]
 
   return(geos)
 }
@@ -430,7 +433,7 @@ sumlevel_from_fipstype = function(ftype) {
   sumlevel[ftype %in% "tract"] <- "140"
   sumlevel[ftype %in% "blockgroup"] <- "150"
 
-  sumlevel[ftype %in% tolower("REGION")] <- "20"
+  sumlevel[ftype %in% tolower("REGION")] <- "020"
   sumlevel[ftype %in% tolower("American Indian Area/Alaska Native Area/Hawaiian Home Land")] <- "250"
   sumlevel[ftype %in% tolower("MSA")] <- "310"
   sumlevel[ftype %in% tolower("CSA")] <- "330"
@@ -439,14 +442,15 @@ sumlevel_from_fipstype = function(ftype) {
   sumlevel[ftype %in% tolower("ZCTA")] <- "860"
   sumlevel[ftype %in% "block"] <- NA
 
-  # 20 "REGION"
+  # SUMLEVEL strings extracted from GEO_ID are always 3 characters (e.g., "020", "040", "150"),
+  # so the strings returned here must match that width.
+  # 020 "REGION"
   # 250 "American Indian Area/Alaska Native Area/Hawaiian Home Land"
-  # 310 "MSA
+  # 310 "MSA"
   # 330 "CSA"
   # 400 "Urban Area"
   # 500 "Congressional District"
   # 860 "ZCTA"
-  # sumlevel[ftype %in% "block"] <- NA
 
   # stopifnot(all(!is.na(sumlevel)))
   return(sumlevel)
@@ -488,14 +492,16 @@ fipstype_from_sumlevel = function(sumlevel) {
 
 fips_from_geoid = function(geoid) {
 
-  fips = gsub("^.*US(.*)", "\\1", geoid)
-  sumlevel <- sumlevel_from_geoid(geoid)
-  ftype_based_only_on_digits = fipstype_acs(fips)
-  ftype_based_only_on_sumlevel = fipstype_from_sumlevel(sumlevel)
-  ftype_based_only_on_digits[is.na(ftype_based_only_on_digits)] <- 0
-  ftype_based_only_on_sumlevel[is.na(ftype_based_only_on_sumlevel)] <- -1
-  fips[ftype_based_only_on_digits != ftype_based_only_on_sumlevel] <- NA
-  # fips[nchar(fips) == 0] <- NA
+  # Census GEO_ID strings have the form "<sumlevel><suffix>US<fips>", e.g.,
+  # "1500000US010010201001" for a blockgroup. Take everything after "US".
+  # SUMLEVEL is authoritative for the geography type; we deliberately do NOT
+  # cross-check against a digit-count heuristic here because several geography
+  # types (ZCTA, MSA, Urban Area, Congressional District, ...) have fips widths
+  # that collide with other types and would be wrongly flagged as invalid.
+  has_us <- grepl("US", geoid, fixed = TRUE)
+  fips <- gsub("^.*US(.*)", "\\1", geoid)
+  fips[!has_us] <- NA
+  fips[!is.na(fips) & nchar(fips) == 0] <- NA
   return(fips)
 }
 ####################################### ######################################## #

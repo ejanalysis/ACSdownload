@@ -10,7 +10,6 @@ Imports:
     magrittr
 Depends: 
     R (>= 3.5)
-RoxygenNote: 7.3.3
 License: MIT + file LICENSE
 Author: info@ejanalysis.com
 Maintainer: info@ejanalysis.com <info@ejanalysis.com>
@@ -19,3 +18,4 @@ LazyData: true
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/ejanalysis/ACSdownload, https://ejanalysis.github.io/ACSdownload/, https://ejanalysis.org
+Config/roxygen2/version: 8.0.0
