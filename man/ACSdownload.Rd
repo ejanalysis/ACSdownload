@@ -13,49 +13,31 @@ You can obtain data from the entire USA all at once (or selected FIPS), for one 
 This package is focused on blockgroup and tract levels of resolution.
 }
 \details{
-\itemize{
-\item ACSdownload is an R package that helps you download and
+ACSdownload is an R package that helps you download and
 parse large amounts of raw data from the
 Census Bureau American Community Survey 5-year datasets,
 providing demographic data at the blockgroup and tract levels of resolution.
 You can obtain data from the entire USA all at once using this package,
 for one or more tables.
+\itemize{
+\item The key function is \code{\link[=get_acs_new]{get_acs_new()}} for ACS 2018-2022, 2019-2023, or 2020-2024.
+\item For older ACS data, which was not organized by table, see \code{\link[=get_acs_old]{get_acs_old()}}.
+For 5-year data ending with year 2022, the DATA FORMAT HAS CHANGED FOR SUMMARY FILE ACS DATA.
+See \url{https://www.census.gov/programs-surveys/acs/data/summary-file/updates-to-acs-summary-file.Overview.html}
 }
 
-The key function is \code{\link[=get_acs_new]{get_acs_new()}} for ACS 2018-2022, 2019-2023, or 2020-2024.
-
-For older data, which was offered in summary file sequence files not by table, see \code{\link[=get_acs_old]{get_acs_old()}}.
+Other options for obtaining Census ACS data or related data:
 \itemize{
+\item \url{http://www.census.gov/programs-surveys/acs/data.html}
 \item The Census Bureau makes it easy to obtain data from one
-state at a time, not every block group in the US.
+state at a time, but it is not as easy to get data for every blockgroup in the US.
 There are over 240,000 block groups and over 85,000 tracts in the U.S.
 \item The \href{https://walker-data.com/tidycensus/index.html}{tidycensus package}
 is an alternative that makes it easy to download modest amounts of ACS or decennial census or other data,
 (once you get a Census Bureau API key to request the data), but
 downloading via API is slow/awkward if you want all blockgroups nationwide for multiple tables.
-\item Also, there was a package called totalcensus that tried to
-offer tools to download ACS5yr tables,
-but as of 8/2025 that package had not been updated since 12/2023,
-and the late 2023 version did not work out of the box.
-The \href{https://cran.r-project.org/web/packages/totalcensus/index.html}{CRAN version of totalcensus}
-was older than the \href{https://github.com/GL-Li/totalcensus}{github version of totalcensus}
-\code{devtools::install_github("GL-Li/totalcensus")}
-}
-
-For 5-year data ending with year 2022, the DATA FORMAT HAS CHANGED FOR SUMMARY FILE ACS DATA.
-See \url{https://www.census.gov/programs-surveys/acs/data/summary-file/updates-to-acs-summary-file.Overview.html}
-
-Several other options for obtaining Census ACS data are listed here:
-
-\url{http://www.census.gov/programs-surveys/acs/data.html}
-
-Limits on downloads via American Fact Finder, not all US tracts at once
-are noted here: \url{https://ask.census.gov/faq.php?id=5000&faqId=1653}
-
-Other data sources that may be relevant include
-\itemize{
-\item Census geodatabases at \url{http://www.census.gov/geo/maps-data/data/tiger-data.html}
-\item data at \url{http://www.census.gov/geo/maps-data/data/gazetteer.html}
+\item see Census geodatabases at \url{http://www.census.gov/geo/maps-data/data/tiger-data.html}
+\item see \url{http://www.census.gov/geo/maps-data/data/gazetteer.html}
 }
 }
 \references{
@@ -64,8 +46,8 @@ Other data sources that may be relevant include
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/ejanalysis/ACSdownload}
   \item \url{https://ejanalysis.github.io/ACSdownload/}
+  \item \url{https://github.com/ejanalysis/ACSdownload}
   \item \url{https://ejanalysis.org}
 }
 

@@ -58,13 +58,14 @@ quotation marks etc.
 
 ## Details
 
-Uses [`get.lookup.acs()`](reference/get.lookup.acs.md) but for latest
-version could just use `data(lookup.acs)`
+Uses
+[`get.lookup.acs()`](https://ejanalysis.github.io/ACSdownload/reference/get.lookup.acs.md)
+but for latest version could just use `data(lookup.acs)`
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md),
-[`get.table.info()`](reference/get.table.info.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+[`get.table.info()`](https://ejanalysis.github.io/ACSdownload/reference/get.table.info.md)
 
 ## Examples
 

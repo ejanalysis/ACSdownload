@@ -1,7 +1,6 @@
-# newer way to get full USA ACS data by table and fips read the geography names AND also get the ACS 5year data for selected tables and fips or fipstype
+# Get geography names and ACS 5-year data for selected tables and fips or fipstype
 
-newer way to get full USA ACS data by table and fips read the geography
-names AND also get the ACS 5year data for selected tables and fips or
+Get geography names and ACS 5-year data for selected tables and fips or
 fipstype
 
 ## Usage
@@ -9,7 +8,7 @@ fipstype
 ``` r
 get_acs_new_both(
   tables = NULL,
-  fips = "blockgroups",
+  fips = "blockgroup",
   yr = acsdefaultendyearhere,
   fiveorone = 5
 )
@@ -20,14 +19,15 @@ get_acs_new_both(
 - tables:
 
   vector of ACS data table numbers like "B01001" etc. and if NULL, uses
-  defaults of [`get_acs_new()`](reference/get_acs_new.md)
+  defaults of
+  [`get_acs_new()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_new.md)
 
 - fips:
 
-  "blockgroups" for all US bg, or a vector of fips codes. can also be
+  "blockgroup" for all US bg, or a vector of fips codes. can also be
   "county", "state", "tract", or vector of one of those fips code types.
   If a fips type, defines the SUMLEVEL variable in the ACS data, such as
-  140 for
+  140 for tracts.
 
 - yr:
 
@@ -40,5 +40,5 @@ get_acs_new_both(
 
 ## Value
 
-list of geos + dat, estimates and margins of error and fips and
-SUMELEVEL
+list of geos + dat, with estimates and margins of error and fips and
+SUMLEVEL

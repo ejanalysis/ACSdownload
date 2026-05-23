@@ -1,8 +1,8 @@
-# get URL(s) of ACS 5-year table(s) for general info or for FIPS code(s) (blockgroup or tract) at census.gov See [`EJAM::url_acs_table_info()`](https://ejanalysis.github.io/EJAM/reference/url_acs_table_info.html) for a more likely to be updated version
+# get URL(s) of ACS 5-year table(s) for general info or for FIPS code(s) (blockgroup or tract) at census.gov See [`EJAM::url_acs_table_info()`](https://public-environmental-data-partners.github.io/EJAM/reference/url_acs_table_info.html) for a more likely to be updated version
 
 get URL(s) of ACS 5-year table(s) for general info or for FIPS code(s)
 (blockgroup or tract) at census.gov See
-[`EJAM::url_acs_table_info()`](https://ejanalysis.github.io/EJAM/reference/url_acs_table_info.html)
+[`EJAM::url_acs_table_info()`](https://public-environmental-data-partners.github.io/EJAM/reference/url_acs_table_info.html)
 for a more likely to be updated version
 
 ## Usage

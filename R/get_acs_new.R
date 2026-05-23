@@ -32,7 +32,7 @@
 #' @examples
 #'  x = get_acs_new(yr=2022, tables = ejscreen_acs_tables[1],
 #'    fips="county")
-#'  x[[1]]
+#'  x[[1]][,1:5]
 #'
 #'  # acs22 = get_acs_new(yr=2022, tables = ejscreen_acs_tables )
 #'  # acs23 = get_acs_new(yr = 2023, return_list_not_merged = FALSE)

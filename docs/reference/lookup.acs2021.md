@@ -8,4 +8,4 @@ Created using script in data-raw folder of source package.
 
 ## See also
 
-[lookup.acs](reference/lookup.acs.md)
+[lookup.acs](https://ejanalysis.github.io/ACSdownload/reference/lookup.acs.md)

@@ -22,6 +22,6 @@ Returns character element that is first part of URL such as
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md),
-[`get.lookup.acs()`](reference/get.lookup.acs.md),
-[`get.lookup.file.name()`](reference/get.lookup.file.name.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+[`get.lookup.acs()`](https://ejanalysis.github.io/ACSdownload/reference/get.lookup.acs.md),
+[`get.lookup.file.name()`](https://ejanalysis.github.io/ACSdownload/reference/get.lookup.file.name.md)

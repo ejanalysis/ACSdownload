@@ -18,7 +18,7 @@ get.datafile.prefix(end.year = acsdefaultendyearhere)
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md),
-[`datafile()`](reference/datafile.md),
-[`geofile()`](reference/geofile.md),
-[`get.zipfile.prefix()`](reference/get.zipfile.prefix.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+[`datafile()`](https://ejanalysis.github.io/ACSdownload/reference/datafile.md),
+[`geofile()`](https://ejanalysis.github.io/ACSdownload/reference/geofile.md),
+[`get.zipfile.prefix()`](https://ejanalysis.github.io/ACSdownload/reference/get.zipfile.prefix.md)

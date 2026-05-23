@@ -33,7 +33,8 @@ Returns character vector that is URL(s) such as
 
 ## Details
 
-See help for [`download.lookup.acs()`](reference/download.lookup.acs.md)
+See help for
+[`download.lookup.acs()`](https://ejanalysis.github.io/ACSdownload/reference/download.lookup.acs.md)
 for more details on the URLs used for the data.
 
 The zip files look like this for example: "20135dc0001000.zip"  
@@ -61,5 +62,6 @@ http version was here
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md), `url.to.find.zipfile()`,
-[`download.geo()`](reference/download.geo.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+`url.to.find.zipfile()`,
+[`download.geo()`](https://ejanalysis.github.io/ACSdownload/reference/download.geo.md)

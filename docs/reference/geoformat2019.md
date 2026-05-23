@@ -9,6 +9,7 @@ December of the year X+1, so 2015-2019 was available by Dec 2020.
 
 A data.frame
 
+
      'data.frame':  53 obs. of  5 variables:
      $ varname    : chr  "FILEID" "STUSAB" "SUMLEVEL" "COMPONENT" ...
      $ description: chr  "Always equal to ACS Summary File identification" "State Postal Abbreviation" "Summary Level" "Geographic Component" ...
@@ -26,4 +27,4 @@ Table found in given year dataset, info at
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)

@@ -32,4 +32,4 @@ e20105de0017000 or m20105de0017000
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)

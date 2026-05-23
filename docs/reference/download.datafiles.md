@@ -34,7 +34,7 @@ download.datafiles(
 
   Character vector, now optional - Default is 50 states + DC + PR here,
   but otherwise relies on
-  [`clean.mystates()`](reference/clean.mystates.md)
+  [`clean.mystates()`](https://ejanalysis.github.io/ACSdownload/reference/clean.mystates.md)
 
 - folder:
 

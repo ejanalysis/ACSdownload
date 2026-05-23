@@ -3,7 +3,7 @@
 The US Census Bureau provides 5-year summary file data from the American
 Community Survey in sequence files on their FTP site. This function
 reports which sequence files contain the specified tables. Used by
-[`get_acs_old()`](reference/get_acs_old.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
 
 ## Usage
 
@@ -38,6 +38,8 @@ defining one sequence file, such as "0001".
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md) and from the acs package,
-which does something related but is more flexible & robust. Also see
-[`get_acs_old()`](reference/get_acs_old.md) which uses this.
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+and from the acs package, which does something related but is more
+flexible & robust. Also see
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+which uses this.

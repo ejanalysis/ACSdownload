@@ -1,7 +1,7 @@
-# newer way to get the geography names AND also get the ACS 5year data for selected tables and fips or fipstype
+# Get the geography names (and fips/SUMLEVEL) for selected fips or fipstype
 
-newer way to get the geography names AND also get the ACS 5year data for
-selected tables and fips or fipstype
+Get the geography names (and fips/SUMLEVEL) for selected fips or
+fipstype
 
 ## Usage
 
@@ -18,7 +18,7 @@ get_acs_new_geos(yr = acsdefaultendyearhere, fips = "blockgroup")
 
 - fips:
 
-  "blockgroups" for all US bg, or a vector of fips codes. can also be
+  "blockgroup" for all US bg, or a vector of fips codes. can also be
   "county", "state", "tract", or vector of one of those fips code types
 
 ## Value

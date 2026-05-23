@@ -1,7 +1,6 @@
-# newer way to get full USA ACS data by table and fips get the ACS 5year data for selected tables and fips or fipstype
+# Get full USA ACS data by table and fips (newer table-based summary file format)
 
-newer way to get full USA ACS data by table and fips get the ACS 5year
-data for selected tables and fips or fipstype
+Downloads ACS 5-year data for selected tables and fips or fipstype.
 
 ## Usage
 
@@ -29,7 +28,7 @@ get_acs_new(
 
 - fips:
 
-  "blockgroups" for all US bg, or a vector of fips codes. can also be
+  "blockgroup" for all US bg, or a vector of fips codes. can also be
   "county", "state", "tract", or vector of one of those fips code types.
   May support these but untested: "REGION", "American Indian Area/Alaska
   Native Area/Hawaiian Home Land", "MSA", "CSA", "Urban Area",
@@ -61,7 +60,7 @@ error and fips and SUMLEVEL
 ``` r
  x = get_acs_new(yr=2022, tables = ejscreen_acs_tables[1],
    fips="county")
- x[[1]]
+ x[[1]][,1:5]
 
  # acs22 = get_acs_new(yr=2022, tables = ejscreen_acs_tables )
  # acs23 = get_acs_new(yr = 2023, return_list_not_merged = FALSE)

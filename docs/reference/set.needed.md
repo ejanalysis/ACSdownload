@@ -1,10 +1,11 @@
 # Specify which ACS Variables are Needed
 
-Utility used by [`get_acs_old()`](reference/get_acs_old.md) to help user
-specify which variables are needed. User can specify this in a file in
-the working directory, modifying "variables needed template.csv" that
-this function can create based on tables parameter, to create
-user-defined "variables needed.csv"
+Utility used by
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+to help user specify which variables are needed. User can specify this
+in a file in the working directory, modifying "variables needed
+template.csv" that this function can create based on tables parameter,
+to create user-defined "variables needed.csv"
 
 ## Usage
 
@@ -31,7 +32,8 @@ set.needed(
 - lookup.acs:
 
   Data.frame, optional. Defines which variables are in which tables.
-  Output of [`get.lookup.acs()`](reference/get.lookup.acs.md)
+  Output of
+  [`get.lookup.acs()`](https://ejanalysis.github.io/ACSdownload/reference/get.lookup.acs.md)
 
 - vars:
 
@@ -93,4 +95,5 @@ table, much like annotated version of lookup.acs.
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md) which uses this
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+which uses this

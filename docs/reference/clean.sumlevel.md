@@ -1,6 +1,7 @@
 # Utility to Clean SUMLEVEL for get_acs_old
 
-Utility function used by [`get_acs_old()`](reference/get_acs_old.md).
+Utility function used by
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md).
 
 ## Usage
 
@@ -31,4 +32,5 @@ the above terms (or variants, ignoring case).
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md) which uses this
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+which uses this

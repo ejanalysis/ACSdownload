@@ -23,5 +23,5 @@ Returns a vector of unique upper case US State abbreviations
 
 ## See also
 
-[`read.concat.states()`](reference/read.concat.states.md) which uses
-this
+[`read.concat.states()`](https://ejanalysis.github.io/ACSdownload/reference/read.concat.states.md)
+which uses this

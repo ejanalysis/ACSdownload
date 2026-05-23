@@ -17,4 +17,4 @@ Table found in given year dataset, info at
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)

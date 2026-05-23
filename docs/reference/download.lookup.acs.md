@@ -66,12 +66,14 @@ For ACS 2008-2012:
     #  "File.ID"                 "Table.ID"                "Sequence.Number"         "Line.Number"             "Start.Position" \cr
     #  "Total.Cells.in.Table"    "Total.Cells.in.Sequence" "Table.Title"             "Subject.Area"
 
-Also see [`get.lookup.acs()`](reference/get.lookup.acs.md) which does
-the same without downloading file – uses the copy in data() Also see
-`data(lookup.acs2013)` and similar data for other years. Also see
-[`get_acs_old()`](reference/get_acs_old.md),
-[`get.lookup.file.name()`](reference/get.lookup.file.name.md),
-[`get.url.prefix.lookup.table()`](reference/get.url.prefix.lookup.table.md)
+Also see
+[`get.lookup.acs()`](https://ejanalysis.github.io/ACSdownload/reference/get.lookup.acs.md)
+which does the same without downloading file – uses the copy in data()
+Also see `data(lookup.acs2013)` and similar data for other years. Also
+see
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+[`get.lookup.file.name()`](https://ejanalysis.github.io/ACSdownload/reference/get.lookup.file.name.md),
+[`get.url.prefix.lookup.table()`](https://ejanalysis.github.io/ACSdownload/reference/get.url.prefix.lookup.table.md)
 
 ## Details
 

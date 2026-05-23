@@ -55,4 +55,4 @@ Side effect is unzipping file on disk (unless testing=TRUE)
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)

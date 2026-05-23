@@ -9,6 +9,7 @@ December of the year X+1, so 2016-2020 was available by Dec 2021.
 
 A data.frame
 
+
      'data.frame':  53 obs. of  5 variables:  (at least for 2019 version)
      $ varname    : chr  "FILEID" "STUSAB" "SUMLEVEL" "COMPONENT" ...
      $ description: chr  "Always equal to ACS Summary File identification" "State Postal Abbreviation" "Summary Level" "Geographic Component" ...
@@ -63,4 +64,4 @@ there is this:
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)

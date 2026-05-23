@@ -25,9 +25,9 @@ Returns character vector that is first part of URL such as
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md),
-[`url.to.find.zipfile()`](reference/url.to.find.zipfile.md),
-[`download.geo()`](reference/download.geo.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+[`url.to.find.zipfile()`](https://ejanalysis.github.io/ACSdownload/reference/url.to.find.zipfile.md),
+[`download.geo()`](https://ejanalysis.github.io/ACSdownload/reference/download.geo.md)
 
 ## Examples
 

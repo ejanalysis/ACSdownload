@@ -59,8 +59,8 @@ Format of files is here:
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md),
-[`download.geo()`](reference/download.geo.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+[`download.geo()`](https://ejanalysis.github.io/ACSdownload/reference/download.geo.md)
 
 ## Examples
 

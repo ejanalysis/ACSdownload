@@ -22,4 +22,4 @@ vector of summary levels
 
 ## See also
 
-[`fipstype_from_sumlevel()`](reference/fipstype_from_sumlevel.md)
+[`fipstype_from_sumlevel()`](https://ejanalysis.github.io/ACSdownload/reference/fipstype_from_sumlevel.md)

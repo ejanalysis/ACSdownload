@@ -78,9 +78,9 @@ www.nhgis.org
 
 ## See also
 
-[`nhgisread()`](reference/nhgisread.md) used by this function. Also, for
-other ways to obtain ACS data see
-[`get_acs_old()`](reference/get_acs_old.md)
+[`nhgisread()`](https://ejanalysis.github.io/ACSdownload/reference/nhgisread.md)
+used by this function. Also, for other ways to obtain ACS data see
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
 
 ## Examples
 

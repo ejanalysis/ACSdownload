@@ -27,6 +27,7 @@ Returns a character vector of table IDs such as "B01001"
 
 ## See also
 
-[`read.concat.states()`](reference/read.concat.states.md) which uses
-this, and [`get.lookup.acs()`](reference/get.lookup.acs.md) which is
-used by this
+[`read.concat.states()`](https://ejanalysis.github.io/ACSdownload/reference/read.concat.states.md)
+which uses this, and
+[`get.lookup.acs()`](https://ejanalysis.github.io/ACSdownload/reference/get.lookup.acs.md)
+which is used by this

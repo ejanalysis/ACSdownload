@@ -93,5 +93,6 @@ field GEOID in the TIGER/Line Shapefiles.
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md) which uses this, and
-[`download.geo()`](reference/download.geo.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+which uses this, and
+[`download.geo()`](https://ejanalysis.github.io/ACSdownload/reference/download.geo.md)

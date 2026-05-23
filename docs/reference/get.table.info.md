@@ -26,7 +26,8 @@ get.table.info(
 
 - table.info.only:
 
-  TRUE by default. See [`get.field.info()`](reference/get.field.info.md)
+  TRUE by default. See
+  [`get.field.info()`](https://ejanalysis.github.io/ACSdownload/reference/get.field.info.md)
 
 - moe:
 
@@ -50,11 +51,14 @@ variable in the table:
 
 ## Details
 
-Wrapper for [`get.table.info2()`](reference/get.table.info2.md) which is
-a wrapper for [`get.field.info()`](reference/get.field.info.md)
+Wrapper for
+[`get.table.info2()`](https://ejanalysis.github.io/ACSdownload/reference/get.table.info2.md)
+which is a wrapper for
+[`get.field.info()`](https://ejanalysis.github.io/ACSdownload/reference/get.field.info.md)
 
 ## See also
 
 [tidycensus package](https://walker-data.com/tidycensus/index.html)
-[`get_acs_old()`](reference/get_acs_old.md), `get.table.info()`, and
-[`get.field.info()`](reference/get.field.info.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+`get.table.info()`, and
+[`get.field.info()`](https://ejanalysis.github.io/ACSdownload/reference/get.field.info.md)

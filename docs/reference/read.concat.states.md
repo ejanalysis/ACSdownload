@@ -41,15 +41,17 @@ read.concat.states(
   Optional table of geographic identifiers that elsewhere would be
   merged with data here. If provided, it is used here to look up data
   file length, based on state abbrev's list. See
-  [`get.read.geo()`](reference/get.read.geo.md) If geo is not provided,
-  the function still reads each file whatever its length.
+  [`get.read.geo()`](https://ejanalysis.github.io/ACSdownload/reference/get.read.geo.md)
+  If geo is not provided, the function still reads each file whatever
+  its length.
 
 - needed:
 
   Optional data.frame specifying which variables to keep from each
   table. Default is to keep all. See
-  [`set.needed()`](reference/set.needed.md) and
-  [`get_acs_old()`](reference/get_acs_old.md)
+  [`set.needed()`](https://ejanalysis.github.io/ACSdownload/reference/set.needed.md)
+  and
+  [`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
 
 - folder:
 
@@ -102,4 +104,4 @@ which is faster.
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)

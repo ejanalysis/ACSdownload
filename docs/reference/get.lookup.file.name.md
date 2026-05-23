@@ -25,7 +25,7 @@ Returns character element that is name of file such as
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md),
-[`get.lookup.acs()`](reference/get.lookup.acs.md),
-[`get.url.prefix.lookup.table()`](reference/get.url.prefix.lookup.table.md).
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+[`get.lookup.acs()`](https://ejanalysis.github.io/ACSdownload/reference/get.lookup.acs.md),
+[`get.url.prefix.lookup.table()`](https://ejanalysis.github.io/ACSdownload/reference/get.url.prefix.lookup.table.md).
 Also see `data(lookup.acs)`.

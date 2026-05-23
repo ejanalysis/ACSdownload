@@ -40,4 +40,5 @@ System: Version 2.0. Minneapolis, MN: University of Minnesota 2011.
 
 ## See also
 
-[`nhgis()`](reference/nhgis.md), [`nhgisread()`](reference/nhgisread.md)
+[`nhgis()`](https://ejanalysis.github.io/ACSdownload/reference/nhgis.md),
+[`nhgisread()`](https://ejanalysis.github.io/ACSdownload/reference/nhgisread.md)

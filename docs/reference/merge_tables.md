@@ -13,7 +13,7 @@ merge_tables(my.list.of.tables)
 - my.list.of.tables:
 
   Required list of data tables from prior steps in
-  [`get_acs_old()`](reference/get_acs_old.md)
+  [`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
 
 ## Value
 
@@ -21,4 +21,4 @@ Returns one big data.frame with all columns of all input tables
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)

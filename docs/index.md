@@ -11,14 +11,16 @@ requests and provide more limited subsets such as one US County or State
 at a time, when working with block group or tract resolution tables, and
 require you obtain a key from Census.
 
-Key functions include [`get_acs_new()`](reference/get_acs_new.md) to
-download and parse specified data, and various helper functions.
+Key functions include
+[`get_acs_new()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_new.md)
+to download and parse specified data, and various helper functions.
 
 ## Installation
 
 This package is not on CRAN – install it from Github:
 
 ``` r
+
 if (!require('devtools')) install.packages('devtools')
 devtools::install_github('ejanalysis/ACSdownload')
 ```

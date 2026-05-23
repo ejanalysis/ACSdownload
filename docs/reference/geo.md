@@ -1,8 +1,9 @@
 # downloaded saved geographic information for 5-year summary file ACS dataset ending in given year
 
-See [`get.read.geo()`](reference/get.read.geo.md). This data set is a
-geographic identifier file from the American Community Survey (ACS)
-5-year summary file.
+See
+[`get.read.geo()`](https://ejanalysis.github.io/ACSdownload/reference/get.read.geo.md).
+This data set is a geographic identifier file from the American
+Community Survey (ACS) 5-year summary file.
 
 ## Format
 
@@ -15,6 +16,6 @@ A data.frame
 
 ## See also
 
-[`get.read.geo()`](reference/get.read.geo.md)
-[`geofile()`](reference/geofile.md)
-[`download.geo()`](reference/download.geo.md)
+[`get.read.geo()`](https://ejanalysis.github.io/ACSdownload/reference/get.read.geo.md)
+[`geofile()`](https://ejanalysis.github.io/ACSdownload/reference/geofile.md)
+[`download.geo()`](https://ejanalysis.github.io/ACSdownload/reference/download.geo.md)

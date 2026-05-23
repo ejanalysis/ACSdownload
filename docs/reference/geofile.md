@@ -29,5 +29,7 @@ available as a single US file?)
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md) and
-[`download.geo()`](reference/download.geo.md) which uses this
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+and
+[`download.geo()`](https://ejanalysis.github.io/ACSdownload/reference/download.geo.md)
+which uses this

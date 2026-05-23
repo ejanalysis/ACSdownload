@@ -26,7 +26,8 @@ get.table.info2(
 
 - table.info.only:
 
-  TRUE by default. See [`get.field.info()`](reference/get.field.info.md)
+  TRUE by default. See
+  [`get.field.info()`](https://ejanalysis.github.io/ACSdownload/reference/get.field.info.md)
 
 - moe:
 
@@ -50,9 +51,10 @@ variable in the table:
 
 ## Details
 
-Wrapper for [`get.field.info()`](reference/get.field.info.md)
+Wrapper for
+[`get.field.info()`](https://ejanalysis.github.io/ACSdownload/reference/get.field.info.md)
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md),
-[`get.table.info()`](reference/get.table.info.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+[`get.table.info()`](https://ejanalysis.github.io/ACSdownload/reference/get.table.info.md)

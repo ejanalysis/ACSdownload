@@ -1,7 +1,8 @@
 # Older function to download Tables from American Community Survey (ACS) 5-year Summary File (before the acs2022 5yr data)
 
-Now see newer [`get_acs_new()`](reference/get_acs_new.md) that will try
-to use new format for 5yr summary file ACS
+Now see newer
+[`get_acs_new()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_new.md)
+that will try to use new format for 5yr summary file ACS
 
 ## Usage
 
@@ -108,12 +109,13 @@ get_acs_old(
 
 - varsfile:
 
-  See help for [`set.needed()`](reference/set.needed.md) for details.
-  Optional name of file that can be used to specify which variables are
-  needed from specified tables. If varsfile is specified, parameter vars
-  is ignored, and the function just looks in folder for file called
-  filename, e.g., "variables needed.csv" that should specify which
-  variables to keep from each table.
+  See help for
+  [`set.needed()`](https://ejanalysis.github.io/ACSdownload/reference/set.needed.md)
+  for details. Optional name of file that can be used to specify which
+  variables are needed from specified tables. If varsfile is specified,
+  parameter vars is ignored, and the function just looks in folder for
+  file called filename, e.g., "variables needed.csv" that should specify
+  which variables to keep from each table.
 
 - new.geo:
 
@@ -173,6 +175,7 @@ information but made to match the bg or tract format, so the headers
 table has as many rows as bg or tracts has columns – enough for the
 estimates and MOE fields, and the basic fields such as FIPS. The info
 data.frame can look like this, for example:  
+
 
       'data.frame': xxxx obs. of  9 variables:
      $ table.ID       : chr  "B01001" "B01001" "B01001" "B01001" ...
@@ -302,8 +305,9 @@ OTHER SOURCES include
   package for R - uses API, requires a key, very useful for modest
   numbers of Census units rather than every block group in US
 
-- http://www.NHGIS.org - (and see [`nhgis()`](reference/nhgis.md)) very
-  useful for block group (or tract/county/state/US) datasets
+- http://www.NHGIS.org - (and see
+  [`nhgis()`](https://ejanalysis.github.io/ACSdownload/reference/nhgis.md))
+  very useful for block group (or tract/county/state/US) datasets
 
 - [DataFerrett](http://dataferrett.census.gov/AboutDatasets/ACS.md) –
   not all tracts in US at once
@@ -321,9 +325,10 @@ OTHER SOURCES include
 
 ## See also
 
-[`get_acs_new()`](reference/get_acs_new.md) for newer code. Also note
-[tidycensus package](https://walker-data.com/tidycensus/), which allows
-you to download and work with ACS data (using the API and your own key).
+[`get_acs_new()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_new.md)
+for newer code. Also note [tidycensus
+package](https://walker-data.com/tidycensus/), which allows you to
+download and work with ACS data (using the API and your own key).
 Regarding the ACS-derived variables used in EJSCREEN, see the [EJAM
 package](https://ejanalysis.com/ejam-code).
 

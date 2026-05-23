@@ -22,4 +22,4 @@ the sumlevel codes
 
 ## See also
 
-[`sumlevel_from_fipstype()`](reference/sumlevel_from_fipstype.md)
+[`sumlevel_from_fipstype()`](https://ejanalysis.github.io/ACSdownload/reference/sumlevel_from_fipstype.md)

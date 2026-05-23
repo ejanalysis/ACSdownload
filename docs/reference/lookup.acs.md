@@ -34,5 +34,5 @@ ACSdownload/data-raw/datacreate_lookup.acs.R
 ## See also
 
 [`tidycensus::load_variables()`](https://walker-data.com/tidycensus/reference/load_variables.html)
-[`get.lookup.acs()`](reference/get.lookup.acs.md)
-[`get_acs_old()`](reference/get_acs_old.md)
+[`get.lookup.acs()`](https://ejanalysis.github.io/ACSdownload/reference/get.lookup.acs.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)

@@ -16,7 +16,7 @@ format_est_moe(my.list.of.tables)
 - my.list.of.tables:
 
   Required list of tables from earlier steps in
-  [`get_acs_old()`](reference/get_acs_old.md)
+  [`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
 
 ## Value
 
@@ -24,5 +24,6 @@ List of tables like input but with columns sorted in a new order.
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md) and
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+and
 [`analyze.stuff::intersperse()`](https://rdrr.io/pkg/analyze.stuff/man/intersperse.html)

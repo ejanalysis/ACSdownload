@@ -22,13 +22,15 @@ join.geo.to.tablist(
 
 - mygeo:
 
-  Required geo file. See [`get_acs_old()`](reference/get_acs_old.md) and
-  [`get.read.geo()`](reference/get.read.geo.md)
+  Required geo file. See
+  [`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+  and
+  [`get.read.geo()`](https://ejanalysis.github.io/ACSdownload/reference/get.read.geo.md)
 
 - my.list.of.tables:
 
   List of data tables resulting from prior steps in
-  [`get_acs_old()`](reference/get_acs_old.md)
+  [`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
 
 - save.csv:
 
@@ -59,5 +61,6 @@ table, such as table B01001.
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md) and
-[`get.read.geo()`](reference/get.read.geo.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+and
+[`get.read.geo()`](https://ejanalysis.github.io/ACSdownload/reference/get.read.geo.md)

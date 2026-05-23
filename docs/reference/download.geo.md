@@ -3,7 +3,7 @@
 Download text file from US Census Bureau with geographic information for
 American Community Survey. The geo file is used to join data file(s) to
 FIPS/GEOID/NAME/SUMLEVEL/CKEY. Used by
-[`get_acs_old()`](reference/get_acs_old.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
 
 ## Usage
 
@@ -61,16 +61,17 @@ Downloads to the current working directory unless another folder is
 specified. In contrast to the data files, the geo file is not zipped so
 does not have to be unzipped once downloaded. Key functions used:
 
-- [`url.to.find.zipfile()`](reference/url.to.find.zipfile.md)
+- [`url.to.find.zipfile()`](https://ejanalysis.github.io/ACSdownload/reference/url.to.find.zipfile.md)
 
-- [`geofile()`](reference/geofile.md)
+- [`geofile()`](https://ejanalysis.github.io/ACSdownload/reference/geofile.md)
 
 - `data(lookup.states, package="proxistat")`
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md) which uses this, and
-[`get.read.geo()`](reference/get.read.geo.md)
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+which uses this, and
+[`get.read.geo()`](https://ejanalysis.github.io/ACSdownload/reference/get.read.geo.md)
 
 ## Examples
 

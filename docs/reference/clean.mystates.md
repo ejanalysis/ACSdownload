@@ -1,7 +1,9 @@
 # Utility to Clean Names of States for get_acs_old
 
-Utility function used by [`get_acs_old()`](reference/get_acs_old.md) and
-[`download.datafiles()`](reference/download.datafiles.md)
+Utility function used by
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+and
+[`download.datafiles()`](https://ejanalysis.github.io/ACSdownload/reference/download.datafiles.md)
 
 ## Usage
 
@@ -81,5 +83,7 @@ FAQ](https://www.census.gov/programs-surveys/decennial-census/decade/2020/planni
 
 ## See also
 
-[`get_acs_old()`](reference/get_acs_old.md) and
-[`download.datafiles()`](reference/download.datafiles.md) which use this
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md)
+and
+[`download.datafiles()`](https://ejanalysis.github.io/ACSdownload/reference/download.datafiles.md)
+which use this

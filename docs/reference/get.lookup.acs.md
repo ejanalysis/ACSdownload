@@ -25,24 +25,28 @@ returns a data.frame
 
 ## See also
 
-- [`get.table.info()`](reference/get.table.info.md) and
-  [`get.field.info()`](reference/get.field.info.md).
+- [`get.table.info()`](https://ejanalysis.github.io/ACSdownload/reference/get.table.info.md)
+  and
+  [`get.field.info()`](https://ejanalysis.github.io/ACSdownload/reference/get.field.info.md).
 
 - Also see
   [`tidycensus::load_variables()`](https://walker-data.com/tidycensus/reference/load_variables.html)
   from the [tidycensus package](https://walker-data.com/tidycensus/) for
   an alternative way to get ACS data and variable info.
 
-- Also see [`download.lookup.acs()`](reference/download.lookup.acs.md)
+- Also see
+  [`download.lookup.acs()`](https://ejanalysis.github.io/ACSdownload/reference/download.lookup.acs.md)
   to download the file from the Census FTP site.
 
-- Also see [lookup.acs](reference/lookup.acs.md)
-  [lookup.acs2021](reference/lookup.acs2021.md) and similar data for
-  other years.
+- Also see
+  [lookup.acs](https://ejanalysis.github.io/ACSdownload/reference/lookup.acs.md)
+  [lookup.acs2021](https://ejanalysis.github.io/ACSdownload/reference/lookup.acs2021.md)
+  and similar data for other years.
 
-- Also see [`get_acs_new()`](reference/get_acs_new.md),
-  [`get.lookup.file.name()`](reference/get.lookup.file.name.md),
-  [`get.url.prefix.lookup.table()`](reference/get.url.prefix.lookup.table.md)
+- Also see
+  [`get_acs_new()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_new.md),
+  [`get.lookup.file.name()`](https://ejanalysis.github.io/ACSdownload/reference/get.lookup.file.name.md),
+  [`get.url.prefix.lookup.table()`](https://ejanalysis.github.io/ACSdownload/reference/get.url.prefix.lookup.table.md)
 
 ## Examples
 

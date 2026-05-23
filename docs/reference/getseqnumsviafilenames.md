@@ -23,5 +23,5 @@ Returns a character vector of unique sequence file numbers
 
 ## See also
 
-[`read.concat.states()`](reference/read.concat.states.md) which uses
-this
+[`read.concat.states()`](https://ejanalysis.github.io/ACSdownload/reference/read.concat.states.md)
+which uses this

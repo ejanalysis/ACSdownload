@@ -44,8 +44,9 @@ list of data.frames, one per table requested
 
 ## Details
 
-Also see [`get_acs_new()`](reference/get_acs_new.md) - A new version of
-this using data.table pkg to read directly from url
+Also see
+[`get_acs_new()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_new.md) -
+A new version of this using data.table pkg to read directly from url
 
 Does get Puerto Rico (PR) ?
 

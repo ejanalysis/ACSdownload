@@ -1,8 +1,9 @@
 # Read NHGIS.org ACS Codebook File
 
-Helper function used by [`nhgis()`](reference/nhgis.md) to read
-downloaded and unzipped codebook files obtained from NHGIS.org, for US
-Census Bureau data from the American Community Survey (ACS).
+Helper function used by
+[`nhgis()`](https://ejanalysis.github.io/ACSdownload/reference/nhgis.md)
+to read downloaded and unzipped codebook files obtained from NHGIS.org,
+for US Census Bureau data from the American Community Survey (ACS).
 
 ## Usage
 
@@ -27,10 +28,12 @@ years, dataset
 
 ## See also
 
-[`nhgis()`](reference/nhgis.md) which uses this,
-[`nhgisread()`](reference/nhgisread.md) for reading datafiles,
-[`get_acs_old()`](reference/get_acs_old.md),
-[`get.datafile.prefix()`](reference/get.datafile.prefix.md),
-[`datafile()`](reference/datafile.md),
-[`geofile()`](reference/geofile.md),
-[`get.zipfile.prefix()`](reference/get.zipfile.prefix.md)
+[`nhgis()`](https://ejanalysis.github.io/ACSdownload/reference/nhgis.md)
+which uses this,
+[`nhgisread()`](https://ejanalysis.github.io/ACSdownload/reference/nhgisread.md)
+for reading datafiles,
+[`get_acs_old()`](https://ejanalysis.github.io/ACSdownload/reference/get_acs_old.md),
+[`get.datafile.prefix()`](https://ejanalysis.github.io/ACSdownload/reference/get.datafile.prefix.md),
+[`datafile()`](https://ejanalysis.github.io/ACSdownload/reference/datafile.md),
+[`geofile()`](https://ejanalysis.github.io/ACSdownload/reference/geofile.md),
+[`get.zipfile.prefix()`](https://ejanalysis.github.io/ACSdownload/reference/get.zipfile.prefix.md)
