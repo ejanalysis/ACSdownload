@@ -31,3 +31,4 @@ URL: https://ejanalysis.github.io/ACSdownload/, https://github.com/ejanalysis/AC
 BugReports: https://github.com/ejanalysis/ACSdownload/issues
 Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
+VignetteBuilder: knitr

@@ -1,4 +1,40 @@
 url: https://ejanalysis.github.io/ACSdownload/
+
 template:
   bootstrap: 5
 
+reference:
+  - title: "Download ACS data"
+    desc: "Bulk-fetch ACS table-based summary file data."
+    contents:
+      - get_acs_new
+
+  - title: "Inspect and label variables"
+    desc: "Make sense of the Census variable codes."
+    contents:
+      - acs_label
+      - acs_table_shells
+      - url_acs_table
+
+  - title: "Geography helpers"
+    desc: "Convert between SUMLEVEL codes and human-readable type names."
+    contents:
+      - sumlevel_from_fipstype
+      - fipstype_from_sumlevel
+
+  - title: "Vintage / release-date helpers"
+    desc: "Decide which ACS vintage to target."
+    contents:
+      - acs_endyear_like_ejam
+      - acsdefaultendyearhere
+      - acsfirstyearavailablehere
+
+  - title: "EJSCREEN integration"
+    desc: "Table lists used by EJSCREEN/EJAM."
+    contents:
+      - ejscreen_acs_tables
+
+articles:
+  - title: "Guides"
+    contents:
+      - get-acs-bulk
