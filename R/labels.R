@@ -33,7 +33,7 @@ acs_label <- function(variable_id) {
     # Loaded via LazyData but also try explicit load when called from a
     # non-package context.
     e <- new.env()
-    data("acs_table_shells", package = "ACSdownload", envir = e)
+    utils::data("acs_table_shells", package = "ACSdownload", envir = e)
     acs_table_shells <- e$acs_table_shells
   } else {
     acs_table_shells <- get("acs_table_shells", envir = topenv())

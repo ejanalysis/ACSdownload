@@ -1,0 +1,72 @@
+test_that("validate_acs_tables uppercases and accepts canonical patterns", {
+  expect_equal(
+    ACSdownload:::validate_acs_tables(c("b01001", "C17002", "B03002H")),
+    c("B01001", "C17002", "B03002H")
+  )
+})
+
+test_that("validate_acs_tables rejects empty input and bad codes", {
+  expect_error(ACSdownload:::validate_acs_tables(character(0)),
+               "must contain at least one")
+  expect_error(ACSdownload:::validate_acs_tables(c("B01001", "XX")),
+               "invalid ACS table code")
+  expect_error(ACSdownload:::validate_acs_tables(c("B01001", NA)), "NA")
+  expect_error(ACSdownload:::validate_acs_tables(c("B01001", "")), "empty")
+  expect_error(ACSdownload:::validate_acs_tables("B999999"),
+               "invalid ACS table code")  # 6 digits not 5
+})
+
+test_that("validate_fiveorone accepts 1 or 5 as char or numeric", {
+  expect_equal(ACSdownload:::validate_fiveorone(5),   "5")
+  expect_equal(ACSdownload:::validate_fiveorone("5"), "5")
+  expect_equal(ACSdownload:::validate_fiveorone(1),   "1")
+  expect_error(ACSdownload:::validate_fiveorone(3),  "must be 1 or 5")
+  expect_error(ACSdownload:::validate_fiveorone(c(1, 5)), "single value")
+})
+
+test_that("validate_fips_arg accepts NULL, a single type name, or a numeric fips vector", {
+  expect_null(ACSdownload:::validate_fips_arg(NULL))
+  expect_equal(ACSdownload:::validate_fips_arg("blockgroup"), "blockgroup")
+  expect_equal(
+    ACSdownload:::validate_fips_arg(c("01001", "06037")),
+    c("01001", "06037")
+  )
+})
+
+test_that("validate_fips_arg rejects mixed type-name + codes", {
+  expect_error(
+    ACSdownload:::validate_fips_arg(c("blockgroup", "01001")),
+    "mixes a known geography type name"
+  )
+})
+
+test_that("validate_fips_arg rejects multiple type names", {
+  expect_error(
+    ACSdownload:::validate_fips_arg(c("blockgroup", "tract")),
+    "only one type of geography"
+  )
+})
+
+test_that("validate_fips_arg rejects non-numeric junk in a fips vector", {
+  expect_error(
+    ACSdownload:::validate_fips_arg(c("01001", "not_a_fips")),
+    "neither a recognized geography type name nor numeric fips codes"
+  )
+})
+
+test_that("validate_acs_endyear bounds-check uses package data floor", {
+  expect_equal(ACSdownload:::validate_acs_endyear(2024), "2024")
+  expect_equal(ACSdownload:::validate_acs_endyear("2024"), "2024")
+  expect_error(
+    ACSdownload:::validate_acs_endyear(2010),
+    "outside the supported range"
+  )
+  expect_error(
+    ACSdownload:::validate_acs_endyear("not a year"),
+    "parseable as an integer year"
+  )
+  expect_error(
+    ACSdownload:::validate_acs_endyear(c(2024, 2025)),
+    "single non-NA value"
+  )
+})

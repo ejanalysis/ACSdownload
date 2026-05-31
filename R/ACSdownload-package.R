@@ -55,6 +55,9 @@ NULL
 # Silence R CMD check NOTEs about NSE / data.table column names that appear
 # bare inside data.table[] expressions. Listed alphabetically.
 utils::globalVariables(c(
-  "GEO_ID", "STUSAB", "SUMLEVEL", "fips",
-  "acsdefaultendyearhere", "ejscreen_acs_tables"
+  "GEO_ID", "STUSAB", "SUMLEVEL", "fips", ".",
+  "table_id", "variable_id", "label", "table_title", "universe",
+  "indent", "line", "type",
+  "acsdefaultendyearhere", "acsfirstyearavailablehere",
+  "ejscreen_acs_tables", "acs_table_shells"
 ))

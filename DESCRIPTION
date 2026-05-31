@@ -1,5 +1,5 @@
 Package: ACSdownload
-Title: Download American Community Survey (ACS) 5-year Data Tables from Census Bureau nationwide in bulk
+Title: Download American Community Survey (ACS) 5-Year Data Tables from Census Bureau Nationwide in Bulk
 Description: Download and parse raw data from the
     Census Bureau American Community Survey (ACS) 5-year survey, to get
     demographic data in bulk (without relying on the API).
@@ -31,4 +31,3 @@ URL: https://ejanalysis.github.io/ACSdownload/, https://github.com/ejanalysis/AC
 BugReports: https://github.com/ejanalysis/ACSdownload/issues
 Config/roxygen2/version: 8.0.0
 Config/testthat/edition: 3
-VignetteBuilder: knitr
