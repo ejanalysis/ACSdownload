@@ -48,11 +48,23 @@ NULL
 #' @export
 acs_endyear_like_ejam <- function(guess_as_of = Sys.Date()) {
 
-  if (requireNamespace("EJAM", quietly = TRUE)) {
-    return(as.character(EJAM::acs_endyear(
-      guess_as_of = guess_as_of,
-      guess_census_has_published = TRUE
-    )))
+  # Prefer EJAM's own estimator when EJAM is installed AND it provides
+  # acs_endyear(). We resolve it dynamically from EJAM's namespace (rather
+  # than via EJAM::acs_endyear) because some EJAM builds keep acs_endyear
+  # unexported -- the dynamic lookup works either way, and avoids a hard
+  # dependency on it being exported. Falls through to the local estimator
+  # otherwise.
+  if (requireNamespace("EJAM", quietly = TRUE) &&
+      exists("acs_endyear", envir = asNamespace("EJAM"), inherits = FALSE)) {
+    ejam_acs_endyear <- get("acs_endyear", envir = asNamespace("EJAM"))
+    out <- tryCatch(
+      as.character(ejam_acs_endyear(
+        guess_as_of = guess_as_of,
+        guess_census_has_published = TRUE
+      )),
+      error = function(e) NULL
+    )
+    if (!is.null(out)) return(out)
   }
 
   # Self-contained estimator. Tracks the actual release dates Census Bureau

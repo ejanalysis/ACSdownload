@@ -38,8 +38,11 @@ get_acs_new_geos <- function(
 
   if (!is.null(fips)) {
     if (fips[1] %in% .supported_fipstypes()) {
-      sumlevel <- sumlevel_from_fipstype(fips)
-      geos <- geos[SUMLEVEL %in% sumlevel, ]
+      # The Geos file's SUMLEVEL column is read as an integer (e.g. 50, 140),
+      # whereas sumlevel_from_fipstype() returns zero-padded strings (e.g.
+      # "050", "140"). Compare numerically so the two representations match.
+      sumlevel <- as.integer(sumlevel_from_fipstype(fips))
+      geos <- geos[as.integer(SUMLEVEL) %in% sumlevel, ]
     } else {
       fipscodes_requested <- fips
       geos <- geos[fips %in% fipscodes_requested, ]

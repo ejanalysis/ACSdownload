@@ -27,6 +27,12 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      # EJAM is a GitHub-only, optional (Suggests) dependency used only in a
+      # fallback branch of acs_endyear_like_ejam(). We deliberately do NOT
+      # install it in CI (it is heavy and would couple this package's CI to
+      # EJAM's buildability). Allow the resulting "suggested but not
+      # available" check to be a NOTE rather than an ERROR.
+      _R_CHECK_FORCE_SUGGESTS_: false
 
     steps:
       - uses: actions/checkout@v4
@@ -39,10 +45,20 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      # Install hard deps + only the Suggests needed for testing and checking,
+      # explicitly excluding EJAM (see note above).
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
-          needs: check
+          dependencies: '"hard"'
+          extra-packages: >
+            any::rcmdcheck,
+            any::testthat,
+            any::withr,
+            any::cli,
+            any::future,
+            any::future.apply,
+            any::knitr,
+            any::rmarkdown
 
       - uses: r-lib/actions/check-r-package@v2
         with:

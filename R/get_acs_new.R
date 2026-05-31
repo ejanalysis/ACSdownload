@@ -81,6 +81,10 @@
 #'   (`<table>_EA<nnn>`, `<table>_MA<nnn>`) that some vintages include;
 #'   the default `FALSE` drops them.
 #'
+#' @param quiet if `FALSE` (the default) and the `cli` package is
+#'   installed, show a progress bar over the (sequential) downloads.
+#'   Ignored when `parallel = TRUE`.
+#'
 #' @returns a named list of data.tables (one per table) or a single merged
 #'   data.table, each with `GEO_ID`, `fips`, `SUMLEVEL`, and the estimate
 #'   (`<table>_<nnn>`) and margin-of-error (`<table>_M<nnn>`) columns from
@@ -115,7 +119,8 @@ get_acs_new <- function(
     parallel               = FALSE,
     variables              = NULL,
     keep_moe               = TRUE,
-    keep_annotations       = FALSE
+    keep_annotations       = FALSE,
+    quiet                  = FALSE
 )  {
 
   # ---- 1. Validate everything up front so we never download into a bad job ----
@@ -138,7 +143,8 @@ get_acs_new <- function(
     cache_dir   = cache_dir,
     timeout_sec = timeout_sec,
     max_retries = max_retries,
-    parallel    = parallel
+    parallel    = parallel,
+    quiet       = quiet
   )
 
   # ---- 4. Read each .dat into a data.table and attach fips/SUMLEVEL ------

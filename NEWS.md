@@ -47,9 +47,24 @@ tag for anyone who still needs the old path.
   `acs_table_shells` (28,331 rows, parsed from the official Census 2022
   5-year Table Shells file).
 * **`acs_endyear_like_ejam()`** -- exported helper that returns the
-  latest ACS 5-year end year Census Bureau has published. Prefers
-  `EJAM::acs_endyear()` when EJAM is installed (now in `Suggests`),
+  latest ACS 5-year end year Census Bureau has published. Prefers EJAM's
+  own `acs_endyear()` when EJAM is installed (resolved dynamically from
+  EJAM's namespace, so it works whether or not that build exports it),
   falling back to a self-contained estimator otherwise.
+* **Progress + quiet.** `get_acs_new(quiet = FALSE)` shows a `cli`
+  progress bar over sequential downloads when `cli` is installed.
+* **`get_acs_old()`** is now a defunct shim: instead of "could not find
+  function", callers get a clear error pointing at `get_acs_new()` and
+  the `v2.4.0-pre-refactor` tag.
+
+## Bug fixes
+
+* `get_acs_new_geos()` returned zero rows when filtering by a geography
+  type name (e.g. `fips = "county"`). The Geos sidecar file stores
+  `SUMLEVEL` as an integer (`50`), but `sumlevel_from_fipstype()` returns
+  a zero-padded string (`"050"`), so the filter never matched. The
+  comparison is now numeric. (Bug present since the function was added;
+  caught by the new live integration test.)
 
 ## Internal / housekeeping
 

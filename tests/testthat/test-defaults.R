@@ -7,8 +7,11 @@ test_that("acsdefaultendyearhere is a single year >= acsfirstyearavailablehere",
 
 test_that("acs_endyear_like_ejam falls back to local estimator when EJAM is absent", {
   # We can't conditionally uninstall EJAM in a test, so just exercise the
-  # path and assert the output shape.
-  out <- acs_endyear_like_ejam(as.Date("2026-05-31"))
+  # path and assert the output shape. EJAM's estimator emits informational
+  # messages/warnings; suppress them so the suite stays quiet.
+  out <- suppressWarnings(suppressMessages(
+    acs_endyear_like_ejam(as.Date("2026-05-31"))
+  ))
   expect_type(out, "character")
   expect_length(out, 1L)
   expect_match(out, "^[0-9]{4}$")
@@ -18,13 +21,23 @@ test_that("acs_endyear_like_ejam returns the latest known release before the as-
   # The 2020-2024 release date is 2026-01-29 (an actual delay; embedded in
   # the lookup table). Asking as-of 2026-02-01 should produce "2024";
   # asking as-of 2025-12-13 should produce "2023" (the 2019-2023 vintage,
-  # released 2024-12-12).
-  if (!requireNamespace("EJAM", quietly = TRUE)) {
-    expect_equal(acs_endyear_like_ejam(as.Date("2026-02-01")), "2024")
-    expect_equal(acs_endyear_like_ejam(as.Date("2025-12-13")), "2023")
+  # released 2024-12-12). When EJAM provides its own estimator we only check
+  # the result is a sane recent vintage.
+  ejam_has_estimator <-
+    requireNamespace("EJAM", quietly = TRUE) &&
+    exists("acs_endyear", envir = asNamespace("EJAM"), inherits = FALSE)
+
+  feb <- suppressWarnings(suppressMessages(
+    acs_endyear_like_ejam(as.Date("2026-02-01"))
+  ))
+  if (ejam_has_estimator) {
+    expect_true(feb %in% as.character(2022:2024))
   } else {
-    # EJAM is installed; just check we got something sane.
-    expect_true(acs_endyear_like_ejam(as.Date("2026-02-01")) %in% as.character(2022:2024))
+    expect_equal(feb, "2024")
+    dec <- suppressWarnings(suppressMessages(
+      acs_endyear_like_ejam(as.Date("2025-12-13"))
+    ))
+    expect_equal(dec, "2023")
   }
 })
 

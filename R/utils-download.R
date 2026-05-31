@@ -85,13 +85,15 @@ acs_download_one <- function(url,
 #' otherwise sequentially.
 #'
 #' @param urls character vector of URLs to fetch
-#' @param cache_dir see [acs_download_one()]
-#' @param timeout_sec see [acs_download_one()]
-#' @param max_retries see [acs_download_one()]
+#' @param cache_dir see `acs_download_one()`
+#' @param timeout_sec see `acs_download_one()`
+#' @param max_retries see `acs_download_one()`
 #' @param parallel logical; when TRUE and {future, future.apply} are
 #'   installed, run downloads via `future.apply::future_lapply()`. The
 #'   caller is responsible for setting a `future::plan()` (e.g.
 #'   `future::plan(future::multisession, workers = 4)`).
+#' @param quiet if FALSE (and `cli` is installed), show a progress bar over
+#'   the sequential downloads. Ignored for parallel downloads.
 #' @returns character vector of local file paths, in input order
 #' @keywords internal
 #' @noRd
@@ -99,7 +101,8 @@ acs_download_many <- function(urls,
                               cache_dir   = NULL,
                               timeout_sec = getOption("ACSdownload.timeout", 300),
                               max_retries = getOption("ACSdownload.retries", 3),
-                              parallel    = FALSE) {
+                              parallel    = FALSE,
+                              quiet       = FALSE) {
 
   do_one <- function(u) acs_download_one(
     u,
@@ -113,5 +116,22 @@ acs_download_many <- function(urls,
       requireNamespace("future.apply",  quietly = TRUE)) {
     return(unlist(future.apply::future_lapply(urls, do_one, future.seed = NULL)))
   }
+
+  # Sequential path, with an optional cli progress bar.
+  show_progress <- !quiet &&
+    length(urls) > 1L &&
+    requireNamespace("cli", quietly = TRUE)
+
+  if (show_progress) {
+    out <- character(length(urls))
+    cli::cli_progress_bar("Downloading ACS tables", total = length(urls))
+    for (i in seq_along(urls)) {
+      out[i] <- do_one(urls[i])
+      cli::cli_progress_update()
+    }
+    cli::cli_progress_done()
+    return(out)
+  }
+
   unlist(lapply(urls, do_one))
 }

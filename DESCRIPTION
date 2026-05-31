@@ -10,16 +10,18 @@ Imports:
     data.table,
     httr2
 Suggests:
+    cli,
     EJAM,
     future,
     future.apply,
-    progressr,
     testthat (>= 3.0.0),
     withr,
     knitr,
     rmarkdown
 Depends:
     R (>= 4.0)
+Remotes:
+    ejanalysis/EJAM
 License: MIT + file LICENSE
 Author: info@ejanalysis.com
 Maintainer: info@ejanalysis.com <info@ejanalysis.com>
