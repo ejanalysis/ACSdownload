@@ -69,6 +69,18 @@
 #'   installed, fetch the .dat files concurrently. The caller must set a
 #'   `future::plan()` first.
 #'
+#' @param variables optional character vector of specific estimate variable
+#'   codes to keep, like `c("B25034_001", "B25034_002")`. Names are matched
+#'   in the post-rename form (no `_E` infix). When NULL (the default), all
+#'   estimate columns from the requested tables are kept.
+#'
+#' @param keep_moe if `TRUE` (the default), keep the margin-of-error
+#'   columns (`<table>_M<nnn>`); if `FALSE`, drop them.
+#'
+#' @param keep_annotations if `TRUE`, keep the annotation columns
+#'   (`<table>_EA<nnn>`, `<table>_MA<nnn>`) that some vintages include;
+#'   the default `FALSE` drops them.
+#'
 #' @returns a named list of data.tables (one per table) or a single merged
 #'   data.table, each with `GEO_ID`, `fips`, `SUMLEVEL`, and the estimate
 #'   (`<table>_<nnn>`) and margin-of-error (`<table>_M<nnn>`) columns from
@@ -100,7 +112,10 @@ get_acs_new <- function(
     cache_dir              = getOption("ACSdownload.cache_dir", NULL),
     timeout_sec            = getOption("ACSdownload.timeout",   300),
     max_retries            = getOption("ACSdownload.retries",   3),
-    parallel               = FALSE
+    parallel               = FALSE,
+    variables              = NULL,
+    keep_moe               = TRUE,
+    keep_annotations       = FALSE
 )  {
 
   # ---- 1. Validate everything up front so we never download into a bad job ----
@@ -161,6 +176,14 @@ get_acs_new <- function(
     names(tablist[[i]]) <- gsub("_E([0-9]+)$", "_\\1", names(tablist[[i]]))
   }
   names(tablist) <- toupper(as.vector(tables))
+
+  # ---- 6b. Optional column selection (variables, keep_moe, keep_annotations) ---
+  tablist <- .filter_acs_columns(
+    tablist,
+    variables        = variables,
+    keep_moe         = keep_moe,
+    keep_annotations = keep_annotations
+  )
 
   rowcounts <- sapply(tablist, NROW)
   sumlevels <- unlist(sapply(tablist, function(z) unique(z$SUMLEVEL)))
@@ -223,4 +246,59 @@ get_acs_new <- function(
     }
   }
   return(tabmerged)
+}
+
+
+# Filter the per-table data.tables down to user-requested variables,
+# margin-of-error (MOE), and annotation columns. Always retains the
+# bookkeeping columns GEO_ID, fips, SUMLEVEL.
+#
+# Column-name semantics (post-rename in get_acs_new()):
+#   estimate    : <TABLE>_<NNN>
+#   MOE         : <TABLE>_M<NNN>
+#   estimate ann: <TABLE>_EA<NNN>
+#   MOE      ann: <TABLE>_MA<NNN>
+.filter_acs_columns <- function(tablist,
+                                variables        = NULL,
+                                keep_moe         = TRUE,
+                                keep_annotations = FALSE) {
+
+  if (is.null(variables) && isTRUE(keep_moe) && isTRUE(keep_annotations)) {
+    return(tablist)
+  }
+
+  bookkeeping <- c("GEO_ID", "fips", "SUMLEVEL")
+  est_pat     <- "^[BC][0-9]{5}[A-I]?_[0-9]+$"
+  moe_pat     <- "^[BC][0-9]{5}[A-I]?_M[0-9]+$"
+  ann_pat     <- "^[BC][0-9]{5}[A-I]?_(EA|MA)[0-9]+$"
+
+  for (i in seq_along(tablist)) {
+    nm <- names(tablist[[i]])
+    is_est <- grepl(est_pat, nm)
+    is_moe <- grepl(moe_pat, nm)
+    is_ann <- grepl(ann_pat, nm)
+    is_bk  <- nm %in% bookkeeping
+
+    keep <- is_bk
+    if (is.null(variables)) {
+      keep <- keep | is_est
+    } else {
+      keep <- keep | (is_est & nm %in% variables)
+    }
+    if (isTRUE(keep_moe)) {
+      if (is.null(variables)) {
+        keep <- keep | is_moe
+      } else {
+        # Keep MOE columns whose corresponding estimate variable was requested.
+        est_for_moe <- sub("_M([0-9]+)$", "_\\1", nm)
+        keep <- keep | (is_moe & est_for_moe %in% variables)
+      }
+    }
+    if (isTRUE(keep_annotations)) {
+      keep <- keep | is_ann
+    }
+
+    tablist[[i]] <- tablist[[i]][, .SD, .SDcols = nm[keep]]
+  }
+  tablist
 }
