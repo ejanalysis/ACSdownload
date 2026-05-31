@@ -2,7 +2,6 @@
 
 export(fipstype_from_sumlevel)
 export(get_acs_new)
-export(get_acs_old)
 export(sumlevel_from_fipstype)
 export(url_acs_table)
 import(data.table)
