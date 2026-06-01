@@ -70,7 +70,7 @@ fips_from_geoid <- function(geoid) {
 #'
 #' Returns `unique(substr(EJAM::blockgroupstats$bgfips, 1, 11))` when the EJAM
 #' package and its `blockgroupstats` data are available, otherwise `NULL`.
-#' Used as the authoritative input to [`.disambiguate_11digit_fips()`] for
+#' Used as the authoritative input to `.disambiguate_11digit_fips()` for
 #' resolving the tract-vs-blockgroup ambiguity. Kept out of the default code
 #' path so results are reproducible whether or not EJAM is installed.
 #'
@@ -112,7 +112,7 @@ fips_from_geoid <- function(geoid) {
 #'
 #' @param x character vector of exactly-11-digit fips codes
 #' @param tract_fips optional character vector of valid 11-char tract fips
-#'   (e.g. from [`.ejam_tract_fips()`]); when NULL, use the heuristic
+#'   (e.g. from `.ejam_tract_fips()`); when NULL, use the heuristic
 #' @param quiet if FALSE, warn about values left ambiguous by the heuristic
 #' @returns character vector: tracts unchanged, blockgroups zero-prefixed to
 #'   12 chars, impossible values NA
@@ -155,13 +155,13 @@ fips_from_geoid <- function(geoid) {
 #'
 #' 11-digit inputs are ambiguous between a complete tract and a blockgroup
 #' that lost its leading zero; they are resolved by
-#' [`.disambiguate_11digit_fips()`] (state-FIPS heuristic by default, or an
+#' `.disambiguate_11digit_fips()` (state-FIPS heuristic by default, or an
 #' authoritative tract list if `tract_fips` is supplied).
 #'
 #' @param fips character vector of fips codes
 #' @param quiet logical; if FALSE, warn about NA-ed and still-ambiguous inputs
 #' @param tract_fips optional character vector of valid 11-char tract fips for
-#'   authoritative 11-digit disambiguation (see [`.ejam_tract_fips()`])
+#'   authoritative 11-digit disambiguation (see `.ejam_tract_fips()`)
 #' @returns character vector of length-normalized fips codes
 #' @seealso EJAM::fips_lead_zero()
 #' @keywords internal
