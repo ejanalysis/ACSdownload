@@ -20,3 +20,8 @@ notes/more census map tools and datasets.txt
 
 .positai
 .claude/settings.local.json
+
+# Cloud-sync (iCloud Drive / Dropbox) conflict copies, e.g. "fips 2.R".
+# This repo lives under ~/Documents, which is synced; the sync agent can
+# create these when files change during git/build activity. Never commit them.
+* [0-9].*

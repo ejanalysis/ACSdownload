@@ -47,8 +47,6 @@ fips_from_geoid <- function(geoid) {
 }
 
 
-#' Add leading zeros to FIPS codes whose leading zeros were lost
-#'
 #' Valid 2-digit Census state/territory FIPS codes
 #'
 #' The 50 states, DC (11), and the territories ACS publishes (PR = 72, plus
