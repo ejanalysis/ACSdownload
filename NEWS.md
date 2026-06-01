@@ -1,3 +1,37 @@
+# ACSdownload (development version)
+
+Post-3.0.0 maintenance. No functional changes to `get_acs_new()` or the
+download/parse path -- these are documentation, metadata, and project-
+infrastructure fixes only.
+
+## Documentation
+
+* Fixed several documentation facts that had drifted from the code:
+  * The `acs_label()` example in the README omitted the `universe` column
+    the function actually returns (it returns five columns, not four).
+  * The vignette documented the pre-3.0.0 table-code pattern
+    `^[BC][0-9]{5}[A-I]?$`; it now shows the current
+    `^[BC][0-9]{5}[A-I]?(PR)?$`, since Puerto Rico (`PR`-suffixed) tables
+    are accepted as of 3.0.0.
+  * The `acs_table_shells` refresh instructions pointed at the old
+    `inst/ACS20225YR_Table_Shells.txt` source file, which moved to
+    `data-raw/` in 3.0.0.
+  * Two dead Census links in the package-level help (`?ACSdownload`) were
+    repointed to the current TIGER geodatabase and gazetteer pages.
+* Roxygen cleanups: stopped bracket-linking undocumented internal helpers;
+  fixed a stray `.valid_state_fips` title.
+
+## Infrastructure / metadata
+
+* The pkgdown website is now built and published to the `gh-pages` branch
+  automatically by a GitHub Actions workflow on every push, instead of
+  being committed under `docs/` on `master`.
+* `actions/checkout` bumped v4 -> v5 (Node 24) in both CI workflows.
+* `DESCRIPTION` URL and package author email corrected (`ejanalysis.org`
+  -> `ejanalysis.com`, `info@` -> `ejam@ejanalysis.com`); `LICENSE` year
+  updated.
+
+
 # ACSdownload 3.0.0
 
 This is a major refactor. The pre-2022 sequence-file code path is gone;

@@ -5,7 +5,7 @@ Description: Download and parse raw data from the
     demographic data in bulk (without relying on the API).
     You can obtain data from the entire USA all at once (or selected FIPS), for one or more tables.
     This package is focused on blockgroup and tract levels of resolution.
-Version: 3.0.0
+Version: 3.0.0.9000
 Imports:
     data.table,
     httr2
