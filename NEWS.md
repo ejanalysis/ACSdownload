@@ -59,6 +59,19 @@ tag for anyone who still needs the old path.
 
 ## Bug fixes
 
+* 11-digit FIPS codes are now disambiguated instead of always being assumed
+  to be tracts (and instead of an unconditional "ambiguous" warning). An
+  11-digit value can be a complete tract or a 12-character blockgroup that
+  lost its leading zero. `fips_lead_zero_acs()` now resolves this with a
+  deterministic state-FIPS heuristic (a blockgroup only loses a leading zero
+  when its state code is 01-09, so only one reading is usually plausible);
+  e.g. a Connecticut blockgroup `"90010201001"` is restored to
+  `"090010201001"`. For the rare case where both readings are plausible
+  (e.g. state-40 tract vs state-04 blockgroup) it defaults to tract, and an
+  authoritative tract list can be passed via the new `tract_fips` argument
+  (`.ejam_tract_fips()` supplies `EJAM::blockgroupstats`'s tract list when
+  EJAM is installed). Values whose first digits are not a valid state under
+  either reading become NA.
 * Numeric `fips` codes that lost their leading zeros are now normalized
   before filtering. `get_acs_new(fips = 1001)` previously validated to
   `"1001"` and matched no rows, because the GEO_ID-derived fips carry their

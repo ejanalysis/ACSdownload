@@ -41,10 +41,49 @@ test_that("fips_lead_zero_acs restores leading zeros for standard widths", {
   )
 })
 
-test_that("fips_lead_zero_acs warns on ambiguous 11-character input", {
+test_that("fips_lead_zero_acs resolves 11-digit codes via the state-FIPS heuristic", {
+  # Tract reading valid (state 01), blockgroup reading impossible ("00"):
+  # unambiguously a tract -> left as-is, no warning.
+  expect_silent(
+    out <- ACSdownload:::fips_lead_zero_acs("01001020100")
+  )
+  expect_equal(out, "01001020100")
+
+  # Blockgroup-missing-zero: tract reading "90" is not a valid state but the
+  # blockgroup reading "09" (Connecticut) is -> restore the leading zero.
+  expect_equal(
+    ACSdownload:::fips_lead_zero_acs("90010201001"),
+    "090010201001"
+  )
+
+  # Genuinely ambiguous (state 40 tract vs state 04 blockgroup): default to
+  # tract, and warn only when not quiet.
+  expect_equal(
+    ACSdownload:::fips_lead_zero_acs("40131165002", quiet = TRUE),
+    "40131165002"
+  )
   expect_warning(
-    ACSdownload:::fips_lead_zero_acs("01001020100"),
+    ACSdownload:::fips_lead_zero_acs("40131165002", quiet = FALSE),
     "ambiguous"
+  )
+
+  # Neither reading is a valid state -> NA.
+  expect_true(is.na(
+    suppressWarnings(ACSdownload:::fips_lead_zero_acs("70123456789"))
+  ))
+})
+
+test_that("fips_lead_zero_acs uses an authoritative tract list when supplied", {
+  tracts <- c("40131165002")  # pretend this exact 11-digit value is a real tract
+  # In the table, the value stays a tract.
+  expect_equal(
+    ACSdownload:::fips_lead_zero_acs("40131165002", tract_fips = tracts),
+    "40131165002"
+  )
+  # Not in the table -> treated as a blockgroup missing its leading zero.
+  expect_equal(
+    ACSdownload:::fips_lead_zero_acs("40131165003", tract_fips = tracts),
+    "040131165003"
   )
 })
 
