@@ -12,12 +12,12 @@ Source:
 
 Corrales M (2026). *ACSdownload: Download American Community Survey
 (ACS) 5-Year Data Tables from Census Bureau Nationwide in Bulk*. R
-package version 3.0.0, <https://ejanalysis.github.io/ACSdownload/>.
+package version 3.0.0.9000, <https://ejanalysis.github.io/ACSdownload/>.
 
     @Manual{,
       title = {ACSdownload: Download American Community Survey (ACS) 5-Year Data Tables from Census Bureau Nationwide in Bulk},
       author = {Mark A. Corrales},
       year = {2026},
-      note = {R package version 3.0.0},
+      note = {R package version 3.0.0.9000},
       url = {https://ejanalysis.github.io/ACSdownload/},
     }

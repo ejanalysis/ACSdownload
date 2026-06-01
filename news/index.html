@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ACSdownload</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">3.0.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,28 @@
       <small>Source: <a href="https://github.com/ejanalysis/ACSdownload/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="acsdownload-development-version">ACSdownload (development version)<a class="anchor" aria-label="anchor" href="#acsdownload-development-version"></a></h2>
+<p>Post-3.0.0 maintenance. No functional changes to <code><a href="../reference/get_acs_new.html">get_acs_new()</a></code> or the download/parse path – these are documentation, metadata, and project- infrastructure fixes only.</p>
+<div class="section level3">
+<h3 id="documentation-development-version">Documentation<a class="anchor" aria-label="anchor" href="#documentation-development-version"></a></h3>
+<ul><li>Fixed several documentation facts that had drifted from the code:
+<ul><li>The <code><a href="../reference/acs_label.html">acs_label()</a></code> example in the README omitted the <code>universe</code> column the function actually returns (it returns five columns, not four).</li>
+<li>The vignette documented the pre-3.0.0 table-code pattern <code>^[BC][0-9]{5}[A-I]?$</code>; it now shows the current <code>^[BC][0-9]{5}[A-I]?(PR)?$</code>, since Puerto Rico (<code>PR</code>-suffixed) tables are accepted as of 3.0.0.</li>
+<li>The <code>acs_table_shells</code> refresh instructions pointed at the old <code>inst/ACS20225YR_Table_Shells.txt</code> source file, which moved to <code>data-raw/</code> in 3.0.0.</li>
+<li>Two dead Census links in the package-level help (<code><a href="../reference/ACSdownload.html">?ACSdownload</a></code>) were repointed to the current TIGER geodatabase and gazetteer pages.</li>
+</ul></li>
+<li>Roxygen cleanups: stopped bracket-linking undocumented internal helpers; fixed a stray <code>.valid_state_fips</code> title.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="infrastructure--metadata-development-version">Infrastructure / metadata<a class="anchor" aria-label="anchor" href="#infrastructure--metadata-development-version"></a></h3>
+<ul><li>The pkgdown website is now built and published to the <code>gh-pages</code> branch automatically by a GitHub Actions workflow on every push, instead of being committed under <code>docs/</code> on <code>master</code>.</li>
+<li>
+<code>actions/checkout</code> bumped v4 -&gt; v5 (Node 24) in both CI workflows.</li>
+<li>
+<code>DESCRIPTION</code> URL and package author email corrected (<code>ejanalysis.org</code> -&gt; <code>ejanalysis.com</code>, <code>info@</code> -&gt; <code>ejam@ejanalysis.com</code>); <code>LICENSE</code> year updated.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="3.0.0" id="acsdownload-300">ACSdownload 3.0.0<a class="anchor" aria-label="anchor" href="#acsdownload-300"></a></h2>
 <p>This is a major refactor. The pre-2022 sequence-file code path is gone; only the table-based summary file format (introduced for the 2018-2022 vintage) is supported. The 2.x series remains on the <code>v2.4.0-pre-refactor</code> tag for anyone who still needs the old path.</p>
