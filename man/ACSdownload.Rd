@@ -57,5 +57,5 @@ Useful links:
 
 }
 \author{
-info@ejanalysis.com
+ejam@ejanalysis.com
 }

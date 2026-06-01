@@ -45,7 +45,7 @@
 #' @importFrom data.table fread setcolorder := .SD
 #' @importFrom utils head
 #'
-#' @author info@@ejanalysis.com
+#' @author ejam@@ejanalysis.com
 #' @references
 #'  <https://ejanalysis.com/>
 "_PACKAGE"
