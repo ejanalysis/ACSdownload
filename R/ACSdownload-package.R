@@ -48,6 +48,7 @@
 #' @author ejam@@ejanalysis.com
 #' @references
 #'  <https://ejanalysis.com/>
+#' @keywords internal
 "_PACKAGE"
 NULL
 
