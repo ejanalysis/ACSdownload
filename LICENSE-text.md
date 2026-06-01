@@ -1,4 +1,4 @@
 # License
 
-    YEAR: 2021
-    COPYRIGHT HOLDER: info@ejanalysis.com
+    YEAR: 2026
+    COPYRIGHT HOLDER: Mark A. Corrales
