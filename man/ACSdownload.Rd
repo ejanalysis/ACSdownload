@@ -4,44 +4,47 @@
 \name{ACSdownload}
 \alias{ACSdownload}
 \alias{ACSdownload-package}
-\title{Download American Community Survey (ACS) 5-year Data Tables from Census Bureau nationwide in bulk}
+\title{Download American Community Survey (ACS) 5-year Data Tables from
+Census Bureau nationwide in bulk}
 \description{
-Download and parse raw data from the
-Census Bureau American Community Survey (ACS) 5-year survey, to get
-demographic data in bulk (without relying on the API).
-You can obtain data from the entire USA all at once (or selected FIPS), for one or more tables.
-This package is focused on blockgroup and tract levels of resolution.
+Download and parse raw data from the Census Bureau American Community
+Survey (ACS) 5-year survey to get demographic data in bulk (without
+relying on the API). You can obtain data from the entire USA all at
+once (or selected FIPS), for one or more tables. This package is
+focused on blockgroup and tract levels of resolution.
 }
 \details{
-ACSdownload is an R package that helps you download and
-parse large amounts of raw data from the
-Census Bureau American Community Survey 5-year datasets,
-providing demographic data at the blockgroup and tract levels of resolution.
-You can obtain data from the entire USA all at once using this package,
-for one or more tables.
+ACSdownload helps you download and parse large amounts of raw data from
+the Census Bureau American Community Survey 5-year datasets, providing
+demographic data at the blockgroup and tract levels of resolution. You
+can obtain data from the entire USA all at once using this package, for
+one or more tables.
 \itemize{
-\item The key function is \code{\link[=get_acs_new]{get_acs_new()}} for ACS 2018-2022, 2019-2023, or 2020-2024.
-\item For older ACS data, which was not organized by table, see \code{\link[=get_acs_old]{get_acs_old()}}.
-For 5-year data ending with year 2022, the DATA FORMAT HAS CHANGED FOR SUMMARY FILE ACS DATA.
-See \url{https://www.census.gov/programs-surveys/acs/data/summary-file/updates-to-acs-summary-file.Overview.html}
+\item The key function is \code{\link[=get_acs_new]{get_acs_new()}} for ACS end years 2022 and later
+(the table-based summary file format).
+\item For ACS end years 2021 and earlier (the older sequence-file format),
+this package no longer ships support; use a CRAN package such as
+\code{tidycensus} or the prior 2.x series of \code{ACSdownload}.
 }
 
 Other options for obtaining Census ACS data or related data:
 \itemize{
-\item \url{http://www.census.gov/programs-surveys/acs/data.html}
-\item The Census Bureau makes it easy to obtain data from one
-state at a time, but it is not as easy to get data for every blockgroup in the US.
-There are over 240,000 block groups and over 85,000 tracts in the U.S.
+\item \url{https://www.census.gov/programs-surveys/acs/data.html}
+\item The Census Bureau makes it easy to obtain data from one state at a
+time, but it is not as easy to get data for every blockgroup in the
+US. There are over 240,000 block groups and over 85,000 tracts in the
+U.S.
 \item The \href{https://walker-data.com/tidycensus/index.html}{tidycensus package}
-is an alternative that makes it easy to download modest amounts of ACS or decennial census or other data,
-(once you get a Census Bureau API key to request the data), but
-downloading via API is slow/awkward if you want all blockgroups nationwide for multiple tables.
-\item see Census geodatabases at \url{http://www.census.gov/geo/maps-data/data/tiger-data.html}
-\item see \url{http://www.census.gov/geo/maps-data/data/gazetteer.html}
+is an alternative that makes it easy to download modest amounts of ACS
+or decennial-census or other data (once you get a Census Bureau API
+key to request the data), but downloading via API is slow/awkward if
+you want all blockgroups nationwide for multiple tables.
+\item see Census geodatabases at \url{https://www.census.gov/geo/maps-data/data/tiger-data.html}
+\item see \url{https://www.census.gov/geo/maps-data/data/gazetteer.html}
 }
 }
 \references{
-\url{https://ejanalysis.org} \cr
+\url{https://ejanalysis.org}
 }
 \seealso{
 Useful links:
@@ -49,6 +52,7 @@ Useful links:
   \item \url{https://ejanalysis.github.io/ACSdownload/}
   \item \url{https://github.com/ejanalysis/ACSdownload}
   \item \url{https://ejanalysis.org}
+  \item Report bugs at \url{https://github.com/ejanalysis/ACSdownload/issues}
 }
 
 }

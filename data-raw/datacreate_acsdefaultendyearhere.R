@@ -1,15 +1,21 @@
+# ---------------------------------------------------------------------------- #
+# Re-create the `acsdefaultendyearhere` and `acsfirstyearavailablehere` data
+# objects shipped with the package. Run with:
+#
+#   devtools::load_all(".")
+#   source("data-raw/datacreate_acsdefaultendyearhere.R")
+# ---------------------------------------------------------------------------- #
 
-# also see  ACSdownload/data-raw/datacreate_lookup.acs.R
 
-
-# create/save acsdefaultendyearhere (save in package) ####
-
-# cat("may need to do  devtools::load_all() first \n")
-
-acsdefaultendyearhere <- 2023 #  ACSdownload:::guess_end_year() # not exported
-#attr(acsdefaultendyearhere, "date_saved_in_package") <- as.character(Sys.Date()) # do not add attributes - leave it as a simple numeric year
+# The default ACS 5-year end year used by `get_acs_new()` and friends when the
+# caller does not pass `yr`. Update after each new Census Bureau release.
+acsdefaultendyearhere <- 2024
 usethis::use_data(acsdefaultendyearhere, overwrite = TRUE)
 
 
-acsfirstyearavailablehere <- 2018 # but might not work anymore prior to 2023 data since formats changed entirely for endyear 2022 and later
+# The earliest end year `get_acs_new()` can target. The package only supports
+# the table-based summary file format introduced for the 2018-2022 vintage
+# (released December 7, 2023), so this floor is 2022. The data object is used
+# by `validate_acs_endyear()`.
+acsfirstyearavailablehere <- 2022
 usethis::use_data(acsfirstyearavailablehere, overwrite = TRUE)

@@ -1,66 +1,63 @@
-######################### #
-# tables needed for EJSCREEN ACS-based indicators as of EJSCREEN version 2.32 released 2024
-# and also for EJAM version 2.32.003 released 11/2025,
-# and also for the next two updates to use
-# ACS 2019-2023 (released by Census 12/2024) https://www.census.gov/programs-surveys/acs/news/data-releases/2023/release.html
-# ACS 2020-2024 (available from Census Bureau 12/2025) https://www.census.gov/programs-surveys/acs/news/data-releases/2024/release.html
+# ---------------------------------------------------------------------------- #
+# Re-create the `ejscreen_acs_tables` data object shipped with the package.
+#
+# Authoritative source: EJAM's `tables_ejscreen_acs` on the ACS2024 branch.
+# Whenever EJAM updates its list, mirror it here. Run with:
+#
+#   devtools::load_all(".")
+#   source("data-raw/datacreate_ejscreen_acs_tables.R")
+# ---------------------------------------------------------------------------- #
 
+
+# Mirror of EJAM::tables_ejscreen_acs (ACS2024 branch, EJAM 2.5.0, 2026-05-25).
+# Keep the order matching EJAM so downstream code that indexes by position
+# behaves identically against either package.
 ejscreen_acs_tables <- c(
 
-  "B25034", # pre1960, for lead paint indicator (environmental not demographic per se)
-
+  # BLOCK GROUP-resolution tables used by EJSCREEN
+  "B25034", # pre-1960 housing, for lead paint indicator (environmental)
   "B01001", # sex and age / basic population counts
-  "B03002", # race with breakdown by hispanic ethnicity
-  "B02001", # race without breakdown by hispanic ethnicity
-  "B15002", # education (less than high school)
+  "B03002", # race with hispanic ethnicity
+  "B02001", # race without hispanic ethnicity
+  "B15002", # education
   "B23025", # unemployed
-  "C17002", # low income, poor, etc.
+  "C17002", # low income, poverty-ratio population universe, etc.
+  "B17017", # households below poverty level
   "B19301", # per capita income
-  "B25032", # owned units vs rented units (occupied housing units, same universe as B25003)
-  "B28003", # no broadband
-  "B27010", # no health insurance
-  "C16002", # (language category and) % of households limited English speaking (lingiso) "https://data.census.gov/table/ACSDT5Y2023.C16002"
-  "B16004", # (language category and) % of residents (not hhlds) speak no English at all "https://data.census.gov/table/ACSDT5Y2023.B16004"
+  "B25032", # owned units vs rented units (occupied housing units; same
+            # universe as B25003)
+  "B28002", # no broadband internet subscription
+  "B27010", # no health insurance (Census-defined civilian noninstitutionalized
+            # population universe)
+  "C16002", # household language by limited-English-speaking status;
+            # `lingiso` and limited-English household language breakdowns
+  "B16004", # language category and % of residents (not households) speaking
+            # no English at all
 
-  "C16001", # languages detailed list: % of residents (not hhlds) speak Chinese, etc.  "https://data.census.gov/table/ACSDT5Y2023.C16001"
-  # C16001 is at tract resolution only ########### #
-  # B18101 is at tract resolution only ########### #
-  "B18101" # disability -- at tract resolution only ########### #
+  # TRACT-only tables that EJSCREEN repeats onto each blockgroup in the tract.
+  # When `fips = "blockgroup"`, these filter to zero rows and are dropped from
+  # any merged result.
+  "C16001", # detailed languages spoken (tract only)
+  "B18101"  # disability (tract only)
 )
-#### #
-url_acs_table(ejscreen_acs_tables)
-######################### #
-
-# see ACSdownload::acsdefaultendyearhere
-# see https://ejanalysis.com for the EJAM package
 
 
-endyear_used = acsdefaultendyearhere # from this package, should get updated yearly manually in datacreate_
-yrs_range_guess = EJAM:::acs_yr_range(endyear_used)
-release_date_guess <- paste0(endyear_used + 1, "-12-12")
+# Provenance/metadata attributes mirroring EJAM's conventions.
+endyear_used      <- 2024  # acsdefaultendyearhere (Phase 6)
+yrs_range_guess   <- paste0(endyear_used - 4L, "-", endyear_used)
+release_date_guess <- "2026-01-29"  # actual 2020-2024 ACS release date
 
 metadata_here <- list(
-
-  ejam_package_version         = c(Version = NA),     # "2.33.0"),     # change as needed ***
-  ejscreen_version =     c(EJScreenVersion = NA),     # "2.33"),       # change as needed ***
-  ejscreen_releasedate = c(EJScreenReleaseDate = NA), # "2026-02-01"), # change as needed ***
-
-  # ACS 2019-2023 (released by Census 12/2024) https://www.census.gov/programs-surveys/acs/news/data-releases/2023/release.html
-  # ACS 2020-2024 (available from Census Bureau 12/2025) https://www.census.gov/programs-surveys/acs/news/data-releases/2024/release.html
-
-  acs_releasedate = c(ACSReleaseDate = release_date_guess),
-  acs_version     = c(ACSVersion = yrs_range_guess), # e.g., "2019-2023"
-
-  census_version = c(CensusVersion = "2020"),
-  date_saved_in_package = Sys.Date()
+  ejam_package_version  = c(Version = NA_character_),
+  ejscreen_version      = c(EJScreenVersion = NA_character_),
+  ejscreen_releasedate  = c(EJScreenReleaseDate = NA_character_),
+  acs_releasedate       = c(ACSReleaseDate = release_date_guess),
+  acs_version           = c(ACSVersion = yrs_range_guess),
+  census_version        = c(CensusVersion = "2020"),
+  date_saved_in_package = as.character(Sys.Date())
 )
-for (i in 1:length(metadata_here)) {
+for (i in seq_along(metadata_here)) {
   attr(ejscreen_acs_tables, names(metadata_here)[i]) <- metadata_here[[i]]
 }
 
 usethis::use_data(ejscreen_acs_tables, overwrite = TRUE)
-
-  EJAM:::dataset_documenter(
-    "ejscreen_acs_tables",
-    "tables needed for EJSCREEN ACS-based indicators as of EJSCREEN version 2.32 released 2024 and also for EJAM version 2.32.6.003 released 11/2025"
-    )

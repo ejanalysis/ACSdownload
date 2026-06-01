@@ -6,3 +6,6 @@
 ^data-raw$
 ^\.positai$
 ^\.claude$
+^\.github$
+^cran-comments\.md$
+^CRAN-RELEASE$
