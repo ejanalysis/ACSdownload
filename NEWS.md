@@ -59,6 +59,14 @@ tag for anyone who still needs the old path.
 
 ## Bug fixes
 
+* Numeric `fips` codes that lost their leading zeros are now normalized
+  before filtering. `get_acs_new(fips = 1001)` previously validated to
+  `"1001"` and matched no rows, because the GEO_ID-derived fips carry their
+  zeros (`"01001"`). `validate_fips_arg()` now restores canonical Census
+  widths via `fips_lead_zero_acs()`, and coerces numeric input with
+  `format(scientific = FALSE)` so large codes don't become e.g. `"1e+05"`.
+  Codes with impossible digit widths are rejected with a clear message; the
+  same-width (single geography type) check runs after normalization.
 * Puerto Rico Community Survey tables (the `PR`-suffixed variants, e.g.
   `B05001PR`, `B06004APR`) are accepted again. The input validator added in
   3.0.0 rejected them before download even though the files exist and the

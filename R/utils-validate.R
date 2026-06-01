@@ -61,26 +61,35 @@ validate_fiveorone <- function(fiveorone) {
 }
 
 
-#' Validate the `fips` argument shape
+#' Validate (and normalize) the `fips` argument shape
 #'
 #' Permits one of three shapes:
 #'   * `NULL`                        -- no row filtering
 #'   * a single recognized type name -- single-string from `.supported_fipstypes()`
-#'   * a vector of fips code strings -- all of the same width, all numeric digits
+#'   * a vector of fips codes         -- numeric or character; all one geography
+#'     type (same canonical width)
 #'
-#' Mixing a type-name string with numeric fips codes (e.g.
+#' For a vector of fips codes this returns the codes with canonical Census
+#' widths restored (e.g. numeric `1001` becomes `"01001"`), so the downstream
+#' `fips %in% ...` filter in [get_acs_new()] matches the GEO_ID-derived fips
+#' (which always carry their leading zeros).
+#'
+#' Mixing a type-name string with fips codes (e.g.
 #' `c("blockgroup", "010010201001")`) is rejected.
 #'
 #' @param fips the user-supplied `fips` argument
-#' @returns `fips` unchanged, after passing checks
+#' @returns `NULL`, the type name unchanged, or the normalized fips vector
 #' @keywords internal
 #' @noRd
 validate_fips_arg <- function(fips) {
 
   if (is.null(fips)) return(fips)
 
+  # Coerce non-character input safely. as.character() switches to scientific
+  # notation for some numerics (e.g. as.character(100000) == "1e+05"), which
+  # would corrupt a fips code; format(scientific = FALSE) avoids that.
   if (!is.character(fips)) {
-    fips <- as.character(fips)
+    fips <- format(fips, scientific = FALSE, trim = TRUE)
   }
 
   is_type_name <- fips %in% .supported_fipstypes()
@@ -106,11 +115,28 @@ validate_fips_arg <- function(fips) {
          if (sum(bad) > 5) ", ..." else "")
   }
 
-  # ... and all of the same width (i.e. one geography type). A mix of widths
+  # ... and are normalized to canonical Census widths. Numeric fips that lost
+  # their leading zeros (e.g. 1001 -> "01001" for an Alabama county) must be
+  # restored here, or the get_acs_new() filter would compare "1001" to the
+  # GEO_ID-derived "01001" and return zero rows. fips_lead_zero_acs() also
+  # NA-flags impossible widths (3, 8, 9, 13, ...). Suppress its 11-character
+  # ambiguity warning -- tract-level pulls are legitimately 11 characters.
+  normalized <- suppressWarnings(fips_lead_zero_acs(fips, quiet = TRUE))
+  if (any(is.na(normalized))) {
+    stop("`fips` contains codes with an invalid number of digits (after ",
+         "restoring leading zeros): ",
+         paste(utils::head(unique(fips[is.na(normalized)]), 5), collapse = ", "),
+         ". Valid Census fips widths are 2 (state), 5 (county), 7 (place/city), ",
+         "11 (tract), 12 (blockgroup), 15 (block).")
+  }
+  fips <- normalized
+
+  # All codes must be one geography type (same width). A mix of widths
   # (e.g. a 5-digit county and an 11-digit tract) would otherwise pass through
   # to get_acs_new(), which filters every matching SUMLEVEL and, with the
   # default return_list_not_merged = TRUE, would hand back a table mixing
-  # geography levels. Reject it here.
+  # geography levels. Check this AFTER normalization so leading-zero loss in
+  # only some codes (e.g. c("1001", "01001")) does not look like a mix.
   widths <- unique(nchar(fips))
   if (length(widths) > 1L) {
     stop("`fips` mixes codes of differing widths (",

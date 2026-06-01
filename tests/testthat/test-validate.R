@@ -43,6 +43,43 @@ test_that("validate_fips_arg accepts NULL, a single type name, or a numeric fips
   )
 })
 
+test_that("validate_fips_arg restores leading zeros lost by numeric input", {
+  # A bare numeric county code missing its leading zero.
+  expect_equal(ACSdownload:::validate_fips_arg(1001), "01001")
+  expect_equal(
+    ACSdownload:::validate_fips_arg(c(1001, 6037)),
+    c("01001", "06037")
+  )
+  # Character codes missing a zero are normalized too, and a mix of
+  # zero-padded and unpadded forms of the SAME geography is not a width mix.
+  expect_equal(
+    ACSdownload:::validate_fips_arg(c("1001", "01001")),
+    c("01001", "01001")
+  )
+  # A 10-digit tract code (leading zero lost) normalizes to the 11-char form.
+  expect_equal(ACSdownload:::validate_fips_arg(1001020100), "01001020100")
+})
+
+test_that("validate_fips_arg leaves 11-digit codes alone (tract vs blockgroup is ambiguous)", {
+  # 11 digits could be a complete tract OR a blockgroup missing its leading
+  # zero; fips_lead_zero_acs() cannot disambiguate, so the value is returned
+  # as-is (treated as a tract). Pass blockgroups as the full 12-char string.
+  expect_equal(ACSdownload:::validate_fips_arg("10010201001"), "10010201001")
+  expect_equal(ACSdownload:::validate_fips_arg("010010201001"), "010010201001")
+})
+
+test_that("validate_fips_arg coerces large numeric fips without scientific notation", {
+  # as.character(100000) is "1e+05"; the validator must avoid that.
+  expect_equal(ACSdownload:::validate_fips_arg(100000), "0100000")  # 7-digit place
+})
+
+test_that("validate_fips_arg rejects codes with impossible digit widths", {
+  expect_error(ACSdownload:::validate_fips_arg("100"),       # 3 digits
+               "invalid number of digits")
+  expect_error(ACSdownload:::validate_fips_arg(c("01001", "12345678")),  # 8 digits
+               "invalid number of digits")
+})
+
 test_that("validate_fips_arg rejects mixed type-name + codes", {
   expect_error(
     ACSdownload:::validate_fips_arg(c("blockgroup", "01001")),
