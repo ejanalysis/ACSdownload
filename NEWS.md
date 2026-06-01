@@ -59,6 +59,14 @@ tag for anyone who still needs the old path.
 
 ## Bug fixes
 
+* Requests by a vector of fips codes are now constrained to the geography
+  level inferred from the code width, not just the code suffix. A fips code's
+  width can collide across Census levels (a 5-digit county vs a 5-digit ZCTA
+  share the same suffix), so `get_acs_new(fips = "01001")` previously returned
+  the Alabama county **and** the Massachusetts ZCTA **and** two legislative
+  districts. The fips-code path now ANDs the suffix match with the inferred
+  SUMLEVEL, returning a single geography level. A 5-digit code is treated as a
+  county; use `fips = "ZCTA"` to pull ZCTAs.
 * 11-digit FIPS codes are now disambiguated instead of always being assumed
   to be tracts (and instead of an unconditional "ambiguous" warning). An
   11-digit value can be a complete tract or a 12-character blockgroup that

@@ -36,7 +36,12 @@ the merge with a warning.}
 "Congressional District", "ZCTA", or
 "American Indian Area/Alaska Native Area/Hawaiian Home Land"
 (only "blockgroup", "tract", "county", "state", "city" are well-tested);
-\item a vector of fips codes (all the same width / geography type);
+\item a vector of fips codes (all the same width / geography type). Numeric
+codes are normalized to canonical Census widths (e.g. \code{1001} becomes
+\code{"01001"}). The geography level is inferred from the code width and
+applied as a SUMLEVEL filter so results are not mixed across levels
+that share a code suffix; a 5-digit code is treated as a \strong{county}
+(not a ZCTA). To pull ZCTAs, use \code{fips = "ZCTA"}.
 \item \code{NULL} for no row filtering.
 }}
 

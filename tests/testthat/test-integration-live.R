@@ -83,25 +83,23 @@ test_that("get_acs_new accepts a numeric fips code with a lost leading zero", {
   skip_if_offline_census()
 
   cache <- withr::local_tempdir()
-  # 1001 (numeric) must normalize to "01001" to match the GEO_ID-derived fips.
-  # A bare 5-digit fips matches the same suffix across geography levels (county
-  # 01001 in AL, ZCTA 01001 in MA, ...), so we assert that numeric and string
-  # forms agree and that every returned row carries the canonical fips -- not a
-  # specific row count.
-  num <- suppressWarnings(get_acs_new(
+  # 1001 (numeric) must normalize to "01001" to match the GEO_ID-derived fips,
+  # and a 5-digit code is inferred as a county -- so the ZCTA 01001 (MA) and
+  # other same-suffix rows are excluded. Numeric and string forms must agree.
+  num <- get_acs_new(
     yr = LIVE_YR, tables = "B19301", fips = 1001,
     cache_dir = cache, quiet = TRUE
-  ))[["B19301"]]
-  str <- suppressWarnings(get_acs_new(
+  )[["B19301"]]
+  str <- get_acs_new(
     yr = LIVE_YR, tables = "B19301", fips = "01001",
     cache_dir = cache, quiet = TRUE
-  ))[["B19301"]]
+  )[["B19301"]]
 
   expect_identical(num, str)
-  expect_gt(nrow(num), 0L)
-  expect_true(all(num$fips == "01001"))
-  # The Autauga County, AL record (SUMLEVEL 050) is among the matches.
-  expect_true("050" %in% num$SUMLEVEL)
+  # Exactly one row: Autauga County, AL (SUMLEVEL 050), not the MA ZCTA.
+  expect_equal(nrow(num), 1L)
+  expect_equal(num$fips, "01001")
+  expect_equal(num$SUMLEVEL, "050")
 })
 
 test_that("get_acs_new downloads a Puerto Rico (PR) table end to end", {

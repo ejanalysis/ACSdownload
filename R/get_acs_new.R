@@ -41,7 +41,12 @@
 #'     "Congressional District", "ZCTA", or
 #'     "American Indian Area/Alaska Native Area/Hawaiian Home Land"
 #'     (only "blockgroup", "tract", "county", "state", "city" are well-tested);
-#'   * a vector of fips codes (all the same width / geography type);
+#'   * a vector of fips codes (all the same width / geography type). Numeric
+#'     codes are normalized to canonical Census widths (e.g. `1001` becomes
+#'     `"01001"`). The geography level is inferred from the code width and
+#'     applied as a SUMLEVEL filter so results are not mixed across levels
+#'     that share a code suffix; a 5-digit code is treated as a **county**
+#'     (not a ZCTA). To pull ZCTAs, use `fips = "ZCTA"`.
 #'   * `NULL` for no row filtering.
 #'
 #' @param yr end year of the 5-year ACS summary file (e.g. 2024 for the
@@ -171,7 +176,7 @@ get_acs_new <- function(
     } else {
       fipscodes_requested <- fips
       for (i in seq_along(tablist)) {
-        tablist[[i]] <- tablist[[i]][fips %in% fipscodes_requested, ]
+        tablist[[i]] <- .filter_rows_by_fips_codes(tablist[[i]], fipscodes_requested)
       }
     }
   }
@@ -254,6 +259,28 @@ get_acs_new <- function(
     }
   }
   return(tabmerged)
+}
+
+
+# Filter a single table's rows to the requested fips codes, constrained to the
+# geography level inferred from the code width.
+#
+# A fips code's width can collide across Census geography levels -- a 5-digit
+# county and a 5-digit ZCTA share the same suffix, for instance. Matching on
+# the suffix alone would return rows from several SUMLEVELs even though
+# validate_fips_arg() promises one geography type. We infer the type from the
+# (single, validated) code width and AND the suffix match with the matching
+# SUMLEVEL. A 5-digit code is inferred as a county (fipstype_acs() cannot tell
+# a county from a ZCTA); use fips = "ZCTA" to request ZCTAs. Widths with no
+# single ACS SUMLEVEL (e.g. block) fall back to a suffix-only match.
+.filter_rows_by_fips_codes <- function(dt, fipscodes) {
+  inferred_type     <- suppressWarnings(fipstype_acs(fipscodes[1]))
+  inferred_sumlevel <- sumlevel_from_fipstype(inferred_type)
+  if (!is.na(inferred_sumlevel)) {
+    dt[SUMLEVEL %in% inferred_sumlevel & fips %in% fipscodes, ]
+  } else {
+    dt[fips %in% fipscodes, ]
+  }
 }
 
 

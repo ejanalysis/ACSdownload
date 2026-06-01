@@ -15,7 +15,7 @@ a single character year like \code{"2024"} for the 2020-2024 ACS
 }
 \description{
 Mirrors the \code{guess_census_has_published = TRUE} branch of
-\code{\link[EJAM:acs_endyear]{EJAM::acs_endyear()}}. Prefers \code{EJAM::acs_endyear()} when the EJAM
+\code{EJAM::acs_endyear()}. Prefers \code{EJAM::acs_endyear()} when the EJAM
 package is installed, falling back to a self-contained estimator that
 uses the typical Census release lag (~1 year after the survey period
 ends) and the known release dates of recent vintages.
