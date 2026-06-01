@@ -44,14 +44,14 @@ you want all blockgroups nationwide for multiple tables.
 }
 }
 \references{
-\url{https://ejanalysis.org}
+\url{https://ejanalysis.com/}
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://ejanalysis.github.io/ACSdownload/}
   \item \url{https://github.com/ejanalysis/ACSdownload}
-  \item \url{https://ejanalysis.org}
+  \item \url{https://ejanalysis.com/}
   \item Report bugs at \url{https://github.com/ejanalysis/ACSdownload/issues}
 }
 

@@ -47,7 +47,7 @@
 #'
 #' @author info@@ejanalysis.com
 #' @references
-#'  <https://ejanalysis.org>
+#'  <https://ejanalysis.com/>
 "_PACKAGE"
 NULL
 
