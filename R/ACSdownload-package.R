@@ -38,9 +38,9 @@
 #'    key to request the data), but downloading via API is slow/awkward if
 #'    you want all blockgroups nationwide for multiple tables.
 #'
-#'  * see Census geodatabases at <https://www.census.gov/geo/maps-data/data/tiger-data.html>
+#'  * see Census geodatabases at <https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-geodatabase-file.html>
 #'
-#'  * see <https://www.census.gov/geo/maps-data/data/gazetteer.html>
+#'  * see <https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html>
 #'
 #' @importFrom data.table fread setcolorder := .SD
 #' @importFrom utils head

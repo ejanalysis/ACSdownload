@@ -75,10 +75,10 @@ Want a human-readable label for `B01001_001`? Use `acs_label()`:
 
 ```r
 acs_label(c("B01001_001", "B01001_M001", "C16001_002"))
-#>   variable_id table_id              label                                                 table_title
-#> 1: B01001_001  B01001             Total:                                                  Sex by Age
-#> 2: B01001_M001 B01001             Total:                                                  Sex by Age
-#> 3: C16001_002  C16001 Speak only English Language Spoken at Home for the Population 5 Years and Over
+#>   variable_id table_id              label                                                table_title                    universe
+#> 1: B01001_001   B01001             Total:                                                 Sex by Age            Total population
+#> 2: B01001_M001  B01001             Total:                                                 Sex by Age            Total population
+#> 3: C16001_002   C16001 Speak only English Language Spoken at Home for the Population 5 Years and Over Population 5 years and over
 ```
 
 `acs_label()` is backed by `acs_table_shells`, a 28k-row lookup

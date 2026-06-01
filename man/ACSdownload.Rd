@@ -39,8 +39,8 @@ is an alternative that makes it easy to download modest amounts of ACS
 or decennial-census or other data (once you get a Census Bureau API
 key to request the data), but downloading via API is slow/awkward if
 you want all blockgroups nationwide for multiple tables.
-\item see Census geodatabases at \url{https://www.census.gov/geo/maps-data/data/tiger-data.html}
-\item see \url{https://www.census.gov/geo/maps-data/data/gazetteer.html}
+\item see Census geodatabases at \url{https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-geodatabase-file.html}
+\item see \url{https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html}
 }
 }
 \references{
