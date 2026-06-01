@@ -40,9 +40,10 @@ Other options for obtaining Census ACS data or related data:
   want all blockgroups nationwide for multiple tables.
 
 - see Census geodatabases at
-  <https://www.census.gov/geo/maps-data/data/tiger-data.html>
+  <https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-geodatabase-file.html>
 
-- see <https://www.census.gov/geo/maps-data/data/gazetteer.html>
+- see
+  <https://www.census.gov/geographies/reference-files/time-series/geo/gazetteer-files.html>
 
 ## References
 

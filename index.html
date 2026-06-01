@@ -106,10 +106,10 @@
 <p>Want a human-readable label for <code>B01001_001</code>? Use <code><a href="reference/acs_label.html">acs_label()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/acs_label.html">acs_label</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B01001_001"</span>, <span class="st">"B01001_M001"</span>, <span class="st">"C16001_002"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   variable_id table_id              label                                                 table_title</span></span>
-<span><span class="co">#&gt; 1: B01001_001  B01001             Total:                                                  Sex by Age</span></span>
-<span><span class="co">#&gt; 2: B01001_M001 B01001             Total:                                                  Sex by Age</span></span>
-<span><span class="co">#&gt; 3: C16001_002  C16001 Speak only English Language Spoken at Home for the Population 5 Years and Over</span></span></code></pre></div>
+<span><span class="co">#&gt;   variable_id table_id              label                                                table_title                    universe</span></span>
+<span><span class="co">#&gt; 1: B01001_001   B01001             Total:                                                 Sex by Age            Total population</span></span>
+<span><span class="co">#&gt; 2: B01001_M001  B01001             Total:                                                 Sex by Age            Total population</span></span>
+<span><span class="co">#&gt; 3: C16001_002   C16001 Speak only English Language Spoken at Home for the Population 5 Years and Over Population 5 years and over</span></span></code></pre></div>
 <p><code><a href="reference/acs_label.html">acs_label()</a></code> is backed by <code>acs_table_shells</code>, a 28k-row lookup bundled with the package, parsed from the official Census table shells file.</p>
 </div>
 <div class="section level2">

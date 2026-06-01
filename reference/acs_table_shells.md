@@ -21,7 +21,7 @@ rows and 8 columns.
 Census refreshes the underlying file each vintage, but the labels for
 tables that persist across vintages are stable. The version shipped here
 was generated from the 2022 5-year release; refresh by replacing
-`inst/ACS20225YR_Table_Shells.txt` and re-running
+`data-raw/ACS20225YR_Table_Shells.txt` and re-running
 `data-raw/datacreate_acs_table_shells.R`.
 
 Columns:

@@ -147,8 +147,8 @@ errors:
 1.  **`yr` out of range?** `validate_acs_endyear()` rejects years below
     2022 or above today’s year + 1.
 2.  **Unknown table code?** `validate_acs_tables()` enforces
-    `^[BC][0-9]{5}[A-I]?$`. Common typo: passing the EJSCREEN-style name
-    (e.g. `"pop"`) instead of the Census code.
+    `^[BC][0-9]{5}[A-I]?(PR)?$`. Common typo: passing the EJSCREEN-style
+    name (e.g. `"pop"`) instead of the Census code.
 3.  **HTTP 404?** Means the table doesn’t exist for that vintage. Check
     `url_acs_table(tables = "...", yr = ...)` for the table’s
     data.census.gov landing page.
