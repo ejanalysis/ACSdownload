@@ -93,13 +93,28 @@ validate_fips_arg <- function(fips) {
     return(fips)
   }
 
-  # Vector of fips codes: must be all numeric digits and (we hope) same width.
+  # Vector of fips codes: must be all numeric digits ...
   bad <- !grepl("^[0-9]+$", fips)
   if (any(bad)) {
     stop("`fips` contains values that are neither a recognized geography ",
          "type name nor numeric fips codes: ",
          paste(utils::head(unique(fips[bad]), 5), collapse = ", "),
          if (sum(bad) > 5) ", ..." else "")
+  }
+
+  # ... and all of the same width (i.e. one geography type). A mix of widths
+  # (e.g. a 5-digit county and an 11-digit tract) would otherwise pass through
+  # to get_acs_new(), which filters every matching SUMLEVEL and, with the
+  # default return_list_not_merged = TRUE, would hand back a table mixing
+  # geography levels. Reject it here.
+  widths <- unique(nchar(fips))
+  if (length(widths) > 1L) {
+    stop("`fips` mixes codes of differing widths (",
+         paste(sort(widths), collapse = ", "),
+         " characters), which implies more than one geography type. ",
+         "Request one geography type at a time: pass fips codes that are ",
+         "all the same length (e.g. all 5-digit county or all 12-digit ",
+         "blockgroup codes), or a single type name such as \"blockgroup\".")
   }
   fips
 }

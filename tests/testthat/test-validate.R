@@ -54,6 +54,23 @@ test_that("validate_fips_arg rejects non-numeric junk in a fips vector", {
   )
 })
 
+test_that("validate_fips_arg rejects a mix of fips widths (different geography types)", {
+  # 5-digit county + 11-digit tract => two SUMLEVELs would leak through.
+  expect_error(
+    ACSdownload:::validate_fips_arg(c("01001", "01001020100")),
+    "mixes codes of differing widths"
+  )
+  # All-same-width vectors still pass unchanged.
+  expect_equal(
+    ACSdownload:::validate_fips_arg(c("01001", "06037", "36061")),
+    c("01001", "06037", "36061")
+  )
+  expect_equal(
+    ACSdownload:::validate_fips_arg(c("010010201001", "060372011001")),
+    c("010010201001", "060372011001")
+  )
+})
+
 test_that("validate_acs_endyear bounds-check uses package data floor", {
   expect_equal(ACSdownload:::validate_acs_endyear(2024), "2024")
   expect_equal(ACSdownload:::validate_acs_endyear("2024"), "2024")
