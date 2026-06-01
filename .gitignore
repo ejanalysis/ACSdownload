@@ -25,3 +25,6 @@ notes/more census map tools and datasets.txt
 # This repo lives under ~/Documents, which is synced; the sync agent can
 # create these when files change during git/build activity. Never commit them.
 * [0-9].*
+
+# pkgdown generated site — built and deployed by CI to the gh-pages branch.
+docs/
