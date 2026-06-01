@@ -23,8 +23,7 @@ Depends:
 Remotes:
     ejanalysis/EJAM
 License: MIT + file LICENSE
-Author: info@ejanalysis.com
-Maintainer: info@ejanalysis.com <info@ejanalysis.com>
+Authors@R: person("Mark A.", "Corrales", , "ejam@ejanalysis.com", role = c("cre", "aut"), comment = c(ORCID = "0000-0002-1696-5638"))
 NeedsCompilation: no
 LazyData: true
 Encoding: UTF-8
