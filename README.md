@@ -119,3 +119,10 @@ bg <- get_acs_new(parallel = TRUE, ...)
 ## Documentation
 
 [Function reference](https://ejanalysis.github.io/ACSdownload/reference/index.html)
+
+## Acknowledgements
+
+The 3.0.0 refactor -- rewriting the package around the Census Bureau's
+table-based summary file format, and the documentation and tooling updates
+that followed -- was developed with extensive use of Anthropic's Claude
+(via Claude Code).
