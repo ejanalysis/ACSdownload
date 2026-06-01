@@ -5,6 +5,13 @@ test_that("validate_acs_tables uppercases and accepts canonical patterns", {
   )
 })
 
+test_that("validate_acs_tables accepts Puerto Rico (PR) table suffixes", {
+  expect_equal(
+    ACSdownload:::validate_acs_tables(c("b05001pr", "B06001PR", "B06004APR")),
+    c("B05001PR", "B06001PR", "B06004APR")
+  )
+})
+
 test_that("validate_acs_tables rejects empty input and bad codes", {
   expect_error(ACSdownload:::validate_acs_tables(character(0)),
                "must contain at least one")
@@ -14,6 +21,9 @@ test_that("validate_acs_tables rejects empty input and bad codes", {
   expect_error(ACSdownload:::validate_acs_tables(c("B01001", "")), "empty")
   expect_error(ACSdownload:::validate_acs_tables("B999999"),
                "invalid ACS table code")  # 6 digits not 5
+  # A lone trailing "P" is not the PR suffix.
+  expect_error(ACSdownload:::validate_acs_tables("B05001P"),
+               "invalid ACS table code")
 })
 
 test_that("validate_fiveorone accepts 1 or 5 as char or numeric", {

@@ -54,3 +54,31 @@ test_that("bookkeeping columns are always retained", {
   out <- ACSdownload:::.filter_acs_columns(tl, variables = "ZZ_NONE")
   expect_setequal(names(out$B01001), c("GEO_ID", "fips", "SUMLEVEL"))
 })
+
+test_that("Puerto Rico (PR) table columns are recognized as estimate/MOE/annotation", {
+  # Plain PR table and race-suffixed PR table.
+  for (tabname in c("B05001PR", "B06004APR")) {
+    tl <- stats::setNames(list(make_fake(tabname)), tabname)
+
+    # Default: keep estimates + MOE, drop annotations.
+    out <- ACSdownload:::.filter_acs_columns(tl)
+    expect_true(paste0(tabname, "_001")  %in% names(out[[tabname]]), info = tabname)
+    expect_true(paste0(tabname, "_M001") %in% names(out[[tabname]]), info = tabname)
+    expect_false(any(grepl("_EA[0-9]+$", names(out[[tabname]]))), info = tabname)
+
+    # keep_moe = FALSE drops MOE but keeps estimates.
+    out2 <- ACSdownload:::.filter_acs_columns(tl, keep_moe = FALSE)
+    expect_false(any(grepl("_M[0-9]+$", names(out2[[tabname]]))), info = tabname)
+    expect_true(paste0(tabname, "_001") %in% names(out2[[tabname]]), info = tabname)
+
+    # variables filter selects the requested PR estimate + its MOE.
+    out3 <- ACSdownload:::.filter_acs_columns(
+      tl, variables = paste0(tabname, "_002")
+    )
+    expect_setequal(
+      names(out3[[tabname]]),
+      c("GEO_ID", "fips", "SUMLEVEL",
+        paste0(tabname, "_002"), paste0(tabname, "_M002"))
+    )
+  }
+})

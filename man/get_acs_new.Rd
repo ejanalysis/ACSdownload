@@ -22,6 +22,8 @@ get_acs_new(
 }
 \arguments{
 \item{tables}{vector of ACS data table codes like "B01001" or "C17002".
+Race/ethnicity-suffixed (e.g. "B03002H") and Puerto Rico Community
+Survey tables (e.g. "B05001PR", "B06004APR") are also accepted.
 Some EJSCREEN tables are only published at tract resolution (notably
 "C16001" for detailed languages spoken at home and "B18101" for
 disability); when \code{return_list_not_merged = FALSE} and \code{fips = "blockgroup"}, those tables filter to zero rows and are dropped from

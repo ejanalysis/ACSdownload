@@ -59,6 +59,12 @@ tag for anyone who still needs the old path.
 
 ## Bug fixes
 
+* Puerto Rico Community Survey tables (the `PR`-suffixed variants, e.g.
+  `B05001PR`, `B06004APR`) are accepted again. The input validator added in
+  3.0.0 rejected them before download even though the files exist and the
+  shipped table shells include those IDs; the table-code pattern now allows
+  an optional `PR` suffix, as do the estimate/MOE/annotation column patterns
+  used for `variables` / `keep_moe` / `keep_annotations` filtering.
 * `get_acs_new_geos()` returned zero rows when filtering by a geography
   type name (e.g. `fips = "county"`). The Geos sidecar file stores
   `SUMLEVEL` as an integer (`50`), but `sumlevel_from_fipstype()` returns

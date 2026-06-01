@@ -27,6 +27,8 @@
 #' workers = 4)`) before calling.
 #'
 #' @param tables vector of ACS data table codes like "B01001" or "C17002".
+#'   Race/ethnicity-suffixed (e.g. "B03002H") and Puerto Rico Community
+#'   Survey tables (e.g. "B05001PR", "B06004APR") are also accepted.
 #'   Some EJSCREEN tables are only published at tract resolution (notably
 #'   "C16001" for detailed languages spoken at home and "B18101" for
 #'   disability); when `return_list_not_merged = FALSE` and `fips =
@@ -259,7 +261,9 @@ get_acs_new <- function(
 # margin-of-error (MOE), and annotation columns. Always retains the
 # bookkeeping columns GEO_ID, fips, SUMLEVEL.
 #
-# Column-name semantics (post-rename in get_acs_new()):
+# Column-name semantics (post-rename in get_acs_new()). <TABLE> is the table
+# code, which may carry a race suffix (A-I) and/or a Puerto Rico suffix (PR),
+# e.g. B01001, B03002H, B05001PR, B06004APR:
 #   estimate    : <TABLE>_<NNN>
 #   MOE         : <TABLE>_M<NNN>
 #   estimate ann: <TABLE>_EA<NNN>
@@ -274,9 +278,10 @@ get_acs_new <- function(
   }
 
   bookkeeping <- c("GEO_ID", "fips", "SUMLEVEL")
-  est_pat     <- "^[BC][0-9]{5}[A-I]?_[0-9]+$"
-  moe_pat     <- "^[BC][0-9]{5}[A-I]?_M[0-9]+$"
-  ann_pat     <- "^[BC][0-9]{5}[A-I]?_(EA|MA)[0-9]+$"
+  tab_pat     <- "[BC][0-9]{5}[A-I]?(PR)?"  # table code incl. race/PR suffixes
+  est_pat     <- paste0("^", tab_pat, "_[0-9]+$")
+  moe_pat     <- paste0("^", tab_pat, "_M[0-9]+$")
+  ann_pat     <- paste0("^", tab_pat, "_(EA|MA)[0-9]+$")
 
   for (i in seq_along(tablist)) {
     nm <- names(tablist[[i]])

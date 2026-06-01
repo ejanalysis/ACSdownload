@@ -9,9 +9,10 @@
 #' Validate the vector of ACS table codes
 #'
 #' Census ACS table codes are an uppercase letter (`B` or `C`), five digits,
-#' and an optional race/ethnicity suffix letter (A-I). This validator
-#' normalizes input to uppercase character and rejects anything that does
-#' not match the canonical pattern.
+#' an optional race/ethnicity suffix letter (A-I), and an optional `PR`
+#' suffix for the Puerto Rico Community Survey variants (e.g. `B05001PR`,
+#' `B06004APR`). This validator normalizes input to uppercase character and
+#' rejects anything that does not match the canonical pattern.
 #'
 #' @param tables character vector of table codes
 #' @returns the uppercased character vector
@@ -25,12 +26,15 @@ validate_acs_tables <- function(tables) {
   if (anyNA(tables) || any(nchar(tables) == 0L)) {
     stop("`tables` cannot contain NA or empty strings")
   }
-  bad <- !grepl("^[BC][0-9]{5}[A-I]?$", toupper(tables))
+  # B/C, 5 digits, optional race suffix (A-I), optional Puerto Rico suffix (PR).
+  bad <- !grepl("^[BC][0-9]{5}[A-I]?(PR)?$", toupper(tables))
   if (any(bad)) {
     stop("invalid ACS table code(s): ",
          paste(tables[bad], collapse = ", "),
-         "\nExpected pattern: B or C followed by 5 digits and ",
-         "optional race suffix A-I (e.g. \"B01001\", \"C16001\", \"B03002H\")")
+         "\nExpected pattern: B or C followed by 5 digits, an optional ",
+         "race suffix A-I, and an optional Puerto Rico suffix PR ",
+         "(e.g. \"B01001\", \"C16001\", \"B03002H\", \"B05001PR\", ",
+         "\"B06004APR\")")
   }
   toupper(tables)
 }

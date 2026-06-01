@@ -78,3 +78,26 @@ test_that("get_acs_new errors clearly on a nonexistent table for the vintage", {
     "failed to download|HTTP"
   )
 })
+
+test_that("get_acs_new downloads a Puerto Rico (PR) table end to end", {
+  skip_if_offline_census()
+
+  cache <- withr::local_tempdir()
+  # B05001PR (nativity/citizenship, Puerto Rico variant) is small and stable.
+  res <- get_acs_new(
+    yr        = LIVE_YR,
+    tables    = "B05001PR",
+    fips      = "county",   # Puerto Rico municipios are SUMLEVEL 050
+    cache_dir = cache,
+    quiet     = TRUE
+  )
+  expect_named(res, "B05001PR")
+  dt <- res[["B05001PR"]]
+  expect_s3_class(dt, "data.table")
+  # Estimate + MOE columns retained their PR-suffixed names.
+  expect_true("B05001PR_001"  %in% names(dt))
+  expect_true("B05001PR_M001" %in% names(dt))
+  # All rows are Puerto Rico municipios (state fips 72).
+  expect_true(all(substr(dt$fips, 1, 2) == "72"))
+  expect_gt(nrow(dt), 50L)  # PR has 78 municipios
+})
