@@ -61,15 +61,18 @@
 #'   tables on `fips` and return a single data.table.
 #'
 #' @param cache_dir optional path to a directory in which to persist the
-#'   downloaded .dat files. The table-based SF files are immutable once a
-#'   vintage ships, so caching is safe and dramatically speeds up repeat
-#'   calls. Defaults to `getOption("ACSdownload.cache_dir", NULL)`.
+#'   downloaded .dat files. Completed transfers are reused only when their URL,
+#'   size and checksum match a companion completion record. Older cache files
+#'   without that record are downloaded again. Concurrent cache access is locked.
+#'   Delete a cached file to force a refresh from Census. With NULL, temporary
+#'   downloads are removed after use. Defaults to
+#'   `getOption("ACSdownload.cache_dir", NULL)`.
 #'
 #' @param timeout_sec per-request timeout in seconds for each .dat
 #'   download. Defaults to `getOption("ACSdownload.timeout", 300)`.
 #'
 #' @param max_retries number of retry attempts after the first for
-#'   transient HTTP failures (HTTP 429 and 5xx). Defaults to
+#'   connection failures and transient HTTP failures (HTTP 429 and 5xx). Defaults to
 #'   `getOption("ACSdownload.retries", 3)`.
 #'
 #' @param parallel if `TRUE` and both `future` and `future.apply` are
@@ -144,59 +147,40 @@ get_acs_new <- function(
   dfiles <- paste0("acsdt", fiveorone, "y", yr, "-", tolower(tables), ".dat")
   urls   <- paste0(url_dat, dfiles)
 
-  # ---- 3. Download with retry / timeout / optional cache / optional parallel
-  local_paths <- acs_download_many(
-    urls,
-    cache_dir   = cache_dir,
-    timeout_sec = timeout_sec,
-    max_retries = max_retries,
-    parallel    = parallel,
-    quiet       = quiet
-  )
+  # Own all transient downloads, including files fetched before a later failure.
+  download_cache <- cache_dir
+  if (is.null(download_cache)) {
+    download_cache <- tempfile("acs-downloads-")
+    dir.create(download_cache)
+    on.exit(unlink(download_cache, recursive = TRUE), add = TRUE)
+  }
+  local_paths <- acs_download_many(urls, cache_dir = download_cache,
+    timeout_sec = timeout_sec, max_retries = max_retries, parallel = parallel, quiet = quiet)
 
-  # ---- 4. Read each .dat into a data.table and attach fips/SUMLEVEL ------
+  # Select columns at read time, then filter each table before retaining it.
+  # This avoids holding all national rows and unused MOEs for every table at once.
   tablist <- vector("list", length(local_paths))
   for (i in seq_along(local_paths)) {
-    tablist[[i]] <- data.table::fread(local_paths[[i]], showProgress = FALSE)
-    tablist[[i]]$fips     <- fips_from_geoid(tablist[[i]]$GEO_ID)
-    tablist[[i]]$SUMLEVEL <- sumlevel_from_geoid(tablist[[i]]$GEO_ID)
-    data.table::setcolorder(tablist[[i]], c("GEO_ID", "fips", "SUMLEVEL"))
-  }
-  if (length(tables) != length(tablist)) {
-    warning("Not all requested tables were obtained.")
-  }
-
-  # ---- 5. Row filter: by SUMLEVEL (type name) or by fips codes ----------
-  if (!is.null(fips)) {
-    if (fips[1] %in% .supported_fipstypes()) {
-      sumlevel <- sumlevel_from_fipstype(fips)
-      for (i in seq_along(tablist)) {
-        tablist[[i]] <- tablist[[i]][SUMLEVEL %in% sumlevel, ]
-      }
-    } else {
-      fipscodes_requested <- fips
-      for (i in seq_along(tablist)) {
-        tablist[[i]] <- .filter_rows_by_fips_codes(tablist[[i]], fipscodes_requested)
+    raw_names <- names(data.table::fread(local_paths[[i]], nrows = 0L, showProgress = FALSE))
+    renamed <- gsub("_E([0-9]+)$", "_\\1", raw_names)
+    keep <- .acs_columns_to_keep(renamed, variables, keep_moe, keep_annotations)
+    dt <- data.table::fread(local_paths[[i]], select = raw_names[keep], showProgress = FALSE)
+    data.table::setnames(dt, gsub("_E([0-9]+)$", "_\\1", names(dt)))
+    data.table::set(dt, j = "fips", value = fips_from_geoid(dt$GEO_ID))
+    data.table::set(dt, j = "SUMLEVEL", value = sumlevel_from_geoid(dt$GEO_ID))
+    data.table::setcolorder(dt, c("GEO_ID", "fips", "SUMLEVEL"))
+    if (!is.null(fips)) {
+      if (fips[1] %in% .supported_fipstypes()) {
+        sumlevel <- sumlevel_from_fipstype(fips)
+        dt <- dt[SUMLEVEL %in% sumlevel, ]
+      } else {
+        dt <- .filter_rows_by_fips_codes(dt, fips)
       }
     }
+    tablist[[i]] <- dt
   }
-
-  # ---- 6. Rename estimate columns to match formulas_ejscreen_acs ---------
-  # Census columns look like "B01001_E001" (estimate) and "B01001_M001" (MOE).
-  # Drop the "_E" infix only when it sits between underscore and a numeric
-  # index, so unrelated "_E" substrings are untouched.
-  for (i in seq_along(tablist)) {
-    names(tablist[[i]]) <- gsub("_E([0-9]+)$", "_\\1", names(tablist[[i]]))
-  }
+  if (length(tables) != length(tablist)) warning("Not all requested tables were obtained.")
   names(tablist) <- toupper(as.vector(tables))
-
-  # ---- 6b. Optional column selection (variables, keep_moe, keep_annotations) ---
-  tablist <- .filter_acs_columns(
-    tablist,
-    variables        = variables,
-    keep_moe         = keep_moe,
-    keep_annotations = keep_annotations
-  )
 
   rowcounts <- sapply(tablist, NROW)
   sumlevels <- unlist(sapply(tablist, function(z) unique(z$SUMLEVEL)))
@@ -284,59 +268,19 @@ get_acs_new <- function(
 }
 
 
-# Filter the per-table data.tables down to user-requested variables,
-# margin-of-error (MOE), and annotation columns. Always retains the
-# bookkeeping columns GEO_ID, fips, SUMLEVEL.
-#
-# Column-name semantics (post-rename in get_acs_new()). <TABLE> is the table
-# code, which may carry a race suffix (A-I) and/or a Puerto Rico suffix (PR),
-# e.g. B01001, B03002H, B05001PR, B06004APR:
-#   estimate    : <TABLE>_<NNN>
-#   MOE         : <TABLE>_M<NNN>
-#   estimate ann: <TABLE>_EA<NNN>
-#   MOE      ann: <TABLE>_MA<NNN>
-.filter_acs_columns <- function(tablist,
-                                variables        = NULL,
-                                keep_moe         = TRUE,
-                                keep_annotations = FALSE) {
-
-  if (is.null(variables) && isTRUE(keep_moe) && isTRUE(keep_annotations)) {
-    return(tablist)
+# Select requested columns using the renamed header, before parsing the data.
+.acs_columns_to_keep <- function(nm, variables = NULL, keep_moe = TRUE, keep_annotations = FALSE) {
+  if (is.null(variables) && isTRUE(keep_moe) && isTRUE(keep_annotations)) return(rep(TRUE, length(nm)))
+  tab_pat <- "[BC][0-9]{5}[A-I]?(PR)?"
+  is_est <- grepl(paste0("^", tab_pat, "_[0-9]+$"), nm)
+  is_moe <- grepl(paste0("^", tab_pat, "_M[0-9]+$"), nm)
+  is_ann <- grepl(paste0("^", tab_pat, "_(EA|MA)[0-9]+$"), nm)
+  keep <- nm %in% c("GEO_ID", "fips", "SUMLEVEL")
+  keep <- keep | (is_est & (is.null(variables) | nm %in% variables))
+  if (isTRUE(keep_moe)) {
+    corresponding <- sub("_M([0-9]+)$", "_\\1", nm)
+    keep <- keep | (is_moe & (is.null(variables) | corresponding %in% variables))
   }
-
-  bookkeeping <- c("GEO_ID", "fips", "SUMLEVEL")
-  tab_pat     <- "[BC][0-9]{5}[A-I]?(PR)?"  # table code incl. race/PR suffixes
-  est_pat     <- paste0("^", tab_pat, "_[0-9]+$")
-  moe_pat     <- paste0("^", tab_pat, "_M[0-9]+$")
-  ann_pat     <- paste0("^", tab_pat, "_(EA|MA)[0-9]+$")
-
-  for (i in seq_along(tablist)) {
-    nm <- names(tablist[[i]])
-    is_est <- grepl(est_pat, nm)
-    is_moe <- grepl(moe_pat, nm)
-    is_ann <- grepl(ann_pat, nm)
-    is_bk  <- nm %in% bookkeeping
-
-    keep <- is_bk
-    if (is.null(variables)) {
-      keep <- keep | is_est
-    } else {
-      keep <- keep | (is_est & nm %in% variables)
-    }
-    if (isTRUE(keep_moe)) {
-      if (is.null(variables)) {
-        keep <- keep | is_moe
-      } else {
-        # Keep MOE columns whose corresponding estimate variable was requested.
-        est_for_moe <- sub("_M([0-9]+)$", "_\\1", nm)
-        keep <- keep | (is_moe & est_for_moe %in% variables)
-      }
-    }
-    if (isTRUE(keep_annotations)) {
-      keep <- keep | is_ann
-    }
-
-    tablist[[i]] <- tablist[[i]][, .SD, .SDcols = nm[keep]]
-  }
-  tablist
+  if (isTRUE(keep_annotations)) keep <- keep | is_ann
+  keep
 }

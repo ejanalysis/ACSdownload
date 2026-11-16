@@ -1,3 +1,11 @@
+# Materialize the production selector on tiny synthetic column names.
+select_test_columns <- function(tablist, ...) {
+  lapply(tablist, function(dt) {
+    keep <- ACSdownload:::.acs_columns_to_keep(names(dt), ...)
+    dt[, .SD, .SDcols = names(dt)[keep]]
+  })
+}
+
 make_fake <- function(tabname, n = 3) {
   cols <- c(
     "GEO_ID", "fips", "SUMLEVEL",
@@ -13,7 +21,7 @@ make_fake <- function(tabname, n = 3) {
 
 test_that("default keep_moe=TRUE / no variables / no annotations behavior", {
   tl <- list(B01001 = make_fake("B01001"))
-  out <- ACSdownload:::.filter_acs_columns(tl)
+  out <- select_test_columns(tl)
   expect_setequal(
     names(out$B01001),
     c("GEO_ID", "fips", "SUMLEVEL",
@@ -24,7 +32,7 @@ test_that("default keep_moe=TRUE / no variables / no annotations behavior", {
 
 test_that("variables filter keeps only the requested estimate columns + their MOE", {
   tl <- list(B01001 = make_fake("B01001"))
-  out <- ACSdownload:::.filter_acs_columns(
+  out <- select_test_columns(
     tl, variables = c("B01001_001", "B01001_003")
   )
   expect_setequal(
@@ -37,21 +45,21 @@ test_that("variables filter keeps only the requested estimate columns + their MO
 
 test_that("keep_moe=FALSE drops the MOE columns", {
   tl <- list(B01001 = make_fake("B01001"))
-  out <- ACSdownload:::.filter_acs_columns(tl, keep_moe = FALSE)
+  out <- select_test_columns(tl, keep_moe = FALSE)
   expect_false(any(grepl("_M[0-9]+$", names(out$B01001))))
   expect_true(all(c("B01001_001", "B01001_002", "B01001_003") %in% names(out$B01001)))
 })
 
 test_that("keep_annotations=TRUE keeps the EA/MA columns", {
   tl <- list(B01001 = make_fake("B01001"))
-  out <- ACSdownload:::.filter_acs_columns(tl, keep_annotations = TRUE)
+  out <- select_test_columns(tl, keep_annotations = TRUE)
   expect_true(any(grepl("_EA[0-9]+$", names(out$B01001))))
   expect_true(any(grepl("_MA[0-9]+$", names(out$B01001))))
 })
 
 test_that("bookkeeping columns are always retained", {
   tl <- list(B01001 = make_fake("B01001"))
-  out <- ACSdownload:::.filter_acs_columns(tl, variables = "ZZ_NONE")
+  out <- select_test_columns(tl, variables = "ZZ_NONE")
   expect_setequal(names(out$B01001), c("GEO_ID", "fips", "SUMLEVEL"))
 })
 
@@ -61,18 +69,18 @@ test_that("Puerto Rico (PR) table columns are recognized as estimate/MOE/annotat
     tl <- stats::setNames(list(make_fake(tabname)), tabname)
 
     # Default: keep estimates + MOE, drop annotations.
-    out <- ACSdownload:::.filter_acs_columns(tl)
+    out <- select_test_columns(tl)
     expect_true(paste0(tabname, "_001")  %in% names(out[[tabname]]), info = tabname)
     expect_true(paste0(tabname, "_M001") %in% names(out[[tabname]]), info = tabname)
     expect_false(any(grepl("_EA[0-9]+$", names(out[[tabname]]))), info = tabname)
 
     # keep_moe = FALSE drops MOE but keeps estimates.
-    out2 <- ACSdownload:::.filter_acs_columns(tl, keep_moe = FALSE)
+    out2 <- select_test_columns(tl, keep_moe = FALSE)
     expect_false(any(grepl("_M[0-9]+$", names(out2[[tabname]]))), info = tabname)
     expect_true(paste0(tabname, "_001") %in% names(out2[[tabname]]), info = tabname)
 
     # variables filter selects the requested PR estimate + its MOE.
-    out3 <- ACSdownload:::.filter_acs_columns(
+    out3 <- select_test_columns(
       tl, variables = paste0(tabname, "_002")
     )
     expect_setequal(

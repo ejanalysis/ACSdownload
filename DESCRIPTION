@@ -8,14 +8,16 @@ Description: Download and parse raw data from the
 Version: 3.0.0.9000
 Imports:
     data.table,
-    httr2
+    filelock,
+    httr2 (>= 1.0.4)
 Suggests:
     cli,
     EJAM,
     future,
     future.apply,
-    testthat (>= 3.0.0),
+    testthat (>= 3.2.0),
     withr,
+    webfakes,
     knitr,
     rmarkdown
 Depends:

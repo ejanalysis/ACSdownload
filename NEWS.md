@@ -1,8 +1,14 @@
 # ACSdownload (development version)
 
-Post-3.0.0 maintenance. No functional changes to `get_acs_new()` or the
-download/parse path -- these are documentation, metadata, and project-
-infrastructure fixes only.
+## Downloads and parsing
+
+* Read only requested estimates, MOEs and annotations, and filter each table's
+  geography before retaining it, reducing parsing time and memory use.
+* Retry connection failures as well as transient HTTP errors.
+* Stage downloads before publishing them. Cache reuse now requires a completion
+  record matching the URL, size and checksum; legacy files are downloaded again.
+  A per-file lock protects concurrent cache users (new dependency: filelock).
+* Remove temporary downloads after parsing or failure when no cache is requested.
 
 ## Documentation
 
