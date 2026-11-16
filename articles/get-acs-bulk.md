@@ -42,8 +42,14 @@ What that does:
   hands you one wide `data.table` instead of a list of 14.
 
 - `cache_dir = ...` – persists the downloaded `.dat` files. The table-
-  based summary file files are immutable once a vintage ships, so the
-  second time you run this call it completes in milliseconds.
+  based summary files are reused after checking their source URL, size
+  and checksum against a `.complete.rds` record. A `.lock` file
+  coordinates writers, and `.part` files hold transfers until
+  completion. Cache files made by older versions without completion
+  records must be downloaded again once while online. Reuse avoids
+  downloading but still reads and parses the file. Verified entries can
+  be read from a read-only cache. Delete a cached `.dat` to force a
+  refresh.
 
 ## Why this is faster than the API
 
@@ -54,8 +60,8 @@ requests, an API key, and rate limits.
 does **16 large file fetches** – one per table – and lets
 [`data.table::fread()`](https://rdrr.io/pkg/data.table/man/fread.html)
 parse each one in a few seconds. On a residential connection a full
-block- group pull is typically 3-10 minutes wall-clock, and ~zero on the
-second run with caching.
+block- group pull is typically 3-10 minutes wall-clock, and subsequent
+calls avoid the network with caching.
 
 ## Why those two tables get dropped
 

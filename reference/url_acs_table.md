@@ -39,7 +39,8 @@ character vector of URLs, one per (table x fips) pair
 
 ## See also
 
-`EJAM::url_acs_table_info()` for a richer EJSCREEN-aware variant
+[`EJAM::url_acs_table_info()`](https://public-environmental-data-partners.github.io/EJAM/reference/url_acs_table_info.html)
+for a richer EJSCREEN-aware variant
 
 ## Examples
 
