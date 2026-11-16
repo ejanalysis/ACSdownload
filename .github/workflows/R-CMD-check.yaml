@@ -54,6 +54,7 @@ jobs:
             any::rcmdcheck,
             any::testthat,
             any::withr,
+            any::webfakes,
             any::cli,
             any::future,
             any::future.apply,

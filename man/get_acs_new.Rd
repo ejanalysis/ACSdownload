@@ -61,7 +61,8 @@ downloaded .dat files. Completed transfers are reused only when their URL,
 size and checksum match a companion completion record. Older cache files
 without that record are downloaded again. Concurrent cache access is locked.
 Delete a cached file to force a refresh from Census. With NULL, temporary
-downloads are removed after use. Defaults to \code{getOption("ACSdownload.cache_dir", NULL)}.}
+downloads are removed after use. Defaults to
+\code{getOption("ACSdownload.cache_dir", NULL)}.}
 
 \item{timeout_sec}{per-request timeout in seconds for each .dat
 download. Defaults to \code{getOption("ACSdownload.timeout", 300)}.}

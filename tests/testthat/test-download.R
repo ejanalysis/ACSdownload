@@ -1,4 +1,4 @@
-# Offline cache tests; transport retries are exercised below httr2's retry loop.
+# Offline cache tests and public-interface retry tests against a local HTTP server.
 acs_test_body <- "GEO_ID|B01001_E001\n1500000US010010201001|42"
 
 mock_acs_transfer <- function(body = acs_test_body) {
@@ -67,28 +67,75 @@ test_that("download_many preserves input order", {
   expect_equal(basename(paths), basename(urls))
 })
 
-test_that("transport failures retry", {
-  calls <- 0L
-  local_mocked_bindings(req_perform1 = function(req, req_prep, path, ...) {
-    calls <<- calls + 1L
-    if (calls == 1L) return(structure(list(message = "connection reset", call = NULL),
-                                    class = c("httr2_failure", "error", "condition")))
-    writeLines(acs_test_body, path)
-    httr2::response(200)
-  }, .package = "httr2")
-  path <- ACSdownload:::acs_download_one("https://example.invalid/a.dat", max_retries = 1)
+test_that("transport timeouts retry through the public HTTP interface", {
+  skip_if_not_installed("webfakes")
+  app <- webfakes::new_app()
+  app$locals$n <- 0L
+  app$get("/retry.dat", function(req, res) {
+    if (is.null(res$locals$counted)) {
+      req$app$locals$n <- req$app$locals$n + 1L
+      res$locals$counted <- TRUE
+      if (req$app$locals$n == 1L) return(res$delay(1.5))
+    }
+    res$send("GEO_ID|B01001_E001\n0500000US01001|42\n")
+  })
+  app$get("/count", function(req, res) res$send(as.character(req$app$locals$n)))
+  server <- webfakes::new_app_process(app)
+  withr::defer(server$stop())
+  path <- ACSdownload:::acs_download_one(server$url("/retry.dat"),
+                                        timeout_sec = 0.5, max_retries = 1)
   withr::defer(unlink(path))
-  expect_equal(calls, 2L)
-  expect_equal(readLines(path), strsplit(acs_test_body, "\n")[[1]])
+  expect_equal(readLines(path), c("GEO_ID|B01001_E001", "0500000US01001|42"))
+  count <- httr2::req_perform(httr2::request(server$url("/count")))
+  expect_equal(httr2::resp_body_string(count), "2")
 })
 
 test_that("permanent HTTP errors do not retry", {
-  calls <- 0L
-  local_mocked_bindings(req_perform1 = function(...) {
-    calls <<- calls + 1L
-    httr2::response(404)
-  }, .package = "httr2")
-  expect_error(ACSdownload:::acs_download_one("https://example.invalid/a.dat", max_retries = 3),
+  skip_if_not_installed("webfakes")
+  app <- webfakes::new_app()
+  app$locals$n <- 0L
+  app$get("/missing.dat", function(req, res) {
+    req$app$locals$n <- req$app$locals$n + 1L
+    res$set_status(404)$send("missing")
+  })
+  app$get("/count", function(req, res) res$send(as.character(req$app$locals$n)))
+  server <- webfakes::new_app_process(app)
+  withr::defer(server$stop())
+  expect_error(ACSdownload:::acs_download_one(server$url("/missing.dat"), max_retries = 3),
                "up to 4 attempts")
-  expect_equal(calls, 1L)
+  count <- httr2::req_perform(httr2::request(server$url("/count")))
+  expect_equal(httr2::resp_body_string(count), "1")
+})
+
+test_that("verified cache hits need no writable lock file", {
+  cache <- withr::local_tempdir()
+  calls <- mock_acs_transfer()
+  local_mocked_bindings(req_perform = calls$perform, .package = "httr2")
+  url <- "https://example.invalid/a.dat"
+  path <- ACSdownload:::acs_download_one(url, cache)
+  local_mocked_bindings(lock = function(...) stop("cache is read-only"), .package = "filelock")
+  expect_identical(ACSdownload:::acs_download_one(url, cache), path)
+  expect_equal(calls$n, 1L)
+})
+
+test_that("lock budget covers retries and abandoned staging files are replaced", {
+  cache <- withr::local_tempdir()
+  url <- "https://example.invalid/a.dat"
+  part <- file.path(cache, "a.dat.part")
+  marker_part <- file.path(cache, "a.dat.complete.rds.part")
+  writeLines("abandoned partial data", part)
+  writeLines("abandoned record", marker_part)
+  calls <- mock_acs_transfer()
+  local_mocked_bindings(req_perform = calls$perform, .package = "httr2")
+  real_lock <- filelock::lock
+  wait_ms <- NULL
+  local_mocked_bindings(lock = function(path, timeout, ...) {
+    wait_ms <<- timeout
+    real_lock(path, timeout = timeout, ...)
+  }, .package = "filelock")
+  path <- ACSdownload:::acs_download_one(url, cache, timeout_sec = 2, max_retries = 3)
+  expect_gte(wait_ms, (4 * 2 + 2 + 4 + 8) * 1000)
+  expect_true(ACSdownload:::.acs_cache_valid(path, url))
+  expect_false(file.exists(part))
+  expect_false(file.exists(marker_part))
 })

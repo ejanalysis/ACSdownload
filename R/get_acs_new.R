@@ -166,8 +166,8 @@ get_acs_new <- function(
     keep <- .acs_columns_to_keep(renamed, variables, keep_moe, keep_annotations)
     dt <- data.table::fread(local_paths[[i]], select = raw_names[keep], showProgress = FALSE)
     data.table::setnames(dt, gsub("_E([0-9]+)$", "_\\1", names(dt)))
-    dt$fips <- fips_from_geoid(dt$GEO_ID)
-    dt$SUMLEVEL <- sumlevel_from_geoid(dt$GEO_ID)
+    data.table::set(dt, j = "fips", value = fips_from_geoid(dt$GEO_ID))
+    data.table::set(dt, j = "SUMLEVEL", value = sumlevel_from_geoid(dt$GEO_ID))
     data.table::setcolorder(dt, c("GEO_ID", "fips", "SUMLEVEL"))
     if (!is.null(fips)) {
       if (fips[1] %in% .supported_fipstypes()) {
@@ -268,29 +268,7 @@ get_acs_new <- function(
 }
 
 
-# Filter the per-table data.tables down to user-requested variables,
-# margin-of-error (MOE), and annotation columns. Always retains the
-# bookkeeping columns GEO_ID, fips, SUMLEVEL.
-#
-# Column-name semantics (post-rename in get_acs_new()). <TABLE> is the table
-# code, which may carry a race suffix (A-I) and/or a Puerto Rico suffix (PR),
-# e.g. B01001, B03002H, B05001PR, B06004APR:
-#   estimate    : <TABLE>_<NNN>
-#   MOE         : <TABLE>_M<NNN>
-#   estimate ann: <TABLE>_EA<NNN>
-#   MOE      ann: <TABLE>_MA<NNN>
-.filter_acs_columns <- function(tablist,
-                                variables        = NULL,
-                                keep_moe         = TRUE,
-                                keep_annotations = FALSE) {
-
-  lapply(tablist, function(dt) {
-    keep <- .acs_columns_to_keep(names(dt), variables, keep_moe, keep_annotations)
-    dt[, .SD, .SDcols = names(dt)[keep]]
-  })
-}
-
-# Shared selection rule, used on the header before parsing and by the legacy helper.
+# Select requested columns using the renamed header, before parsing the data.
 .acs_columns_to_keep <- function(nm, variables = NULL, keep_moe = TRUE, keep_annotations = FALSE) {
   if (is.null(variables) && isTRUE(keep_moe) && isTRUE(keep_annotations)) return(rep(TRUE, length(nm)))
   tab_pat <- "[BC][0-9]{5}[A-I]?(PR)?"

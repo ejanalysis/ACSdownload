@@ -42,8 +42,14 @@ acs_download_one <- function(url,
   if (cached) {
     dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
     dest <- file.path(cache_dir, basename(url))
-    lock <- filelock::lock(paste0(dest, ".lock"), timeout = timeout_sec * 1000)
-    if (is.null(lock)) stop("Timed out waiting for the ACS cache lock: ", dest)
+    # Completed entries can be read from a read-only cache without a lock.
+    if (.acs_cache_valid(dest, url)) return(normalizePath(dest, mustWork = TRUE))
+    # A holder may need every attempt and its backoff before publishing.
+    backoff_budget <- sum(pmin(60, 2^seq_len(min(max_retries, 6)))) +
+      max(0, max_retries - 6) * 60
+    lock_wait <- ((1 + max_retries) * timeout_sec + backoff_budget + 5) * 1000
+    lock <- filelock::lock(paste0(dest, ".lock"), timeout = lock_wait)
+    if (is.null(lock)) stop("Timed out waiting for another process to finish downloading the ACS file: ", dest)
     on.exit(filelock::unlock(lock), add = TRUE)
     if (.acs_cache_valid(dest, url)) return(normalizePath(dest, mustWork = TRUE))
   } else {
@@ -51,9 +57,12 @@ acs_download_one <- function(url,
   }
   # Same directory permits atomic rename. Neither partial downloads nor partial
   # completion records are ever visible as reusable cache entries.
-  staging <- tempfile(pattern = ".acs-download-", tmpdir = dirname(dest))
+  staging <- if (cached) paste0(dest, ".part") else tempfile(pattern = ".acs-download-", tmpdir = dirname(dest))
   marker <- paste0(dest, ".complete.rds")
-  marker_tmp <- tempfile(pattern = ".acs-complete-", tmpdir = dirname(dest))
+  marker_tmp <- if (cached) paste0(marker, ".part") else tempfile(pattern = ".acs-complete-", tmpdir = dirname(dest))
+  # Under the lock these fixed paths belong to this writer; replace leftovers
+  # from a previous process killed before its on.exit cleanup could run.
+  unlink(c(staging, marker_tmp))
   on.exit(unlink(c(staging, marker_tmp)), add = TRUE)
 
   req <- httr2::request(url)

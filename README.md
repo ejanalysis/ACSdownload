@@ -91,13 +91,21 @@ shells file.
 
 | arg                | default                                        | what it does                                                          |
 | ------------------ | ---------------------------------------------- | --------------------------------------------------------------------- |
-| `cache_dir`        | `getOption("ACSdownload.cache_dir", NULL)`     | persist .dat files; second call returns instantly                     |
+| `cache_dir`        | `getOption("ACSdownload.cache_dir", NULL)`     | persist .dat files; verify and reuse completed downloads                     |
 | `timeout_sec`      | `getOption("ACSdownload.timeout", 300)`        | per-request timeout in seconds                                        |
-| `max_retries`      | `getOption("ACSdownload.retries", 3)`          | retry-with-backoff on HTTP 429 / 5xx                                  |
+| `max_retries`      | `getOption("ACSdownload.retries", 3)`          | retry connection failures and HTTP 429 / 5xx with backoff                                  |
 | `parallel`         | `FALSE`                                        | concurrent downloads via `future.apply` (caller sets `future::plan()`)|
 | `variables`        | `NULL`                                         | keep only these estimate columns                                      |
 | `keep_moe`         | `TRUE`                                         | keep `_M<nnn>` margin-of-error columns                                |
 | `keep_annotations` | `FALSE`                                        | keep `_EA<nnn>` / `_MA<nnn>` annotation columns                       |
+
+Each cached `.dat` has a `.complete.rds` record containing its source URL, size
+and checksum, plus a `.lock` file for coordinating writers. Reuse checks the
+checksum, so it avoids the network but still reads the file. Files cached by
+older versions without a completion record must be downloaded again once;
+plan that refresh while online. Interrupted transfers use `.part` files, which
+are replaced by the next attempt. Delete a cached `.dat` to force a refresh.
+Verified entries can also be read from a read-only cache directory.
 
 Recommended for repeat work:
 
