@@ -9,7 +9,7 @@ Version: 3.0.0.9000
 Imports:
     data.table,
     filelock,
-    httr2
+    httr2 (>= 1.0.4)
 Suggests:
     cli,
     EJAM,
