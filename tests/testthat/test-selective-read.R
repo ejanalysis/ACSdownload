@@ -33,7 +33,7 @@ test_that("selective parsing preserves values, columns and geography filtering",
   }
 })
 
-test_that("temporary download directories are removed on success and failure", {
+test_that("temporary download directories are removed on success", {
   download_dir <- NULL
   local_mocked_bindings(acs_download_many = function(urls, cache_dir, ...) {
     download_dir <<- cache_dir
@@ -43,6 +43,10 @@ test_that("temporary download directories are removed on success and failure", {
   }, .package = "ACSdownload")
   get_acs_new(tables = "B01001", yr = 2023, fips = "county", cache_dir = NULL)
   expect_false(dir.exists(download_dir))
+})
+
+test_that("temporary download directories are removed on failure", {
+  download_dir <- NULL
   local_mocked_bindings(acs_download_many = function(urls, cache_dir, ...) {
     download_dir <<- cache_dir
     writeLines("partial", file.path(cache_dir, "partial"))

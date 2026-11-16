@@ -4,11 +4,11 @@ acs_test_body <- "GEO_ID|B01001_E001\n1500000US010010201001|42"
 mock_acs_transfer <- function(body = acs_test_body) {
   calls <- new.env(parent = emptyenv())
   calls$n <- 0L
-  testthat::local_mocked_bindings(req_perform = function(req, path) {
+  calls$perform <- function(req, path) {
     calls$n <- calls$n + 1L
     writeLines(body, path)
     httr2::response(200)
-  }, .package = "httr2", .env = parent.frame())
+  }
   calls
 }
 
@@ -18,6 +18,7 @@ test_that("only verified completed downloads are reused", {
   dest <- file.path(cache, "a.dat")
   writeLines("legacy partial file", dest)
   calls <- mock_acs_transfer()
+  local_mocked_bindings(req_perform = calls$perform, .package = "httr2")
   out <- ACSdownload:::acs_download_one(url, cache, max_retries = 0)
   expect_equal(calls$n, 1L)
   expect_equal(readLines(out), strsplit(acs_test_body, "\n")[[1]])
@@ -50,7 +51,8 @@ test_that("failed transfers preserve prior files and remove staging files", {
 
 test_that("HTML errors cannot become completed cache files", {
   cache <- withr::local_tempdir()
-  mock_acs_transfer("<html>Server error</html>")
+  calls <- mock_acs_transfer("<html>Server error</html>")
+  local_mocked_bindings(req_perform = calls$perform, .package = "httr2")
   expect_error(ACSdownload:::acs_download_one("https://example.invalid/a.dat", cache),
                "not an ACS summary table")
   expect_false(file.exists(file.path(cache, "a.dat")))
@@ -58,13 +60,14 @@ test_that("HTML errors cannot become completed cache files", {
 
 test_that("download_many preserves input order", {
   cache <- withr::local_tempdir()
-  mock_acs_transfer()
+  calls <- mock_acs_transfer()
+  local_mocked_bindings(req_perform = calls$perform, .package = "httr2")
   urls <- paste0("https://example.invalid/", c("c", "a", "b"), ".dat")
   paths <- ACSdownload:::acs_download_many(urls, cache, quiet = TRUE)
   expect_equal(basename(paths), basename(urls))
 })
 
-test_that("transport failures retry and permanent HTTP errors do not", {
+test_that("transport failures retry", {
   calls <- 0L
   local_mocked_bindings(req_perform1 = function(req, req_prep, path, ...) {
     calls <<- calls + 1L
@@ -74,9 +77,12 @@ test_that("transport failures retry and permanent HTTP errors do not", {
     httr2::response(200)
   }, .package = "httr2")
   path <- ACSdownload:::acs_download_one("https://example.invalid/a.dat", max_retries = 1)
-  on.exit(unlink(path))
+  withr::defer(unlink(path))
   expect_equal(calls, 2L)
   expect_equal(readLines(path), strsplit(acs_test_body, "\n")[[1]])
+})
+
+test_that("permanent HTTP errors do not retry", {
   calls <- 0L
   local_mocked_bindings(req_perform1 = function(...) {
     calls <<- calls + 1L
