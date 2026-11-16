@@ -57,15 +57,17 @@ list with one data.table per requested table; if \code{FALSE}, merge all
 tables on \code{fips} and return a single data.table.}
 
 \item{cache_dir}{optional path to a directory in which to persist the
-downloaded .dat files. The table-based SF files are immutable once a
-vintage ships, so caching is safe and dramatically speeds up repeat
-calls. Defaults to \code{getOption("ACSdownload.cache_dir", NULL)}.}
+downloaded .dat files. Completed transfers are reused only when their URL,
+size and checksum match a companion completion record. Older cache files
+without that record are downloaded again. Concurrent cache access is locked.
+Delete a cached file to force a refresh from Census. With NULL, temporary
+downloads are removed after use. Defaults to \code{getOption("ACSdownload.cache_dir", NULL)}.}
 
 \item{timeout_sec}{per-request timeout in seconds for each .dat
 download. Defaults to \code{getOption("ACSdownload.timeout", 300)}.}
 
 \item{max_retries}{number of retry attempts after the first for
-transient HTTP failures (HTTP 429 and 5xx). Defaults to
+connection failures and transient HTTP failures (HTTP 429 and 5xx). Defaults to
 \code{getOption("ACSdownload.retries", 3)}.}
 
 \item{parallel}{if \code{TRUE} and both \code{future} and \code{future.apply} are

@@ -9,7 +9,7 @@
 #     timeout and retry/backoff on transient failures.
 #   * Returns the local path so callers can fread() it without re-fetching.
 #   * Optionally caches downloads in `cache_dir` -- the table-based summary
-#     file files are immutable once a vintage ships, so caching is safe.
+#     files are reused only with matching completion records.
 #   * Optionally runs the per-file fetches in parallel via future.apply,
 #     when both `future` and `future.apply` are installed.
 # ---------------------------------------------------------------------------- #
@@ -20,7 +20,7 @@
 #'
 #' @param url full https URL of the .dat file
 #' @param cache_dir if non-NULL, persist the file at
-#'   `file.path(cache_dir, basename(url))` and reuse if it already exists
+#'   `file.path(cache_dir, basename(url))` and reuse only with a matching completion record
 #' @param timeout_sec request timeout per attempt, in seconds
 #' @param max_retries number of retry attempts after the first (so total
 #'   attempts = `1 + max_retries`)
@@ -32,52 +32,78 @@ acs_download_one <- function(url,
                              timeout_sec = getOption("ACSdownload.timeout", 300),
                              max_retries = getOption("ACSdownload.retries", 3)) {
 
-  if (!is.null(cache_dir)) {
-    if (!dir.exists(cache_dir)) {
-      dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
-    }
+  if (length(max_retries) != 1L || !is.finite(max_retries) || max_retries < 0 || max_retries != floor(max_retries)) {
+    stop("max_retries must be one nonnegative integer")
+  }
+  if (length(timeout_sec) != 1L || !is.finite(timeout_sec) || timeout_sec <= 0) {
+    stop("timeout_sec must be one positive finite number")
+  }
+  cached <- !is.null(cache_dir)
+  if (cached) {
+    dir.create(cache_dir, recursive = TRUE, showWarnings = FALSE)
     dest <- file.path(cache_dir, basename(url))
-    if (file.exists(dest) && file.size(dest) > 0L) {
-      return(normalizePath(dest, mustWork = TRUE))
-    }
+    lock <- filelock::lock(paste0(dest, ".lock"), timeout = timeout_sec * 1000)
+    if (is.null(lock)) stop("Timed out waiting for the ACS cache lock: ", dest)
+    on.exit(filelock::unlock(lock), add = TRUE)
+    if (.acs_cache_valid(dest, url)) return(normalizePath(dest, mustWork = TRUE))
   } else {
-    dest <- tempfile(pattern = paste0("acs_", basename(url), "_"),
-                     fileext = "")
+    dest <- tempfile(pattern = "acs_")
   }
-
-  if (!requireNamespace("httr2", quietly = TRUE)) {
-    stop("httr2 is required to download ACS files. Install it with ",
-         "install.packages(\"httr2\").")
-  }
+  # Same directory permits atomic rename. Neither partial downloads nor partial
+  # completion records are ever visible as reusable cache entries.
+  staging <- tempfile(pattern = ".acs-download-", tmpdir = dirname(dest))
+  marker <- paste0(dest, ".complete.rds")
+  marker_tmp <- tempfile(pattern = ".acs-complete-", tmpdir = dirname(dest))
+  on.exit(unlink(c(staging, marker_tmp)), add = TRUE)
 
   req <- httr2::request(url)
   req <- httr2::req_timeout(req, timeout_sec)
-  req <- httr2::req_retry(
-    req,
-    max_tries     = 1L + max_retries,
-    is_transient  = function(resp) {
+  req <- httr2::req_retry(req,
+    max_tries = 1L + max_retries,
+    retry_on_failure = TRUE,
+    is_transient = function(resp) {
       st <- httr2::resp_status(resp)
       st == 429L || (st >= 500L && st < 600L)
     },
-    backoff       = function(i) min(60, 2^i)  # 2s, 4s, 8s, ... capped at 60s
-  )
-
-  resp <- tryCatch(
-    httr2::req_perform(req, path = dest),
-    error = function(e) {
-      stop("failed to download ACS file after ",
-           1L + max_retries, " attempts: ", url,
-           "\n  underlying error: ", conditionMessage(e),
-           call. = FALSE)
-    }
-  )
-  status <- httr2::resp_status(resp)
-  if (status >= 400L) {
-    stop("HTTP ", status, " for ", url,
-         "\n  (check that `yr` and the table code are valid for this vintage)",
-         call. = FALSE)
+    backoff = function(i) min(60, 2^i))
+  resp <- tryCatch(httr2::req_perform(req, path = staging), error = function(e) {
+    stop("failed to download ACS file (up to ", 1L + max_retries, " attempts): ", url,
+         "\n  underlying error: ", conditionMessage(e), call. = FALSE)
+  })
+  if (httr2::resp_status(resp) != 200L || !file.exists(staging) || file.size(staging) == 0) {
+    stop("ACS download did not return a complete, nonempty HTTP 200 response: ", url)
   }
+  header <- tryCatch(names(data.table::fread(staging, nrows = 0L, showProgress = FALSE)),
+                     error = function(e) character())
+  if (!"GEO_ID" %in% header || !any(grepl("^[BC][0-9]{5}[A-Z]*_E[0-9]+$", header))) {
+    stop("Downloaded file is not an ACS summary table: ", url)
+  }
+  if (cached) {
+    saveRDS(list(version = 1L, url = url, size = unname(file.size(staging)),
+                 md5 = unname(tools::md5sum(staging))), marker_tmp)
+  }
+  # Only an absent or unverified entry reaches here; verified files are reused above.
+  # Windows cannot replace an existing file by rename. The lock protects this fallback.
+  publish <- function(from, to) {
+    if (.Platform$OS.type == "windows" && file.exists(to)) unlink(to)
+    if (!file.rename(from, to)) stop("Could not publish ACS download: ", to)
+  }
+  publish(staging, dest)
+  if (cached) publish(marker_tmp, marker)
   normalizePath(dest, mustWork = TRUE)
+}
+
+
+# A valid cache entry must be from a completed transfer of this exact URL and
+# still have the recorded contents. Legacy nonempty files alone are not trusted.
+.acs_cache_valid <- function(path, url) {
+  tryCatch({
+    record <- readRDS(paste0(path, ".complete.rds"))
+    is.list(record) && identical(record$version, 1L) && identical(record$url, url) &&
+      file.exists(path) && isTRUE(file.size(path) > 0) &&
+      identical(unname(file.size(path)), record$size) &&
+      identical(unname(tools::md5sum(path)), record$md5)
+  }, error = function(e) FALSE, warning = function(w) FALSE)
 }
 
 
