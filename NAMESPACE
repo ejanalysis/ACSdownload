@@ -7,8 +7,10 @@ export(get_acs_new)
 export(get_acs_old)
 export(sumlevel_from_fipstype)
 export(url_acs_table)
-importFrom(data.table,":=")
-importFrom(data.table,.SD)
-importFrom(data.table,fread)
-importFrom(data.table,setcolorder)
+importFrom(data.table,
+  ":=",
+  .SD,
+  fread,
+  setcolorder
+)
 importFrom(utils,head)
